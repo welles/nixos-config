@@ -108,6 +108,7 @@
     vscode
     vesktop
     jetbrains.rider
+    dotnet-sdk_10
   ];
 
   # Auto optimise package store.
