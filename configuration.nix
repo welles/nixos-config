@@ -106,6 +106,7 @@
     git
     lazygit
     vscode
+    vesktop
   ];
 
   # Auto optimise package store.
