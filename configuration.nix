@@ -107,6 +107,7 @@
     lazygit
     vscode
     vesktop
+    jetbrains.rider
   ];
 
   # Auto optimise package store.
