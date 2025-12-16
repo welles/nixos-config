@@ -109,6 +109,7 @@
     vesktop
     jetbrains.rider
     dotnet-sdk_10
+    smartgit
   ];
 
   # Auto optimise package store.
