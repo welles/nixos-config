@@ -121,6 +121,12 @@
   # Auto optimise package store.
   nix.settings.auto-optimise-store = true;
 
+  # Enable NixOS flakes feature.
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   # Remove all NixOS generations older than a week automatically.
   nix.gc = {
     automatic = true;
