@@ -100,6 +100,16 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Use nh for OS building.
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 7d";
+    };
+    flake = "/home/nico/nixos";
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
