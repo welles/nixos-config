@@ -138,11 +138,11 @@
   ];
 
   # Remove all NixOS generations older than a week automatically.
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
+  # nix.gc = {
+  #   automatic = true;
+  #   dates = "weekly";
+  #   options = "--delete-older-than 7d";
+  # };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
