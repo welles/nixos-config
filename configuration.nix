@@ -24,6 +24,11 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Add aliases for common commands.
+  environment.shellAliases = {
+    rebuild = "sudo nixos-rebuild switch";
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
