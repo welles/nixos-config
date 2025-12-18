@@ -5,6 +5,8 @@
   # paths it should manage.
   home.username = "nico";
   home.homeDirectory = "/home/nico";
+  home.file.".face.icon".source = ./floating.png;
+  home.file.".face".source = ./floating.png;
 
   programs.git = {
     enable = true;
