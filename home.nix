@@ -6,6 +6,15 @@
   home.username = "nico";
   home.homeDirectory = "/home/nico";
 
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
+    settings = {
+      user.name = "Nico welles";
+      user.email = "nico@welles.email";
+    };
+  };
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
