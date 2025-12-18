@@ -55,6 +55,12 @@
         zoom.enable = true;
       };
     };
+
+    workspace = {
+      lookAndFeel = "org.kde.breezedark.desktop";
+      cursor.theme = "Breeze_Snow";
+    };
+
     panels = [
       {
         location = "left";
