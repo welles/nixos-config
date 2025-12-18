@@ -1,3 +1,4 @@
 # NixOS VMs
 /result
 /*.qcow2
+/*-efi-vars.fd
