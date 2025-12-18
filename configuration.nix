@@ -19,10 +19,6 @@
       device = "nodev";
       useOSProber = true;
       gfxmodeEfi = "nodev";
-      catppuccin.grub = {
-        enable = true;
-        flavor = "mocha"; # Auswahl: latte, frappe, macchiato, mocha
-      };
       # theme = "${pkgs.distro-grub-themes}/share/grub/themes/nixos";
       # theme = pkgs.stdenv.mkDerivation {
       #   pname = "distro-grub-themes";
@@ -36,6 +32,10 @@
       #   installPhase = "cp -r customize/nixos $out";
       # };
     };
+  };
+  catppuccin.grub = {
+    enable = true;
+    flavor = "mocha"; # Auswahl: latte, frappe, macchiato, mocha
   };
 
   # networking.hostName = "nixos"; # Define your hostname.
