@@ -64,14 +64,14 @@
     };
   };
 
-  programs.kitty = {
-    enable = true;
-    themeFile = "OneHalfDark";
-    settings = {
-      font_size = 12;
-      confirm_os_window_close = 0;
-    };
-  };
+  # programs.kitty = {
+  #   enable = true;
+  #   themeFile = "OneHalfDark";
+  #   settings = {
+  #     font_size = 12;
+  #     confirm_os_window_close = 0;
+  #   };
+  # };
 
   programs.plasma = {
     enable = true;
