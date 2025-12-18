@@ -124,6 +124,7 @@
     jetbrains.rider
     dotnet-sdk_10
     smartgit
+    fastfetch
   ];
 
   # Auto optimise package store.
