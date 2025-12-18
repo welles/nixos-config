@@ -43,9 +43,14 @@
   programs.plasma = {
     enable = true;
     kwin = {
+      borderlessMaximizedWindows = true;
       effects = {
         wobblyWindows.enable = true;
         translucency.enable = true;
+        blur.enable = true;
+        dimInactive.enable = true;
+        slideBack.enable = true;
+        zoom.enable = true;
       };
     };
   };
