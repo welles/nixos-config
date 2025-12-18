@@ -18,7 +18,8 @@
       efiSupport = true;
       device = "nodev";
       useOSProber = true;
-      gfxmodeEfi = "nodev";
+      gfxmodeEfi = "1920x1080";
+      gfxpayloadEfi = "keep";
       # theme = "${pkgs.distro-grub-themes}/share/grub/themes/nixos";
       # theme = pkgs.stdenv.mkDerivation {
       #   pname = "distro-grub-themes";
