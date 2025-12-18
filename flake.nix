@@ -22,7 +22,7 @@
             home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.nico = import ./home.nix;
           }
-          catppuccin.nixosModules.grub
+          catppuccin.nixosModules.catppuccin
           { networking.hostName = "nico-thinkpad-nixos"; }
         ];
       };
