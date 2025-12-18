@@ -89,7 +89,7 @@
 
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
-      cursor.theme = "Breeze_Snow";
+      cursor.theme = "Breeze_Light";
     };
 
     panels = [
