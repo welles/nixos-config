@@ -18,6 +18,7 @@
       efiSupport = true;
       device = "nodev";
       useOSProber = true;
+      default = "saved";
       gfxmodeEfi = "1920x1080";
       gfxpayloadEfi = "keep";
       # theme = "${pkgs.distro-grub-themes}/share/grub/themes/nixos";
