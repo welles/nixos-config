@@ -48,6 +48,7 @@
         cursortheme = "breeze_cursors";
       };
     };
+    autoNumlock = true;
   };
   services.desktopManager.plasma6.enable = true;
 
