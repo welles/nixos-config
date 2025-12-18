@@ -45,7 +45,7 @@
     enable = true;
     settings = {
       theme = {
-        cursorTheme = "Breeze_Snow";
+        cursorTheme = "breeze_cursors";
       };
     };
     autoNumlock = true;
