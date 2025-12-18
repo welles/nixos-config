@@ -9,7 +9,7 @@
   home.pointerCursor = {
     gtk.enable = true;
     x11.enable = true;
-    name = "Breeze_Light";
+    name = "Breeze_Snow";
     package = pkgs.kdePackages.breeze;
     size = 24;
   };
@@ -90,7 +90,7 @@
 
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
-      cursor.theme = "Breeze_Light";
+      cursor.theme = "Breeze_Snow";
     };
 
     panels = [
