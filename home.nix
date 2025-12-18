@@ -55,6 +55,50 @@
         zoom.enable = true;
       };
     };
+    panels = [
+      {
+        location = "left";
+        height = 50;
+        floating = true;
+
+        widgets = [
+          {
+            name = "org.kde.plasma.kickoff";
+            config = {
+              General = {
+                icon = "nix-snowflake-white";
+              };
+            };
+          }
+
+          {
+            name = "org.kde.plasma.icontasks";
+            config = {
+              General = {
+                launchers = [
+                  # "applications:org.kde.konsole.desktop"
+                  # "applications:firefox.desktop"
+                  # "applications:systemsettings.desktop"
+                ];
+              };
+            };
+          }
+
+          "org.kde.plasma.marginsseparator"
+
+          "org.kde.plasma.systemtray"
+
+          {
+            name = "org.kde.plasma.digitalclock";
+            config = {
+              Appearance = {
+                showDate = "true";
+              };
+            };
+          }
+        ];
+      }
+    ];
   };
 
   home.sessionVariables = {
