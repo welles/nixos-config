@@ -81,11 +81,7 @@
             name = "org.kde.plasma.icontasks";
             config = {
               General = {
-                launchers = [
-                  # "applications:org.kde.konsole.desktop"
-                  # "applications:firefox.desktop"
-                  # "applications:systemsettings.desktop"
-                ];
+                launchers = [];
               };
             };
           }
