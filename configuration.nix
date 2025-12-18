@@ -91,6 +91,7 @@
     isNormalUser = true;
     description = "Nico";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
