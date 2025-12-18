@@ -115,6 +115,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nico = {
     isNormalUser = true;
+    initialPassword = "passwort";
     description = "Nico";
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
