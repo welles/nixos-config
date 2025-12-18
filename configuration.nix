@@ -177,6 +177,7 @@
     smartgit
     fastfetch
     bitwarden-desktop
+    alejandra
   ];
 
   # Auto optimise package store.
