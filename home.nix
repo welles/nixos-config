@@ -94,7 +94,7 @@
             name = "org.kde.plasma.digitalclock";
             config = {
               Appearance = {
-                showDate = "true";
+                showDate = "false";
               };
             };
           }
