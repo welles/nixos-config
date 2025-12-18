@@ -125,6 +125,12 @@
     ];
   };
 
+  virtualisation.vmVariant = {
+    virtualisation.useBootLoader = true;
+    virtualisation.useEFIBoot = true;
+    boot.loader.timeout = 30;
+  };
+
   # Install firefox.
   programs.firefox.enable = true;
 
