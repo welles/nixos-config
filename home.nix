@@ -6,6 +6,14 @@
   home.username = "nico";
   home.homeDirectory = "/home/nico";
 
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "Breeze_Light";
+    package = pkgs.kdePackages.breeze;
+    size = 24;
+  };
+
   programs.git = {
     enable = true;
     lfs.enable = true;
