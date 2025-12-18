@@ -26,6 +26,15 @@
     };
   };
 
+  programs.kitty = {
+    enable = true;
+    themeFile = "OneHalfDark";
+    settings = {
+      font_size = 12;
+      confirm_os_window_close = 0;
+    };
+  };
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
