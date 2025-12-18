@@ -45,7 +45,7 @@
   programs.plasma = {
     enable = true;
     kwin = {
-      borderlessMaximizedWindows = true;
+      borderlessMaximizedWindows = false;
       effects = {
         wobblyWindows.enable = true;
         translucency.enable = true;
