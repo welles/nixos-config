@@ -5,9 +5,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin.url = "github:catppuccin/nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, catppuccin, ... }@inputs: {
     nixosConfigurations = {
       nico-thinkpad-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -21,6 +22,7 @@
             home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.nico = import ./home.nix;
           }
+          catppuccin.nixosModules.grub
           { networking.hostName = "nico-thinkpad-nixos"; }
         ];
       };
