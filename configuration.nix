@@ -43,11 +43,6 @@
 
   services.displayManager.sddm = {
     enable = true;
-    settings = {
-      theme = {
-        cursorTheme = "breeze_cursors";
-      };
-    };
     autoNumlock = true;
   };
   services.desktopManager.plasma6.enable = true;
