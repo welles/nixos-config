@@ -32,9 +32,9 @@
   networking.networkmanager.enable = true;
 
   # Add aliases for common commands.
-  environment.shellAliases = {
-    rebuild = "sudo nixos-rebuild switch --flake ~/nixos#nixos";
-  };
+  # environment.shellAliases = {
+  #   rebuild = "sudo nixos-rebuild switch --flake ~/nixos#nixos";
+  # };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
