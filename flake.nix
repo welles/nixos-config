@@ -13,45 +13,39 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, catppuccin, plasma-manager, ... }@inputs: {
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    catppuccin,
+    plasma-manager,
+    ...
+  } @ inputs: let
+    mkSystem = hostname: hardwareConfig:
+      nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./configuration.nix
+          hardwareConfig
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {inherit inputs;};
+            home-manager.users.nico = import ./home.nix;
+            home-manager.sharedModules = [plasma-manager.homeModules.plasma-manager];
+          }
+          catppuccin.nixosModules.catppuccin
+          {
+            networking.hostName = hostname;
+          }
+        ];
+      };
+  in {
     nixosConfigurations = {
-
-      nico-thinkpad-nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./configuration.nix
-          ./hardware-configuration-nico-thinkpad-nixos.nix
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.nico = import ./home.nix;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-          }
-          catppuccin.nixosModules.catppuccin
-          { networking.hostName = "nico-thinkpad-nixos"; }
-        ];
-      };
-
-      nico-thinkbook-nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./configuration.nix
-          ./hardware-configuration-nico-thinkbook-nixos.nix
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.nico = import ./home.nix;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-          }
-          catppuccin.nixosModules.catppuccin
-          { networking.hostName = "nico-thinkbook-nixos"; }
-        ];
-      };
-
+      nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos" ./hardware-configuration-nico-thinkpad-nixos.nix;
+      nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos" ./hardware-configuration-nico-thinkbook-nixos.nix;
     };
   };
 }
