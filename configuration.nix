@@ -125,6 +125,7 @@
     dotnet-sdk_10
     smartgit
     fastfetch
+    bitwarden-desktop
   ];
 
   # Auto optimise package store.
