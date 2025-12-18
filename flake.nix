@@ -6,9 +6,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
+    plasma-manager = {
+      url = "github:pjones/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, catppuccin, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, catppuccin, plasma-manager, ... }@inputs: {
     nixosConfigurations = {
       nico-thinkpad-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -21,6 +26,7 @@
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.nico = import ./home.nix;
+            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
           }
           catppuccin.nixosModules.catppuccin
           { networking.hostName = "nico-thinkpad-nixos"; }
