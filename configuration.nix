@@ -181,6 +181,12 @@
     "flakes"
   ];
 
+  system.activationScripts.script.text = ''
+    mkdir -p /var/lib/AccountsService/icons
+
+    cp ${./floating.png} /var/lib/AccountsService/icons/nico
+  '';
+
   # Remove all NixOS generations older than a week automatically.
   # nix.gc = {
   #   automatic = true;
