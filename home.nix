@@ -36,7 +36,7 @@
   };
 
   home.sessionVariables = {
-    SSH_AUTH_SOCK = "${config.home.homeDirectory}/.config/Bitwarden/ssh-agent.sock";
+    SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
   };
 
   # This value determines the Home Manager release that your
