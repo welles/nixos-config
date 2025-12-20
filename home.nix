@@ -28,17 +28,22 @@
     };
   };
 
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+  };
+
   gtk = {
     enable = true;
-    theme = {
-      name = "Breeze-Dark";
-      package = pkgs.kdePackages.breeze-gtk;
-    };
+    # theme = {
+    #   name = "Breeze-Dark";
+    #   package = pkgs.kdePackages.breeze-gtk;
+    # };
 
-    iconTheme = {
-      name = "breeze-dark";
-      package = pkgs.kdePackages.breeze-icons;
-    };
+    # iconTheme = {
+    #   name = "breeze-dark";
+    #   package = pkgs.kdePackages.breeze-icons;
+    # };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
     };
@@ -50,7 +55,7 @@
   qt = {
     enable = true;
     platformTheme.name = "kde";
-    style.name = "breeze";
+    style.name = "kvantum";
   };
 
   dconf.settings = {

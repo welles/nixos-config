@@ -34,7 +34,10 @@
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {inherit inputs;};
             home-manager.users.nico = import ./home.nix;
-            home-manager.sharedModules = [plasma-manager.homeModules.plasma-manager];
+            home-manager.sharedModules = [
+              plasma-manager.homeModules.plasma-manager
+              catppuccin.homeModules.catppuccin
+            ];
             home-manager.backupFileExtension = "backup";
           }
           catppuccin.nixosModules.catppuccin
