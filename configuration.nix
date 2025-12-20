@@ -116,6 +116,8 @@
     alejandra
   ];
 
+  time.hardwareClockInLocalTime = true;
+
   nix.settings.auto-optimise-store = true;
 
   nix.settings.experimental-features = [
