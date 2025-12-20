@@ -39,33 +39,31 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  services.xserver.enable = true;
-
-  services.displayManager.sddm = {
-    enable = true;
-    autoNumlock = true;
-  };
-  services.desktopManager.plasma6.enable = true;
-
-  services.power-profiles-daemon.enable = true;
-
-  services.xserver.xkb = {
-    layout = "de";
-    variant = "";
+  services = {
+    xserver.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      autoNumlock = true;
+    };
+    desktopManager.plasma6.enable = true;
+    power-profiles-daemon.enable = true;
+    xserver.xkb = {
+      layout = "de";
+      variant = "";
+    };
+    printing.enable = true;
+    pulseaudio.enable = false;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
   };
 
   console.keyMap = "de";
 
-  services.printing.enable = true;
-
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
   users.users.nico = {
     isNormalUser = true;
