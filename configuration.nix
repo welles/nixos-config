@@ -81,23 +81,22 @@
     boot.loader.timeout = 30;
   };
 
-  programs.firefox.enable = true;
-
-  programs.nh = {
-    enable = true;
-    clean = {
+  programs = {
+    firefox.enable = true;
+    nh = {
       enable = true;
-      extraArgs = "--keep-since 7d";
+      clean = {
+        enable = true;
+        extraArgs = "--keep-since 7d";
+      };
+      flake = "/home/nico/nixos";
     };
-    flake = "/home/nico/nixos";
-  };
-
-  programs.zsh.enable = true;
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
+    zsh.enable = true;
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
