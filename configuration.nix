@@ -114,6 +114,8 @@
     fastfetch
     bitwarden-desktop
     alejandra
+    statix
+    deadnix
   ];
 
   time.hardwareClockInLocalTime = true;
