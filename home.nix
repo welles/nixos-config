@@ -80,7 +80,19 @@
     };
   };
 
-  programs.konsole.enable = true;
+  programs.kitty = {
+    enable = true;
+
+    font = {
+      name = "FiraCode Nerd Font";
+      size = 11;
+    };
+
+    settings = {
+      confirm_os_window_close = 0;
+      background_opacity = "0.9";
+    };
+  };
 
   programs.zsh = {
     enable = true;
@@ -160,6 +172,8 @@
 
   home.sessionVariables = {
     SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
+    TERMINAL = "kitty";
+    EDITOR = "code";
   };
 
   home.stateVersion = "25.11";
