@@ -119,6 +119,18 @@
       };
     };
 
+    configFile = {
+      "kdeglobals"."General" = {
+        "TerminalApplication" = "kitty";
+        "TerminalService" = "kitty.desktop";
+      };
+    };
+
+    shortcuts = {
+      "org.kde.konsole.desktop"."_launch" = "none";
+      "kitty.desktop"."_launch" = "Ctrl+Alt+T";
+    };
+
     input.keyboard = {
       numlockOnStartup = "on";
     };
