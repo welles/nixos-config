@@ -105,6 +105,10 @@
     };
   };
 
+  programs.konsole = {
+    enable = true;
+  };
+
   programs.plasma = {
     enable = true;
     overrideConfig = true;
