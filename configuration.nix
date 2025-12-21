@@ -44,7 +44,6 @@
     displayManager.sddm = {
       enable = true;
       autoNumlock = true;
-      theme = "catppuccin-mocha";
     };
     desktopManager.plasma6.enable = true;
     power-profiles-daemon.enable = true;
@@ -115,13 +114,14 @@
     statix
     deadnix
     google-chrome
-    (pkgs.catppuccin-sddm.override {
-      flavor = "mocha";
-      font = "Noto Sans";
-      fontSize = "9";
-      loginBackground = true;
-    })
   ];
+
+  catppuccin.sddm = {
+    enable = true;
+    flavor = "mocha";
+    font = "Noto Sans";
+    background = "${pkgs.catppuccin-sddm}/share/sddm/themes/catppuccin-mocha/background.png";
+  };
 
   time.hardwareClockInLocalTime = true;
 
