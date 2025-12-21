@@ -80,19 +80,19 @@
     };
   };
 
-  programs.kitty = {
-    enable = true;
+  # programs.kitty = {
+  #   enable = true;
 
-    font = {
-      name = "FiraCode Nerd Font";
-      size = 11;
-    };
+  #   font = {
+  #     name = "FiraCode Nerd Font";
+  #     size = 11;
+  #   };
 
-    settings = {
-      confirm_os_window_close = 0;
-      background_opacity = "0.9";
-    };
-  };
+  #   settings = {
+  #     confirm_os_window_close = 0;
+  #     background_opacity = "0.9";
+  #   };
+  # };
 
   programs.zsh = {
     enable = true;
@@ -122,14 +122,14 @@
 
     configFile = {
       "kdeglobals"."General" = {
-        "TerminalApplication" = "kitty";
-        "TerminalService" = "kitty.desktop";
+        # "TerminalApplication" = "kitty";
+        # "TerminalService" = "kitty.desktop";
       };
     };
 
     shortcuts = {
-      "org.kde.konsole.desktop"."_launch" = "none";
-      "kitty.desktop"."_launch" = "Ctrl+Alt+T";
+      # "org.kde.konsole.desktop"."_launch" = "none";
+      # "kitty.desktop"."_launch" = "Ctrl+Alt+T";
     };
 
     input.keyboard = {
