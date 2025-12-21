@@ -7,11 +7,11 @@
   home.homeDirectory = "/home/nico";
 
   home.packages = with pkgs; [
-    (pkgs.catppuccin-kde.override {
-      flavour = ["mocha"];
-      accents = ["blue"];
-      winDecStyles = ["modern"];
-    })
+    # (pkgs.catppuccin-kde.override {
+    #   flavour = ["mocha"];
+    #   accents = ["blue"];
+    #   winDecStyles = ["modern"];
+    # })
     pkgs.nerd-fonts.fira-code
   ];
 
@@ -44,10 +44,10 @@
     enableZshIntegration = true;
   };
 
-  catppuccin = {
-    enable = true;
-    flavor = "mocha";
-  };
+  # catppuccin = {
+  #   enable = true;
+  #   flavor = "mocha";
+  # };
 
   gtk = {
     enable = true;
@@ -71,7 +71,7 @@
   qt = {
     enable = true;
     platformTheme.name = "kde";
-    style.name = "kvantum";
+    style.name = "breeze";
   };
 
   dconf.settings = {
@@ -136,7 +136,7 @@
     };
 
     workspace = {
-      lookAndFeel = "Catppuccin-Mocha-Blue";
+      lookAndFeel = "org.kde.breezedark.desktop";
       cursor.theme = "Breeze_Light";
     };
 

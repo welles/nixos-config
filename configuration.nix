@@ -16,10 +16,10 @@
       gfxpayloadEfi = "keep";
     };
   };
-  catppuccin.grub = {
-    enable = true;
-    flavor = "mocha";
-  };
+  # catppuccin.grub = {
+  #   enable = true;
+  #   flavor = "mocha";
+  # };
 
   networking.networkmanager.enable = true;
 
@@ -116,12 +116,12 @@
     google-chrome
   ];
 
-  catppuccin.sddm = {
-    enable = true;
-    flavor = "mocha";
-    font = "Noto Sans";
-    background = "${pkgs.catppuccin-sddm}/share/sddm/themes/catppuccin-mocha/background.png";
-  };
+  # catppuccin.sddm = {
+  #   enable = true;
+  #   flavor = "mocha";
+  #   font = "Noto Sans";
+  #   background = "${pkgs.catppuccin-sddm}/share/sddm/themes/catppuccin-mocha/background.png";
+  # };
 
   time.hardwareClockInLocalTime = true;
 
