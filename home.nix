@@ -107,6 +107,7 @@
 
   programs.plasma = {
     enable = true;
+    overrideConfig = true;
     kwin = {
       borderlessMaximizedWindows = false;
       effects = {
