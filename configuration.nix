@@ -113,6 +113,7 @@
     alejandra
     statix
     deadnix
+    google-chrome
   ];
 
   time.hardwareClockInLocalTime = true;
