@@ -79,6 +79,11 @@
     virtualisation.useBootLoader = true;
     virtualisation.useEFIBoot = true;
     boot.loader.timeout = 30;
+    virtualisation = {
+      memorySize = 8192;
+      cores = 4;
+      qemu.options = ["-vga virtio" "-display gtk,gl=on"];
+    };
   };
 
   programs = {
