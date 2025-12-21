@@ -12,7 +12,10 @@
       accents = ["blue"];
       winDecStyles = ["modern"];
     })
+    pkgs.nerd-fonts.fira-code
   ];
+
+  fonts.fontconfig.enable = true;
 
   home.pointerCursor = {
     gtk.enable = true;
