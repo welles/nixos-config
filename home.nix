@@ -6,6 +6,14 @@
   home.username = "nico";
   home.homeDirectory = "/home/nico";
 
+  home.packages = with pkgs; [
+    (pkgs.catppuccin-kde.override {
+      flavour = ["mocha"];
+      accents = ["blue"];
+      winDecStyles = ["modern"];
+    })
+  ];
+
   home.pointerCursor = {
     gtk.enable = true;
     x11.enable = true;
@@ -101,7 +109,7 @@
     };
 
     workspace = {
-      lookAndFeel = "org.kde.breezedark.desktop";
+      lookAndFeel = "Catppuccin-Mocha-Blue";
       cursor.theme = "Breeze_Light";
     };
 
