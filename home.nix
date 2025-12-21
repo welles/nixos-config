@@ -60,12 +60,12 @@
     #   name = "breeze-dark";
     #   package = pkgs.kdePackages.breeze-icons;
     # };
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
+    # gtk3.extraConfig = {
+    #   gtk-application-prefer-dark-theme = 1;
+    # };
+    # gtk4.extraConfig = {
+    #   gtk-application-prefer-dark-theme = 1;
+    # };
   };
 
   qt = {
