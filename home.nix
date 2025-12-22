@@ -113,6 +113,25 @@
     };
   };
 
+  programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+    icons = "auto";
+    git = true;
+  };
+
+  programs.bat = {
+    enable = true;
+  };
+
+  programs.ripgrep = {
+    enable = true;
+  };
+
+  programs.fastfetch = {
+    enable = true;
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
