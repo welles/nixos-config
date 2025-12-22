@@ -117,6 +117,11 @@
     enable = true;
   };
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.plasma = {
     enable = true;
     overrideConfig = true;
