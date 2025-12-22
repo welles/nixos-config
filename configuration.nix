@@ -14,6 +14,10 @@
       default = "saved";
       gfxmodeEfi = "1920x1080";
       gfxpayloadEfi = "keep";
+      theme = pkgs.sleek-grub-theme.override {
+        # withBanner = "Grub Bootloader";
+        withStyle = "dark";
+      };
     };
   };
   # catppuccin.grub = {
