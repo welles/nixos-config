@@ -5,7 +5,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # catppuccin.url = "github:catppuccin/nix";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +16,6 @@
     self,
     nixpkgs,
     home-manager,
-    # catppuccin,
     plasma-manager,
     ...
   } @ inputs: let
@@ -36,11 +34,9 @@
             home-manager.users.nico = import ./home.nix;
             home-manager.sharedModules = [
               plasma-manager.homeModules.plasma-manager
-              # catppuccin.homeModules.catppuccin
             ];
             home-manager.backupFileExtension = "backup";
           }
-          # catppuccin.nixosModules.catppuccin
           {
             networking.hostName = hostname;
           }
