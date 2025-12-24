@@ -7,11 +7,6 @@
   home.homeDirectory = "/home/nico";
 
   home.packages = with pkgs; [
-    # (pkgs.catppuccin-kde.override {
-    #   flavour = ["mocha"];
-    #   accents = ["blue"];
-    #   winDecStyles = ["modern"];
-    # })
     pkgs.nerd-fonts.fira-code
   ];
 
@@ -44,22 +39,8 @@
     enableZshIntegration = true;
   };
 
-  # catppuccin = {
-  #   enable = true;
-  #   flavor = "mocha";
-  # };
-
   gtk = {
     enable = true;
-    # theme = {
-    #   name = "Breeze-Dark";
-    #   package = pkgs.kdePackages.breeze-gtk;
-    # };
-
-    # iconTheme = {
-    #   name = "breeze-dark";
-    #   package = pkgs.kdePackages.breeze-icons;
-    # };
 
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
@@ -80,20 +61,6 @@
       color-scheme = "prefer-dark";
     };
   };
-
-  # programs.kitty = {
-  #   enable = true;
-
-  #   font = {
-  #     name = "FiraCode Nerd Font";
-  #     size = 11;
-  #   };
-
-  #   settings = {
-  #     confirm_os_window_close = 0;
-  #     background_opacity = "0.9";
-  #   };
-  # };
 
   programs.btop = {
     enable = true;
