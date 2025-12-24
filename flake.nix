@@ -48,8 +48,8 @@
       };
   in {
     nixosConfigurations = {
-      nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos" ./hardware-configuration-nico-thinkpad-nixos.nix;
-      nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos" ./hardware-configuration-nico-thinkbook-nixos.nix;
+      nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos" ./machines/nico-thinkpad-nixos/hardware-configuration.nix;
+      nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos" ./machines/nico-thinkbook-nixos/hardware-configuration.nix;
     };
   };
 }
