@@ -3,21 +3,34 @@
   pkgs,
   ...
 }: {
-  boot.loader = {
-    systemd-boot.enable = false;
-    efi.canTouchEfiVariables = true;
-    grub = {
-      enable = true;
-      efiSupport = true;
-      device = "nodev";
-      useOSProber = true;
-      default = "saved";
-      gfxmodeEfi = "1920x1080";
-      gfxpayloadEfi = "keep";
-      theme = pkgs.sleek-grub-theme.override {
-        # withBanner = "Grub Bootloader";
-        withStyle = "dark";
+  boot = {
+    loader = {
+      systemd-boot.enable = false;
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+        useOSProber = true;
+        default = "saved";
+        gfxmodeEfi = "1920x1080";
+        gfxpayloadEfi = "keep";
+        theme = pkgs.sleek-grub-theme.override {
+          # withBanner = "Grub Bootloader";
+          withStyle = "dark";
+        };
       };
+    };
+    plymouth = {
+      enable = true;
+      theme = "rings";
+      themePackages = with pkgs; [
+        # Wir installieren das Paket, wählen aber nur das Theme aus, das wir wollen
+        # (spart Speicherplatz)
+        (adi1090x-plymouth-themes.override {
+          selected_themes = ["rings"];
+        })
+      ];
     };
   };
   # catppuccin.grub = {
