@@ -21,6 +21,7 @@
         };
       };
     };
+    kernelParams = ["splash" "quiet"];
     plymouth = {
       enable = true;
       theme = "rings";
