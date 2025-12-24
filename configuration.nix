@@ -35,7 +35,10 @@
 
   networking.networkmanager.enable = true;
 
-  time.timeZone = "Europe/Berlin";
+  time = {
+    hardwareClockInLocalTime = true;
+    timeZone = "Europe/Berlin";
+  };
 
   i18n.defaultLocale = "de_DE.UTF-8";
 
@@ -132,8 +135,6 @@
     deadnix
     google-chrome
   ];
-
-  time.hardwareClockInLocalTime = true;
 
   nix.settings.auto-optimise-store = true;
 
