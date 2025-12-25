@@ -165,6 +165,9 @@
       "breezerc"."Style" = {
         "ShadowSize" = "None";
       };
+      "kwinrc"."Plugins" = {
+        "kzonesEnabled" = true;
+      };
     };
 
     shortcuts = {

@@ -147,6 +147,7 @@
     google-chrome
     libreoffice
     prismlauncher
+    pkgs.kdePackages.kzones
   ];
 
   nix.settings.auto-optimise-store = true;
