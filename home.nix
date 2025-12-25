@@ -43,6 +43,11 @@
   gtk = {
     enable = true;
 
+    theme = {
+      name = "Breeze-Dark";
+      package = pkgs.kdePackages.breeze-gtk;
+    };
+
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
     };
