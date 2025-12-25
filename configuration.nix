@@ -66,7 +66,13 @@
       layout = "de";
       variant = "";
     };
-    printing.enable = true;
+    printing = {
+      enable = true;
+      drivers = [
+        pkgs.gutenprint
+        pkgs.gutenprintBin
+      ];
+    };
     pulseaudio.enable = false;
     pipewire = {
       enable = true;
