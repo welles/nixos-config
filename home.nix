@@ -134,7 +134,7 @@
         wobblyWindows.enable = true;
         translucency.enable = true;
         blur.enable = true;
-        dimInactive.enable = true;
+        dimInactive.enable = false;
         slideBack.enable = true;
         zoom.enable = true;
       };
