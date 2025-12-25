@@ -140,6 +140,17 @@
       };
     };
 
+    fonts = {
+      general = {
+        family = "Noto Sans";
+        pointSize = 11;
+      };
+      fixedWidth = {
+        family = "Fira Code Nerd Font";
+        pointSize = 11;
+      };
+    };
+
     configFile = {
       "kdeglobals"."General" = {
         # "TerminalApplication" = "kitty";
