@@ -146,6 +146,7 @@
     deadnix
     google-chrome
     libreoffice
+    prismlauncher
   ];
 
   nix.settings.auto-optimise-store = true;
