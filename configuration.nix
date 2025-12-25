@@ -145,6 +145,7 @@
     statix
     deadnix
     google-chrome
+    libreoffice
   ];
 
   nix.settings.auto-optimise-store = true;
