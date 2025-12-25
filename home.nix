@@ -221,6 +221,7 @@
     SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
     TERMINAL = "konsole";
     EDITOR = "code";
+    NIXOS_OZONE_WL = "1";
   };
 
   home.stateVersion = "25.11";
