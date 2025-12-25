@@ -74,6 +74,11 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
   };
 
   console.keyMap = "de";
