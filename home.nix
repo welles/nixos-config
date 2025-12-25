@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   home.username = "nico";
@@ -222,6 +223,13 @@
     TERMINAL = "konsole";
     EDITOR = "code";
     NIXOS_OZONE_WL = "1";
+  };
+
+  home.activation = {
+    cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
+      rm -f ${config.home.homeDirectory}/.gtkrc-2.0
+      rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
+    '';
   };
 
   home.stateVersion = "25.11";
