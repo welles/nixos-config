@@ -156,6 +156,9 @@
         # "TerminalApplication" = "kitty";
         # "TerminalService" = "kitty.desktop";
       };
+      "breezerc"."Style" = {
+        "ShadowSize" = "None";
+      };
     };
 
     shortcuts = {
