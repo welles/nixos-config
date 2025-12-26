@@ -162,8 +162,8 @@
         # "TerminalApplication" = "kitty";
         # "TerminalService" = "kitty.desktop";
       };
-      "breezerc"."Style" = {
-        "ShadowSize" = "None";
+      "breezerc"."Common" = {
+        "ShadowSize" = "ShadowNone";
       };
       "kwinrc"."Plugins" = {
         "kzonesEnabled" = true;
