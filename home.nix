@@ -164,6 +164,7 @@
       };
       "breezerc"."Common" = {
         "ShadowSize" = "ShadowNone";
+        "OutlineIntensity" = "OutlineOff"
       };
       "kwinrc"."Plugins" = {
         "kzonesEnabled" = true;
