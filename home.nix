@@ -168,6 +168,52 @@
       "kwinrc"."Plugins" = {
         "kzonesEnabled" = true;
       };
+      "kwinrc"."Script-kzones" = {
+        "layoutsJson" = builtins.toJSON [
+          {
+            name = "50/50";
+            padding = 10;
+            zones = [
+              {
+                x = 0;
+                y = 0;
+                width = 50;
+                height = 100;
+              }
+              {
+                x = 50;
+                y = 0;
+                width = 50;
+                height = 100;
+              }
+            ];
+          }
+          {
+            name = "33/33/33";
+            padding = 10;
+            zones = [
+              {
+                x = 0;
+                y = 0;
+                width = 33;
+                height = 100;
+              }
+              {
+                x = 33;
+                y = 0;
+                width = 34;
+                height = 100;
+              }
+              {
+                x = 67;
+                y = 0;
+                width = 33;
+                height = 100;
+              }
+            ];
+          }
+        ];
+      };
     };
 
     shortcuts = {
