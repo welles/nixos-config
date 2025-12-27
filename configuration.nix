@@ -33,6 +33,8 @@
     };
   };
 
+  hardware.xpadneo.enable = true;
+
   networking.networkmanager.enable = true;
 
   time = {
