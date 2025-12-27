@@ -40,12 +40,19 @@
   hardware.firmware = [
     (pkgs.stdenvNoCC.mkDerivation {
       name = "xone-dongle-firmware";
-      src = ./firmware;
-      dontConfigure = true;
+      src = pkgs.fetchurl {
+        url = "http://download.windowsupdate.com/c/msdownload/update/driver/drvs/2017/07/1cd6a87c-623f-4407-a52d-c31be49e925c_e19f60808bdcbfbd3c3df6be3e71ffc52e43261e.cab";
+        hash = "sha256-ZXNqhP9ANmRbj47GAr7ZGrY1MBnJyzIz3sq5/uwPbwQ=";
+      };
+      nativeBuildInputs = [pkgs.cabextract];
       dontBuild = true;
+      dontConfigure = true;
+      unpackPhase = ''
+        cabextract $src
+      '';
       installPhase = ''
         mkdir -p $out/lib/firmware
-        cp xone_dongle.bin $out/lib/firmware/xone_dongle.bin
+        cp FW_ACC_00U.bin $out/lib/firmware/xone_dongle.bin
       '';
     })
   ];
