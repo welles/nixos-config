@@ -37,6 +37,18 @@
     # xpadneo.enable = true;
     xone.enable = true;
   };
+  hardware.firmware = [
+    (pkgs.stdenvNoCC.mkDerivation {
+      name = "xone-dongle-firmware";
+      src = ./firmware;
+      dontConfigure = true;
+      dontBuild = true;
+      installPhase = ''
+        mkdir -p $out/lib/firmware
+        cp xone_dongle.bin $out/lib/firmware/xone_dongle.bin
+      '';
+    })
+  ];
 
   networking.networkmanager.enable = true;
 
