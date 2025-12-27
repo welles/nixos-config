@@ -33,7 +33,10 @@
     };
   };
 
-  hardware.xpadneo.enable = true;
+  hardware = {
+    xpadneo.enable = true;
+    xone.enable = true;
+  };
 
   networking.networkmanager.enable = true;
 
