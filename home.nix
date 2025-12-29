@@ -368,6 +368,25 @@
     '';
   };
 
+  home.file.".config/autostart-scripts/set-wallpaper-potd.sh" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      sleep 5
+
+      qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
+        var allDesktops = desktops();
+        for (var i = 0; i < allDesktops.length; i++) {
+            var d = allDesktops[i];
+            d.wallpaperPlugin = "org.kde.potd";
+            d.currentConfigGroup = ["Wallpaper", "org.kde.potd", "General"];
+            d.writeConfig("Provider", "wcpotd"); // wcpotd = Wikimedia Commons
+            d.reloadConfig();
+        }
+      '
+    '';
+  };
+
   home.stateVersion = "25.11";
 
   programs.home-manager.enable = true;
