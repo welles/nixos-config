@@ -219,6 +219,7 @@
     prismlauncher
     pkgs.kdePackages.kzones
     obs-studio
+    vlc
   ];
 
   nix.settings.auto-optimise-store = true;
