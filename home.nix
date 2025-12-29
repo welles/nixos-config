@@ -134,6 +134,87 @@
   programs.plasma = {
     enable = true;
     overrideConfig = true;
+
+    powerdevil = {
+      batteryLevels = {
+        criticalLevel = 5;
+        lowLevel = 20;
+
+        criticalAction = "hibernate";
+      };
+
+      AC = {
+        turnOffDisplay = {
+          idleTimeout = "never";
+        };
+
+        dimDisplay = {
+          enable = false;
+        };
+
+        autoSuspend = {
+          action = "nothing";
+        };
+
+        powerButtonAction = "hibernate";
+
+        powerProfile = "performance";
+
+        whenLaptopLidClosed = "doNothing";
+        inhibitLidActionWhenExternalMonitorConnected = true;
+      };
+
+      battery = {
+        turnOffDisplay = {
+          idleTimeout = 900;
+          idleTimeoutWhenLocked = "immediately";
+        };
+
+        dimDisplay = {
+          enable = true;
+          idleTimeout = 300;
+        };
+
+        autoSuspend = {
+          action = "sleep";
+        };
+
+        powerButtonAction = "hibernate";
+
+        powerProfile = "balanced";
+
+        whenLaptopLidClosed = "hibernate";
+        inhibitLidActionWhenExternalMonitorConnected = true;
+      };
+
+      lowBattery = {
+        turnOffDisplay = {
+          idleTimeout = 180;
+          idleTimeoutWhenLocked = "immediately";
+        };
+
+        dimDisplay = {
+          enable = true;
+          idleTimeout = 60;
+        };
+
+        autoSuspend = {
+          action = "hibernate";
+        };
+
+        powerButtonAction = "hibernate";
+
+        powerProfile = "powerSaving";
+
+        whenLaptopLidClosed = "hibernate";
+        inhibitLidActionWhenExternalMonitorConnected = true;
+      };
+    };
+
+    kscreenlocker = {
+      autoLock = false;
+    };
+
     kwin = {
       borderlessMaximizedWindows = false;
       effects = {
