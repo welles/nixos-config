@@ -218,6 +218,7 @@
     libreoffice
     prismlauncher
     pkgs.kdePackages.kzones
+    obs-studio
   ];
 
   nix.settings.auto-optimise-store = true;
