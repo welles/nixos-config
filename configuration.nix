@@ -220,6 +220,7 @@
     pkgs.kdePackages.kzones
     obs-studio
     vlc
+    teams-for-linux
   ];
 
   nix.settings.auto-optimise-store = true;
