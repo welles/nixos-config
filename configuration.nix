@@ -222,6 +222,7 @@
     vlc
     teams-for-linux
     calibre
+    pciutils
   ];
 
   nix.settings.auto-optimise-store = true;
