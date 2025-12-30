@@ -19,13 +19,13 @@
     plasma-manager,
     ...
   } @ inputs: let
-    mkSystem = hostname: hardwareConfig:
+    mkSystem = hostname:
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
           ./configuration.nix
-          hardwareConfig
+          (./machines + "/${hostname}/hardware-configuration.nix")
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -44,8 +44,8 @@
       };
   in {
     nixosConfigurations = {
-      nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos" ./machines/nico-thinkpad-nixos/hardware-configuration.nix;
-      nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos" ./machines/nico-thinkbook-nixos/hardware-configuration.nix;
+      nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos";
+      nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos";
     };
   };
 }
