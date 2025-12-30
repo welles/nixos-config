@@ -247,6 +247,18 @@
         "ShadowSize" = "ShadowNone";
         "OutlineIntensity" = "OutlineOff";
       };
+      # "kickoffrc"."Favorites"."FavoriteURLs" = lib.strings.concatStringsSep "," [
+      #   "applications:bitwarden.desktop"
+      #   "applications:code.desktop"
+      #   "applications:firefox.desktop"
+      #   "applications:org.kde.konsole.desktop"
+      #   "applications:rider.desktop"
+      #   "applications:smartgit.desktop"
+      #   "applications:steam.desktop"
+      #   "applications:systemsettings.desktop"
+      #   "applications:teams-for-linux.desktop"
+      #   "applications:vesktop.desktop"
+      # ];
       "kwinrc"."Plugins" = {
         "kzonesEnabled" = true;
       };
@@ -368,6 +380,10 @@
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
     '';
+
+    # cleanKickoffFavorites = lib.hm.dag.entryBefore ["writeBoundary"] ''
+    #   rm -f ${config.home.homeDirectory}/.config/kactivitymanagerd-statsrc
+    # '';
   };
 
   home.file.".config/autostart-scripts/set-wallpaper-potd.sh" = {
@@ -390,6 +406,50 @@
       '
     '';
   };
+
+  # home.file.".config/autostart-scripts/set-favorites.sh" = {
+  #   executable = true;
+  #   text = let
+  #     favList = lib.strings.concatStringsSep "," [
+  #       "applications:bitwarden.desktop"
+  #       "applications:code.desktop"
+  #       "applications:firefox.desktop"
+  #       "applications:org.kde.konsole.desktop"
+  #       "applications:rider.desktop"
+  #       "applications:smartgit.desktop"
+  #       "applications:steam.desktop"
+  #       "applications:systemsettings.desktop"
+  #       "applications:teams-for-linux.desktop"
+  #       "applications:vesktop.desktop"
+  #     ];
+  #   in ''
+  #     #!/bin/sh
+  #     sleep 5
+
+  #     qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
+  #       var favorites = "${favList}";
+
+  #       var allPanels = panels();
+
+  #       for (var i = 0; i < allPanels.length; i++) {
+  #           var p = allPanels[i];
+  #           var widgets = p.widgets();
+
+  #           for (var j = 0; j < widgets.length; j++) {
+  #               var w = widgets[j];
+
+  #               if (w.type == "org.kde.plasma.kickoff" || w.type == "org.kde.plasma.kicker") {
+
+  #                   w.currentConfigGroup = ["General"];
+  #                   w.writeConfig("favorites", favorites);
+
+  #                   w.reloadConfig();
+  #               }
+  #           }
+  #       }
+  #     '
+  #   '';
+  # };
 
   home.stateVersion = "25.11";
 
