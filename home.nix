@@ -319,14 +319,14 @@
         floating = true;
 
         widgets = [
-          # {
-          #   name = "org.kde.plasma.kickoff";
-          #   config = {
-          #     General = {
-          #       icon = "nix-snowflake-white";
-          #     };
-          #   };
-          # }
+          {
+            name = "org.kde.plasma.kickoff";
+            config = {
+              General = {
+                icon = "nix-snowflake-white";
+              };
+            };
+          }
 
           {
             name = "org.kde.plasma.icontasks";
