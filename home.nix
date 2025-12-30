@@ -319,14 +319,14 @@
         floating = true;
 
         widgets = [
-          {
-            name = "org.kde.plasma.kickoff";
-            config = {
-              General = {
-                icon = "nix-snowflake-white";
-              };
-            };
-          }
+          # {
+          #   name = "org.kde.plasma.kickoff";
+          #   config = {
+          #     General = {
+          #       icon = "nix-snowflake-white";
+          #     };
+          #   };
+          # }
 
           {
             name = "org.kde.plasma.icontasks";
@@ -340,6 +340,8 @@
           "org.kde.plasma.marginsseparator"
 
           "org.kde.plasma.systemtray"
+
+          "org.kde.plasma.lock_logout"
 
           {
             name = "org.kde.plasma.digitalclock";
