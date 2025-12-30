@@ -221,6 +221,7 @@
     obs-studio
     vlc
     teams-for-linux
+    calibre
   ];
 
   nix.settings.auto-optimise-store = true;
