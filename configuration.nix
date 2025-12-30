@@ -225,6 +225,10 @@
     pciutils
   ];
 
+  environment.shellAliases = {
+    ls-gpus = "lspci | grep -E 'VGA|3D'";
+  };
+
   nix.settings.auto-optimise-store = true;
 
   nix.settings.experimental-features = [
