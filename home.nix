@@ -382,7 +382,9 @@
             var d = allDesktops[i];
             d.wallpaperPlugin = "org.kde.potd";
             d.currentConfigGroup = ["Wallpaper", "org.kde.potd", "General"];
-            d.writeConfig("Provider", "wcpotd"); // wcpotd = Wikimedia Commons
+            //d.writeConfig("Provider", "wcpotd"); // wcpotd = Wikimedia Commons
+            d.writeConfig("FillMode", "2");
+            d.writeConfig("UpdateOverMeteredConnection", "1");
             d.reloadConfig();
         }
       '
