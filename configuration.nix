@@ -165,7 +165,7 @@
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Nico";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "docker"];
     shell = pkgs.zsh;
     packages = with pkgs; [
     ];
@@ -179,6 +179,14 @@
       memorySize = 8192;
       cores = 4;
       qemu.options = ["-vga virtio" "-display gtk,gl=on"];
+    };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
     };
   };
 
