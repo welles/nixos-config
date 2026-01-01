@@ -7,9 +7,9 @@
   home.username = "nico";
   home.homeDirectory = "/home/nico";
 
-  home.packages = with pkgs; [
-    pkgs.nerd-fonts.fira-code
-  ];
+  # home.packages = with pkgs; [
+  #   pkgs.nerd-fonts.fira-code
+  # ];
 
   fonts.fontconfig.enable = true;
 

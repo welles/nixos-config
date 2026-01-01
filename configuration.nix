@@ -167,8 +167,8 @@
     description = "Nico";
     extraGroups = ["networkmanager" "wheel" "docker"];
     shell = pkgs.zsh;
-    packages = with pkgs; [
-    ];
+    # packages = with pkgs; [
+    # ];
   };
 
   virtualisation.vmVariant = {
@@ -233,6 +233,7 @@
     pciutils
     aonsoku
     spotify
+    nerd-fonts.fira-code
   ];
 
   environment.shellAliases = {
