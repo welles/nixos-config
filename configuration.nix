@@ -234,6 +234,7 @@
     aonsoku
     spotify
     nerd-fonts.fira-code
+    bottles
   ];
 
   environment.shellAliases = {
