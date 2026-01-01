@@ -232,6 +232,7 @@
     calibre
     pciutils
     aonsoku
+    spotify
   ];
 
   environment.shellAliases = {
