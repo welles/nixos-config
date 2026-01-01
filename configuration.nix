@@ -231,7 +231,6 @@
     teams-for-linux
     calibre
     pciutils
-    aonsoku
     spotify
     nerd-fonts.fira-code
     bottles
