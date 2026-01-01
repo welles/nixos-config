@@ -237,6 +237,7 @@
     picard
     wrtag
     mission-center
+    remmina
   ];
 
   environment.shellAliases = {
