@@ -231,6 +231,7 @@
     teams-for-linux
     calibre
     pciutils
+    aonsoku
   ];
 
   environment.shellAliases = {
