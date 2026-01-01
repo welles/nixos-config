@@ -236,6 +236,7 @@
     bottles
     picard
     wrtag
+    mission-center
   ];
 
   environment.shellAliases = {
