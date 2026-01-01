@@ -235,6 +235,8 @@
     spotify
     nerd-fonts.fira-code
     bottles
+    picard
+    wrtag
   ];
 
   environment.shellAliases = {
