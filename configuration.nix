@@ -239,6 +239,7 @@
     mission-center
     remmina
     openttd-jgrpp
+    jdk21
   ];
 
   environment.shellAliases = {
