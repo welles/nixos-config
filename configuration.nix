@@ -238,6 +238,7 @@
     wrtag
     mission-center
     remmina
+    openttd-jgrpp
   ];
 
   environment.shellAliases = {
