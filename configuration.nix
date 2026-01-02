@@ -211,35 +211,35 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    lazygit
-    vscode
-    vesktop
-    jetbrains.rider
-    dotnet-sdk_10
-    smartgit
-    fastfetch
-    bitwarden-desktop
     alejandra
-    statix
-    deadnix
-    google-chrome
-    libreoffice
-    prismlauncher
-    pkgs.kdePackages.kzones
-    obs-studio
-    vlc
-    teams-for-linux
-    calibre
-    pciutils
-    spotify
-    nerd-fonts.fira-code
+    bitwarden-desktop
     bottles
-    picard
-    wrtag
-    mission-center
-    remmina
-    openttd-jgrpp
+    calibre
+    deadnix
+    dotnet-sdk_10
+    fastfetch
+    google-chrome
     jdk21
+    jetbrains.rider
+    lazygit
+    libreoffice
+    mission-center
+    nerd-fonts.fira-code
+    obs-studio
+    openttd-jgrpp
+    pciutils
+    picard
+    kdePackages.kzones
+    prismlauncher
+    remmina
+    smartgit
+    spotify
+    statix
+    teams-for-linux
+    vesktop
+    vlc
+    vscode
+    wrtag
   ];
 
   environment.shellAliases = {
