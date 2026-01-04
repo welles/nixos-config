@@ -216,6 +216,7 @@
     bottles
     calibre
     deadnix
+    discord
     dotnet-sdk_10
     fastfetch
     google-chrome
@@ -237,7 +238,6 @@
     spotify
     statix
     teams-for-linux
-    vesktop
     vlc
     vscode
     wrtag
