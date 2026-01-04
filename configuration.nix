@@ -221,6 +221,7 @@
     google-chrome
     jdk21
     jetbrains.rider
+    kdePackages.kzones
     lazygit
     libreoffice
     mission-center
@@ -229,7 +230,6 @@
     openttd-jgrpp
     pciutils
     picard
-    kdePackages.kzones
     prismlauncher
     remmina
     smartgit
