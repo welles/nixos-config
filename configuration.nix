@@ -41,6 +41,8 @@
     };
   };
 
+  hardware.bluetooth.enable = true;
+
   hardware = {
     # xpadneo.enable = true;
     xone.enable = true;
