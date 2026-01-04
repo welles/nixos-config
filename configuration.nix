@@ -226,6 +226,7 @@
     libreoffice
     mission-center
     nerd-fonts.fira-code
+    nodejs
     obs-studio
     openttd-jgrpp
     pciutils
