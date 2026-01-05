@@ -239,6 +239,7 @@
     smartgit
     spotify
     statix
+    streamcontroller
     teams-for-linux
     vlc
     vscode
