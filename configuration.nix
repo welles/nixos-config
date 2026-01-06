@@ -210,8 +210,6 @@
     };
   };
 
-  programs.noisetorch.enable = true;
-
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
@@ -222,6 +220,7 @@
     deadnix
     discord
     dotnet-sdk_10
+    easyeffects
     fastfetch
     google-chrome
     jdk21
