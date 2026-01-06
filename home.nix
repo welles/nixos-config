@@ -263,6 +263,7 @@
         "kzonesEnabled" = true;
       };
       "kwinrc"."Script-kzones" = {
+        "autoSnapAllNew" = true;
         "layoutsJson" = builtins.toJSON [
           {
             name = "100";
