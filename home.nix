@@ -399,26 +399,26 @@
     # '';
   };
 
-  home.file.".config/autostart-scripts/set-wallpaper-potd.sh" = {
-    executable = true;
-    text = ''
-      #!/bin/sh
-      sleep 5
+  # home.file.".config/autostart-scripts/set-wallpaper-potd.sh" = {
+  #   executable = true;
+  #   text = ''
+  #     #!/bin/sh
+  #     sleep 5
 
-      qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
-        var allDesktops = desktops();
-        for (var i = 0; i < allDesktops.length; i++) {
-            var d = allDesktops[i];
-            d.wallpaperPlugin = "org.kde.potd";
-            d.currentConfigGroup = ["Wallpaper", "org.kde.potd", "General"];
-            d.writeConfig("Provider", "flickr");
-            d.writeConfig("FillMode", "2");
-            d.writeConfig("UpdateOverMeteredConnection", "1");
-            d.reloadConfig();
-        }
-      '
-    '';
-  };
+  #     qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
+  #       var allDesktops = desktops();
+  #       for (var i = 0; i < allDesktops.length; i++) {
+  #           var d = allDesktops[i];
+  #           d.wallpaperPlugin = "org.kde.potd";
+  #           d.currentConfigGroup = ["Wallpaper", "org.kde.potd", "General"];
+  #           d.writeConfig("Provider", "flickr");
+  #           d.writeConfig("FillMode", "2");
+  #           d.writeConfig("UpdateOverMeteredConnection", "1");
+  #           d.reloadConfig();
+  #       }
+  #     '
+  #   '';
+  # };
 
   # home.file.".config/autostart-scripts/set-favorites.sh" = {
   #   executable = true;
