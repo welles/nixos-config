@@ -247,6 +247,16 @@
         "ShadowSize" = "ShadowNone";
         "OutlineIntensity" = "OutlineOff";
       };
+      "kscreenlockerrc" = {
+        "Greeter" = {
+          "WallpaperPlugin" = "org.kde.image";
+        };
+        "Greeter/Wallpaper/org.kde.image/General" = {
+          "DynamicMode" = 3;
+          "Image" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
+          "ImagePreview" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
+        };
+      };
       # "kickoffrc"."Favorites"."FavoriteURLs" = lib.strings.concatStringsSep "," [
       #   "applications:bitwarden.desktop"
       #   "applications:code.desktop"
@@ -337,8 +347,6 @@
       cursor.theme = "Breeze_Light";
       wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
     };
-
-    kscreenlocker.appearance.wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
 
     panels = [
       {
