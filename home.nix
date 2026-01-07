@@ -335,7 +335,11 @@
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
       cursor.theme = "Breeze_Light";
+      wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
+      wallpaperFillMode = "preserveAspectFit";
     };
+
+    kscreenlocker.appearance.wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
 
     panels = [
       {
