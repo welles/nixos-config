@@ -215,7 +215,6 @@
   environment.systemPackages = with pkgs; [
     alejandra
     bitwarden-desktop
-    bottles
     calibre
     deadnix
     discord
@@ -248,6 +247,11 @@
     vlc
     vscode
     wrtag
+    (
+      bottles.override {
+        removeWarningPopup = true;
+      }
+    )
     (
       pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
         [General]
