@@ -43,6 +43,9 @@
 
   hardware.bluetooth.enable = true;
 
+  hardware.new-lg4ff.enable = true;
+  services.udev.packages = with pkgs; [oversteer];
+
   hardware = {
     # xpadneo.enable = true;
     xone.enable = true;
