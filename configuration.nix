@@ -223,6 +223,7 @@
     discord
     dotnet-sdk_10
     easyeffects
+    evtest
     fastfetch
     fsearch
     google-chrome
@@ -236,6 +237,7 @@
     nodejs
     obs-studio
     openttd-jgrpp
+    oversteer
     pciutils
     picard
     prismlauncher
@@ -245,6 +247,7 @@
     statix
     streamcontroller
     teams-for-linux
+    usbutils
     vlc
     vscode
     wrtag
