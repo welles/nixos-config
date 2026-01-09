@@ -221,6 +221,7 @@
     dotnet-sdk_10
     easyeffects
     fastfetch
+    gemini-cli
     google-chrome
     jdk21
     jetbrains.rider
