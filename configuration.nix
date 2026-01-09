@@ -221,6 +221,7 @@
     dotnet-sdk_10
     easyeffects
     fastfetch
+    fsearch
     google-chrome
     jdk21
     jetbrains.rider
