@@ -221,7 +221,6 @@
     dotnet-sdk_10
     easyeffects
     fastfetch
-    gemini-cli
     google-chrome
     jdk21
     jetbrains.rider
@@ -231,9 +230,6 @@
     mission-center
     nerd-fonts.fira-code
     nodejs
-    nodePackages."@angular/cli"
-    # nodePackages."@google/clasp"
-    nodePackages."npm-check-updates"
     obs-studio
     openttd-jgrpp
     pciutils

@@ -399,6 +399,10 @@
     NIXOS_OZONE_WL = "1";
   };
 
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.npm-global/bin"
+  ];
+
   home.activation = {
     cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0
@@ -416,6 +420,12 @@
     #   rm -f ${config.home.homeDirectory}/.config/kactivitymanagerd-statsrc
     # '';
   };
+
+  home.file.".npmrc".text = ''
+    prefix=${config.home.homeDirectory}/.npm-global
+    save-exact=true
+    save-prefix=
+  '';
 
   # home.file.".config/autostart-scripts/set-wallpaper-potd.sh" = {
   #   executable = true;
