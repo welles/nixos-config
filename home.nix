@@ -277,18 +277,6 @@
         "autoSnapAllNew" = true;
         "layoutsJson" = builtins.toJSON [
           {
-            name = "100";
-            padding = 10;
-            zones = [
-              {
-                x = 0;
-                y = 0;
-                width = 100;
-                height = 100;
-              }
-            ];
-          }
-          {
             name = "50/50";
             padding = 10;
             zones = [
@@ -302,6 +290,18 @@
                 x = 50;
                 y = 0;
                 width = 50;
+                height = 100;
+              }
+            ];
+          }
+          {
+            name = "100";
+            padding = 10;
+            zones = [
+              {
+                x = 0;
+                y = 0;
+                width = 100;
                 height = 100;
               }
             ];
