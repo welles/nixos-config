@@ -145,7 +145,7 @@
 
       AC = {
         turnOffDisplay = {
-          idleTimeout = "never";
+          idleTimeout = 28800;
           idleTimeoutWhenLocked = 60;
         };
 
