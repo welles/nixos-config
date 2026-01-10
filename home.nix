@@ -146,6 +146,7 @@
       AC = {
         turnOffDisplay = {
           idleTimeout = "never";
+          idleTimeoutWhenLocked = 60;
         };
 
         dimDisplay = {
@@ -167,7 +168,7 @@
       battery = {
         turnOffDisplay = {
           idleTimeout = 900;
-          idleTimeoutWhenLocked = "immediately";
+          idleTimeoutWhenLocked = 60;
         };
 
         dimDisplay = {
@@ -190,7 +191,7 @@
       lowBattery = {
         turnOffDisplay = {
           idleTimeout = 180;
-          idleTimeoutWhenLocked = "immediately";
+          idleTimeoutWhenLocked = 60;
         };
 
         dimDisplay = {
