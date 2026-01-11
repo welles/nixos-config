@@ -21,6 +21,7 @@
         };
       };
     };
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "splash"
       "quiet"
