@@ -252,6 +252,7 @@
     streamcontroller
     teams-for-linux
     usbutils
+    video-compare
     vlc
     vscode
     wrtag
