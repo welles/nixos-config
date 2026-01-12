@@ -42,6 +42,8 @@
     };
   };
 
+  systemd.services.NetworkManager-wait-online.enable = false;
+
   hardware.bluetooth.enable = true;
 
   hardware.new-lg4ff.enable = true;
