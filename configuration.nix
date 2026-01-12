@@ -237,6 +237,7 @@
     fsearch
     google-chrome
     jdk21
+    jdk25
     jetbrains.rider
     kdePackages.kzones
     lazygit
