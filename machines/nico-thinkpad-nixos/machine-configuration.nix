@@ -10,6 +10,6 @@
   environment.systemPackages = with pkgs; [
     libinput
     iio-sensor-proxy
-    onboard
+    maliit-keyboard
   ];
 }
