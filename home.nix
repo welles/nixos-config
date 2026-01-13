@@ -417,21 +417,21 @@
       rm -f ${config.home.homeDirectory}/.config/plasmashellrc
     '';
 
-    installNpmPackages = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      export PATH="${pkgs.nodejs}/bin:$PATH"
+    # installNpmPackages = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    #   export PATH="${pkgs.nodejs}/bin:$PATH"
 
-      npm_packages=(
-        "@google/gemini-cli"
-        "@angular/cli"
-        "npm-check-updates"
-        "@google/clasp"
-      )
+    #   npm_packages=(
+    #     "@google/gemini-cli"
+    #     "@angular/cli"
+    #     "npm-check-updates"
+    #     "@google/clasp"
+    #   )
 
-      for pkg in "''${npm_packages[@]}"; do
-        echo "Installing global NPM package: $pkg"
-        npm install -g "$pkg"
-      done
-    '';
+    #   for pkg in "''${npm_packages[@]}"; do
+    #     echo "Installing global NPM package: $pkg"
+    #     npm install -g "$pkg"
+    #   done
+    # '';
 
     # cleanKickoffFavorites = lib.hm.dag.entryBefore ["writeBoundary"] ''
     #   rm -f ${config.home.homeDirectory}/.config/kactivitymanagerd-statsrc
