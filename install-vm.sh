@@ -51,6 +51,9 @@ cd "$TEMP_DIR"
 # We look for the line 'device = "/dev/vda";' (or similar) and replace the path
 sed -i "s|device = \"/dev/[a-z0-9]*\";|device = \"$DETECTED_DISK\";|" machines/nico-vm-nixos/disk-config.nix
 
+# Patch the bootloader configuration with the selected disk for GRUB
+sed -i "s|device = \"INSTALL_DEVICE_PLACEHOLDER\";|device = \"$DETECTED_DISK\";|" machines/nico-vm-nixos/configuration.nix
+
 echo "Step 2: Partitioning & Mounting (via Disko)..."
 
 echo "Step 2: Partitioning & Mounting (via Disko)..."
