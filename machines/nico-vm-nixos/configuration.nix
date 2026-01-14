@@ -13,7 +13,7 @@
     grub = {
       enable = true;
       efiSupport = false;
-      devices = ["INSTALL_DEVICE_PLACEHOLDER"];
+      devices = pkgs.lib.mkForce ["INSTALL_DEVICE_PLACEHOLDER"];
     };
   };
 
