@@ -3,6 +3,11 @@
 # Stop on error
 set -e
 
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root (use sudo)"
+   exit 1
+fi
+
 REPO_URL="https://github.com/welles/nixos-config.git"
 FLAKE_ATTR="nico-vm-nixos"
 
