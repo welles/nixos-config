@@ -25,6 +25,7 @@
   ];
 
   i18n.defaultLocale = "de_DE.UTF-8";
+  console.keyMap = "de";
 
   networking = {
     hostName = "nico-vm-nixos";
@@ -58,6 +59,7 @@
 
     xserver = {
       enable = true;
+      xkb.layout = "de";
       desktopManager.xfce.enable = true;
       displayManager.lightdm.enable = true;
     };
