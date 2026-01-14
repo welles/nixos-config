@@ -10,6 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -47,6 +51,15 @@
     nixosConfigurations = {
       nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos";
       nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos";
+
+      nico-vm-nixos = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = [
+          inputs.disko.nixosModules.disko
+          ./machines/nico-vm-nixos/configuration.nix
+        ];
+      };
     };
   };
 }
