@@ -9,11 +9,10 @@
   ];
 
   boot.loader = {
-    efi.canTouchEfiVariables = true;
+    efi.canTouchEfiVariables = false;
     grub = {
       enable = true;
-      efiSupport = true;
-      efiInstallAsRemovable = true;
+      efiSupport = false;
       device = "INSTALL_DEVICE_PLACEHOLDER";
     };
   };
