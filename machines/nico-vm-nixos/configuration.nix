@@ -13,8 +13,7 @@
     grub = {
       enable = true;
       efiSupport = false;
-      device = "INSTALL_DEVICE_PLACEHOLDER";
-      mirroredBoots = pkgs.lib.mkForce [];
+      devices = ["INSTALL_DEVICE_PLACEHOLDER"];
     };
   };
 
