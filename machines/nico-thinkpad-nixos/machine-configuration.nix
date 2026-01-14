@@ -12,4 +12,6 @@
     iio-sensor-proxy
     maliit-keyboard
   ];
+
+  services.fprintd.enable = true;
 }

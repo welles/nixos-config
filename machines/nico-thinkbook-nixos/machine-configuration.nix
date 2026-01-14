@@ -5,6 +5,8 @@
   modulesPath,
   ...
 }: {
+  services.fprintd.enable = true;
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
