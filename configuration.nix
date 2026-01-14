@@ -175,11 +175,14 @@
 
   security.rtkit.enable = true;
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   users.users.nico = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Nico";
-    extraGroups = ["networkmanager" "wheel" "docker"];
+    extraGroups = ["networkmanager" "wheel" "docker" "libvirtd"];
     shell = pkgs.zsh;
     # packages = with pkgs; [
     # ];
