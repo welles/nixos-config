@@ -1,0 +1,26 @@
+{
+  "general": {
+    "previewFeatures": true
+  },
+  "mcpServers": {
+    "nixos": {
+      "command": "nix",
+      "args": [
+        "run",
+        "github:utensils/mcp-nixos",
+        "--"
+      ]
+    }
+  },
+  "ui": {
+    "showModelInfoInChat": true,
+    "accessibility": {
+      "disableLoadingPhrases": true
+    }
+  },
+  "tools": {
+    "shell": {
+      "showColor": true
+    }
+  }
+}
