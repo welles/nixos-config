@@ -29,4 +29,17 @@
     description = "Moni & Gerri";
     extraGroups = ["networkmanager" "wheel"];
   };
+
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = false;
+    dates = "daily";
+    flake = "github:welles/nixos-config#eltern-asus-nixos";
+  };
+
+  nix.gc = {
+    enable = true;
+    dates = "daily";
+    options = "--delete-older-than 7d";
+  };
 }
