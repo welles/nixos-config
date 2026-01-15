@@ -7,23 +7,6 @@
         content = {
           type = "gpt";
           partitions = {
-            swap = {
-              priority = 1;
-              size = "100%";
-              content = {
-                type = "swap";
-                resumeDevice = true;
-              };
-            };
-          };
-        };
-      };
-      sdb = {
-        type = "disk";
-        device = "/dev/sdb";
-        content = {
-          type = "gpt";
-          partitions = {
             boot = {
               priority = 1;
               name = "boot";
@@ -43,6 +26,23 @@
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
+              };
+            };
+          };
+        };
+      };
+      sdb = {
+        type = "disk";
+        device = "/dev/sdb";
+        content = {
+          type = "gpt";
+          partitions = {
+            swap = {
+              priority = 1;
+              size = "100%";
+              content = {
+                type = "swap";
+                resumeDevice = true;
               };
             };
           };
