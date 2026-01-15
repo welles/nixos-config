@@ -1,9 +1,26 @@
 {
   disko.devices = {
     disk = {
-      vda = {
+      sda = {
         type = "disk";
         device = "/dev/sda";
+        content = {
+          type = "gpt";
+          partitions = {
+            swap = {
+              priority = 1;
+              size = "100%";
+              content = {
+                type = "swap";
+                resumeDevice = true;
+              };
+            };
+          };
+        };
+      };
+      sdb = {
+        type = "disk";
+        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
@@ -14,16 +31,8 @@
               end = "1G";
               type = "EF02";
             };
-            swap = {
-              priority = 2;
-              size = "8G";
-              content = {
-                type = "swap";
-                resumeDevice = true;
-              };
-            };
             root = {
-              priority = 3;
+              priority = 2;
               size = "100%";
               content = {
                 type = "filesystem";
