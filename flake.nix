@@ -58,6 +58,7 @@
       nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos" "nico";
       nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos" "nico";
       nico-vm-nixos = mkSystem "nico-vm-nixos" "vm";
+      eltern-asus-nixos = mkSystem "eltern-asus-nixos" "eltern";
     };
   };
 }
