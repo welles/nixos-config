@@ -301,6 +301,4 @@
 
     cp ${./floating.png} /var/lib/AccountsService/icons/nico
   '';
-
-  system.stateVersion = "25.11";
 }

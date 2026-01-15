@@ -57,8 +57,6 @@
     };
   };
 
-  system.stateVersion = "25.11";
-
   time.timeZone = "Europe/Berlin";
 
   users.users.vm = {
