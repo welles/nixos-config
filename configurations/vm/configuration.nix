@@ -3,17 +3,12 @@
   pkgs,
   ...
 }: {
-  imports = [
-    ./disk-config.nix
-    ./hardware-configuration.nix
-  ];
-
   boot.loader = {
     efi.canTouchEfiVariables = false;
     grub = {
       enable = true;
       efiSupport = false;
-      devices = pkgs.lib.mkForce ["INSTALL_DEVICE_PLACEHOLDER"];
+      device = "nodev";
     };
   };
 
@@ -27,10 +22,7 @@
   i18n.defaultLocale = "de_DE.UTF-8";
   console.keyMap = "de";
 
-  networking = {
-    hostName = "nico-vm-nixos";
-    networkmanager.enable = true;
-  };
+  networking.networkmanager.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -69,8 +61,8 @@
 
   time.timeZone = "Europe/Berlin";
 
-  users.users.nico = {
-    description = "Nico";
+  users.users.vm = {
+    description = "VM User";
     extraGroups = ["networkmanager" "wheel"];
     initialPassword = "password";
     isNormalUser = true;

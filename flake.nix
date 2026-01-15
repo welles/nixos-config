@@ -28,7 +28,13 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
+          inputs.disko.nixosModules.disko
           ./configurations/${configuration}/configuration.nix
+          (
+            if builtins.pathExists ./machines/${hostname}/disk-configuration.nix
+            then ./machines/${hostname}/disk-configuration.nix
+            else {}
+          )
           ./machines/${hostname}/hardware-configuration.nix
           ./machines/${hostname}/machine-configuration.nix
           home-manager.nixosModules.home-manager
@@ -51,15 +57,7 @@
     nixosConfigurations = {
       nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos" "nico";
       nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos" "nico";
-
-      nico-vm-nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          inputs.disko.nixosModules.disko
-          ./machines/nico-vm-nixos/configuration.nix
-        ];
-      };
+      nico-vm-nixos = mkSystem "nico-vm-nixos" "vm";
     };
   };
 }
