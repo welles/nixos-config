@@ -29,8 +29,8 @@
         specialArgs = {inherit inputs;};
         modules = [
           ./configurations/${configuration}/configuration.nix
-          (./machines + "/${hostname}/hardware-configuration.nix")
-          (./machines + "/${hostname}/machine-configuration.nix")
+          ./machines/${hostname}/hardware-configuration.nix
+          ./machines/${hostname}/machine-configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
