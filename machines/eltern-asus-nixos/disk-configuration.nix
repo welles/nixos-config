@@ -1,9 +1,9 @@
 {
   disko.devices = {
     disk = {
-      sda = {
+      main = {
         type = "disk";
-        device = "/dev/sda";
+        device = "/dev/disk/by-id/ata-SanDisk_SDSSDA120G_171833444702";
         content = {
           type = "gpt";
           partitions = {
@@ -31,9 +31,9 @@
           };
         };
       };
-      sdb = {
+      swap = {
         type = "disk";
-        device = "/dev/sdb";
+        device = "/dev/disk/by-id/ata-SanDisk_SSD_U100_24GB_131851403494";
         content = {
           type = "gpt";
           partitions = {
