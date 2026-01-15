@@ -7,6 +7,24 @@
         content = {
           type = "gpt";
           partitions = {
+            root = {
+              priority = 1;
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
+              };
+            };
+          };
+        };
+      };
+      bootswap = {
+        type = "disk";
+        device = "/dev/disk/by-id/ata-SanDisk_SSD_U100_24GB_131851403494";
+        content = {
+          type = "gpt";
+          partitions = {
             boot = {
               priority = 1;
               name = "boot";
@@ -19,26 +37,8 @@
                 mountpoint = "/boot";
               };
             };
-            root = {
-              priority = 2;
-              size = "100%";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
-              };
-            };
-          };
-        };
-      };
-      swap = {
-        type = "disk";
-        device = "/dev/disk/by-id/ata-SanDisk_SSD_U100_24GB_131851403494";
-        content = {
-          type = "gpt";
-          partitions = {
             swap = {
-              priority = 1;
+              priority = 2;
               size = "100%";
               content = {
                 type = "swap";
