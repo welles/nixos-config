@@ -14,7 +14,16 @@
               end = "1G";
               type = "EF02";
             };
+            swap = {
+              priority = 2;
+              size = "8G";
+              content = {
+                type = "swap";
+                resumeDevice = true;
+              };
+            };
             root = {
+              priority = 3;
               size = "100%";
               content = {
                 type = "filesystem";
