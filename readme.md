@@ -17,3 +17,10 @@ sudo nixos-generate-config --root /mnt --no-filesystems --show-hardware-config >
 ```bash
 sudo nixos-install --flake ".#$HOSTNAME" --no-root-passwd
 ```
+
+## Update
+
+```bash
+sudo nixos-rebuild switch --flake github:welles/nixos-config#$HOSTNAME --refresh
+
+```
