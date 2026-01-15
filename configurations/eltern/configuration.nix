@@ -1,7 +1,9 @@
 {pkgs, ...}: {
   boot.loader.grub = {
     enable = true;
-    efiSupport = false;
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+    device = "nodev";
   };
 
   services = {

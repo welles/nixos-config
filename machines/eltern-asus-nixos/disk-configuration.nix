@@ -29,7 +29,12 @@
               name = "boot";
               start = "0";
               end = "1G";
-              type = "EF02";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+              };
             };
             root = {
               priority = 2;
