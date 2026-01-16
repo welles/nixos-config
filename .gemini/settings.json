@@ -13,14 +13,8 @@
     }
   },
   "ui": {
-    "showModelInfoInChat": true,
     "accessibility": {
       "disableLoadingPhrases": true
-    }
-  },
-  "tools": {
-    "shell": {
-      "showColor": true
     }
   }
 }
