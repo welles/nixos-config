@@ -38,6 +38,13 @@
     firefox
   ];
 
+  environment.etc."xdg/autostart/firefox.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Firefox
+    Exec=${pkgs.firefox}/bin/firefox
+  '';
+
   users.users.eltern = {
     isNormalUser = true;
     initialPassword = "passwort";
