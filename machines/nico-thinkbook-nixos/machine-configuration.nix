@@ -5,7 +5,13 @@
   modulesPath,
   ...
 }: {
-  services.fprintd.enable = true;
+  services.fprintd = {
+    enable = true;
+    tod = {
+      enable = true;
+      driver = pkgs.libfprint-2-tod1-goodix;
+    };
+  };
 
   hardware.graphics = {
     enable = true;
