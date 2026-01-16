@@ -28,6 +28,7 @@
       user.name = "Nico Welles";
       user.email = "nico@welles.email";
       gpg.format = "ssh";
+      init.defaultBranch = "main";
     };
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
