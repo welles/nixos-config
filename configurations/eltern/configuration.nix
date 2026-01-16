@@ -19,6 +19,10 @@
       desktopManager.cinnamon.enable = true;
       xkb.layout = "de";
     };
+    displayManager.autoLogin = {
+      enable = true;
+      user = "eltern";
+    };
   };
 
   time = {
