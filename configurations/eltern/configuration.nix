@@ -5,6 +5,7 @@
     efiInstallAsRemovable = true;
     device = "nodev";
   };
+  boot.loader.timeout = 0;
 
   services = {
     printing.enable = true;
