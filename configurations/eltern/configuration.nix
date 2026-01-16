@@ -1,11 +1,16 @@
 {pkgs, ...}: {
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-    device = "nodev";
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    loader = {
+      timeout = 0;
+      grub = {
+        enable = true;
+        efiSupport = true;
+        efiInstallAsRemovable = true;
+        device = "nodev";
+      };
+    };
   };
-  boot.loader.timeout = 0;
 
   services = {
     printing.enable = true;
