@@ -250,6 +250,7 @@
     nodejs
     obs-studio
     openttd-jgrpp
+    overlayed
     oversteer
     pciutils
     picard
