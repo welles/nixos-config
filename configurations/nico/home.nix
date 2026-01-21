@@ -381,7 +381,7 @@
 
           "org.kde.plasma.systemtray"
 
-          "org.kde.plasma.lock_logout"
+          # "org.kde.plasma.lock_logout"
 
           {
             name = "org.kde.plasma.digitalclock";
