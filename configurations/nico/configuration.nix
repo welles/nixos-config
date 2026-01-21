@@ -296,9 +296,15 @@
     "flakes"
   ];
 
-  system.activationScripts.script.text = ''
+  system.activationScripts.set-profile-icon.text = ''
     mkdir -p /var/lib/AccountsService/icons
 
     cp ${./floating.png} /var/lib/AccountsService/icons/nico
+  '';
+
+  system.activationScripts.update-flatpaks.text = ''
+    echo "--- Auto-Updating System Flatpaks ---"
+
+    ${pkgs.flatpak}/bin/flatpak update --system --noninteractive --assumeyes || true
   '';
 }
