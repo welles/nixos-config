@@ -112,7 +112,7 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    initExtra = "fastfetch";
+    initContent = "fastfetch";
 
     oh-my-zsh = {
       enable = true;
