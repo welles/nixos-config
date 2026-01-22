@@ -243,6 +243,7 @@
     jdk25
     jetbrains.rider
     kdePackages.kzones
+    kdePackages.partitionmanager
     lazygit
     libreoffice
     mission-center
