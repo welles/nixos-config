@@ -40,6 +40,7 @@
         })
       ];
     };
+    supportedFilesystems = ["ntfs" "exfat"];
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
@@ -54,6 +55,10 @@
   '';
 
   services.flatpak.enable = true;
+
+  services.udisks2.enable = true;
+
+  services.gvfs.enable = true;
 
   hardware = {
     # xpadneo.enable = true;
@@ -236,9 +241,11 @@
     dotnet-sdk_10
     easyeffects
     evtest
+    exfatprogs
     fastfetch
     fsearch
     google-chrome
+    gparted
     jdk21
     jdk25
     jetbrains.rider
