@@ -274,6 +274,7 @@
     oversteer
     pciutils
     picard
+    pinta
     prismlauncher
     remmina
     smartgit
