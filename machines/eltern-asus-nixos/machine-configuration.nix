@@ -5,4 +5,5 @@
   modulesPath,
   ...
 }: {
+  services.libinput.enable = true;
 }
