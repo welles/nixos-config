@@ -275,6 +275,7 @@
     pciutils
     picard
     pinta
+    pnpm
     prismlauncher
     remmina
     smartgit
