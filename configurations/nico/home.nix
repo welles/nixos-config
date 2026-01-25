@@ -347,9 +347,13 @@
     };
 
     workspace = {
-      lookAndFeel = "org.kde.breezedark.desktop";
+      # lookAndFeel = "org.kde.breezedark.desktop";
+      colorScheme = "BreezeDark";
+      iconTheme = "breeze-dark";
+      theme = "breeze-dark";
       cursor.theme = "Breeze_Light";
       wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
+      splashScreen.theme = "None";
     };
 
     panels = [
