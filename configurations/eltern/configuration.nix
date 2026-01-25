@@ -59,6 +59,8 @@
 
   environment.systemPackages = with pkgs; [
     firefox
+    jellyfin-desktop
+    google-chrome
   ];
 
   environment.etc."xdg/autostart/firefox.desktop".text = ''
