@@ -411,6 +411,16 @@
     "${config.home.homeDirectory}/.npm-global/bin"
   ];
 
+  xdg.configFile."autostart/bitwarden.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Bitwarden
+    Comment=Bitwarden startup script
+    Exec=${pkgs.bitwarden-desktop}/bin/bitwarden
+    StartupNotify=false
+    Terminal=false
+  '';
+
   home.activation = {
     cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0

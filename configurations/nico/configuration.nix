@@ -250,8 +250,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.etc."xdg/autostart/bitwarden.desktop".source = "${pkgs.bitwarden-desktop}/share/applications/bitwarden.desktop";
-
   environment.systemPackages = with pkgs; [
     alejandra
     bitwarden-desktop
