@@ -187,6 +187,11 @@
       nssmdns4 = true;
       openFirewall = true;
     };
+    sunshine = {
+      enable = true;
+      capSysAdmin = true;
+      openFirewall = true;
+    };
   };
 
   console.keyMap = "de";
