@@ -7,10 +7,6 @@
   home.username = "nico";
   home.homeDirectory = "/home/nico";
 
-  # home.packages = with pkgs; [
-  #   pkgs.nerd-fonts.fira-code
-  # ];
-
   fonts.fontconfig.enable = true;
 
   home.pointerCursor = {
@@ -243,10 +239,6 @@
     };
 
     configFile = {
-      "kdeglobals"."General" = {
-        # "TerminalApplication" = "kitty";
-        # "TerminalService" = "kitty.desktop";
-      };
       "breezerc"."Common" = {
         "ShadowSize" = "ShadowNone";
         "OutlineIntensity" = "OutlineOff";
@@ -261,18 +253,6 @@
           "ImagePreview" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
         };
       };
-      # "kickoffrc"."Favorites"."FavoriteURLs" = lib.strings.concatStringsSep "," [
-      #   "applications:bitwarden.desktop"
-      #   "applications:code.desktop"
-      #   "applications:firefox.desktop"
-      #   "applications:org.kde.konsole.desktop"
-      #   "applications:rider.desktop"
-      #   "applications:smartgit.desktop"
-      #   "applications:steam.desktop"
-      #   "applications:systemsettings.desktop"
-      #   "applications:teams-for-linux.desktop"
-      #   "applications:vesktop.desktop"
-      # ];
       "kwinrc"."Plugins" = {
         "kzonesEnabled" = true;
       };
@@ -337,17 +317,11 @@
       };
     };
 
-    shortcuts = {
-      # "org.kde.konsole.desktop"."_launch" = "none";
-      # "kitty.desktop"."_launch" = "Ctrl+Alt+T";
-    };
-
     input.keyboard = {
       numlockOnStartup = "on";
     };
 
     workspace = {
-      # lookAndFeel = "org.kde.breezedark.desktop";
       colorScheme = "BreezeDark";
       iconTheme = "breeze-dark";
       theme = "breeze-dark";
@@ -433,26 +407,6 @@
       rm -f ${config.home.homeDirectory}/.config/plasma-org.kde.plasma.desktop-appletsrc
       rm -f ${config.home.homeDirectory}/.config/plasmashellrc
     '';
-
-    # installNpmPackages = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    #   export PATH="${pkgs.nodejs}/bin:$PATH"
-
-    #   npm_packages=(
-    #     "@google/gemini-cli"
-    #     "@angular/cli"
-    #     "npm-check-updates"
-    #     "@google/clasp"
-    #   )
-
-    #   for pkg in "''${npm_packages[@]}"; do
-    #     echo "Installing global NPM package: $pkg"
-    #     npm install -g "$pkg"
-    #   done
-    # '';
-
-    # cleanKickoffFavorites = lib.hm.dag.entryBefore ["writeBoundary"] ''
-    #   rm -f ${config.home.homeDirectory}/.config/kactivitymanagerd-statsrc
-    # '';
   };
 
   home.file.".npmrc".text = ''
@@ -460,71 +414,6 @@
     save-exact=true
     save-prefix=
   '';
-
-  # home.file.".config/autostart-scripts/set-wallpaper-potd.sh" = {
-  #   executable = true;
-  #   text = ''
-  #     #!/bin/sh
-  #     sleep 5
-
-  #     qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
-  #       var allDesktops = desktops();
-  #       for (var i = 0; i < allDesktops.length; i++) {
-  #           var d = allDesktops[i];
-  #           d.wallpaperPlugin = "org.kde.potd";
-  #           d.currentConfigGroup = ["Wallpaper", "org.kde.potd", "General"];
-  #           d.writeConfig("Provider", "flickr");
-  #           d.writeConfig("FillMode", "2");
-  #           d.writeConfig("UpdateOverMeteredConnection", "1");
-  #           d.reloadConfig();
-  #       }
-  #     '
-  #   '';
-  # };
-
-  # home.file.".config/autostart-scripts/set-favorites.sh" = {
-  #   executable = true;
-  #   text = let
-  #     favList = lib.strings.concatStringsSep "," [
-  #       "applications:bitwarden.desktop"
-  #       "applications:code.desktop"
-  #       "applications:firefox.desktop"
-  #       "applications:org.kde.konsole.desktop"
-  #       "applications:rider.desktop"
-  #       "applications:smartgit.desktop"
-  #       "applications:steam.desktop"
-  #       "applications:systemsettings.desktop"
-  #       "applications:teams-for-linux.desktop"
-  #       "applications:vesktop.desktop"
-  #     ];
-  #   in ''
-  #     #!/bin/sh
-  #     sleep 5
-
-  #     qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
-  #       var favorites = "${favList}";
-
-  #       var allPanels = panels();
-
-  #       for (var i = 0; i < allPanels.length; i++) {
-  #           var p = allPanels[i];
-  #           var widgets = p.widgets();
-
-  #           for (var j = 0; j < widgets.length; j++) {
-  #               var w = widgets[j];
-
-  #               if (w.type == "org.kde.plasma.kickoff" || w.type == "org.kde.plasma.kicker") {
-
-  #                   w.currentConfigGroup = ["General"];
-  #                   w.writeConfig("favorites", favorites);
-
-  #                   w.reloadConfig();
-  #               }
-  #           }
-  #       }
-  #     '
-  #   '';
-  # };
 
   home.stateVersion = "25.11";
 
