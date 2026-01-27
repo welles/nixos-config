@@ -35,7 +35,7 @@
         type = "gsm";
       };
       gsm = {
-        apn = "internet.telekom";
+        apn = "internet.v6.telekom";
       };
       ipv4 = {
         method = "auto";
