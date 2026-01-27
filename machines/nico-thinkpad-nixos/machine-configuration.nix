@@ -16,6 +16,8 @@
 
   services.fprintd.enable = true;
 
+  environment.etc."ModemManager/fcc-unlock.d/2c7c:030a".source = "${pkgs.modemmanager}/share/ModemManager/fcc-unlock.available.d/2c7c:030a";
+
   networking.modemmanager.enable = true;
 
   networking.networkmanager.ensureProfiles.profiles = {
