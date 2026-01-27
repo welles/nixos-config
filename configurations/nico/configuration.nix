@@ -262,6 +262,7 @@
     exfatprogs
     fastfetch
     fsearch
+    gimp
     google-chrome
     gparted
     jdk25
