@@ -257,6 +257,7 @@
     deadnix
     discord
     dotnet-sdk_10
+    drawing
     easyeffects
     evtest
     exfatprogs
