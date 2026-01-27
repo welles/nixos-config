@@ -270,6 +270,7 @@
     kdePackages.partitionmanager
     lazygit
     libreoffice
+    mcp-nixos
     mission-center
     nerd-fonts.fira-code
     nodejs
