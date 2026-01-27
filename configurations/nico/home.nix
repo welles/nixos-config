@@ -134,9 +134,7 @@
     enable = true;
     overrideConfig = true;
 
-    session = {
-      logoutConfirmation = "never";
-    };
+    session.general.askForConfirmationOnLogout = false;
 
     powerdevil = {
       batteryLevels = {
