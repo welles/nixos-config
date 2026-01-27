@@ -134,6 +134,10 @@
     enable = true;
     overrideConfig = true;
 
+    session = {
+      logoutConfirmation = "never";
+    };
+
     powerdevil = {
       batteryLevels = {
         criticalLevel = 5;
