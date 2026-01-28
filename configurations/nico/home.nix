@@ -408,6 +408,9 @@
       rm -f ${config.home.homeDirectory}/.config/kscreenlockerrc
       rm -f ${config.home.homeDirectory}/.config/plasma-org.kde.plasma.desktop-appletsrc
       rm -f ${config.home.homeDirectory}/.config/plasmashellrc
+
+      rm -rf ${config.home.homeDirectory}/.local/share/kscreen
+      rm -f ${config.home.homeDirectory}/.config/kwinoutputconfig.json
     '';
   };
 
