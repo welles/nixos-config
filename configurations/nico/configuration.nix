@@ -284,6 +284,7 @@
     picard
     pinta
     pnpm
+    powershell
     prismlauncher
     remmina
     smartgit
