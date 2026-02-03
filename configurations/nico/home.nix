@@ -25,6 +25,14 @@
       user.email = "nico@welles.email";
       gpg.format = "ssh";
       init.defaultBranch = "main";
+      pull.rebase = true;
+      gui.pruneduringfetch = true;
+      "smartgit \"submodule\"" = {
+        fetchalways = true;
+        update = true;
+        initializenew = true;
+      };
+      push.recurseSubmodules = "check";
     };
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
