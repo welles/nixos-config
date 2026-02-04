@@ -197,6 +197,12 @@
 
   security.rtkit.enable = true;
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = [pkgs.kdePackages.xdg-desktop-portal-kde];
+    config.common.default = "kde";
+  };
+
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
