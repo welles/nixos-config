@@ -160,7 +160,6 @@
     xserver.enable = true;
     displayManager.sddm = {
       enable = true;
-      autoNumlock = true;
     };
     desktopManager.plasma6.enable = true;
     power-profiles-daemon.enable = true;
