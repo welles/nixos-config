@@ -13,33 +13,9 @@
         device = "nodev";
         useOSProber = true;
         default = "saved";
-        gfxmodeEfi = "1920x1080";
-        gfxpayloadEfi = "keep";
-        theme = pkgs.sleek-grub-theme.override {
-          withBanner = "Hallo, Nico.";
-          withStyle = "dark";
-        };
       };
     };
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams = [
-      "splash"
-      "quiet"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
-    ];
-    initrd.verbose = false;
-    consoleLogLevel = 0;
-    plymouth = {
-      enable = true;
-      theme = "rings";
-      themePackages = with pkgs; [
-        (adi1090x-plymouth-themes.override {
-          selected_themes = ["rings"];
-        })
-      ];
-    };
     supportedFilesystems = ["ntfs" "exfat"];
   };
 
