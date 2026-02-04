@@ -406,20 +406,20 @@
   '';
 
   home.activation = {
-    cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
-      rm -f ${config.home.homeDirectory}/.gtkrc-2.0
-      rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
-    '';
+    # cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
+    #   rm -f ${config.home.homeDirectory}/.gtkrc-2.0
+    #   rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
+    # '';
 
-    cleanPlasmaConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
-      rm -f ${config.home.homeDirectory}/.config/gwenviewrc
-      rm -f ${config.home.homeDirectory}/.config/kscreenlockerrc
-      rm -f ${config.home.homeDirectory}/.config/plasma-org.kde.plasma.desktop-appletsrc
-      rm -f ${config.home.homeDirectory}/.config/plasmashellrc
+    # cleanPlasmaConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
+    #   rm -f ${config.home.homeDirectory}/.config/gwenviewrc
+    #   rm -f ${config.home.homeDirectory}/.config/kscreenlockerrc
+    #   rm -f ${config.home.homeDirectory}/.config/plasma-org.kde.plasma.desktop-appletsrc
+    #   rm -f ${config.home.homeDirectory}/.config/plasmashellrc
 
-      rm -rf ${config.home.homeDirectory}/.local/share/kscreen
-      rm -f ${config.home.homeDirectory}/.config/kwinoutputconfig.json
-    '';
+    #   rm -rf ${config.home.homeDirectory}/.local/share/kscreen
+    #   rm -f ${config.home.homeDirectory}/.config/kwinoutputconfig.json
+    # '';
   };
 
   home.file.".npmrc".text = ''
