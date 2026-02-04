@@ -14,7 +14,7 @@
     mobile-broadband-provider-info
   ];
 
-  services.fprintd.enable = true;
+  # services.fprintd.enable = true;
 
   environment.etc."ModemManager/fcc-unlock.d/2c7c:030a" = {
     mode = "0755";
