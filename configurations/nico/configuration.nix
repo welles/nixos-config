@@ -339,9 +339,9 @@
     cp ${./floating.png} /var/lib/AccountsService/icons/nico
   '';
 
-  system.activationScripts.update-flatpaks.text = ''
-    echo "--- Auto-Updating System Flatpaks ---"
+  # system.activationScripts.update-flatpaks.text = ''
+  #   echo "--- Auto-Updating System Flatpaks ---"
 
-    ${pkgs.flatpak}/bin/flatpak update --system --noninteractive --assumeyes || true
-  '';
+  #   ${pkgs.flatpak}/bin/flatpak update --system --noninteractive --assumeyes || true
+  # '';
 }
