@@ -406,10 +406,10 @@
   '';
 
   home.activation = {
-    # cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
-    #   rm -f ${config.home.homeDirectory}/.gtkrc-2.0
-    #   rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
-    # '';
+    cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
+      rm -f ${config.home.homeDirectory}/.gtkrc-2.0
+      rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
+    '';
 
     # cleanPlasmaConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
     #   rm -f ${config.home.homeDirectory}/.config/gwenviewrc
