@@ -248,7 +248,6 @@
     gimp
     google-chrome
     gparted
-    hoppscotch
     jdk25
     jetbrains.rider
     kdePackages.kzones
