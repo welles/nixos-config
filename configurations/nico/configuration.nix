@@ -274,6 +274,7 @@
     statix
     streamcontroller
     teams-for-linux
+    unrar
     usbutils
     video-compare
     vlc
