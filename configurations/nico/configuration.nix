@@ -256,6 +256,7 @@
     libreoffice
     mcp-nixos
     mission-center
+    mumble
     nerd-fonts.fira-code
     nodejs
     obs-studio
