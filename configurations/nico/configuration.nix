@@ -305,12 +305,12 @@
             with pkgs; [
               libthai
               libglvnd
-              xorg.libX11
-              xorg.libXcursor
-              xorg.libXext
-              xorg.libXfixes
-              xorg.libXi
-              xorg.libXrender
+              libX11
+              libXcursor
+              libXext
+              libXfixes
+              libXi
+              libXrender
               libGL
               vulkan-loader
               alsa-lib
