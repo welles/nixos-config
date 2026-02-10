@@ -7,12 +7,25 @@
         content = {
           type = "gpt";
           partitions = {
-            boot = {
+            ESP = {
               priority = 1;
-              name = "boot";
-              start = "0";
+              name = "ESP";
+              start = "1M";
               end = "1G";
-              type = "EF02";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = ["umask=0077"];
+              };
+            };
+            swap = {
+              size = "8G";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+              };
             };
             root = {
               size = "100%";

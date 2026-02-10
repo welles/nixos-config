@@ -4,10 +4,10 @@
   ...
 }: {
   boot.loader = {
-    efi.canTouchEfiVariables = false;
+    efi.canTouchEfiVariables = true;
     grub = {
       enable = true;
-      efiSupport = false;
+      efiSupport = true;
       device = "nodev";
     };
   };
