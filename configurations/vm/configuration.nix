@@ -57,6 +57,15 @@
     };
   };
 
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 7d";
+    };
+    flake = "/home/vm/nixos";
+  };
+
   time.timeZone = "Europe/Berlin";
 
   users.users.vm = {
