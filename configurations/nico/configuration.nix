@@ -253,6 +253,7 @@
     jetbrains.rider
     kdePackages.kzones
     kdePackages.partitionmanager
+    lazydocker
     lazygit
     libreoffice
     mcp-nixos
