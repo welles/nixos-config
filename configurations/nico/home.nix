@@ -405,6 +405,14 @@
     Terminal=false
   '';
 
+  xdg.configFile."autostart/remmina-applet.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Remmina Applet
+    Exec=remmina -i
+    Hidden=true
+  '';
+
   home.activation = {
     cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0
