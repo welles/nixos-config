@@ -1,6 +1,7 @@
 {
   "general": {
-    "previewFeatures": true
+    "previewFeatures": true,
+    "enablePromptCompletion": true
   },
   "mcpServers": {
     "nixos": {
@@ -11,6 +12,12 @@
   "ui": {
     "accessibility": {
       "enableLoadingPhrases": false
+    },
+    "useAlternateBuffer": true
+  },
+  "tools": {
+    "shell": {
+      "showColor": true
     }
   }
 }
