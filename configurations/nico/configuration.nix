@@ -271,6 +271,7 @@
     powershell
     prismlauncher
     remmina
+    seafile-client
     smartgit
     spotify
     statix
