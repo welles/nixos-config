@@ -18,7 +18,6 @@
     vim
     wget
     seafile-client
-    xkeyboardconfig
   ];
 
   programs.firefox.enable = true;
