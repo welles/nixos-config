@@ -17,6 +17,7 @@
     htop
     vim
     wget
+    seafile-client
   ];
 
   programs.firefox.enable = true;
