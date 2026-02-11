@@ -56,7 +56,10 @@
 
     xserver = {
       enable = true;
-      xkb.layout = "de";
+      xkb = {
+        layout = "de";
+        variant = "";
+      };
       desktopManager.xfce.enable = true;
       displayManager.lightdm.enable = true;
     };
