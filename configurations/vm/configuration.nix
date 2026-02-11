@@ -75,4 +75,6 @@
     isNormalUser = true;
     shell = pkgs.zsh;
   };
+
+  environment.sessionVariables.XKB_DEFAULT_LAYOUT = "de";
 }
