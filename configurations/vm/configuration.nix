@@ -73,5 +73,6 @@
     extraGroups = ["networkmanager" "wheel"];
     initialPassword = "password";
     isNormalUser = true;
+    shell = pkgs.zsh;
   };
 }
