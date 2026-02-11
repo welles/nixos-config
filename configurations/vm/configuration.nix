@@ -21,6 +21,7 @@
   ];
 
   programs.firefox.enable = true;
+  programs.zsh.enable = true;
 
   i18n.defaultLocale = "de_DE.UTF-8";
   console.keyMap = "de";
