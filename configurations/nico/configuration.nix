@@ -277,6 +277,7 @@
     statix
     streamcontroller
     teams-for-linux
+    teamspeak6-client
     unrar
     usbutils
     video-compare
