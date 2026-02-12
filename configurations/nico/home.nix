@@ -323,6 +323,30 @@
               }
             ];
           }
+          {
+            name = "20-20/80";
+            padding = 10;
+            zones = [
+              {
+                x = 0;
+                y = 0;
+                width = 20;
+                height = 50;
+              }
+              {
+                x = 0;
+                y = 50;
+                width = 20;
+                height = 50;
+              }
+              {
+                x = 20;
+                y = 0;
+                width = 80;
+                height = 100;
+              }
+            ];
+          }
         ];
       };
     };
