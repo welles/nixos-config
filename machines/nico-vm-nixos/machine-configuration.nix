@@ -11,7 +11,14 @@
     options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" "nfsvers=4.2"];
   };
 
+  fileSystems."/mnt/disks/TRANSFER" = {
+    device = "10.0.0.10:/mnt/disks/TRANSFER";
+    fsType = "nfs";
+    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" "nfsvers=4.2"];
+  };
+
   systemd.tmpfiles.rules = [
     "d /mnt/user 0755 root root -"
+    "d /mnt/disks 0755 root root -"
   ];
 }
