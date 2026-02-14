@@ -35,6 +35,11 @@
   security.polkit.enable = true;
   security.rtkit.enable = true;
 
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
   services = {
     openssh.enable = true;
 
@@ -62,7 +67,22 @@
         variant = "";
       };
       desktopManager.xfce.enable = true;
-      displayManager.lightdm.enable = true;
+      displayManager.lightdm = {
+        enable = true;
+      };
+      serverFlagsSection = ''
+        Section "ServerFlags"
+          Option "StandbyTime" "0"
+          Option "SuspendTime" "0"
+          Option "OffTime" "0"
+          Option "BlankTime" "0"
+        EndSection
+      '';
+    };
+
+    displayManager.autoLogin = {
+      enable = true;
+      user = "vm";
     };
   };
 
