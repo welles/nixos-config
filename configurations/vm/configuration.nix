@@ -18,6 +18,7 @@
     vim
     wget
     seafile-client
+    nfs-utils
   ];
 
   programs.firefox.enable = true;
