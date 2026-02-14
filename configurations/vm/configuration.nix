@@ -32,6 +32,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  security.polkit.enable = true;
   security.rtkit.enable = true;
 
   services = {
@@ -49,8 +50,9 @@
 
     xrdp = {
       enable = true;
-      defaultWindowManager = "startxfce4";
+      defaultWindowManager = "${pkgs.xfce.xfce4-session}/bin/startxfce4";
       openFirewall = true;
+      audio.enable = true;
     };
 
     xserver = {
