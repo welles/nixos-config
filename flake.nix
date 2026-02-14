@@ -23,6 +23,7 @@
     plasma-manager,
     ...
   } @ inputs: let
+    version = "25.11";
     mkSystem = hostname: configuration:
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -45,12 +46,13 @@
             home-manager.users."${configuration}" = import ./configurations/${configuration}/home.nix;
             home-manager.sharedModules = [
               plasma-manager.homeModules.plasma-manager
+              {home.stateVersion = version;}
             ];
             home-manager.backupFileExtension = "backup";
           }
           {
             networking.hostName = hostname;
-            system.stateVersion = "25.11";
+            system.stateVersion = version;
           }
         ];
       };
