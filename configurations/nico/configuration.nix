@@ -285,50 +285,50 @@
     vscode
     wrtag
     xfsprogs
-    (
-      let
-        pname = "citron";
-        version = "2026.02.1";
-        src = pkgs.fetchurl {
-          url = "https://github.com/Zephyron-Dev/Citron-CI/releases/download/${version}/Citron-${version}-Pathfinder-Linux-x86_64.AppImage";
-          hash = "sha256-y53v+3ihVUeL7XH1Au1F1bNvxkHMiof1hTqfWkD+bY0=";
-        };
-        appimageContents =
-          pkgs.runCommand "${pname}-extracted" {
-            nativeBuildInputs = [pkgs.dwarfs];
-          } ''
-            mkdir -p $out
-            dwarfsextract -i ${src} -o $out --image-offset 1483248
-          '';
-      in
-        pkgs.buildFHSEnv {
-          name = pname;
-          runScript = "${appimageContents}/AppRun";
-          targetPkgs = pkgs:
-            with pkgs; [
-              libthai
-              libglvnd
-              libx11
-              libxcursor
-              libxext
-              libxfixes
-              libxi
-              libxrender
-              libGL
-              vulkan-loader
-              alsa-lib
-              libpulseaudio
-            ];
-          extraInstallCommands = ''
-            mkdir -p $out/share/applications
-            mkdir -p $out/share/icons/hicolor/scalable/apps
-            cp ${appimageContents}/org.citron_emu.citron.desktop $out/share/applications/
-            cp ${appimageContents}/org.citron_emu.citron.svg $out/share/icons/hicolor/scalable/apps/
-            substituteInPlace $out/share/applications/org.citron_emu.citron.desktop \
-              --replace 'Exec=citron' "Exec=$out/bin/citron"
-          '';
-        }
-    )
+    # (
+    #   let
+    #     pname = "citron";
+    #     version = "2026.02.1";
+    #     src = pkgs.fetchurl {
+    #       url = "https://github.com/Zephyron-Dev/Citron-CI/releases/download/${version}/Citron-${version}-Pathfinder-Linux-x86_64.AppImage";
+    #       hash = "sha256-y53v+3ihVUeL7XH1Au1F1bNvxkHMiof1hTqfWkD+bY0=";
+    #     };
+    #     appimageContents =
+    #       pkgs.runCommand "${pname}-extracted" {
+    #         nativeBuildInputs = [pkgs.dwarfs];
+    #       } ''
+    #         mkdir -p $out
+    #         dwarfsextract -i ${src} -o $out --image-offset 1483248
+    #       '';
+    #   in
+    #     pkgs.buildFHSEnv {
+    #       name = pname;
+    #       runScript = "${appimageContents}/AppRun";
+    #       targetPkgs = pkgs:
+    #         with pkgs; [
+    #           libthai
+    #           libglvnd
+    #           libx11
+    #           libxcursor
+    #           libxext
+    #           libxfixes
+    #           libxi
+    #           libxrender
+    #           libGL
+    #           vulkan-loader
+    #           alsa-lib
+    #           libpulseaudio
+    #         ];
+    #       extraInstallCommands = ''
+    #         mkdir -p $out/share/applications
+    #         mkdir -p $out/share/icons/hicolor/scalable/apps
+    #         cp ${appimageContents}/org.citron_emu.citron.desktop $out/share/applications/
+    #         cp ${appimageContents}/org.citron_emu.citron.svg $out/share/icons/hicolor/scalable/apps/
+    #         substituteInPlace $out/share/applications/org.citron_emu.citron.desktop \
+    #           --replace 'Exec=citron' "Exec=$out/bin/citron"
+    #       '';
+    #     }
+    # )
     (
       bottles.override {
         removeWarningPopup = true;
