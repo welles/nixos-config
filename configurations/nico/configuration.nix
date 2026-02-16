@@ -256,6 +256,7 @@
     lazydocker
     lazygit
     libreoffice
+    losslesscut-bin
     mcp-nixos
     mission-center
     mumble
