@@ -284,6 +284,7 @@
     vlc
     vscode
     wrtag
+    xfsprogs
     (
       let
         pname = "citron";
