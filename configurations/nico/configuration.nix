@@ -15,7 +15,7 @@
         default = "saved";
       };
     };
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = ["ntfs" "exfat"];
   };
 
