@@ -259,8 +259,8 @@
         };
         "Greeter/Wallpaper/org.kde.image/General" = {
           "DynamicMode" = 3;
-          "Image" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
-          "ImagePreview" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
+          "Image" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
+          "ImagePreview" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
         };
       };
       "kwinrc"."Plugins" = {
@@ -360,7 +360,7 @@
       iconTheme = "breeze-dark";
       theme = "breeze-dark";
       cursor.theme = "Breeze_Light";
-      wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/#light";
+      wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
       splashScreen.theme = "None";
     };
 
