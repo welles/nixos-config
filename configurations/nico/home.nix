@@ -438,7 +438,7 @@
   '';
 
   home.activation = {
-    cleanGtkConfig = lib.hm.dag.entryBefore ["writeBoundary"] ''
+    cleanGtkConfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
     '';
