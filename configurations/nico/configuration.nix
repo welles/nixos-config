@@ -1,6 +1,8 @@
 {
   config,
   pkgs,
+  inputs,
+  user,
   ...
 }: {
   boot = {
@@ -113,13 +115,6 @@
 
   networking.networkmanager.enable = true;
 
-  time = {
-    hardwareClockInLocalTime = true;
-    timeZone = "Europe/Berlin";
-  };
-
-  i18n.defaultLocale = "de_DE.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
     LC_IDENTIFICATION = "de_DE.UTF-8";
@@ -140,10 +135,6 @@
     };
     desktopManager.plasma6.enable = true;
     power-profiles-daemon.enable = true;
-    xserver.xkb = {
-      layout = "de";
-      variant = "";
-    };
     printing = {
       enable = true;
       drivers = [
@@ -171,8 +162,6 @@
     };
   };
 
-  console.keyMap = "de";
-
   security.rtkit.enable = true;
 
   xdg.portal = {
@@ -184,7 +173,7 @@
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
-  users.users.nico = {
+  users.users.${user} = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Nico";
@@ -221,7 +210,7 @@
         enable = true;
         extraArgs = "--keep-since 7d";
       };
-      flake = "/home/nico/nixos";
+      flake = "/home/${user}/nixos";
     };
     zsh.enable = true;
     steam = {
@@ -230,8 +219,6 @@
       dedicatedServer.openFirewall = true;
     };
   };
-
-  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     alejandra
@@ -353,18 +340,13 @@
     ls-gpus = "lspci | grep -E 'VGA|3D'";
   };
 
-  nix.settings.auto-optimise-store = true;
-
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   system.activationScripts.set-profile-icon.text = ''
     mkdir -p /var/lib/AccountsService/icons
 
-    cp ${./floating.png} /var/lib/AccountsService/icons/nico
+    cp ${./floating.png} /var/lib/AccountsService/icons/${user}
   '';
+
+  home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
 
   # system.activationScripts.update-flatpaks.text = ''
   #   echo "--- Auto-Updating System Flatpaks ---"

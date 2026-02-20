@@ -4,9 +4,6 @@
   lib,
   ...
 }: {
-  home.username = "nico";
-  home.homeDirectory = "/home/nico";
-
   fonts.fontconfig.enable = true;
 
   home.pointerCursor = {

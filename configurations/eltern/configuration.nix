@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  user,
+  hostname,
+  ...
+}: {
   boot = {
     #kernelPackages = pkgs.linuxPackages_latest;
     loader = {
@@ -30,8 +35,6 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true;
-
   services = {
     printing.enable = true;
     avahi = {
@@ -43,21 +46,12 @@
       enable = true;
       displayManager.lightdm.enable = true;
       desktopManager.cinnamon.enable = true;
-      xkb.layout = "de";
     };
     displayManager.autoLogin = {
       enable = true;
-      user = "eltern";
+      user = user;
     };
   };
-
-  time = {
-    hardwareClockInLocalTime = true;
-    timeZone = "Europe/Berlin";
-  };
-
-  i18n.defaultLocale = "de_DE.UTF-8";
-  console.keyMap = "de";
 
   environment.systemPackages = with pkgs; [
     firefox
@@ -72,7 +66,7 @@
     Exec=${pkgs.firefox}/bin/firefox
   '';
 
-  users.users.eltern = {
+  users.users.${user} = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Moni & Gerri";
@@ -83,7 +77,7 @@
     enable = true;
     allowReboot = false;
     dates = "daily";
-    flake = "github:welles/nixos-config#eltern-asus-nixos";
+    flake = "github:welles/nixos-config#${hostname}";
   };
 
   nix.gc = {

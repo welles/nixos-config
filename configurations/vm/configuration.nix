@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  user,
   ...
 }: {
   boot.loader = {
@@ -24,14 +25,7 @@
   programs.firefox.enable = true;
   programs.zsh.enable = true;
 
-  i18n.defaultLocale = "de_DE.UTF-8";
-  console.keyMap = "de";
-
   networking.networkmanager.enable = true;
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  nixpkgs.config.allowUnfree = true;
 
   security.polkit.enable = true;
   security.rtkit.enable = true;
@@ -63,10 +57,6 @@
 
     xserver = {
       enable = true;
-      xkb = {
-        layout = "de";
-        variant = "";
-      };
       desktopManager.xfce.enable = true;
       displayManager.lightdm = {
         enable = true;
@@ -83,7 +73,7 @@
 
     displayManager.autoLogin = {
       enable = true;
-      user = "vm";
+      user = user;
     };
   };
 
@@ -92,9 +82,7 @@
     nixos-boot = "sudo nixos-rebuild boot --flake github:welles/nixos-config#${config.networking.hostName} --refresh";
   };
 
-  time.timeZone = "Europe/Berlin";
-
-  users.users.vm = {
+  users.users.${user} = {
     description = "VM User";
     extraGroups = ["networkmanager" "wheel"];
     initialPassword = "password";

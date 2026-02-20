@@ -23,36 +23,49 @@
     plasma-manager,
     ...
   } @ inputs: let
-    version = "25.11";
-    mkSystem = hostname: configuration:
+    stateVersion = "25.11";
+    mkSystem = hostname: user:
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs hostname user stateVersion;};
         modules = [
           inputs.disko.nixosModules.disko
-          ./configurations/${configuration}/configuration.nix
-          (
-            if builtins.pathExists ./machines/${hostname}/disk-configuration.nix
-            then ./machines/${hostname}/disk-configuration.nix
-            else {}
-          )
+          home-manager.nixosModules.home-manager
+          ./configurations/${user}/configuration.nix
           ./machines/${hostname}/hardware-configuration.nix
           ./machines/${hostname}/machine-configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {inherit inputs;};
-            home-manager.users."${configuration}" = import ./configurations/${configuration}/home.nix;
-            home-manager.sharedModules = [
-              plasma-manager.homeModules.plasma-manager
-              {home.stateVersion = version;}
-            ];
-            home-manager.backupFileExtension = "backup";
-          }
+          ./machines/${hostname}/disk-configuration.nix
           {
             networking.hostName = hostname;
-            system.stateVersion = version;
+            system.stateVersion = stateVersion;
+
+            time = {
+              timeZone = "Europe/Berlin";
+              hardwareClockInLocalTime = true;
+            };
+            i18n.defaultLocale = "de_DE.UTF-8";
+            console.keyMap = "de";
+
+            services.xserver.xkb.layout = "de";
+
+            nixpkgs.config.allowUnfree = true;
+            nix.settings.experimental-features = ["nix-command" "flakes"];
+            nix.settings.auto-optimise-store = true;
+
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {inherit inputs user stateVersion;};
+              users.${user} = import ./configurations/${user}/home.nix;
+              backupFileExtension = "backup";
+              sharedModules = [
+                {
+                  home.username = user;
+                  home.homeDirectory = "/home/${user}";
+                  home.stateVersion = stateVersion;
+                }
+              ];
+            };
           }
         ];
       };

@@ -1,7 +1,4 @@
 {pkgs, ...}: {
-  home.username = "vm";
-  home.homeDirectory = "/home/vm";
-
   programs.fastfetch = {
     enable = true;
   };
