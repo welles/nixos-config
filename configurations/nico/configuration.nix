@@ -247,6 +247,7 @@
     mcp-nixos
     mission-center
     mumble
+    naps2
     nerd-fonts.fira-code
     nodejs
     obs-studio
