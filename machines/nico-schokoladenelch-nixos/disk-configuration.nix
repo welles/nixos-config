@@ -214,27 +214,27 @@
         };
 
         datasets = {
-          "media/movies" = {
+          "movies" = {
             type = "zfs_fs";
-            mountpoint = "/mnt/tank/media/movies";
+            mountpoint = "/mnt/tank/movies";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
             };
           };
 
-          "media/shows" = {
+          "shows" = {
             type = "zfs_fs";
-            mountpoint = "/mnt/tank/media/shows";
+            mountpoint = "/mnt/tank/shows";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
             };
           };
 
-          "media/music" = {
+          "music" = {
             type = "zfs_fs";
-            mountpoint = "/mnt/tank/media/music";
+            mountpoint = "/mnt/tank/music";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
