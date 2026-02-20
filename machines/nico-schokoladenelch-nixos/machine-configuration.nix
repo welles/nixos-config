@@ -2,6 +2,8 @@
   networking.hostId = "c0ffee12";
 
   fileSystems."/mnt/bucket/persist".neededForBoot = true;
+  fileSystems."/mnt/bucket/apps".neededForBoot = true;
+  fileSystems."/mnt/bucket/stacks".neededForBoot = true;
 
   boot.initrd.supportedFilesystems = ["zfs"];
   boot.initrd.postDeviceCommands = lib.mkAfter ''
