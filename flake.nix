@@ -31,42 +31,11 @@
         modules = [
           inputs.disko.nixosModules.disko
           home-manager.nixosModules.home-manager
+          ./global.nix
           ./configurations/${user}/configuration.nix
           ./machines/${hostname}/hardware-configuration.nix
           ./machines/${hostname}/machine-configuration.nix
           ./machines/${hostname}/disk-configuration.nix
-          {
-            networking.hostName = hostname;
-            system.stateVersion = stateVersion;
-
-            time = {
-              timeZone = "Europe/Berlin";
-              hardwareClockInLocalTime = true;
-            };
-            i18n.defaultLocale = "de_DE.UTF-8";
-            console.keyMap = "de";
-
-            services.xserver.xkb.layout = "de";
-
-            nixpkgs.config.allowUnfree = true;
-            nix.settings.experimental-features = ["nix-command" "flakes"];
-            nix.settings.auto-optimise-store = true;
-
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {inherit inputs user stateVersion;};
-              users.${user} = import ./configurations/${user}/home.nix;
-              backupFileExtension = "backup";
-              sharedModules = [
-                {
-                  home.username = user;
-                  home.homeDirectory = "/home/${user}";
-                  home.stateVersion = stateVersion;
-                }
-              ];
-            };
-          }
         ];
       };
   in {
