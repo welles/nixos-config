@@ -166,6 +166,7 @@
           acltype = "posixacl";
           xattr = "sa";
           "com.sun:auto-snapshot" = "false"; # Disable global snapshots
+          mountpoint = "none";
         };
 
         datasets = {
@@ -211,6 +212,7 @@
           acltype = "posixacl";
           xattr = "sa";
           "com.sun:auto-snapshot" = "false";
+          mountpoint = "none";
         };
 
         datasets = {
