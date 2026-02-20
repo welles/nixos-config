@@ -53,6 +53,8 @@
 
   programs.zsh.enable = true;
 
+  programs.fastfetch.enable = true;
+
   environment.shellAliases = {
     nixos-switch = "sudo nixos-rebuild switch --flake github:welles/nixos-config#${config.networking.hostName} --refresh";
     nixos-boot = "sudo nixos-rebuild boot --flake github:welles/nixos-config#${config.networking.hostName} --refresh";
