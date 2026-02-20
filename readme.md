@@ -24,6 +24,11 @@ sudo nixos-generate-config --root /mnt --no-filesystems --show-hardware-config >
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko --flake ".#$HOSTNAME"
 ```
 
+## Impermanence
+```bash
+sudo zfs snapshot poolname/local/root@blank
+```
+
 ## Install
 
 ```bash
