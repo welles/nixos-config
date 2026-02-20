@@ -8,18 +8,8 @@
   boot.initrd.supportedFilesystems = ["zfs"];
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     udevadm settle
-    # Import the pool using the same device nodes as the rest of the system
-    # We use -N to import without mounting yet
     zpool import -d /dev/disk/by-id -N -f bucket || true
-
-    echo "Attempting to rollback root..."
-    if zfs rollback -r bucket/local/root@blank; then
-      echo "  rollbacked to blank root"
-    else
-      echo "  ROLLBACK FAILED: Dataset or pool not found."
-      echo "  Current ZFS status:"
-      zfs list || echo "  (No datasets visible)"
-    fi
+    zfs rollback -r bucket/local/root@blank && echo "  rollbacked to blank root" || echo "  no blank root snapshot found, skipping rollback"
   '';
 
   boot.loader.systemd-boot.enable = false;
