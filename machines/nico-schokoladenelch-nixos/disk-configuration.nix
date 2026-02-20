@@ -26,7 +26,7 @@
               size = "100%";
               content = {
                 type = "zfs";
-                pool = "rpool";
+                pool = "bucket";
               };
             };
           };
@@ -55,7 +55,7 @@
               size = "100%";
               content = {
                 type = "zfs";
-                pool = "rpool";
+                pool = "bucket";
               };
             };
           };
