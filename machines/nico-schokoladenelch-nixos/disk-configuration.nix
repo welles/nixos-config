@@ -136,9 +136,10 @@
     # -----------------------------------------------------------------------
     zpool = {
       # --- The SSD Pool ---
-      rpool = {
+      bucket = {
         type = "zpool";
         mode = "mirror"; # Creates the RAID 1
+        options.ashift = "12";
         rootFsOptions = {
           compression = "lz4";
           acltype = "posixacl";
@@ -179,6 +180,7 @@
       tank = {
         type = "zpool";
         mode = "raidz1"; # 1 Parity Drive
+        options.ashift = "12";
         rootFsOptions = {
           compression = "lz4";
           acltype = "posixacl";

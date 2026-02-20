@@ -2,7 +2,7 @@
   networking.hostId = "c0ffee12";
 
   boot.initrd.postDeviceCommands = lib.mkAfter ''
-    zfs rollback -r rpool/local/root@blank && echo "  rollbacked to blank root" || echo "  no blank root snapshot found, skipping rollback"
+    zfs rollback -r bucket/local/root@blank && echo "  rollbacked to blank root" || echo "  no blank root snapshot found, skipping rollback"
   '';
 
   boot.loader.systemd-boot.enable = false;
