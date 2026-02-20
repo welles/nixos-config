@@ -15,8 +15,6 @@
   i18n.defaultLocale = "de_DE.UTF-8";
   console.keyMap = "de";
 
-  services.xserver.xkb.layout = "de";
-
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.auto-optimise-store = true;
