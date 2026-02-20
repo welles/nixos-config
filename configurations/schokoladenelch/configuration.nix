@@ -30,6 +30,7 @@
     files = [
       "/etc/machine-id"
       "/etc/adjtime"
+      "/etc/resolv.conf"
     ];
     users.${user} = {
       directories = [
