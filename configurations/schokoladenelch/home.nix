@@ -23,5 +23,10 @@
     git = true;
   };
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.home-manager.enable = true;
 }
