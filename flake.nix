@@ -25,6 +25,7 @@
     nixpkgs,
     home-manager,
     plasma-manager,
+    impermanence,
     ...
   } @ inputs: let
     stateVersion = "25.11";
