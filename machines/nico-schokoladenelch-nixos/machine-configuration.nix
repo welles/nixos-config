@@ -11,6 +11,8 @@
   boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = ["zfs"];
+  boot.zfs.forceImportRoot = true;
+  boot.zfs.devNodes = "/dev/disk/by-id";
   boot.loader.grub = {
     enable = true;
     zfsSupport = true;
@@ -26,6 +28,5 @@
       }
     ];
   };
-  boot.zfs.forceImportRoot = false;
   boot.zfs.devNodes = "/dev/disk/by-id";
 }
