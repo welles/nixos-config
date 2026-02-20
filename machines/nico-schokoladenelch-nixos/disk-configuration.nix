@@ -139,12 +139,14 @@
       bucket = {
         type = "zpool";
         mode = "mirror"; # Creates the RAID 1
-        options.ashift = "12";
+        options = {
+          ashift = "12";
+          autotrim = "on"; # Critical for SSD longevity
+        };
         rootFsOptions = {
           compression = "lz4";
           acltype = "posixacl";
           xattr = "sa";
-          autotrim = "on"; # Critical for SSD longevity
           "com.sun:auto-snapshot" = "false"; # Disable global snapshots
         };
 
@@ -183,7 +185,9 @@
       tank = {
         type = "zpool";
         mode = "raidz1"; # 1 Parity Drive
-        options.ashift = "12";
+        options = {
+          ashift = "12";
+        };
         rootFsOptions = {
           compression = "lz4";
           acltype = "posixacl";
