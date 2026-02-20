@@ -35,7 +35,7 @@
 
       ssd2 = {
         type = "disk";
-        device = "/dev/disk/by-id/nvme-YOUR_SSD2_ID_HERE";
+        device = "/dev/disk/by-id/nvme-SKHynix_HFS001TEM4X182N_5ME4N00541020650D";
         content = {
           type = "gpt";
           partitions = {
