@@ -18,7 +18,7 @@
     };
   };
 
-  environment.persistence."/persist" = {
+  environment.persistence."/mnt/bucket/persist" = {
     hideMounts = true;
     directories = [
       "/var/log"

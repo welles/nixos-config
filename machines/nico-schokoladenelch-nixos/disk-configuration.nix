@@ -164,14 +164,17 @@
           # The Safe Haven (Your SSH keys and config)
           "safe/persist" = {
             type = "zfs_fs";
-            mountpoint = "/persist";
+            mountpoint = "/mnt/bucket/persist";
             options.mountpoint = "legacy";
           };
           # Your Docker Data
           "safe/apps" = {
             type = "zfs_fs";
-            mountpoint = "/mnt/apps";
-            options."com.sun:auto-snapshot" = "true"; # Good idea to snapshot app configs!
+            mountpoint = "/mnt/bucket/apps";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
         };
       };
@@ -189,24 +192,31 @@
         };
 
         datasets = {
-          # Movies/TV Shows (Massive files, no snapshots needed to save space)
           "media/movies" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/media/movies";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
 
-          # Family Photos (Enable snapshots here to protect against accidental deletion)
-          "media/photos" = {
+          "media/shows" = {
             type = "zfs_fs";
-            mountpoint = "/mnt/tank/media/photos";
-            options."com.sun:auto-snapshot" = "true";
+            mountpoint = "/mnt/tank/media/shows";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
 
-          # Nextcloud Data
-          "nextcloud" = {
+          "media/music" = {
             type = "zfs_fs";
-            mountpoint = "/mnt/tank/nextcloud";
-            options."com.sun:auto-snapshot" = "true";
+            mountpoint = "/mnt/tank/media/music";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
         };
       };
