@@ -7,7 +7,10 @@
   networking.networkmanager.enable = true;
 
   environment.systemPackages = with pkgs; [
+    docker-compose
   ];
+
+  virtualisation.docker.enable = true;
 
   services.openssh = {
     enable = true;
@@ -26,6 +29,7 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
+      "/var/lib/docker"
     ];
     files = [
       "/etc/machine-id"
@@ -53,7 +57,7 @@
 
   users.users.${user} = {
     description = "Schokoladenelch";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "docker"];
     hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
     isNormalUser = true;
     shell = pkgs.zsh;
