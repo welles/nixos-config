@@ -3,6 +3,8 @@
 
   programs.starship.enable = true;
 
+  programs.btop.enable = true;
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
