@@ -12,6 +12,8 @@
 
   virtualisation.docker.enable = true;
 
+  services.zfs.autoSnapshot.enable = true;
+
   services.openssh = {
     enable = true;
     openFirewall = true;
