@@ -65,7 +65,7 @@
               content = {
                 type = "swap";
                 discardPolicy = "both";
-                resumeDevice = true;
+                resumeDevice = false;
               };
             };
             # ZFS Mirror Part 2
