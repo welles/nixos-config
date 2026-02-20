@@ -1,6 +1,7 @@
 {lib, ...}: {
   networking.hostId = "c0ffee12";
 
+  boot.initrd.supportedFilesystems = ["zfs"];
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     zfs rollback -r bucket/local/root@blank && echo "  rollbacked to blank root" || echo "  no blank root snapshot found, skipping rollback"
   '';
