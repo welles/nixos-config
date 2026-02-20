@@ -5,6 +5,8 @@
 
   boot.initrd.supportedFilesystems = ["zfs"];
   boot.initrd.postDeviceCommands = lib.mkAfter ''
+    udevadm settle
+    zfs import -f bucket
     zfs rollback -r bucket/local/root@blank && echo "  rollbacked to blank root" || echo "  no blank root snapshot found, skipping rollback"
   '';
 
