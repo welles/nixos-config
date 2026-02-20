@@ -21,6 +21,15 @@
                 mountOptions = ["umask=0077"];
               };
             };
+            # Swap Partition
+            swap = {
+              size = "32G";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+                resumeDevice = true;
+              };
+            };
             # ZFS Mirror Part 1
             zfs = {
               size = "100%";
@@ -48,6 +57,15 @@
                 format = "vfat";
                 mountpoint = "/boot-fallback";
                 mountOptions = ["umask=0077"];
+              };
+            };
+            # Swap Partition
+            swap = {
+              size = "32G";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+                resumeDevice = true;
               };
             };
             # ZFS Mirror Part 2
