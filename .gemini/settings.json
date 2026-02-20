@@ -1,7 +1,7 @@
 {
   "general": {
     "previewFeatures": true,
-    "enablePromptCompletion": true
+    "enablePromptCompletion": false
   },
   "mcpServers": {
     "nixos": {
