@@ -197,6 +197,15 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          # Your Docker Compose Stacks
+          "safe/stacks" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/stacks";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
 
