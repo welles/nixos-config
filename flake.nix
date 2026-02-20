@@ -14,6 +14,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -30,6 +34,7 @@
         specialArgs = {inherit inputs hostname user stateVersion;};
         modules = [
           inputs.disko.nixosModules.disko
+          inputs.impermanence.nixosModules.impermanence
           home-manager.nixosModules.home-manager
           ./global.nix
           ./configurations/${user}/configuration.nix
