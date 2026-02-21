@@ -16,7 +16,7 @@
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/var/lib/sops-nix/key.txt";
-    sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+    gnupg.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     secrets = {
       # This secret will be at /run/secrets/hello-world
       "hello-world" = {
