@@ -19,6 +19,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -27,6 +31,7 @@
     home-manager,
     plasma-manager,
     impermanence,
+    sops-nix,
     ...
   } @ inputs: let
     stateVersion = "25.11";
@@ -37,6 +42,7 @@
         modules = [
           inputs.disko.nixosModules.disko
           inputs.impermanence.nixosModules.impermanence
+          inputs.sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           ./global.nix
           ./configurations/${user}/configuration.nix
