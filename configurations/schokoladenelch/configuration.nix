@@ -43,6 +43,19 @@
     ];
   };
 
+  services.caddy = {
+    enable = true;
+    email = "admin@welles.email";
+
+    virtualHosts = {
+      "jellyfin.welles.app" = {
+        extraConfig = ''
+          reverse_proxy 127.0.0.1:50100
+        '';
+      };
+    };
+  };
+
   virtualisation.docker.enable = true;
 
   services.zfs.autoSnapshot.enable = true;
