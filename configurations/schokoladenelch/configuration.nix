@@ -12,8 +12,12 @@
   ];
   networking.firewall.allowedUDPPorts = [
     443 # HTTPS/3
-    1900 # UPnP
   ];
+
+  networking.firewall.extraCommands = ''
+    # Allow incoming traffic from local network
+    iptables -I INPUT -s 10.0.0.0/24 -j ACCEPT
+  '';
 
   environment.systemPackages = with pkgs; [
     docker-compose
