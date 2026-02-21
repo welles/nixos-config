@@ -8,7 +8,24 @@
 
   environment.systemPackages = with pkgs; [
     docker-compose
+    sops
+    ssh-to-age
   ];
+
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+    secrets = {
+      # This secret will be at /run/secrets/hello-world
+      "hello-world" = {
+        owner = "root";
+        group = "docker";
+        mode = "0440";
+      };
+    };
+  };
 
   virtualisation.docker.enable = true;
 
@@ -32,6 +49,7 @@
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
       "/var/lib/docker"
+      "/var/lib/sops-nix"
     ];
     files = [
       "/etc/machine-id"
