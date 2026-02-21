@@ -167,6 +167,7 @@
           xattr = "sa";
           "com.sun:auto-snapshot" = "false"; # Disable global snapshots
           mountpoint = "none";
+          canmount = "off";
         };
 
         datasets = {
@@ -222,6 +223,7 @@
           xattr = "sa";
           "com.sun:auto-snapshot" = "false";
           mountpoint = "none";
+          canmount = "off";
         };
 
         datasets = {
