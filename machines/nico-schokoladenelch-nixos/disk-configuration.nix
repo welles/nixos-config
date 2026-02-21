@@ -187,7 +187,10 @@
           "persist" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/persist";
-            options.mountpoint = "legacy";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
           # Your Docker Data
           "apps" = {
