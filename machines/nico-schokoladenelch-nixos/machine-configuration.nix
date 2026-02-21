@@ -9,7 +9,7 @@
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     udevadm settle
     zpool import -d /dev/disk/by-id -N -f bucket || true
-    zfs rollback -r bucket/local/root@blank && echo "  rollbacked to blank root" || echo "  no blank root snapshot found, skipping rollback"
+    zfs rollback -r bucket/root@blank && echo "  rollbacked to blank root" || echo "  no blank root snapshot found, skipping rollback"
   '';
 
   boot.loader.systemd-boot.enable = false;

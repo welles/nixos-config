@@ -171,25 +171,25 @@
 
         datasets = {
           # The Ephemeral Root (Wiped on boot)
-          "local/root" = {
+          "root" = {
             type = "zfs_fs";
             mountpoint = "/";
             options.mountpoint = "legacy";
           };
           # The Nix Store (Must persist)
-          "local/nix" = {
+          "nix" = {
             type = "zfs_fs";
             mountpoint = "/nix";
             options.mountpoint = "legacy";
           };
           # The Safe Haven (Your SSH keys and config)
-          "safe/persist" = {
+          "persist" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/persist";
             options.mountpoint = "legacy";
           };
           # Your Docker Data
-          "safe/apps" = {
+          "apps" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/apps";
             options = {
@@ -198,7 +198,7 @@
             };
           };
           # Your Docker Compose Stacks
-          "safe/stacks" = {
+          "stacks" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/stacks";
             options = {

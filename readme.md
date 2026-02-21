@@ -26,7 +26,7 @@ sudo nix --experimental-features "nix-command flakes" run github:nix-community/d
 
 ## Impermanence
 ```bash
-sudo zfs snapshot poolname/local/root@blank
+sudo zfs snapshot bucket/root@blank
 ```
 
 ## Install
