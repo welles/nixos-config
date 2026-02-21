@@ -26,7 +26,18 @@
         group = "docker";
         mode = "0440";
       };
+      "cloudflare-ddns-token" = {
+        owner = "cloudflare-dyndns";
+      };
     };
+  };
+
+  services.cloudflare-dyndns = {
+    enable = true;
+    apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
+    domains = [
+      "jellyfin.welles.app"
+    ];
   };
 
   virtualisation.docker.enable = true;
