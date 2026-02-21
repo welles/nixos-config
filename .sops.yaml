@@ -1,0 +1,9 @@
+keys:
+  - &master_key ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII/C5ddBfXFWr1izDcxqqU9WfwpR/UcY5BQKpVsWMX8a
+creation_rules:
+  - path_regex: configurations/schokoladenelch/secrets.yaml$
+    key_groups:
+      - pgp: []
+        age: []
+        ssh:
+          - *master_key
