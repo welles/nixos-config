@@ -263,7 +263,9 @@
     prismlauncher
     remmina
     smartgit
+    sops
     spotify
+    ssh-to-age
     statix
     streamcontroller
     teams-for-linux
