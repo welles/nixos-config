@@ -6,8 +6,14 @@
 }: {
   networking.networkmanager.enable = true;
 
-  networking.firewall.allowedTCPPorts = [80 443];
-  networking.firewall.allowedUDPPorts = [443];
+  networking.firewall.allowedTCPPorts = [
+    80 # HTTP
+    443 # HTTPS
+  ];
+  networking.firewall.allowedUDPPorts = [
+    443 # HTTPS/3
+    1900 # UPnP
+  ];
 
   environment.systemPackages = with pkgs; [
     docker-compose
@@ -70,6 +76,8 @@
     serviceConfig = {
       Type = "oneshot";
       User = "root";
+      Restart = "on-failure";
+      RestartSec = "5m";
     };
   };
 
