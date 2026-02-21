@@ -8,6 +8,8 @@
 
   environment.systemPackages = with pkgs; [
     docker-compose
+    lazydocker
+    lazygit
     sops
     ssh-to-age
   ];
