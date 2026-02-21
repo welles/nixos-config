@@ -27,7 +27,7 @@
         mode = "0440";
       };
       "cloudflare-ddns-token" = {
-        owner = "cloudflare-dyndns";
+        mode = "0444";
       };
     };
   };
