@@ -56,6 +56,32 @@
     };
   };
 
+  systemd.services.upnp-port-forward = {
+    description = "Request UPnP Port Forwards for Caddy";
+    after = ["network-online.target"];
+    wants = ["network-online.target"];
+
+    script = ''
+      ${pkgs.miniupnpc}/bin/upnpc -r 80 80 TCP
+      ${pkgs.miniupnpc}/bin/upnpc -r 443 443 TCP
+      ${pkgs.miniupnpc}/bin/upnpc -r 443 443 UDP
+    '';
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+  };
+
+  systemd.timers.upnp-port-forward = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnBootSec = "2m";
+      OnUnitActiveSec = "1h";
+      Unit = "upnp-port-forward.service";
+    };
+  };
+
   virtualisation.docker.enable = true;
 
   services.zfs.autoSnapshot.enable = true;
