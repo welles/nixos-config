@@ -1,4 +1,15 @@
 {pkgs, ...}: {
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
+    settings = {
+      user.name = "Nico Welles";
+      user.email = "nico@welles.email";
+      init.defaultBranch = "main";
+      pull.rebase = true;
+    };
+  };
+
   programs.fastfetch.enable = true;
 
   programs.starship.enable = true;
