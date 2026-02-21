@@ -57,6 +57,7 @@
     apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
     domains = [
       "jellyfin.welles.app"
+      "jellyfin-accounts.welles.app"
     ];
   };
 
@@ -68,6 +69,11 @@
       "jellyfin.welles.app" = {
         extraConfig = ''
           reverse_proxy 127.0.0.1:50100
+        '';
+      };
+      "jellyfin-accounts.welles.app" = {
+        extraConfig = ''
+          reverse_proxy 127.0.0.1:50101
         '';
       };
     };
