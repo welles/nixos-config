@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -21,6 +25,8 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+
+    history.path = "${config.home.homeDirectory}/.local/share/zsh/history";
 
     initContent = "fastfetch";
 

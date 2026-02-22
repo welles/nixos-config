@@ -167,9 +167,9 @@
     ];
     users.${user} = {
       directories = [
+        ".local/share/zsh"
       ];
       files = [
-        ".zsh_history"
       ];
     };
   };
