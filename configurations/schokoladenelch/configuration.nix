@@ -20,12 +20,34 @@
   '';
 
   environment.systemPackages = with pkgs; [
+    bottom
     docker-compose
+    iotop
     lazydocker
     lazygit
+    smartmontools
     sops
     ssh-to-age
   ];
+
+  # TCP BBR optimization for better network throughput
+  boot.kernel.sysctl = {
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
+  };
+
+  # Automatic NixOS garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
+  services.fail2ban.enable = true;
+
+  # ZFS maintenance
+  services.zfs.autoScrub.enable = true;
+  services.zfs.trim.enable = true;
 
   programs.tmux = {
     enable = true;
