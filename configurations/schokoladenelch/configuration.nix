@@ -107,6 +107,8 @@
     };
   };
 
+  services.logind.settings.Login.KillUserProcesses = false;
+
   virtualisation.docker.enable = true;
 
   services.zfs.autoSnapshot.enable = true;
