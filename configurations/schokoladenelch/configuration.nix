@@ -80,6 +80,7 @@
     domains = [
       "jellyfin.welles.app"
       "jellyfin-accounts.welles.app"
+      "hello.welles.app"
     ];
   };
 
@@ -96,6 +97,11 @@
       "jellyfin-accounts.welles.app" = {
         extraConfig = ''
           reverse_proxy 127.0.0.1:50101
+        '';
+      };
+      "hello.welles.app" = {
+        extraConfig = ''
+          reverse_proxy 127.0.0.1:50200
         '';
       };
     };
