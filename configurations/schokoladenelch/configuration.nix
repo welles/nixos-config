@@ -86,6 +86,7 @@
       "jellyfin.welles.app"
       "jellyfin-accounts.welles.app"
       "hello.welles.app"
+      "navidrome.welles.app"
     ];
   };
 
@@ -107,6 +108,11 @@
       "hello.welles.app" = {
         extraConfig = ''
           reverse_proxy 10.0.0.20:50020
+        '';
+      };
+      "navidrome.welles.app" = {
+        extraConfig = ''
+          reverse_proxy 10.0.0.20:50030
         '';
       };
     };
