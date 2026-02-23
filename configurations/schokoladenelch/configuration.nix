@@ -96,17 +96,17 @@
     virtualHosts = {
       "jellyfin.welles.app" = {
         extraConfig = ''
-          reverse_proxy 10.0.0.20:50100
+          reverse_proxy 10.0.0.20:50010
         '';
       };
       "jellyfin-accounts.welles.app" = {
         extraConfig = ''
-          reverse_proxy 10.0.0.20:50101
+          reverse_proxy 10.0.0.20:50011
         '';
       };
       "hello.welles.app" = {
         extraConfig = ''
-          reverse_proxy 10.0.0.20:50200
+          reverse_proxy 10.0.0.20:50020
         '';
       };
     };
