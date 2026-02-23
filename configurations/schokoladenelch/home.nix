@@ -11,6 +11,7 @@
       user.email = "nico@welles.email";
       init.defaultBranch = "main";
       pull.rebase = true;
+      safe.directory = "/mnt/bucket/stacks";
     };
   };
 
