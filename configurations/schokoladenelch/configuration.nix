@@ -71,6 +71,11 @@
       "cloudflare-ddns-token" = {
         mode = "0444";
       };
+      "navidrome" = {
+        owner = "root";
+        group = "docker";
+        mode = "0440";
+      };
     };
   };
 
