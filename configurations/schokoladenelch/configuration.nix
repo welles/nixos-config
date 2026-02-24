@@ -81,6 +81,11 @@
         group = "docker";
         mode = "0440";
       };
+      "windows" = {
+        owner = "root";
+        group = "docker";
+        mode = "0440";
+      };
     };
   };
 
