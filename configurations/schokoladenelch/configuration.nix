@@ -224,6 +224,13 @@
     hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
   };
 
+  users.users.cloudflared = {
+    group = "cloudflared";
+    isSystemUser = true;
+  };
+
+  users.groups.cloudflared = {};
+
   users.users.${user} = {
     description = "Schokoladenelch";
     extraGroups = ["networkmanager" "wheel" "docker"];
