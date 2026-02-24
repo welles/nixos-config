@@ -71,6 +71,11 @@
       "cloudflare-ddns-token" = {
         mode = "0444";
       };
+      "cloudflare-tunnel-token" = {
+        owner = "cloudflared";
+        group = "cloudflared";
+        mode = "0440";
+      };
       "navidrome" = {
         owner = "root";
         group = "docker";
@@ -88,6 +93,23 @@
       "hello.welles.app"
       "navidrome.welles.app"
     ];
+  };
+
+  services.cloudflared.enable = true;
+
+  systemd.services.cloudflared-tunnel = {
+    description = "Cloudflare Tunnel (Remotely Managed)";
+    after = ["network-online.target"];
+    wants = ["network-online.target"];
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      ExecStart = "${pkgs.cloudflared}/bin/cloudflared tunnel --no-autoupdate run --token %d/token";
+      LoadCredential = "token:${config.sops.secrets."cloudflare-tunnel-token".path}";
+      Restart = "always";
+      RestartSec = "5s";
+      User = "cloudflared";
+      Group = "cloudflared";
+    };
   };
 
   services.caddy = {
