@@ -1,5 +1,9 @@
 name: Check NixOS Flake
 
+concurrency:
+  group: nix-flake
+  cancel-in-progress: false
+
 on:
   - push
   - pull_request

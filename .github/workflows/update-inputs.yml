@@ -1,5 +1,9 @@
 name: Update Flake Inputs
 
+concurrency:
+  group: nix-flake
+  cancel-in-progress: false
+
 on:
   schedule:
     - cron: '0 4 * * *'
@@ -41,5 +45,5 @@ jobs:
           title: "Update flake inputs"
           commit-message: "Update flake lock file"
           branch: "automated/update-flake-lock"
-          body: "Automated daily update of flake inputs."            
+          body: "Automated daily update of flake inputs."
           delete-branch: true
