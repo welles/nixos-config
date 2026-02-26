@@ -1,0 +1,42 @@
+name: Update Flake Inputs
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Update flake inputs
+        run: nix flake update
+
+      - name: Run nix flake check
+        run: nix flake check
+
+      - name: Evaluate configurations
+        run: |
+          for host in $(nix eval .#nixosConfigurations --apply builtins.attrNames --json | jq -r '.[]'); do
+            echo "Evaluating NixOS configuration for: $host"
+            nix build --dry-run ".#nixosConfigurations.\"$host\".config.system.build.toplevel"
+          done
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          title: "Update flake inputs"
+          commit-message: "Update flake lock file"
+          branch: "automated/update-flake-lock"
+          body: "Automated daily update of flake inputs."            
+          delete-branch: true
