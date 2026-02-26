@@ -188,6 +188,7 @@
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
+    };
   };
 
   environment.persistence."/mnt/bucket/persist" = {
