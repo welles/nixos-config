@@ -192,10 +192,15 @@
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
+      Macs = [
+        "hmac-sha2-512-etm@openssh.com"
+        "hmac-sha2-256-etm@openssh.com"
+        "umac-128-etm@openssh.com"
+        "hmac-sha2-512"   # Cloudflare required
+        "hmac-sha2-256"   # Cloudflare required
+      ];
     };
-    # Appends compatible MACs for Cloudflare's web-rendered terminal
     extraConfig = ''
-      MACs +hmac-sha2-512,hmac-sha2-256
       TrustedUserCAKeys /etc/ssh/cloudflare_ca.pub
     '';
   };
