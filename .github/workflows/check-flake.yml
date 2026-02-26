@@ -5,8 +5,11 @@ concurrency:
   cancel-in-progress: false
 
 on:
-  - push
-  - pull_request
+  push:
+    paths-ignore:
+      - '.github/**'
+      - '.gemini/**'
+  pull_request:
 
 jobs:
   setup:
