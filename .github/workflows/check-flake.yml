@@ -1,0 +1,25 @@
+name: Check NixOS Flake
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Run nix flake check
+        run: nix flake check
+
+      - name: Evaluate configurations
+        run: |
+          for host in $(nix eval .#nixosConfigurations --apply builtins.attrNames --json | jq -r '.[]'); do
+            echo "Evaluating NixOS configuration for: $host"
+            nix build --dry-run ".#nixosConfigurations.\"$host\".config.system.build.toplevel"
+          done
