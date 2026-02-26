@@ -189,6 +189,10 @@
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
     };
+    # Appends compatible MACs for Cloudflare's web-rendered terminal
+    extraConfig = ''
+      MACs +hmac-sha2-512,hmac-sha2-256
+    '';
   };
 
   environment.persistence."/mnt/bucket/persist" = {
