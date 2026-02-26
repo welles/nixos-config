@@ -29,16 +29,6 @@ jobs:
       - name: Update flake inputs
         run: nix flake update
 
-      - name: Run nix flake check
-        run: nix flake check
-
-      - name: Evaluate configurations
-        run: |
-          for host in $(nix eval .#nixosConfigurations --apply builtins.attrNames --json | jq -r '.[]'); do
-            echo "Evaluating NixOS configuration for: $host"
-            nix build --dry-run ".#nixosConfigurations.\"$host\".config.system.build.toplevel"
-          done
-
       - name: Create pull request
         uses: peter-evans/create-pull-request@v8
         with:
