@@ -196,8 +196,8 @@
     # Appends compatible MACs for Cloudflare's web-rendered terminal
     extraConfig = ''
       MACs +hmac-sha2-512,hmac-sha2-256
+      TrustedUserCAKeys /etc/ssh/cloudflare_ca.pub
     '';
-    TrustedUserCAKeys = "/etc/ssh/cloudflare_ca.pub";
   };
 
   environment.persistence."/mnt/bucket/persist" = {
