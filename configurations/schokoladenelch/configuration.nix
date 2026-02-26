@@ -181,6 +181,10 @@
 
   services.zfs.autoSnapshot.enable = true;
 
+  environment.etc."ssh/cloudflare_ca.pub".text = ''
+    ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBA92mOqqTOn2P28Tdx8E+zZNCGULyoU/NArDdtp0N7eFkriTnR2nZRNBk5z7ORr2b5uBupnKLCC3TkvGKuJ+tjU= open-ssh-ca@cloudflareaccess.org
+  '';
+
   services.openssh = {
     enable = true;
     openFirewall = true;
@@ -193,6 +197,7 @@
     extraConfig = ''
       MACs +hmac-sha2-512,hmac-sha2-256
     '';
+    TrustedUserCAKeys = "/etc/ssh/cloudflare_ca.pub";
   };
 
   environment.persistence."/mnt/bucket/persist" = {
@@ -250,6 +255,9 @@
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
+    ];
+    openssh.authorizedPrincipals = [
+      "nico@welles.email"
     ];
   };
 }
