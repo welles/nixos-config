@@ -257,7 +257,7 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     openssh.authorizedPrincipals = [
-      "nico@welles.email"
+      "nicodemus.welles"
     ];
   };
 }
