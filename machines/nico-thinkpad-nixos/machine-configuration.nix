@@ -74,7 +74,7 @@
     text = ''
       ${pkgs.networkmanager}/bin/nmcli connection reload
     '';
-    deps = ["sops-install"];
+    deps = ["setupSecrets"];
   };
 
   networking.networkmanager.ensureProfiles.profiles = {
