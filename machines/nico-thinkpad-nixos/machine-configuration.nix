@@ -12,6 +12,7 @@
     iio-sensor-proxy
     maliit-keyboard
     mobile-broadband-provider-info
+    wireguard-tools
   ];
 
   # services.fprintd.enable = true;
@@ -26,6 +27,47 @@
   };
 
   networking.modemmanager.enable = true;
+
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    secrets = {
+      "wireguard/private-key" = {};
+      "wireguard/preshared-key" = {};
+    };
+    templates."FritzBox.nmconnection" = {
+      path = "/etc/NetworkManager/system-connections/FritzBox.nmconnection";
+      mode = "0600";
+      content = ''
+        [connection]
+        id=FritzBox
+        uuid=63d76b1b-99f5-442c-80ce-8f4692cdc67b
+        type=wireguard
+
+        [wireguard]
+        private-key=''${config.sops.placeholder."wireguard/private-key"}
+
+        [wireguard-peer.7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=]
+        public-key=7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=
+        preshared-key=''${config.sops.placeholder."wireguard/preshared-key"}
+        allowed-ips=10.0.0.0/24;0.0.0.0/0;fdb0:b8e0:ea8f::/64;::/0;
+        endpoint=ekssr2zstzfswdnx.myfritz.net:52935
+        persistent-keepalive=25
+
+        [ipv4]
+        address1=10.0.0.203/24
+        dns=10.0.0.1;
+        dns-search=fritz.box;
+        method=manual
+
+        [ipv6]
+        address1=fdb0:b8e0:ea8f::203/64
+        dns=fdb0:b8e0:ea8f::464e:6dff:feda:e75d;
+        method=manual
+      '';
+    };
+  };
 
   networking.networkmanager.ensureProfiles.profiles = {
     "Telekom LTE" = {

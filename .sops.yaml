@@ -5,3 +5,7 @@ creation_rules:
     key_groups:
       - age:
           - *master_key
+  - path_regex: machines/nico-thinkpad-nixos/secrets.yaml$
+    key_groups:
+      - age:
+          - *master_key
