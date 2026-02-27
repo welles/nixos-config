@@ -36,7 +36,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [ 52935 ];
+    allowedUDPPorts = [52935];
   };
 
   sops = {
@@ -73,13 +73,13 @@
         persistent-keepalive=25
 
         [ipv4]
-        address1=10.0.0.203/24
+        address1=10.0.0.201/24
         dns=10.0.0.1;
         dns-search=fritz.box;
         method=manual
 
         [ipv6]
-        address1=fdb0:b8e0:ea8f::203/64
+        address1=fdb0:b8e0:ea8f::201/64
         dns=fdb0:b8e0:ea8f::464e:6dff:feda:e75d;
         method=manual
       '';
