@@ -44,13 +44,14 @@
         id=FritzBox
         uuid=63d76b1b-99f5-442c-80ce-8f4692cdc67b
         type=wireguard
+        autoconnect=false
 
         [wireguard]
-        private-key=''${config.sops.placeholder."wireguard/private-key"}
+        private-key=${config.sops.placeholder."wireguard/private-key"}
 
         [wireguard-peer.7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=]
         public-key=7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=
-        preshared-key=''${config.sops.placeholder."wireguard/preshared-key"}
+        preshared-key=${config.sops.placeholder."wireguard/preshared-key"}
         allowed-ips=10.0.0.0/24;0.0.0.0/0;fdb0:b8e0:ea8f::/64;::/0;
         endpoint=ekssr2zstzfswdnx.myfritz.net:52935
         persistent-keepalive=25
@@ -67,6 +68,13 @@
         method=manual
       '';
     };
+  };
+
+  system.activationScripts.reload-nm-connections = {
+    text = ''
+      ${pkgs.networkmanager}/bin/nmcli connection reload
+    '';
+    deps = ["sops-install"];
   };
 
   networking.networkmanager.ensureProfiles.profiles = {
