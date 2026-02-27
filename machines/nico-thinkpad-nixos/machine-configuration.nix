@@ -52,6 +52,7 @@
 
         [wireguard]
         private-key=${config.sops.placeholder."wireguard/private-key"}
+        mtu=1280
 
         [wireguard-peer.7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=]
         public-key=7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=
