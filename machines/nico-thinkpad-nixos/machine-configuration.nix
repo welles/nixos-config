@@ -47,6 +47,7 @@
         id=FritzBox
         uuid=63d76b1b-99f5-442c-80ce-8f4692cdc67b
         type=wireguard
+        interface-name=wg-fritz
         autoconnect=false
 
         [wireguard]
