@@ -28,11 +28,14 @@
 
   networking.modemmanager.enable = true;
 
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
+
   networking.firewall = {
     enable = true;
-    # Loosening reverse path filtering is MANDATORY for WireGuard full-tunnels (0.0.0.0/0)
     checkReversePath = "loose";
-    # Allow the FritzBox WireGuard port (standard for FritzBox is 52935)
     allowedUDPPorts = [ 52935 ];
   };
 
