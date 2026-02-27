@@ -32,6 +32,7 @@
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/var/lib/sops-nix/key.txt";
+    validateSopsFiles = true;
     secrets = {
       "wireguard/private-key" = {};
       "wireguard/preshared-key" = {};
