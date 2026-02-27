@@ -39,6 +39,15 @@
     allowedUDPPorts = [51820];
   };
 
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = true;
+      PermitRootLogin = "no";
+    };
+    openFirewall = true;
+  };
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
