@@ -39,6 +39,8 @@
     templates."FritzBox.nmconnection" = {
       path = "/etc/NetworkManager/system-connections/FritzBox.nmconnection";
       mode = "0600";
+      owner = "root";
+      group = "root";
       content = ''
         [connection]
         id=FritzBox
@@ -72,7 +74,7 @@
 
   system.activationScripts.reload-nm-connections = {
     text = ''
-      ${pkgs.networkmanager}/bin/nmcli connection reload
+      ${pkgs.networkmanager}/bin/nmcli connection reload || true
     '';
     deps = ["setupSecrets"];
   };
