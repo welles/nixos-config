@@ -36,7 +36,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [52935];
+    allowedUDPPorts = [51820];
   };
 
   sops = {
@@ -63,11 +63,14 @@
 
         [wireguard]
         private-key=${config.sops.placeholder."wireguard/private-key"}
+        private-key-flags=0
+        listen-port=51820
         mtu=1280
 
         [wireguard-peer.7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=]
         public-key=7FTjjjFqetEwCYZiwDFXDdYQYeEf9vThJyRVaxDmsXw=
         preshared-key=${config.sops.placeholder."wireguard/preshared-key"}
+        preshared-key-flags=0
         allowed-ips=10.0.0.0/24;0.0.0.0/0;fdb0:b8e0:ea8f::/64;::/0;
         endpoint=ekssr2zstzfswdnx.myfritz.net:52935
         persistent-keepalive=25
