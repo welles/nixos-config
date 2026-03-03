@@ -10,10 +10,8 @@
     }
   },
   "ui": {
-    "accessibility": {
-      "enableLoadingPhrases": false
-    },
-    "useAlternateBuffer": true
+    "useAlternateBuffer": true,
+    "loadingPhrases": "off"
   },
   "tools": {
     "shell": {
