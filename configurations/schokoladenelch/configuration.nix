@@ -92,6 +92,9 @@
         group = "docker";
         mode = "0440";
       };
+      "msmtp-password" = {
+        mode = "0444";
+      };
     };
   };
 
@@ -189,6 +192,36 @@
   virtualisation.docker.enable = true;
 
   services.zfs.autoSnapshot.enable = true;
+
+  services.netdata = {
+    enable = true;
+    configDir = {
+      "health_alarm_notify.conf" = pkgs.writeText "health_alarm_notify.conf" ''
+        SEND_EMAIL="YES"
+        DEFAULT_RECIPIENT_EMAIL="nico@welles.email"
+        EMAIL_SENDER="noreply@welles.email"
+      '';
+    };
+  };
+
+  programs.msmtp = {
+    enable = true;
+    setSendmail = true;
+    defaults = {
+      port = 465;
+      tls = true;
+      tls_starttls = false;
+      auth = true;
+    };
+    accounts = {
+      default = {
+        host = "smtp.ionos.de";
+        user = "noreply@welles.email";
+        from = "noreply@welles.email";
+        passwordeval = "cat ${config.sops.secrets."msmtp-password".path}";
+      };
+    };
+  };
 
   services.openssh = {
     enable = true;
