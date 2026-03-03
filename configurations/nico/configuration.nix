@@ -223,6 +223,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    inputs.llm-agents.packages.${pkgs.system}.gemini-cli
     alejandra
     bitwarden-desktop
     calibre
