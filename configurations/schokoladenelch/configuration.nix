@@ -205,6 +205,11 @@
         EMAIL_SENDER="noreply@welles.email"
       '';
     };
+    config = {
+      "plugin:freeipmi" = {
+        "command options" = "ignore 43,44";
+      };
+    };
   };
 
   programs.msmtp = {
