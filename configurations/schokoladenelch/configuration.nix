@@ -87,6 +87,11 @@
         group = "docker";
         mode = "0440";
       };
+      "ark_server" = {
+        owner = "root";
+        group = "docker";
+        mode = "0440";
+      };
     };
   };
 
@@ -154,9 +159,12 @@
     wants = ["network-online.target"];
 
     script = ''
-      ${pkgs.miniupnpc}/bin/upnpc -r 80 80 TCP
-      ${pkgs.miniupnpc}/bin/upnpc -r 443 443 TCP
-      ${pkgs.miniupnpc}/bin/upnpc -r 443 443 UDP
+      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP" -r 80 80 TCP
+      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTPS" -r 443 443 TCP
+      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP/3" -r 443 443 UDP
+      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50060 7777 UDP
+      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50061 7778 UDP
+      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50063 27015 UDP
     '';
 
     serviceConfig = {
