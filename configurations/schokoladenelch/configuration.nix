@@ -95,6 +95,11 @@
       "msmtp-password" = {
         mode = "0444";
       };
+      "kasm" = {
+        owner = "root";
+        group = "docker";
+        mode = "0440";
+      };
     };
   };
 
