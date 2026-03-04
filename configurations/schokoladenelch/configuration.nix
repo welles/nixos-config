@@ -259,6 +259,7 @@
       "/var/log"
       "/var/lib/caddy"
       "/var/lib/nixos"
+      "/var/lib/netdata"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
       "/var/lib/docker"
