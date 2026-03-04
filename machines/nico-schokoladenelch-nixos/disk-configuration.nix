@@ -265,6 +265,15 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+
+          "windows" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/tank/windows";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
     };
