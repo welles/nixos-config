@@ -274,6 +274,7 @@
     unrar
     usbutils
     video-compare
+    video2x
     vlc
     vscode
     wrtag
