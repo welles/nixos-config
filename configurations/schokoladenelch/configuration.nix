@@ -69,9 +69,9 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
-    age.keyFile = "/var/lib/sops-nix/key.txt";
+    age.keyFile = "/mnt/bucket/persist/var/lib/sops-nix/key.txt";
+    age.sshKeyPaths = [];
     validateSopsFiles = true;
-    # gnupg.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     secrets = {
       "cloudflare-ddns-token" = {
         mode = "0444";
