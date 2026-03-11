@@ -7,6 +7,11 @@
 }: let
   nfsShares = ["emulation" "temp"];
 in {
+  imports = [
+    ./hardware-configuration.nix
+    ./disk-configuration.nix
+  ];
+
   fileSystems = lib.genAttrs (map (share: "/mnt/user/${share}") nfsShares) (mountPoint: {
     device = "10.0.0.10:${mountPoint}";
     fsType = "nfs";

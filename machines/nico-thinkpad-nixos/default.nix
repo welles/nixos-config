@@ -5,6 +5,10 @@
   modulesPath,
   ...
 }: {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
   hardware.sensor.iio.enable = true;
 
   environment.systemPackages = with pkgs; [

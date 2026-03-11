@@ -5,6 +5,10 @@
   modulesPath,
   ...
 }: {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
   # services.fprintd = {
   #   enable = true;
   #   tod = {
