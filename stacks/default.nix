@@ -97,6 +97,11 @@
             })
             cfg.proxies;
         };
+        services.cloudflare-dyndns = {
+          enable = true;
+          apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
+          domains = lib.attrNames cfg.proxies;
+        };
       })
     ];
 in

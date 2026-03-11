@@ -107,17 +107,6 @@
     };
   };
 
-  services.cloudflare-dyndns = {
-    enable = true;
-    apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
-    domains = [
-      "jellyfin.welles.app"
-      "jellyfin-accounts.welles.app"
-      "hello.welles.app"
-      "navidrome.welles.app"
-    ];
-  };
-
   services.cloudflared.enable = true;
 
   systemd.services.cloudflared-tunnel = {
