@@ -1,0 +1,38 @@
+name: ark_server
+
+services:
+  ark_server:
+    container_name: ark_server
+    environment:
+      SESSION_NAME: "Nico's Server"
+      UPDATE_ON_START: true
+      BACKUP_ON_STOP: true
+    env_file:
+      - /run/secrets/ark_server
+    image: hermsi/ark-server:latest
+    networks:
+      ark_server:
+        ipv4_address: 10.10.6.10
+    ports:
+      # Port for connections from ARK game client
+      - 50060:7777/udp
+      # Raw UDP socket port (always Game client port +1)
+      - 50061:7778/udp
+      # RCON management port
+      - 50062:27020/tcp
+      # Steam's server-list port
+      - 50063:27015/udp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/ark_server/app:/app
+      - /mnt/tank/ark_server_backups:/home/steam/ARK-Backups
+
+networks:
+  ark_server:
+    name: ark_server
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.6.0/24

@@ -1,0 +1,35 @@
+name: webtop
+
+services:
+  webtop_ubuntu_xfce:
+    container_name: webtop_ubuntu_xfce
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      PUID: 1000
+      PGID: 100
+      TZ: Europe/Berlin
+      PIXELFLUX_WAYLAND: true
+      DRINODE: /dev/dri/renderD128
+      DRI_NODE: /dev/dri/renderD128
+    image: lscr.io/linuxserver/webtop:ubuntu-xfce
+    networks:
+      webtop:
+        ipv4_address: 10.10.8.10
+    ports:
+      - 50080:3000/tcp
+      - 50081:3001/tcp
+    restart: unless-stopped
+    shm_size: 1gb
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/webtop/ubuntu_xfce:/config:rw
+
+networks:
+  webtop:
+    name: webtop
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.8.0/24

@@ -1,0 +1,58 @@
+name: jellyfin
+
+services:
+  jellyfin_app:
+    container_name: jellyfin_app
+    devices:
+      - /dev/dri:/dev/dri
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8096/health"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 30s
+    image: jellyfin/jellyfin:latest
+    networks:
+      jellyfin:
+        ipv4_address: 10.10.1.10
+    ports:
+      - 50010:8096/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/jellyfin/config:/config:rw
+      - /mnt/bucket/apps/jellyfin/cache:/cache:rw
+      - /mnt/tank/movies:/media/movies:rw
+      - /mnt/tank/shows:/media/shows:rw
+
+  jellyfin_accounts:
+    container_name: jellyfin_accounts
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8056"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 30s
+    depends_on:
+      jellyfin_app:
+        condition: service_healthy
+    image: hrfee/jfa-go:latest
+    networks:
+      jellyfin:
+        ipv4_address: 10.10.1.20
+    ports:
+      - 50011:8056/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/jellyfin/accounts:/data:rw
+      - /mnt/bucket/apps/jellyfin/config:/jf:rw
+
+networks:
+  jellyfin:
+    name: jellyfin
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.1.0/24

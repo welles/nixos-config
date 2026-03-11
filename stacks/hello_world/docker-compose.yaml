@@ -1,0 +1,30 @@
+name: hello_world
+
+services:
+  hello_world:
+    container_name: hello_world
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 30s
+    image: nginx:latest
+    networks:
+      hello_world:
+        ipv4_address: 10.10.2.10
+    ports:
+      - 50020:80/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/hello-world:/usr/share/nginx/html:ro
+
+networks:
+  hello_world:
+    name: hello_world
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.2.0/24

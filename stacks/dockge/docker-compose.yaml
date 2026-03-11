@@ -1,0 +1,35 @@
+name: dockge
+
+services:
+  dockge:
+    container_name: dockge
+    environment:
+      DOCKGE_STACKS_DIR: /mnt/bucket/stacks
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 30s
+    image: louislam/dockge:latest
+    networks:
+      dockge:
+        ipv4_address: 10.10.4.10
+    ports:
+      - 50040:5001/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/stacks:/mnt/bucket/stacks
+      - /mnt/bucket/apps/dockge:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /run/secrets:/run/secrets:ro
+
+networks:
+  dockge:
+    name: dockge
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.4.0/24

@@ -1,0 +1,45 @@
+name: windows
+
+services:
+  windows:
+    cap_add:
+      - NET_ADMIN
+    container_name: windows
+    devices:
+      - /dev/dri
+      - /dev/kvm
+      - /dev/net/tun
+    environment:
+      VERSION: 2025
+      DISK_SIZE: 128G
+      DISK2_SIZE: 1024G
+      RAM_SIZE: 16G
+      CPU_CORES: 8
+      LANGUAGE: English
+      REGION: de-DE
+      KEYBOARD: de-DE
+    env_file:
+      - /run/secrets/windows
+    image: dockurr/windows:latest
+    networks:
+      windows:
+        ipv4_address: 10.10.5.10
+    ports:
+      - 50050:8006/tcp
+      - 50051:3389/tcp
+      - 50051:3389/udp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/windows/storage:/storage:rw
+      - /mnt/tank/windows/storage2:/storage2:rw
+      - /mnt/tank:/shared:rw
+
+networks:
+  windows:
+    name: windows
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.5.0/24

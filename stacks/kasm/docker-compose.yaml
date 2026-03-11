@@ -1,0 +1,30 @@
+name: kasm
+
+services:
+  kasm:
+    container_name: kasm
+    environment:
+      KASM_PORT: 443
+    env_file:
+      - /run/secrets/kasm
+    image: lscr.io/linuxserver/kasm:latest
+    networks:
+      kasm:
+        ipv4_address: 10.10.7.10
+    ports:
+      - 50070:3000/tcp
+      - 50071:443/tcp
+    privileged: true
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/kasm/data:/opt:rw
+
+networks:
+  kasm:
+    name: kasm
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.7.0/24
