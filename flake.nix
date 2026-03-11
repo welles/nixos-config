@@ -50,7 +50,7 @@
           inputs.sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           ./global.nix
-          ./configurations/${user}/configuration.nix
+          ./configurations/${user}
           ./machines/${hostname}/hardware-configuration.nix
           ./machines/${hostname}/machine-configuration.nix
           ./machines/${hostname}/disk-configuration.nix
