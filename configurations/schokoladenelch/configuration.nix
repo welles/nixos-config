@@ -37,7 +37,7 @@
 
   services.glances = {
     enable = true;
-    extraArgs = ["--webserver"];
+    extraArgs = ["--webserver --disable-check-update"];
   };
 
   # TCP BBR optimization for better network throughput
