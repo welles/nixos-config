@@ -7,24 +7,24 @@
   stacks = {
     ark_server = {
       enabled = true;
-      secret = "ark_server";
+      secrets = ["ark_server"];
       proxies = {};
     };
     dockge = {
       enabled = false;
-      secret = null;
+      secrets = [];
       proxies = {};
     };
     hello_world = {
       enabled = false;
-      secret = "hello-world";
+      secrets = ["hello-world"];
       proxies = {
         "hello.welles.app" = 50020;
       };
     };
     jellyfin = {
       enabled = true;
-      secret = null;
+      secrets = [];
       proxies = {
         "jellyfin.welles.app" = 50010;
         "jellyfin-accounts.welles.app" = 50011;
@@ -32,24 +32,24 @@
     };
     kasm = {
       enabled = false;
-      secret = "kasm";
+      secrets = ["kasm"];
       proxies = {};
     };
     navidrome = {
       enabled = true;
-      secret = "navidrome";
+      secrets = ["navidrome"];
       proxies = {
         "navidrome.welles.app" = 50030;
       };
     };
     webtop = {
       enabled = false;
-      secret = null;
+      secrets = [];
       proxies = {};
     };
     windows = {
       enabled = true;
-      secret = "windows";
+      secrets = ["windows"];
       proxies = {};
     };
   };
@@ -64,7 +64,7 @@
         systemd.services."docker-compose-${name}" = {
           description = "Docker Compose Stack - ${name}";
           requires = ["docker.service"];
-          after = ["docker.service"] ++ lib.optional (cfg.secret != null) "sops-nix.service";
+          after = ["docker.service"] ++ lib.optional (cfg.secrets != []) "sops-nix.service";
           wantedBy = ["multi-user.target"];
 
           script = ''
@@ -82,8 +82,13 @@
         };
       }
 
-      (lib.mkIf (cfg.secret != null) {
-        sops.secrets."${cfg.secret}".restartUnits = ["docker-compose-${name}.service"];
+      (lib.mkIf (cfg.secrets != []) {
+        sops.secrets = lib.genAttrs cfg.secrets (secretName: {
+          owner = "root";
+          group = "docker";
+          mode = "0440";
+          restartUnits = ["docker-compose-${name}.service"];
+        });
       })
 
       (lib.mkIf (cfg.proxies != {}) {

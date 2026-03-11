@@ -67,12 +67,6 @@
     validateSopsFiles = true;
     # gnupg.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     secrets = {
-      # This secret will be at /run/secrets/hello-world
-      "hello-world" = {
-        owner = "root";
-        group = "docker";
-        mode = "0440";
-      };
       "cloudflare-ddns-token" = {
         mode = "0444";
       };
@@ -81,28 +75,8 @@
         group = "cloudflared";
         mode = "0440";
       };
-      "navidrome" = {
-        owner = "root";
-        group = "docker";
-        mode = "0440";
-      };
-      "windows" = {
-        owner = "root";
-        group = "docker";
-        mode = "0440";
-      };
-      "ark_server" = {
-        owner = "root";
-        group = "docker";
-        mode = "0440";
-      };
       "msmtp-password" = {
         mode = "0444";
-      };
-      "kasm" = {
-        owner = "root";
-        group = "docker";
-        mode = "0440";
       };
     };
   };
