@@ -27,6 +27,10 @@
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -45,6 +49,7 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs hostname user stateVersion;};
         modules = [
+          inputs.determinate.nixosModules.default
           inputs.disko.nixosModules.disko
           inputs.impermanence.nixosModules.impermanence
           inputs.sops-nix.nixosModules.sops
