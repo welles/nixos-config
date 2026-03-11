@@ -5,6 +5,10 @@
   user,
   ...
 }: {
+  imports = [
+    ../../packages/eden
+  ];
+
   boot = {
     loader = {
       systemd-boot.enable = false;
