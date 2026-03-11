@@ -4,6 +4,10 @@
   user,
   ...
 }: {
+  imports = [
+    ../../stacks/default.nix
+  ];
+
   networking.networkmanager.enable = true;
 
   networking.firewall.allowedTCPPorts = [
@@ -136,29 +140,6 @@
   services.caddy = {
     enable = true;
     email = "admin@welles.email";
-
-    virtualHosts = {
-      "jellyfin.welles.app" = {
-        extraConfig = ''
-          reverse_proxy 10.0.0.20:50010
-        '';
-      };
-      "jellyfin-accounts.welles.app" = {
-        extraConfig = ''
-          reverse_proxy 10.0.0.20:50011
-        '';
-      };
-      "hello.welles.app" = {
-        extraConfig = ''
-          reverse_proxy 10.0.0.20:50020
-        '';
-      };
-      "navidrome.welles.app" = {
-        extraConfig = ''
-          reverse_proxy 10.0.0.20:50030
-        '';
-      };
-    };
   };
 
   systemd.services.upnp-port-forward = {
