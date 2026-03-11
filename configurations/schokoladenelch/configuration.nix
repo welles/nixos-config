@@ -25,6 +25,7 @@
 
   environment.systemPackages = with pkgs; [
     bottom
+    ctop
     docker-compose
     iotop
     lazydocker
