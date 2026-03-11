@@ -148,25 +148,6 @@
 
   services.zfs.autoSnapshot.enable = true;
 
-  services.netdata = {
-    enable = true;
-    package = pkgs.netdata.override {
-      withCloudUi = true;
-    };
-    configDir = {
-      "health_alarm_notify.conf" = pkgs.writeText "health_alarm_notify.conf" ''
-        SEND_EMAIL="YES"
-        DEFAULT_RECIPIENT_EMAIL="nico@welles.email"
-        EMAIL_SENDER="noreply@welles.email"
-      '';
-    };
-    config = {
-      "plugin:freeipmi" = {
-        "command options" = "ignore 43,44";
-      };
-    };
-  };
-
   programs.msmtp = {
     enable = true;
     setSendmail = true;
@@ -209,7 +190,6 @@
       "/var/log"
       "/var/lib/caddy"
       "/var/lib/nixos"
-      "/var/lib/netdata"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
       "/var/lib/docker"
