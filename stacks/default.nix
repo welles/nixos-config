@@ -11,12 +11,12 @@
       proxies = {};
     };
     dockge = {
-      enabled = true;
+      enabled = false;
       secret = null;
       proxies = {};
     };
     hello_world = {
-      enabled = true;
+      enabled = false;
       secret = "hello-world";
       proxies = {
         "hello.welles.app" = 50020;
@@ -31,7 +31,7 @@
       };
     };
     kasm = {
-      enabled = true;
+      enabled = false;
       secret = "kasm";
       proxies = {};
     };
@@ -43,7 +43,7 @@
       };
     };
     webtop = {
-      enabled = true;
+      enabled = false;
       secret = null;
       proxies = {};
     };
@@ -56,10 +56,8 @@
 
   activeStacks = lib.filterAttrs (name: cfg: cfg.enabled) stacks;
 
-  # 2. The Configuration Generator
   createStackConfig = name: cfg:
     lib.mkMerge [
-      # Base Stack Configuration (Files & Systemd)
       {
         environment.etc."docker-compose/${name}/docker-compose.yaml".source = ./${name}/docker-compose.yaml;
 
@@ -84,12 +82,10 @@
         };
       }
 
-      # Optional: Bind SOPS secret if defined
       (lib.mkIf (cfg.secret != null) {
         sops.secrets."${cfg.secret}".restartUnits = ["docker-compose-${name}.service"];
       })
 
-      # Optional: Configure Caddy Reverse Proxy if defined
       (lib.mkIf (cfg.proxies != {}) {
         services.caddy = {
           enable = true;
@@ -104,5 +100,4 @@
       })
     ];
 in
-  # 3. Merge everything into the final system configuration
   lib.mkMerge (lib.mapAttrsToList createStackConfig activeStacks)
