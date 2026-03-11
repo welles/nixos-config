@@ -9,11 +9,18 @@
     url = "https://git.eden-emu.dev/eden-emu/eden/releases/download/v${version}/Eden-Linux-v${version}-amd64-gcc-standard.AppImage";
     hash = "sha256-jPyPrVvG6pFex5MkUvRFhXcGo8FOI5iuODyLe/5FWlI=";
   };
-  appimageContents = pkgs.appimageTools.extractType2 {
-    inherit pname version src;
-  };
-  eden-emu = pkgs.appimageTools.wrapType2 {
-    inherit pname version src;
+
+  appimageContents =
+    pkgs.runCommand "${pname}-extracted" {
+      nativeBuildInputs = [pkgs.dwarfs];
+    } ''
+      mkdir -p $out
+      dwarfsextract -i ${src} -o $out --image-offset 1483248
+    '';
+
+  eden-emu = pkgs.appimageTools.wrapAppImage {
+    inherit pname version;
+    src = appimageContents;
     extraPkgs = pkgs:
       with pkgs; [
         libthai
