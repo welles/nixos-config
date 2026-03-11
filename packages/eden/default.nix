@@ -44,5 +44,7 @@
     };
   };
 in {
-  environment.systemPackages = [eden-emu];
+  environment.systemPackages = with pkgs; [
+    eden-emu
+  ];
 }
