@@ -35,6 +35,11 @@
     ssh-to-age
   ];
 
+  services.glances = {
+    enable = true;
+    extraArgs = ["--webserver"];
+  };
+
   # TCP BBR optimization for better network throughput
   boot.kernel.sysctl = {
     "net.core.default_qdisc" = "fq";
