@@ -63,7 +63,7 @@
 
         systemd.services."docker-compose-${name}" = {
           description = "Docker Compose Stack - ${name}";
-          requires = ["docker.service"];
+          requires = ["docker.service"] ++ lib.optional (cfg.secrets != []) "sops-nix.service";
           after = ["docker.service"] ++ lib.optional (cfg.secrets != []) "sops-nix.service";
           wantedBy = ["multi-user.target"];
 
