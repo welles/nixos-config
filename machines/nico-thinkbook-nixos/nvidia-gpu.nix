@@ -1,3 +1,10 @@
+# NVIDIA Hybrid GPU Configuration
+#
+# Sets up the NVIDIA RTX GPU in PRIME offload mode alongside the
+# integrated Intel GPU. The Intel iGPU handles the display by default;
+# the NVIDIA dGPU is available on demand via `nvidia-offload`. Uses
+# the open-source kernel module with 32-bit graphics support for
+# gaming compatibility.
 {config, ...}: {
   hardware.graphics = {
     enable = true;

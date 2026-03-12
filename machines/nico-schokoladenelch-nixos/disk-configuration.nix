@@ -1,3 +1,15 @@
+# Server Disk Layout (Disko)
+#
+# 6-disk ZFS setup managed declaratively by disko:
+#
+# "bucket" pool (SSD mirror / RAID1):
+#   - WD Black SN850X 1TB + SK Hynix P41 1TB
+#   - Datasets: root (ephemeral), nix, persist, apps
+#   - Each SSD has its own ESP (mirrored boot) and 32GB swap
+#
+# "tank" pool (HDD RAIDZ1 / ~48TB raw, ~32TB usable):
+#   - 4x Toshiba MG08 16TB enterprise drives
+#   - Datasets: movies, shows, music, ark_server_backups, windows
 {
   disko.devices = {
     disk = {

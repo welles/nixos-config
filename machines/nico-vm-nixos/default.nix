@@ -1,3 +1,9 @@
+# Development VM Machine Configuration
+#
+# Machine-specific settings for a QEMU/KVM virtual machine. Mounts
+# NFS shares from the home server (10.0.0.10) for emulation ROMs
+# and temporary files, with on-demand automounting and a 10-minute
+# idle timeout.
 {
   config,
   lib,

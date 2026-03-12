@@ -1,3 +1,9 @@
+# Mobile Broadband (LTE) Configuration
+#
+# Enables ModemManager and provisions a Telekom LTE connection profile.
+# Includes an FCC unlock script for the Quectel RM520N-GL modem
+# (USB ID 2c7c:030a) which is required before the modem can connect
+# to the cellular network.
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     mobile-broadband-provider-info

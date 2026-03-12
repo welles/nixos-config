@@ -1,3 +1,10 @@
+# Lenovo ThinkPad Machine Configuration
+#
+# Hardware-specific settings for the ThinkPad convertible laptop.
+# Enables IIO sensors for automatic screen rotation, a virtual
+# on-screen keyboard (Maliit), SSH for remote access, and sops-nix
+# for secret management (used by the WireGuard and mobile network
+# modules).
 {
   config,
   lib,
