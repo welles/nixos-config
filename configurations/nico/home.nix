@@ -11,6 +11,9 @@
 }: {
   imports = [
     ./plasma.nix
+    ../../packages/shell.nix
+    ../../packages/cli-tools.nix
+    ../../packages/git.nix
   ];
 
   # --- Appearance & Theming ---
@@ -56,17 +59,12 @@
   };
 
   # --- Git ---
-  # SSH-based commit signing via Bitwarden SSH agent.
+  # Extends shared git.nix with SSH commit signing via Bitwarden SSH
+  # agent and SmartGit submodule settings.
 
   programs.git = {
-    enable = true;
-    lfs.enable = true;
     settings = {
-      user.name = "Nico Welles";
-      user.email = "nico@welles.email";
       gpg.format = "ssh";
-      init.defaultBranch = "main";
-      pull.rebase = true;
       gui.pruneduringfetch = true;
       "smartgit \"submodule\"" = {
         fetchalways = true;
@@ -82,63 +80,24 @@
   };
 
   # --- Shell & CLI Tools ---
-  # Zsh with Oh-my-zsh, autosuggestions, and syntax highlighting.
-  # Starship prompt, eza (ls replacement), bat (cat replacement),
-  # ripgrep, fzf, yazi (file manager), and direnv for per-project
-  # Nix shells.
+  # Base shell and CLI tools are imported from packages/shell.nix and
+  # packages/cli-tools.nix. Below are nico-specific extensions.
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    initContent = "fastfetch";
-
-    oh-my-zsh = {
-      enable = true;
+  # Custom starship prompt symbols
+  programs.starship.settings = {
+    add_newline = false;
+    character = {
+      success_symbol = "[➜](bold green)";
+      error_symbol = "[➜](bold red)";
     };
   };
 
-  programs.starship = {
-    enable = true;
-    settings = {
-      add_newline = false;
-      character = {
-        success_symbol = "[➜](bold green)";
-        error_symbol = "[➜](bold red)";
-      };
-    };
-  };
+  programs.btop.settings.theme_background = false;
 
-  programs.eza = {
-    enable = true;
-    enableZshIntegration = true;
-    icons = "auto";
-    git = true;
-  };
-
+  # Desktop-specific CLI tools
   programs.bat.enable = true;
   programs.ripgrep.enable = true;
-  programs.fastfetch.enable = true;
   programs.konsole.enable = true;
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.yazi = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.btop = {
-    enable = true;
-    settings = {
-      theme_background = false;
-    };
-  };
 
   programs.direnv = {
     enable = true;
@@ -205,5 +164,4 @@
     '';
   };
 
-  programs.home-manager.enable = true;
 }

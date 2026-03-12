@@ -65,8 +65,6 @@
     '';
   };
 
-  programs.zsh.enable = true;
-
   # Automatic NixOS garbage collection
   nix.gc = {
     automatic = true;

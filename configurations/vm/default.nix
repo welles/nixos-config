@@ -10,6 +10,10 @@
   user,
   ...
 }: {
+  imports = [
+    ../../hardware/pipewire.nix
+  ];
+
   boot.loader = {
     efi.canTouchEfiVariables = true;
     grub = {
@@ -29,13 +33,10 @@
   ];
 
   programs.firefox.enable = true;
-  programs.zsh.enable = true;
-
-  networking.networkmanager.enable = true;
 
   security.polkit.enable = true;
-  security.rtkit.enable = true;
 
+  # Disable all power-saving targets (managed by hypervisor)
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
@@ -43,13 +44,6 @@
 
   services = {
     openssh.enable = true;
-
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
 
     qemuGuest.enable = true;
     spice-vdagentd.enable = true;

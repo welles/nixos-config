@@ -7,18 +7,16 @@
 # rule that lets members of the "wheel" group mount filesystems
 # without entering a password.
 {pkgs, ...}: {
+  imports = [
+    ../../hardware/avahi.nix
+  ];
+
   services.printing = {
     enable = true;
     drivers = [
       pkgs.gutenprint
       pkgs.gutenprintBin
     ];
-  };
-
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
   };
 
   services.flatpak.enable = true;

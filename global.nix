@@ -2,9 +2,10 @@
 #
 # Shared settings applied to every NixOS system in this flake:
 # hostname, state version, timezone (Europe/Berlin), German locale,
-# Nix flakes support, and home-manager integration. Each system's
-# user-specific home.nix is loaded automatically based on the
-# configuration name passed via the `user` argument.
+# Nix flakes support, NetworkManager, Zsh, and home-manager
+# integration. Each system's user-specific home.nix is loaded
+# automatically based on the configuration name passed via the
+# `user` argument.
 {
   inputs,
   hostname,
@@ -24,6 +25,10 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.auto-optimise-store = true;
 
+  # Every system uses NetworkManager and Zsh
+  networking.networkmanager.enable = true;
+  programs.zsh.enable = true;
+
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -35,6 +40,7 @@
         home.username = user;
         home.homeDirectory = "/home/${user}";
         home.stateVersion = stateVersion;
+        programs.home-manager.enable = true;
       }
     ];
   };

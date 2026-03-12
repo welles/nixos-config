@@ -1,11 +1,10 @@
 # Networking & Firewall
 #
-# Enables NetworkManager and opens HTTP/HTTPS ports for the Caddy
-# reverse proxy. Allows all traffic from the local 10.0.0.0/24 subnet.
-# Enables TCP BBR congestion control for improved throughput.
+# Opens HTTP/HTTPS ports for the Caddy reverse proxy, allows all
+# traffic from the local 10.0.0.0/24 subnet, and enables TCP BBR
+# congestion control for improved throughput. NetworkManager is
+# enabled globally in global.nix.
 {pkgs, ...}: {
-  networking.networkmanager.enable = true;
-
   networking.firewall.allowedTCPPorts = [
     80 # HTTP
     443 # HTTPS
