@@ -11,7 +11,7 @@
   ...
 }: {
   imports = [
-    ../../hardware/pipewire.nix
+    ../../modules/pipewire.nix
   ];
 
   boot.loader = {

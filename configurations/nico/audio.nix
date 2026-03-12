@@ -4,7 +4,7 @@
 # to reduce audio delay for desktop use.
 {...}: {
   imports = [
-    ../../hardware/pipewire.nix
+    ../../modules/pipewire.nix
   ];
 
   services.pipewire.extraConfig.pipewire."92-low-latency" = {

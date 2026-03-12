@@ -6,9 +6,9 @@
 # survives the ephemeral root rollback.
 {config, ...}: {
   imports = [
-    ../../packages/shell.nix
-    ../../packages/cli-tools.nix
-    ../../packages/git.nix
+    ../../modules/home/shell.nix
+    ../../modules/home/cli-tools.nix
+    ../../modules/home/git.nix
   ];
 
   # Allow git operations in the stacks directory owned by root

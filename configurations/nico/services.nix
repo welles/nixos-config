@@ -8,7 +8,7 @@
 # without entering a password.
 {pkgs, ...}: {
   imports = [
-    ../../hardware/avahi.nix
+    ../../modules/avahi.nix
   ];
 
   services.printing = {

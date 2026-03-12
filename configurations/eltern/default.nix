@@ -11,7 +11,7 @@
   ...
 }: {
   imports = [
-    ../../hardware/avahi.nix
+    ../../modules/avahi.nix
   ];
 
   boot = {
