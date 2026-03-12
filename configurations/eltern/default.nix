@@ -1,3 +1,9 @@
+# Eltern (Parents) Desktop Configuration
+#
+# Simplified desktop for non-technical users. Uses Cinnamon (easier
+# than Plasma) with auto-login, a quiet boot with Plymouth animation,
+# and Firefox set to autostart. Daily auto-upgrades keep the system
+# up to date without manual intervention.
 {
   pkgs,
   user,

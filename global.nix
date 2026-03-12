@@ -1,3 +1,10 @@
+# Global Configuration
+#
+# Shared settings applied to every NixOS system in this flake:
+# hostname, state version, timezone (Europe/Berlin), German locale,
+# Nix flakes support, and home-manager integration. Each system's
+# user-specific home.nix is loaded automatically based on the
+# configuration name passed via the `user` argument.
 {
   inputs,
   hostname,

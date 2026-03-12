@@ -1,3 +1,9 @@
+# Eden Emulator Package
+#
+# Wraps the Eden AppImage (a Nintendo Switch emulator derived from
+# Yuzu/Sudachi) using buildFHSEnv. The AppImage is extracted with
+# dwarfs and bundled with the required graphics, audio, and input
+# libraries.
 {
   pkgs,
   lib,

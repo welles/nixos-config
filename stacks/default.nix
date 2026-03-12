@@ -1,3 +1,16 @@
+# Docker Compose Stack Orchestration
+#
+# Declarative management of Docker Compose stacks as systemd services.
+# Each stack definition specifies:
+#   - enabled: whether the stack should be deployed
+#   - secrets: sops-nix secret names required by the stack
+#   - proxies: domain-to-port mappings for Caddy reverse proxy
+#
+# For enabled stacks, this module automatically:
+#   1. Copies the docker-compose.yaml to /etc/docker-compose/<name>/
+#   2. Creates a systemd service that runs `docker-compose up`
+#   3. Provisions sops secrets (accessible to the docker group)
+#   4. Configures Caddy virtual hosts and Cloudflare DDNS for proxied domains
 {
   config,
   pkgs,

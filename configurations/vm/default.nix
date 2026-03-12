@@ -1,3 +1,9 @@
+# Virtual Machine Configuration
+#
+# Lightweight VM setup with Xfce desktop, XRDP for remote access,
+# and auto-login. Sleep/suspend/hibernate are disabled since VMs
+# are managed by the hypervisor. Includes SPICE and QEMU guest
+# agents for clipboard sharing and display resizing.
 {
   config,
   pkgs,
