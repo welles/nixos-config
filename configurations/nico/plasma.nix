@@ -1,3 +1,12 @@
+# KDE Plasma 6 Desktop Configuration
+#
+# Declarative Plasma settings managed by plasma-manager. Configures:
+# - Power management profiles (AC, battery, low battery) with hibernate
+# - KWin effects (wobbly windows, blur, translucency, zoom)
+# - Fonts (Noto Sans / Fira Code Nerd Font)
+# - Breeze Dark workspace theme with Mountain wallpaper
+# - Left-aligned floating panel with Kickoff menu and system tray
+# - KZones window tiling layouts (50/50, fullscreen, thirds, sidebar)
 {pkgs, ...}: {
   programs.plasma = {
     enable = true;

@@ -1,3 +1,9 @@
+# Xbox One Wireless Dongle Firmware
+#
+# Enables the xone kernel driver for Xbox One controllers and
+# downloads the official Microsoft firmware for 4 dongle hardware
+# revisions (02e6, 02fe, 02f9, 091e) from Windows Update. The
+# firmware .cab files are extracted and installed to /lib/firmware/.
 {pkgs, ...}: {
   hardware.xone.enable = true;
 

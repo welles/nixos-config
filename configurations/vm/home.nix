@@ -1,3 +1,6 @@
+# VM Home Manager Configuration
+#
+# Minimal shell setup with Zsh, fastfetch, and Oh-my-zsh.
 {pkgs, ...}: {
   programs.fastfetch = {
     enable = true;

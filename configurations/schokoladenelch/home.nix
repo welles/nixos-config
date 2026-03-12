@@ -1,3 +1,8 @@
+# Schokoladenelch Home Manager Configuration
+#
+# Server user environment with Git, shell tools (Zsh, starship, eza,
+# fzf, yazi, btop), and persistent Zsh history stored on the ZFS
+# persist dataset so it survives the ephemeral root rollback.
 {
   pkgs,
   config,
