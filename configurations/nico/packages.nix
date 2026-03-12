@@ -60,12 +60,6 @@
     libreoffice
     naps2
 
-    # Gaming
-    openttd-jgrpp
-    oversteer
-    prismlauncher
-    (bottles.override {removeWarningPopup = true;})
-
     # System utilities
     easyeffects
     evtest
@@ -77,7 +71,6 @@
     mission-center
     nerd-fonts.fira-code
     pciutils
-    streamcontroller
     unrar
     usbutils
     xfsprogs

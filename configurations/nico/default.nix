@@ -13,7 +13,6 @@
     ./boot.nix
     ./desktop.nix
     ./audio.nix
-    ./hardware.nix
     ./virtualisation.nix
     ./services.nix
     ./packages.nix
@@ -44,7 +43,6 @@
     shell = pkgs.zsh;
   };
 
-  # Nix helper and browser
   programs.firefox.enable = true;
   programs.nh = {
     enable = true;
@@ -53,13 +51,6 @@
       extraArgs = "--keep-since 7d";
     };
     flake = "/home/${user}/nixos";
-  };
-
-  # Steam with open firewall for remote play and dedicated servers
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
   };
 
   environment.shellAliases = {

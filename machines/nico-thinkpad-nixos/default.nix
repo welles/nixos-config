@@ -18,6 +18,7 @@
     ./mobile-network.nix
   ];
 
+  hardware.bluetooth.enable = true;
   hardware.sensor.iio.enable = true;
 
   environment.systemPackages = with pkgs; [
