@@ -1,3 +1,7 @@
+# VM Disk Layout (Disko)
+#
+# Simple single-disk GPT layout for the virtual machine: 1GB EFI
+# system partition, 8GB swap, and the rest as ext4 root.
 {
   disko.devices = {
     disk = {

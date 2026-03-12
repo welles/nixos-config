@@ -1,3 +1,7 @@
+# Lenovo ThinkBook Machine Configuration
+#
+# Hardware-specific settings for the ThinkBook laptop. Imports the
+# NVIDIA hybrid GPU module for Intel + RTX offload rendering.
 {
   config,
   lib,

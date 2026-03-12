@@ -1,3 +1,8 @@
+# Parents' Laptop Disk Layout (Disko)
+#
+# Two-disk setup using the ASUS laptop's existing SSDs:
+#   - main (SanDisk 120GB): ext4 root partition
+#   - bootswap (SanDisk 24GB): 1GB EFI boot + remaining as swap
 {
   disko.devices = {
     disk = {

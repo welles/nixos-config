@@ -1,3 +1,10 @@
+# FritzBox WireGuard VPN
+#
+# Creates a NetworkManager WireGuard connection profile to the home
+# FritzBox router. The private key and preshared key are injected
+# from sops secrets into the .nmconnection file at activation time.
+# The tunnel routes all traffic through the home network and is not
+# set to autoconnect (must be activated manually).
 {
   config,
   pkgs,
