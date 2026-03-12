@@ -10,6 +10,10 @@
   hostname,
   ...
 }: {
+  imports = [
+    ../../hardware/avahi.nix
+  ];
+
   boot = {
     #kernelPackages = pkgs.linuxPackages_latest;
     loader = {
@@ -43,11 +47,6 @@
 
   services = {
     printing.enable = true;
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
     xserver = {
       enable = true;
       displayManager.lightdm.enable = true;

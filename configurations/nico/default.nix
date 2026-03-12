@@ -21,7 +21,6 @@
 
   # Disable waiting for NetworkManager at boot to speed up startup
   systemd.services.NetworkManager-wait-online.enable = false;
-  networking.networkmanager.enable = true;
 
   # German locale settings for all LC_* categories
   i18n.extraLocaleSettings = {
@@ -45,8 +44,7 @@
     shell = pkgs.zsh;
   };
 
-  # Shell and Nix helper
-  programs.zsh.enable = true;
+  # Nix helper and browser
   programs.firefox.enable = true;
   programs.nh = {
     enable = true;

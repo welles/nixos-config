@@ -1,62 +1,19 @@
 # Schokoladenelch Home Manager Configuration
 #
-# Server user environment with Git, shell tools (Zsh, starship, eza,
-# fzf, yazi, btop), and persistent Zsh history stored on the ZFS
-# persist dataset so it survives the ephemeral root rollback.
-{
-  pkgs,
-  config,
-  ...
-}: {
-  programs.git = {
-    enable = true;
-    lfs.enable = true;
-    settings = {
-      user.name = "Nico Welles";
-      user.email = "nico@welles.email";
-      init.defaultBranch = "main";
-      pull.rebase = true;
-      safe.directory = "/mnt/bucket/stacks";
-    };
-  };
+# Server user environment. Imports shared shell, CLI tools, and Git
+# modules. Extends Git with a safe directory for the stacks repo,
+# and stores Zsh history on the persistent ZFS dataset so it
+# survives the ephemeral root rollback.
+{config, ...}: {
+  imports = [
+    ../../packages/shell.nix
+    ../../packages/cli-tools.nix
+    ../../packages/git.nix
+  ];
 
-  programs.fastfetch.enable = true;
+  # Allow git operations in the stacks directory owned by root
+  programs.git.settings.safe.directory = "/mnt/bucket/stacks";
 
-  programs.starship.enable = true;
-
-  programs.btop.enable = true;
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    history.path = "${config.home.homeDirectory}/.local/share/zsh/history";
-
-    initContent = "fastfetch";
-
-    oh-my-zsh = {
-      enable = true;
-    };
-  };
-
-  programs.yazi = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.eza = {
-    enable = true;
-    enableZshIntegration = true;
-    icons = "auto";
-    git = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.home-manager.enable = true;
+  # Store Zsh history on the persistent dataset
+  programs.zsh.history.path = "${config.home.homeDirectory}/.local/share/zsh/history";
 }
