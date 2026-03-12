@@ -3,7 +3,7 @@
 # Minimal setup — imports the shared shell module for Zsh + fastfetch.
 {...}: {
   imports = [
-    ../../packages/shell.nix
+    ../../modules/home/shell.nix
   ];
 
   home.keyboard = null;

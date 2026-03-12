@@ -16,7 +16,7 @@
     ./networking.nix
     ./services.nix
     ./persistence.nix
-    ../../stacks/default.nix
+    ../../modules/stacks/default.nix
   ];
 
   networking.hostId = "c0ffee12";

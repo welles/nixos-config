@@ -6,8 +6,8 @@
 # in its full-feature HID mode.
 {pkgs, ...}: {
   imports = [
-    ../../packages/eden
-    ../../hardware/xone-dongle
+    ../../modules/eden
+    ../../modules/xone-dongle
   ];
 
   hardware.bluetooth.enable = true;
