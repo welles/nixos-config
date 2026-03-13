@@ -8,7 +8,7 @@
 #
 # For enabled stacks, this module automatically:
 #   1. Copies the docker-compose.yaml to /etc/docker-compose/<name>/
-#   2. Creates a systemd service that runs `docker-compose up`
+#   2. Creates a systemd service that runs `docker compose up`
 #   3. Provisions sops secrets (accessible to the docker group)
 #   4. Configures Caddy virtual hosts and Cloudflare DDNS for proxied domains
 {
@@ -81,11 +81,11 @@
           wantedBy = ["multi-user.target"];
 
           script = ''
-            ${pkgs.docker-compose}/bin/docker-compose -f /etc/docker-compose/${name}/docker-compose.yaml up --remove-orphans --pull always
+            ${pkgs.docker}/bin/docker compose -f /etc/docker-compose/${name}/docker-compose.yaml up --remove-orphans --pull always
           '';
 
           preStop = ''
-            ${pkgs.docker-compose}/bin/docker-compose -f /etc/docker-compose/${name}/docker-compose.yaml down
+            ${pkgs.docker}/bin/docker compose -f /etc/docker-compose/${name}/docker-compose.yaml down
           '';
 
           serviceConfig = {

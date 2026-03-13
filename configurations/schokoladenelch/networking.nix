@@ -1,10 +1,12 @@
 # Networking & Firewall
 #
-# Opens HTTP/HTTPS ports for the Caddy reverse proxy, allows all
-# traffic from the local 10.0.0.0/24 subnet, and enables TCP BBR
-# congestion control for improved throughput. NetworkManager is
-# enabled globally in global.nix.
+# Uses nftables with the NixOS firewall. Opens HTTP/HTTPS ports for
+# the Caddy reverse proxy, allows all traffic from the local
+# 10.0.0.0/24 subnet, and enables TCP BBR congestion control for
+# improved throughput. NetworkManager is enabled globally in global.nix.
 {pkgs, ...}: {
+  networking.nftables.enable = true;
+
   networking.firewall.allowedTCPPorts = [
     80 # HTTP
     443 # HTTPS
@@ -13,9 +15,8 @@
     443 # HTTP/3
   ];
 
-  networking.firewall.extraCommands = ''
-    # Allow incoming traffic from local network
-    iptables -I INPUT -s 10.0.0.0/24 -j ACCEPT
+  networking.firewall.extraInputRules = ''
+    ip saddr 10.0.0.0/24 accept
   '';
 
   # TCP BBR congestion control for better network throughput
