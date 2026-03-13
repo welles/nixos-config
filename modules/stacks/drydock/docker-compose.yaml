@@ -1,0 +1,31 @@
+name: drydock
+
+services:
+  drydock:
+    container_name: drydock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 30s
+    image: codeswhat/drydock:latest
+    networks:
+      drydock:
+        ipv4_address: 10.10.9.10
+    ports:
+      - 50090:3000/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/drydock:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  drydock:
+    name: drydock
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.9.0/24

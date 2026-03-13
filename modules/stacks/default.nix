@@ -28,6 +28,11 @@
       secrets = [];
       proxies = {};
     };
+    drydock = {
+      enabled = true;
+      secrets = [];
+      proxies = {};
+    };
     hello_world = {
       enabled = false;
       secrets = ["hello-world"];
