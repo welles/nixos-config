@@ -29,7 +29,7 @@
       proxies = {};
     };
     drydock = {
-      enabled = true;
+      enabled = false;
       secrets = [];
       proxies = {};
     };
