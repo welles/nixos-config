@@ -9,6 +9,12 @@ services:
       BACKUP_ON_STOP: true
     env_file:
       - /run/secrets/ark_server
+    healthcheck:
+      test: ["CMD", "arkmanager", "status"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 300s
     image: hermsi/ark-server:latest
     networks:
       ark_server:

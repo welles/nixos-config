@@ -7,6 +7,12 @@ services:
       KASM_PORT: 443
     env_file:
       - /run/secrets/kasm
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fks https://localhost:443/api/public/running_config || exit 1"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 300s
     image: lscr.io/linuxserver/kasm:latest
     networks:
       kasm:

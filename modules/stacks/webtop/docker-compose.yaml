@@ -12,6 +12,12 @@ services:
       PIXELFLUX_WAYLAND: true
       DRINODE: /dev/dri/renderD128
       DRI_NODE: /dev/dri/renderD128
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     image: lscr.io/linuxserver/webtop:ubuntu-xfce
     networks:
       webtop:
