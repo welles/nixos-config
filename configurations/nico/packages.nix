@@ -34,7 +34,6 @@
 
     # Internet & communication
     discord
-    firefox
     google-chrome
     mumble
     remmina

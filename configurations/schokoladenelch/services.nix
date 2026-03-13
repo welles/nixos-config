@@ -41,7 +41,7 @@
 
   services.glances = {
     enable = true;
-    extraArgs = ["--webserver --disable-check-update"];
+    extraArgs = ["--webserver" "--disable-check-update"];
   };
 
   programs.msmtp = {
