@@ -83,10 +83,4 @@
     dates = "daily";
     flake = "github:welles/nixos-config#${hostname}";
   };
-
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
-  };
 }

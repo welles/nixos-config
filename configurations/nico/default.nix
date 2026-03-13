@@ -44,14 +44,6 @@
   };
 
   programs.firefox.enable = true;
-  programs.nh = {
-    enable = true;
-    clean = {
-      enable = true;
-      extraArgs = "--keep-since 7d";
-    };
-    flake = "/home/${user}/nixos";
-  };
 
   environment.shellAliases = {
     ls-gpus = "lspci | grep -E 'VGA|3D'";

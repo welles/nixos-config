@@ -23,10 +23,20 @@
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.auto-optimise-store = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
 
   # Every system uses NetworkManager and Zsh
   networking.networkmanager.enable = true;
   programs.zsh.enable = true;
+
+  environment.shellAliases = {
+    nixos-switch = "sudo nixos-rebuild switch --flake github:welles/nixos-config#${hostname} --refresh";
+    nixos-boot = "sudo nixos-rebuild boot --flake github:welles/nixos-config#${hostname} --refresh";
+  };
 
   home-manager = {
     useGlobalPkgs = true;
