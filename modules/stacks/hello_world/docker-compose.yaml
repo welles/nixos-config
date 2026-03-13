@@ -4,7 +4,7 @@ services:
   hello_world:
     container_name: hello_world
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
+      test: ["CMD-SHELL", "ls /var/run/nginx.pid || exit 1"]
       interval: 30s
       retries: 3
       start_period: 30s

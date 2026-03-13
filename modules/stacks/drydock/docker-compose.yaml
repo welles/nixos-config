@@ -4,7 +4,7 @@ services:
   drydock:
     container_name: drydock
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       interval: 30s
       retries: 3
       start_period: 30s

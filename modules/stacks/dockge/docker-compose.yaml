@@ -6,7 +6,7 @@ services:
     environment:
       DOCKGE_STACKS_DIR: /mnt/bucket/stacks
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5001"]
+      test: ["CMD-SHELL", "wget -q --spider --proxy off localhost:5001 || exit 1"]
       interval: 30s
       retries: 3
       start_period: 30s
