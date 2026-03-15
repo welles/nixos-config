@@ -60,6 +60,13 @@
         "navidrome.welles.app" = 50030;
       };
     };
+    nextcloud = {
+      enabled = true;
+      secrets = ["nextcloud"];
+      proxies = {
+        "nextcloud.welles.app" = 50100;
+      };
+    };
     webtop = {
       enabled = false;
       secrets = [];

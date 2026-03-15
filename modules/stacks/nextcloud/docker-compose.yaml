@@ -1,0 +1,96 @@
+name: nextcloud
+
+services:
+  nextcloud_db:
+    container_name: nextcloud_db
+    environment:
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+    env_file:
+      - /run/secrets/nextcloud
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nextcloud"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: postgres:16-alpine
+    networks:
+      nextcloud:
+        ipv4_address: 10.10.10.20
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/nextcloud/db:/var/lib/postgresql/data
+
+  nextcloud_redis:
+    container_name: nextcloud_redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: redis:alpine
+    networks:
+      nextcloud:
+        ipv4_address: 10.10.10.30
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/nextcloud/redis:/data
+
+  nextcloud_app:
+    container_name: nextcloud_app
+    depends_on:
+      nextcloud_db:
+        condition: service_healthy
+      nextcloud_redis:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: nextcloud_db
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+      REDIS_HOST: nextcloud_redis
+      NEXTCLOUD_TRUSTED_DOMAINS: nextcloud.welles.app
+    env_file:
+      - /run/secrets/nextcloud
+    healthcheck:
+      test: ["CMD", "php", "occ", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: nextcloud:latest
+    networks:
+      nextcloud:
+        ipv4_address: 10.10.10.10
+    ports:
+      - 50100:80/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/nextcloud/app:/var/www/html
+      - /mnt/tank/nextcloud/data:/var/www/html/data
+
+  nextcloud_cron:
+    container_name: nextcloud_cron
+    depends_on:
+      nextcloud_app:
+        condition: service_healthy
+    image: nextcloud:latest
+    restart: unless-stopped
+    volumes:
+      - /mnt/bucket/apps/nextcloud/app:/var/www/html
+      - /mnt/tank/nextcloud/data:/var/www/html/data
+    entrypoint: /cron.sh
+    networks:
+      nextcloud:
+        ipv4_address: 10.10.10.40
+
+networks:
+  nextcloud:
+    name: nextcloud
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24
