@@ -46,16 +46,20 @@
   virtualisation.docker.enable = true;
 
   # System packages for server administration
-  environment.systemPackages = with pkgs; [
-    bottom
-    ctop
-    iotop
-    lazydocker
-    lazygit
-    smartmontools
-    sops
-    ssh-to-age
-  ];
+  environment.systemPackages = let
+    create-zfs-dataset = pkgs.writeShellScriptBin "create-zfs-dataset" (builtins.readFile ../../modules/scripts/create-zfs-dataset.sh);
+  in
+    with pkgs; [
+      create-zfs-dataset
+      bottom
+      ctop
+      iotop
+      lazydocker
+      lazygit
+      smartmontools
+      sops
+      ssh-to-age
+    ];
 
   programs.tmux = {
     enable = true;
