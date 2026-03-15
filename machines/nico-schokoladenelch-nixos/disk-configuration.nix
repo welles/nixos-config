@@ -277,6 +277,15 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+
+          "nextcloud" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/tank/nextcloud";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
     };
