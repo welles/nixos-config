@@ -123,6 +123,7 @@
           virtualHosts =
             lib.mapAttrs (domain: port: {
               extraConfig = ''
+                header Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
                 reverse_proxy 127.0.0.1:${toString port}
               '';
             })

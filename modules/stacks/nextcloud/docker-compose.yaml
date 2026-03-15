@@ -51,6 +51,10 @@ services:
       POSTGRES_USER: nextcloud
       REDIS_HOST: nextcloud_redis
       NEXTCLOUD_TRUSTED_DOMAINS: nextcloud.welles.app
+      TRUSTED_PROXIES: 10.10.10.1
+      OVERWRITEPROTOCOL: https
+      NC_default_phone_region: DE
+      MAINTENANCE_WINDOW_START: 1
     env_file:
       - /run/secrets/nextcloud
     healthcheck:
