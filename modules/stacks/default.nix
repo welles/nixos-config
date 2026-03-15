@@ -88,6 +88,7 @@
 
         systemd.services."docker-compose-${name}" = {
           description = "Docker Compose Stack - ${name}";
+          restartTriggers = [./${name}/docker-compose.yaml];
           requires = ["docker.service"];
           after = ["docker.service"] ++ (map (secret: "sops-nix-secret-${secret}.service") cfg.secrets);
           wantedBy = ["multi-user.target"];
