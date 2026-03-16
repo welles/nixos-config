@@ -10,13 +10,16 @@
   networking.firewall.allowedTCPPorts = [
     80 # HTTP
     443 # HTTPS
+    50051 # Windows RDP (Docker)
   ];
   networking.firewall.allowedUDPPorts = [
     443 # HTTP/3
+    50051 # Windows RDP (Docker)
   ];
 
   networking.firewall.extraInputRules = ''
     ip saddr 10.0.0.0/24 accept
+    ip saddr 10.10.0.0/16 accept # Allow internal Docker communication
   '';
 
   # TCP BBR congestion control for better network throughput
