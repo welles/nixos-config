@@ -64,7 +64,7 @@ services:
       GUACD_HOSTNAME: guacamole_daemon
       POSTGRESQL_HOSTNAME: guacamole_db
       POSTGRESQL_DATABASE: guacamole_db
-      POSTGRESQL_USER: guacamole
+      POSTGRESQL_USERNAME: guacamole
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/guacamole/ || exit 1"]
       interval: 30s
