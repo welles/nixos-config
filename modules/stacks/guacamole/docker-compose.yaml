@@ -28,7 +28,7 @@ services:
       start_period: 30s
     networks:
       guacamole:
-        ipv4_address: 10.10.6.10
+        ipv4_address: 10.10.11.10
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
@@ -46,7 +46,7 @@ services:
       start_period: 30s
     networks:
       guacamole:
-        ipv4_address: 10.10.6.20
+        ipv4_address: 10.10.11.20
     restart: unless-stopped
     stop_grace_period: 2m
 
@@ -73,7 +73,7 @@ services:
     image: guacamole/guacamole:latest
     networks:
       guacamole:
-        ipv4_address: 10.10.6.30
+        ipv4_address: 10.10.11.30
     ports:
       - 50060:8080/tcp
     restart: unless-stopped
@@ -89,4 +89,4 @@ networks:
     enable_ipv6: false
     ipam:
       config:
-        - subnet: 10.10.6.0/24
+        - subnet: 10.10.11.0/24
