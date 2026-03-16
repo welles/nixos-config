@@ -181,6 +181,7 @@
           description = "Restic Backup - ${name}";
           requires = ["docker.service"];
           after = ["docker.service"];
+          unitConfig.OnFailure = "restic-backup-notify-${name}.service";
 
           serviceConfig = {
             Type = "oneshot";
@@ -208,6 +209,28 @@
             composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
           in ''
             ${docker} compose -f ${composefile} up -d --remove-orphans
+          '';
+        };
+
+        systemd.services."restic-backup-notify-${name}" = {
+          description = "Restic Backup Failure Notification - ${name}";
+          serviceConfig.Type = "oneshot";
+          script = let
+            sendmail = "${pkgs.msmtp}/bin/sendmail";
+          in ''
+            ${sendmail} -t <<EOF
+            To: nico@welles.email
+            From: noreply@welles.email
+            Subject: [restic] Backup failed for stack ${name}
+
+            The restic backup for docker compose stack "${name}" failed.
+
+            Host: $(${pkgs.hostname}/bin/hostname)
+            Time: $(date --iso-8601=seconds)
+
+            Journal output (last 50 lines):
+            $(journalctl -u restic-backup-${name}.service -n 50 --no-pager)
+            EOF
           '';
         };
 
