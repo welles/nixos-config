@@ -1,0 +1,92 @@
+name: guacamole
+
+services:
+  guacamole_initdb:
+    container_name: guacamole_initdb
+    image: guacamole/guacamole:latest
+    command: ["/bin/sh", "-c", "/opt/guacamole/bin/initdb.sh --postgresql > /initdb/initdb.sql"]
+    restart: "no"
+    volumes:
+      - guacamole_initdb:/initdb:rw
+
+  guacamole_db:
+    container_name: guacamole_db
+    depends_on:
+      guacamole_initdb:
+        condition: service_completed_successfully
+    image: postgres:17
+    env_file:
+      - /run/secrets/guacamole
+    environment:
+      POSTGRES_DB: guacamole_db
+      POSTGRES_USER: guacamole
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U guacamole -d guacamole_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      guacamole:
+        ipv4_address: 10.10.11.10
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /mnt/bucket/apps/guacamole/db:/var/lib/postgresql/data:rw
+      - guacamole_initdb:/docker-entrypoint-initdb.d:ro
+
+  guacamole_daemon:
+    container_name: guacamole_daemon
+    image: guacamole/guacd:latest
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 4822 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      guacamole:
+        ipv4_address: 10.10.11.20
+    restart: unless-stopped
+    stop_grace_period: 2m
+
+  guacamole_app:
+    container_name: guacamole_app
+    depends_on:
+      guacamole_db:
+        condition: service_healthy
+      guacamole_daemon:
+        condition: service_healthy
+    env_file:
+      - /run/secrets/guacamole
+    environment:
+      GUACD_HOSTNAME: guacamole_daemon
+      POSTGRESQL_HOSTNAME: guacamole_db
+      POSTGRESQL_DATABASE: guacamole_db
+      POSTGRESQL_USER: guacamole
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/guacamole/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    image: guacamole/guacamole:latest
+    networks:
+      guacamole:
+        ipv4_address: 10.10.11.30
+    ports:
+      - 50110:8080/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+
+volumes:
+  guacamole_initdb:
+
+networks:
+  guacamole:
+    name: guacamole
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.11.0/24
