@@ -5,12 +5,17 @@
 #   - enabled: whether the stack should be deployed
 #   - secrets: sops-nix secret names required by the stack
 #   - proxies: domain-to-port mappings for Caddy reverse proxy
+#   - backup.enable: whether to back up this stack with restic
+#   - backup.paths: host paths to include in the backup
 #
 # For enabled stacks, this module automatically:
 #   1. Copies the docker-compose.yaml to /etc/docker-compose/<name>/
 #   2. Creates a systemd service that runs `docker compose up`
 #   3. Provisions sops secrets (accessible to the docker group)
 #   4. Configures Caddy virtual hosts and Cloudflare DDNS for proxied domains
+#   5. (If backup enabled) Creates a daily 3am restic backup timer that stops
+#      the stack, backs up to B2 bucket schokoladenelch-<name>, and restarts.
+#      Requires a sops secret "restic-<name>" with restic env vars.
 {
   config,
   pkgs,
@@ -22,16 +27,28 @@
       enabled = true;
       secrets = ["ark_server"];
       proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     dockge = {
       enabled = false;
       secrets = [];
       proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     drydock = {
       enabled = false;
       secrets = [];
       proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     guacamole = {
       enabled = true;
@@ -47,6 +64,10 @@
       proxies = {
         "hello.welles.app" = 50020;
       };
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     jellyfin = {
       enabled = true;
@@ -55,17 +76,29 @@
         "jellyfin.welles.app" = 50010;
         "jellyfin-accounts.welles.app" = 50011;
       };
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     kasm = {
       enabled = false;
       secrets = ["kasm"];
       proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     navidrome = {
       enabled = true;
       secrets = ["navidrome"];
       proxies = {
         "navidrome.welles.app" = 50030;
+      };
+      backup = {
+        enable = false;
+        paths = [];
       };
     };
     nextcloud = {
@@ -74,16 +107,28 @@
       proxies = {
         "nextcloud.welles.app" = 50100;
       };
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     webtop = {
       enabled = false;
       secrets = [];
       proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     windows = {
       enabled = true;
       secrets = ["windows"];
       proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
   };
 
@@ -123,6 +168,57 @@
           mode = "0440";
           restartUnits = ["docker-compose-${name}.service"];
         });
+      })
+
+      (lib.mkIf cfg.backup.enable {
+        sops.secrets."restic-${name}" = {
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
+
+        systemd.services."restic-backup-${name}" = {
+          description = "Restic Backup - ${name}";
+          requires = ["docker.service"];
+          after = ["docker.service"];
+
+          serviceConfig = {
+            Type = "oneshot";
+            EnvironmentFile = config.sops.secrets."restic-${name}".path;
+          };
+
+          script = let
+            docker = "${pkgs.docker}/bin/docker";
+            restic = "${pkgs.restic}/bin/restic";
+            composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
+            repo = "s3:https://s3.eu-central-003.backblazeb2.com/schokoladenelch-${name}";
+            pathArgs = lib.concatMapStringsSep " " (p: lib.escapeShellArg p) cfg.backup.paths;
+          in ''
+            ${docker} compose -f ${composefile} down
+
+            ${restic} -r ${repo} snapshots > /dev/null 2>&1 || ${restic} -r ${repo} init
+
+            ${restic} -r ${repo} backup ${pathArgs}
+
+            ${docker} compose -f ${composefile} up -d --remove-orphans
+          '';
+
+          preStop = let
+            docker = "${pkgs.docker}/bin/docker";
+            composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
+          in ''
+            ${docker} compose -f ${composefile} up -d --remove-orphans
+          '';
+        };
+
+        systemd.timers."restic-backup-${name}" = {
+          description = "Daily Restic Backup Timer - ${name}";
+          wantedBy = ["timers.target"];
+          timerConfig = {
+            OnCalendar = "*-*-* 03:00:00";
+            Persistent = true;
+          };
+        };
       })
 
       (lib.mkIf (cfg.proxies != {}) {
