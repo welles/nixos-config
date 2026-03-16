@@ -75,7 +75,7 @@ services:
       guacamole:
         ipv4_address: 10.10.11.30
     ports:
-      - 50060:8080/tcp
+      - 50110:8080/tcp
     restart: unless-stopped
     stop_grace_period: 2m
 
