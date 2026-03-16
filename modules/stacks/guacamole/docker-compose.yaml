@@ -1,8 +1,19 @@
 name: guacamole
 
 services:
+  guacamole_initdb:
+    container_name: guacamole_initdb
+    image: guacamole/guacamole:latest
+    command: ["/bin/sh", "-c", "/opt/guacamole/bin/initdb.sh --postgresql > /initdb/initdb.sql"]
+    restart: "no"
+    volumes:
+      - guacamole_initdb:/initdb:rw
+
   guacamole_db:
     container_name: guacamole_db
+    depends_on:
+      guacamole_initdb:
+        condition: service_completed_successfully
     image: postgres:17
     env_file:
       - /run/secrets/guacamole
@@ -22,7 +33,7 @@ services:
     stop_grace_period: 2m
     volumes:
       - /mnt/bucket/apps/guacamole/db:/var/lib/postgresql/data:rw
-      - /mnt/bucket/apps/guacamole/initdb:/docker-entrypoint-initdb.d:ro
+      - guacamole_initdb:/docker-entrypoint-initdb.d:ro
 
   guacamole_daemon:
     container_name: guacamole_daemon
@@ -67,6 +78,9 @@ services:
       - 50060:8080/tcp
     restart: unless-stopped
     stop_grace_period: 2m
+
+volumes:
+  guacamole_initdb:
 
 networks:
   guacamole:
