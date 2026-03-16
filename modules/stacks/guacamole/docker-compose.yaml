@@ -17,7 +17,7 @@ services:
         condition: service_completed_successfully
     image: postgres:17
     env_file:
-      - /run/secrets/guacamole
+      - /run/secrets/guacamole_db
     environment:
       POSTGRES_DB: guacamole_db
       POSTGRES_USER: guacamole
@@ -59,7 +59,7 @@ services:
       guacamole_daemon:
         condition: service_healthy
     env_file:
-      - /run/secrets/guacamole
+      - /run/secrets/guacamole_app
     environment:
       GUACD_HOSTNAME: guacamole_daemon
       POSTGRESQL_HOSTNAME: guacamole_db

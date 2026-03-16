@@ -35,7 +35,10 @@
     };
     guacamole = {
       enabled = true;
-      secrets = ["guacamole"];
+      secrets = [
+        "guacamole_app"
+        "guacamole_db"
+      ];
       proxies = {};
     };
     hello_world = {
