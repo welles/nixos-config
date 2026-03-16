@@ -33,6 +33,11 @@
       secrets = [];
       proxies = {};
     };
+    guacamole = {
+      enabled = true;
+      secrets = ["guacamole"];
+      proxies = {};
+    };
     hello_world = {
       enabled = false;
       secrets = ["hello-world"];

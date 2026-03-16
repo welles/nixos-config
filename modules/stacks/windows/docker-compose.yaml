@@ -31,7 +31,6 @@ services:
       windows:
         ipv4_address: 10.10.5.10
     ports:
-      - 50050:8006/tcp
       - 50051:3389/tcp
       - 50051:3389/udp
     restart: unless-stopped
