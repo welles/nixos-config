@@ -191,17 +191,20 @@
           script = let
             docker = "${pkgs.docker}/bin/docker";
             restic = "${pkgs.restic}/bin/restic";
+            flock = "${pkgs.util-linux}/bin/flock";
             composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
             repo = "s3:https://s3.eu-central-003.backblazeb2.com/schokoladenelch-${name}";
             pathArgs = lib.concatMapStringsSep " " (p: lib.escapeShellArg p) cfg.backup.paths;
           in ''
-            ${docker} compose -f ${composefile} down
+            exec ${flock} /run/lock/restic-backup.lock ${pkgs.bash}/bin/bash -c '
+              ${docker} compose -f ${composefile} down
 
-            ${restic} -r ${repo} snapshots > /dev/null 2>&1 || ${restic} -r ${repo} init
+              ${restic} -r ${repo} snapshots > /dev/null 2>&1 || ${restic} -r ${repo} init
 
-            ${restic} -r ${repo} backup ${pathArgs}
+              ${restic} -r ${repo} backup ${pathArgs}
 
-            ${docker} compose -f ${composefile} up -d --remove-orphans
+              ${docker} compose -f ${composefile} up -d --remove-orphans
+            '
           '';
 
           preStop = let
