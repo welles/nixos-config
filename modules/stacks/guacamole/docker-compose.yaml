@@ -4,6 +4,7 @@ services:
   guacamole_initdb:
     container_name: guacamole_initdb
     image: guacamole/guacamole:latest
+    user: root
     command: ["/bin/sh", "-c", "/opt/guacamole/bin/initdb.sh --postgresql > /initdb/initdb.sql"]
     restart: "no"
     volumes:
