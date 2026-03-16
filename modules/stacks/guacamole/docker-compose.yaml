@@ -65,8 +65,9 @@ services:
       POSTGRESQL_HOSTNAME: guacamole_db
       POSTGRESQL_DATABASE: guacamole_db
       POSTGRESQL_USERNAME: guacamole
+      WEBAPP_CONTEXT: ROOT
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/guacamole/ || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
