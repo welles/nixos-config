@@ -57,6 +57,10 @@
         "guacamole_db"
       ];
       proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
     };
     hello_world = {
       enabled = false;
