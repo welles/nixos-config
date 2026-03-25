@@ -105,8 +105,6 @@
     nix-direnv.enable = true;
   };
 
-  services.nextcloud-client.enable = true;
-
   # --- Session Environment ---
   # Sets VS Code as default editor, Konsole as default terminal,
   # enables Wayland for Electron apps via NIXOS_OZONE_WL, and
