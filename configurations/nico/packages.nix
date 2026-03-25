@@ -38,7 +38,6 @@
     mumble
     remmina
     spotify
-    teams-for-linux
     teamspeak6-client
 
     # Media & graphics
