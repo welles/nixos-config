@@ -35,7 +35,7 @@ if [ "$TOTAL" -eq 0 ]; then
     exit 0
 fi
 
-echo "Scanning $TOTAL MKV files for errors..."
+echo "Scanning $TOTAL MKV files..."
 echo "------------------------------------------------"
 
 for file in "${MKV_FILES[@]}"; do
@@ -43,13 +43,29 @@ for file in "${MKV_FILES[@]}"; do
     # Print progress with a truncated filename for a compact report
     printf "[%d/%d] %-60.60s " "$PROCESSED" "$TOTAL" "$(basename "$file")"
     
+    # Extract resolution and FPS
+    # Output format: width,height,avg_frame_rate (e.g., 1920,1080,24/1)
+    MEDIA_INFO=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,avg_frame_rate -of csv=p=0 "$file" 2>/dev/null)
+    IFS=',' read -r WIDTH HEIGHT FPS_RAW <<< "$MEDIA_INFO"
+    
+    # Convert FPS fraction to decimal if possible, otherwise keep raw
+    if [[ "$FPS_RAW" == *"/"* ]]; then
+        FPS=$(awk "BEGIN {printf \"%.2f\", $FPS_RAW}" 2>/dev/null || echo "$FPS_RAW")
+    else
+        FPS=$FPS_RAW
+    fi
+    
+    INFO_STR=""
+    [[ -n "$WIDTH" && -n "$HEIGHT" ]] && INFO_STR="${WIDTH}x${HEIGHT}"
+    [[ -n "$FPS" ]] && INFO_STR="${INFO_STR} @ ${FPS} fps"
+
     # 1. ffprobe checks if headers are readable and streams are valid
     # 2. ffmpeg attempts a quick decode of the first 5 seconds to ensure playback starts
     if ffprobe -v error -i "$file" &>/dev/null && \
        ffmpeg -v error -t 5 -i "$file" -f null - &>/dev/null; then
-        echo -e "\e[32m[PASS]\e[0m"
+        echo -e "\e[32m[PASS]\e[0m ($INFO_STR)"
     else
-        echo -e "\e[31m[FAIL]\e[0m"
+        echo -e "\e[31m[FAIL]\e[0m ($INFO_STR)"
         BROKEN_FILES+=("$file")
     fi
 done
