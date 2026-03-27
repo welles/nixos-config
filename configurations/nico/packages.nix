@@ -69,6 +69,7 @@
     unrar
     usbutils
     xfsprogs
+    systemctl-tui
 
     # KDE extensions
     kdePackages.kzones

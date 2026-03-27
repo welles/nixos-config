@@ -64,6 +64,7 @@
       smartmontools
       sops
       ssh-to-age
+      systemctl-tui
     ];
 
   programs.tmux = {
