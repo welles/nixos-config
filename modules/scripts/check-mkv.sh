@@ -56,7 +56,13 @@ for file in "${MKV_FILES[@]}"; do
     fi
     
     INFO_STR=""
-    [[ -n "$WIDTH" && -n "$HEIGHT" ]] && INFO_STR="${WIDTH}x${HEIGHT}"
+    if [[ -n "$WIDTH" && -n "$HEIGHT" ]]; then
+        if [[ "$WIDTH" == "1920" && "$HEIGHT" == "1080" ]]; then
+            INFO_STR="${WIDTH}x${HEIGHT}"
+        else
+            INFO_STR="\e[33m${WIDTH}x${HEIGHT}\e[0m"
+        fi
+    fi
     [[ -n "$FPS" ]] && INFO_STR="${INFO_STR} @ ${FPS} fps"
 
     # 1. ffprobe checks if headers are readable and streams are valid
