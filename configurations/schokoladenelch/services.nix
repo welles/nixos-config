@@ -38,7 +38,13 @@
     };
   };
 
-  services.cockpit.enable = true;
+  services.cockpit = {
+    enable = true;
+    settings.WebService = {
+      AllowUnencrypted = "true";
+      ProtocolHeader = "X-Forwarded-Proto";
+    };
+  };
 
   services.fail2ban.enable = true;
 
