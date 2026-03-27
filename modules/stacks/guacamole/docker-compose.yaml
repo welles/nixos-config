@@ -6,6 +6,7 @@ services:
     image: guacamole/guacamole:latest
     user: root
     command: ["/bin/sh", "-c", "/opt/guacamole/bin/initdb.sh --postgresql > /initdb/initdb.sql"]
+    network_mode: none
     restart: "no"
     volumes:
       - guacamole_initdb:/initdb:rw
