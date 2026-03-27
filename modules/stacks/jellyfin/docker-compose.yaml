@@ -27,12 +27,6 @@ services:
 
   jellyfin_accounts:
     container_name: jellyfin_accounts
-    healthcheck:
-      test: ["CMD-SHELL", "nc -z 127.0.0.1 8056 || exit 1"]
-      interval: 30s
-      retries: 3
-      start_period: 30s
-      timeout: 30s
     depends_on:
       jellyfin_app:
         condition: service_healthy

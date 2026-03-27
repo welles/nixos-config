@@ -21,12 +21,6 @@ services:
       KEYBOARD: de-DE
     env_file:
       - /run/secrets/windows
-    healthcheck:
-      test: ["CMD-SHELL", "grep -q '00000000:0D3D' /proc/net/tcp || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
     image: dockurr/windows:latest
     networks:
       windows:
