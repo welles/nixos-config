@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(alejandra:*)",
-      "Bash(nixos-rebuild dry-build:*)"
+      "Bash(nixos-rebuild dry-build:*)",
+      "Edit",
+      "Write"
     ]
   }
 }
