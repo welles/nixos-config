@@ -43,6 +43,7 @@
     settings.WebService = {
       AllowUnencrypted = "true";
       ProtocolHeader = "X-Forwarded-Proto";
+      Origins = "https://cockpit.welles.app wss://cockpit.welles.app";
     };
   };
 
