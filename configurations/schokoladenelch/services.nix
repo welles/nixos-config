@@ -12,6 +12,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   services.caddy = {
@@ -43,7 +44,7 @@
     settings.WebService = {
       AllowUnencrypted = "true";
       ProtocolHeader = "X-Forwarded-Proto";
-      Origins = "https://cockpit.welles.app wss://cockpit.welles.app";
+      Origins = lib.mkForce "https://cockpit.welles.app wss://cockpit.welles.app";
     };
   };
 
