@@ -14,6 +14,7 @@
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix
+    ../../modules/home/npm-packages.nix
   ];
 
   # --- Appearance & Theming ---
