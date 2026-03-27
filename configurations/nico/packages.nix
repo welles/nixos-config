@@ -8,9 +8,6 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-    # AI / LLM tools
-    inputs.llm-agents.packages.${stdenv.hostPlatform.system}.gemini-cli
-
     # Nix tooling
     alejandra
     deadnix
