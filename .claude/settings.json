@@ -6,5 +6,11 @@
       "Edit",
       "Write"
     ]
+  },
+  "mcpServers": {
+    "nixos": {
+      "command": "mcp-nixos",
+      "args": []
+    }
   }
 }
