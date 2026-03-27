@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(alejandra:*)",
+      "Bash(nixos-rebuild dry-build:*)"
+    ]
+  }
+}
