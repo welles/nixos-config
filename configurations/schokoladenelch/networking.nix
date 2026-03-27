@@ -35,12 +35,12 @@
     wants = ["network-online.target"];
 
     script = ''
-      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP" -r 80 80 TCP
-      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTPS" -r 443 443 TCP
-      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP/3" -r 443 443 UDP
-      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50060 7777 UDP
-      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50061 7778 UDP
-      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50063 27015 UDP
+      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP" -r 80 80 TCP || true
+      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTPS" -r 443 443 TCP || true
+      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP/3" -r 443 443 UDP || true
+      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50060 7777 UDP || true
+      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50061 7778 UDP || true
+      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50063 27015 UDP || true
     '';
 
     serviceConfig = {
