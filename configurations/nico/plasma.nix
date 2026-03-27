@@ -133,6 +133,9 @@
           "ImagePreview" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
         };
       };
+      "kwinrc"."NightColor" = {
+        "Active" = true;
+      };
       "kwinrc"."Plugins" = {
         "kzonesEnabled" = true;
       };
