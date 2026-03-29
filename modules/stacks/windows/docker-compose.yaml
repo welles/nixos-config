@@ -22,7 +22,7 @@ services:
       TZ: Europe/Berlin
     env_file:
       - /run/secrets/windows
-    image: dockurr/windows:latest
+    image: dockurr/windows:5.14
     networks:
       windows:
         ipv4_address: 10.10.5.10

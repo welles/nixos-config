@@ -14,7 +14,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 300s
-    image: lscr.io/linuxserver/kasm:latest
+    image: lscr.io/linuxserver/kasm:1.18.0
     networks:
       kasm:
         ipv4_address: 10.10.7.10
