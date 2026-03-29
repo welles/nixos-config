@@ -68,7 +68,7 @@
       proxies = {
         "jellyfin.welles.app" = 50010;
         "jellyfin-accounts.welles.app" = 50011;
-        "jellyseerr.welles.app" = 50012;
+        "jellyfin-requests.welles.app" = 50012;
       };
       backup = {
         enable = false;
