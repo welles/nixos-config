@@ -48,6 +48,25 @@ services:
       - /mnt/bucket/apps/jellyfin/accounts:/data:rw
       - /mnt/bucket/apps/jellyfin/config:/jf:rw
 
+  jellyseerr:
+    container_name: jellyseerr
+    depends_on:
+      jellyfin_app:
+        condition: service_healthy
+    environment:
+      TZ: Europe/Berlin
+    image: fallenbagel/jellyseerr:latest
+    networks:
+      jellyfin:
+        ipv4_address: 10.10.1.30
+    ports:
+      - 50012:5055/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/apps/jellyfin/jellyseerr:/app/config:rw
+
 networks:
   jellyfin:
     name: jellyfin
