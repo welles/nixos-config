@@ -5,6 +5,8 @@ services:
     container_name: jellyfin_app
     devices:
       - /dev/dri:/dev/dri
+    environment:
+      TZ: Europe/Berlin
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8096/health"]
       interval: 30s
@@ -20,6 +22,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/jellyfin/config:/config:rw
       - /mnt/bucket/apps/jellyfin/cache:/cache:rw
       - /mnt/tank/movies:/media/movies:rw
@@ -30,6 +33,8 @@ services:
     depends_on:
       jellyfin_app:
         condition: service_healthy
+    environment:
+      TZ: Europe/Berlin
     image: hrfee/jfa-go:latest
     networks:
       jellyfin:
@@ -39,6 +44,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/jellyfin/accounts:/data:rw
       - /mnt/bucket/apps/jellyfin/config:/jf:rw
 

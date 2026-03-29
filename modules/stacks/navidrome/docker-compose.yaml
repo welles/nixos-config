@@ -7,6 +7,7 @@ services:
       ND_BASEURL: https://navidrome.welles.app
       ND_SCANNER_PURGEMISSING: always
       ND_SCANNER_SCHEDULE: "0 5 * * *"
+      TZ: Europe/Berlin
     env_file:
       - /run/secrets/navidrome
     healthcheck:
@@ -24,6 +25,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/navidrome:/data
       - /mnt/tank/music:/music
 

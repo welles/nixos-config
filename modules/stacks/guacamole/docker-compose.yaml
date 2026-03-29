@@ -6,9 +6,12 @@ services:
     image: guacamole/guacamole:latest
     user: root
     command: ["/bin/sh", "-c", "/opt/guacamole/bin/initdb.sh --postgresql > /initdb/initdb.sql"]
+    environment:
+      TZ: Europe/Berlin
     network_mode: none
     restart: "no"
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - guacamole_initdb:/initdb:rw
 
   guacamole_db:
@@ -22,6 +25,7 @@ services:
     environment:
       POSTGRES_DB: guacamole_db
       POSTGRES_USER: guacamole
+      TZ: Europe/Berlin
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U guacamole -d guacamole_db"]
       interval: 30s
@@ -34,11 +38,14 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/guacamole/db:/var/lib/postgresql/data:rw
       - guacamole_initdb:/docker-entrypoint-initdb.d:ro
 
   guacamole_daemon:
     container_name: guacamole_daemon
+    environment:
+      TZ: Europe/Berlin
     image: guacamole/guacd:latest
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 4822 || exit 1"]
@@ -51,6 +58,8 @@ services:
         ipv4_address: 10.10.11.20
     restart: unless-stopped
     stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
   guacamole_app:
     container_name: guacamole_app
@@ -67,6 +76,7 @@ services:
       POSTGRESQL_DATABASE: guacamole_db
       POSTGRESQL_USERNAME: guacamole
       WEBAPP_CONTEXT: ROOT
+      TZ: Europe/Berlin
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
       interval: 30s
@@ -81,6 +91,8 @@ services:
       - 50110:8080/tcp
     restart: unless-stopped
     stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   guacamole_initdb:

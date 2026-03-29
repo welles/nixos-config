@@ -29,6 +29,7 @@ services:
     shm_size: 1gb
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/webtop/ubuntu_xfce:/config:rw
 
 networks:

@@ -3,6 +3,8 @@ name: drydock
 services:
   drydock:
     container_name: drydock
+    environment:
+      TZ: Europe/Berlin
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       interval: 30s
@@ -18,6 +20,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/drydock:/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
