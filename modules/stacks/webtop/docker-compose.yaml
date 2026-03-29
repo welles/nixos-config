@@ -18,7 +18,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    image: lscr.io/linuxserver/webtop:ubuntu-xfce-9ae7d609-ls267
+    image: lscr.io/linuxserver/webtop:ubuntu-xfce
     networks:
       webtop:
         ipv4_address: 10.10.8.10
