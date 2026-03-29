@@ -7,6 +7,7 @@ services:
       SESSION_NAME: "Nico's Server"
       UPDATE_ON_START: true
       BACKUP_ON_STOP: true
+      TZ: Europe/Berlin
     env_file:
       - /run/secrets/ark_server
     healthcheck:
@@ -31,6 +32,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/ark_server/app:/app
       - /mnt/tank/ark_server_backups:/home/steam/ARK-Backups
 

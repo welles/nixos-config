@@ -5,6 +5,7 @@ services:
     container_name: kasm
     environment:
       KASM_PORT: 443
+      TZ: Europe/Berlin
     env_file:
       - /run/secrets/kasm
     healthcheck:
@@ -24,6 +25,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/kasm/data:/opt:rw
 
 networks:

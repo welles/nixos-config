@@ -19,6 +19,7 @@ services:
       LANGUAGE: English
       REGION: de-DE
       KEYBOARD: de-DE
+      TZ: Europe/Berlin
     env_file:
       - /run/secrets/windows
     image: dockurr/windows:latest
@@ -31,6 +32,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/windows/storage:/storage:rw
       - /mnt/tank/windows/storage2:/storage2:rw
       - /mnt/tank:/shared:rw

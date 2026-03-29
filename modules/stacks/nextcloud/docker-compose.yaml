@@ -6,6 +6,7 @@ services:
     environment:
       POSTGRES_DB: nextcloud
       POSTGRES_USER: nextcloud
+      TZ: Europe/Berlin
     env_file:
       - /run/secrets/nextcloud
     healthcheck:
@@ -20,10 +21,13 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/nextcloud/db:/var/lib/postgresql/data
 
   nextcloud_redis:
     container_name: nextcloud_redis
+    environment:
+      TZ: Europe/Berlin
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -36,6 +40,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/nextcloud/redis:/data
 
   nextcloud_app:
@@ -55,6 +60,7 @@ services:
       OVERWRITEPROTOCOL: https
       NC_default_phone_region: DE
       MAINTENANCE_WINDOW_START: 1
+      TZ: Europe/Berlin
     env_file:
       - /run/secrets/nextcloud
     healthcheck:
@@ -72,6 +78,7 @@ services:
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/nextcloud/app:/var/www/html
       - /mnt/tank/nextcloud/data:/var/www/html/data
 
@@ -80,9 +87,12 @@ services:
     depends_on:
       nextcloud_app:
         condition: service_healthy
+    environment:
+      TZ: Europe/Berlin
     image: nextcloud:latest
     restart: unless-stopped
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/nextcloud/app:/var/www/html
       - /mnt/tank/nextcloud/data:/var/www/html/data
     entrypoint: /cron.sh
