@@ -19,7 +19,7 @@ services:
     depends_on:
       guacamole_initdb:
         condition: service_completed_successfully
-    image: postgres:17.9
+    image: postgres:18.3
     env_file:
       - /run/secrets/guacamole_db
     environment:
