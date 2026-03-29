@@ -35,12 +35,20 @@
     wants = ["network-online.target"];
 
     script = ''
-      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP" -r 80 80 TCP || true
-      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTPS" -r 443 443 TCP || true
-      ${pkgs.miniupnpc}/bin/upnpc -e "Caddy HTTP/3" -r 443 443 UDP || true
-      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50060 7777 UDP || true
-      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50061 7778 UDP || true
-      ${pkgs.miniupnpc}/bin/upnpc -e "ARK Server" -r 50063 27015 UDP || true
+      UPNPC="${pkgs.miniupnpc}/bin/upnpc"
+      echo "Requesting port forwards..."
+      $UPNPC -e "Caddy HTTP" -r 80 80 TCP || echo "Failed to forward 80 TCP"
+      sleep 2
+      $UPNPC -e "Caddy HTTPS" -r 443 443 TCP || echo "Failed to forward 443 TCP"
+      sleep 2
+      $UPNPC -e "Caddy HTTP/3" -r 443 443 UDP || echo "Failed to forward 443 UDP"
+      sleep 2
+      $UPNPC -e "ARK Server" -r 50060 7777 UDP || echo "Failed to forward 7777 UDP"
+      sleep 2
+      $UPNPC -e "ARK Server" -r 50061 7778 UDP || echo "Failed to forward 7778 UDP"
+      sleep 2
+      $UPNPC -e "ARK Server" -r 50063 27015 UDP || echo "Failed to forward 27015 UDP"
+      echo "Finished requesting port forwards."
     '';
 
     serviceConfig = {
