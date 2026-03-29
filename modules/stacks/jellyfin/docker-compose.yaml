@@ -48,8 +48,8 @@ services:
       - /mnt/bucket/apps/jellyfin/accounts:/data:rw
       - /mnt/bucket/apps/jellyfin/config:/jf:rw
 
-  jellyseerr:
-    container_name: jellyseerr
+  jellyfin_requests:
+    container_name: jellyfin_requests
     depends_on:
       jellyfin_app:
         condition: service_healthy
