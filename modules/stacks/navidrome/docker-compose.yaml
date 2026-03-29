@@ -16,7 +16,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-    image: deluan/navidrome:latest
+    image: deluan/navidrome:0.60.3
     networks:
       navidrome:
         ipv4_address: 10.10.3.10
