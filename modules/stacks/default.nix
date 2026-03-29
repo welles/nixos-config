@@ -62,17 +62,6 @@
         paths = [];
       };
     };
-    hello_world = {
-      enabled = false;
-      secrets = ["hello-world"];
-      proxies = {
-        "hello.welles.app" = 50020;
-      };
-      backup = {
-        enable = false;
-        paths = [];
-      };
-    };
     jellyfin = {
       enabled = true;
       secrets = [];
