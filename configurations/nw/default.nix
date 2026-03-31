@@ -13,6 +13,10 @@
   environment.systemPackages = with pkgs; [
     lazygit
     lazydocker
+    k9s
+    k0sctl
+    kubeseal
+    kubelogin
   ];
 
   environment.shellAliases = {
