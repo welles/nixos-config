@@ -17,6 +17,7 @@
     k0sctl
     kubeseal
     kubelogin
+    jetbrains.rider
   ];
 
   environment.shellAliases = {
