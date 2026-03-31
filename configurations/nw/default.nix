@@ -22,6 +22,7 @@
     jetbrains.rider
     dotnet-sdk_10
     nodejs
+    vscode
   ];
 
   environment.sessionVariables = {
