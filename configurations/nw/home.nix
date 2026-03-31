@@ -2,7 +2,7 @@
 #
 # Development environment for WSL. Imports shared shell, CLI tools,
 # and Git modules. Overrides the Git email to use the work identity.
-{...}: {
+{lib, ...}: {
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
@@ -10,5 +10,5 @@
   ];
 
   # Override default git email with work identity
-  programs.git.settings.user.email = "welles@mentz.net";
+  programs.git.settings.user.email = lib.mkForce "welles@mentz.net";
 }
