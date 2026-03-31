@@ -33,8 +33,8 @@
   };
 
   environment.shellAliases = {
-    ssh = "ssh.exe";
-    ssh-add = "ssh-add.exe";
+    ssh = "/mnt/c/Windows/System32/OpenSSH/ssh.exe";
+    ssh-add = "/mnt/c/Windows/System32/OpenSSH/ssh-add.exe";
   };
 
   users.users.${user} = {
