@@ -9,6 +9,17 @@
     ../../modules/home/git.nix
   ];
 
+  # NPM Settings
+  home.file.".npmrc".text = ''
+    prefix=${config.home.homeDirectory}/.npm-global
+    save-exact=true
+    save-prefix=
+  '';
+
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.npm-global/bin"
+  ];
+
   # Override default git email with work identity
   programs.git.settings.user.email = lib.mkForce "welles@mentz.net";
   programs.git.settings.core.sshCommand = "ssh.exe";
