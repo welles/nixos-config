@@ -12,6 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     lazygit
+    lazydocker
   ];
 
   environment.shellAliases = {
