@@ -14,6 +14,11 @@
     lazygit
   ];
 
+  environment.shellAliases = {
+    ssh = "ssh.exe";
+    ssh-add = "ssh-add.exe";
+  };
+
   users.users.${user} = {
     isNormalUser = true;
     initialPassword = "passwort";
