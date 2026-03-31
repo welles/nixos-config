@@ -1,9 +1,9 @@
 # NixOS Flake Configuration
 #
-# Manages 5 NixOS systems across desktops, laptops, a VM, and a home
-# server. Each system is assembled from shared global settings, a
-# user-specific configuration (configurations/<user>/), and a
-# machine-specific configuration (machines/<hostname>/).
+# Manages 6 NixOS systems across desktops, laptops, a VM, a home
+# server, and a WSL environment. Each system is assembled from shared
+# global settings, a user-specific configuration (configurations/<user>/),
+# and a machine-specific configuration (machines/<hostname>/).
 #
 # Systems:
 #   - nico-thinkpad-nixos:        ThinkPad laptop (KDE Plasma desktop)
@@ -11,6 +11,7 @@
 #   - nico-vm-nixos:              Development VM (Xfce + XRDP)
 #   - eltern-asus-nixos:          Parents' ASUS laptop (Cinnamon, auto-upgrade)
 #   - nico-schokoladenelch-nixos: Home server (ZFS, Docker, Caddy, impermanence)
+#   - nw-wsl-nixos:               Windows WSL2 development environment
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -74,6 +75,7 @@
       nico-vm-nixos = mkSystem "nico-vm-nixos" "vm";
       eltern-asus-nixos = mkSystem "eltern-asus-nixos" "eltern";
       nico-schokoladenelch-nixos = mkSystem "nico-schokoladenelch-nixos" "schokoladenelch";
+      nw-wsl-nixos = mkSystem "nw-wsl-nixos" "nw";
     };
   };
 }
