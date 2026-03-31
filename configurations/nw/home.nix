@@ -2,7 +2,7 @@
 #
 # Development environment for WSL. Imports shared shell, CLI tools,
 # and Git modules. Overrides the Git email to use the work identity.
-{lib, ...}: {
+{lib, config, ...}: {
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
