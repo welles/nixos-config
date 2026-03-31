@@ -27,4 +27,10 @@
     extraGroups = ["wheel" "docker"];
     shell = pkgs.zsh;
   };
+
+  users.users.nixos = {
+    isNormalUser = true;
+    description = "NixOS";
+    shell = pkgs.shadow; 
+  };
 }
