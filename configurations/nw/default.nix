@@ -23,6 +23,9 @@
     dotnet-sdk_10
     nodejs
     vscode
+    firefox-devedition
+    google-chrome
+    microsoft-edge
   ];
 
   environment.sessionVariables = {
