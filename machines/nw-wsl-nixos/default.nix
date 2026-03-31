@@ -16,7 +16,7 @@
 
   wsl.enable = true;
   wsl.defaultUser = user;
-  wsl.interop.appendWindowsPath = false;
+  wsl.interop.includePath = false;
 
   # WSL2 provides networking via a virtual adapter managed by Windows;
   # NetworkManager (enabled globally in global.nix) is not applicable here
