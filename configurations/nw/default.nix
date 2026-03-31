@@ -21,6 +21,7 @@
     kubelogin
     jetbrains.rider
     dotnet-sdk_10
+    nodejs
   ];
 
   environment.sessionVariables = {
