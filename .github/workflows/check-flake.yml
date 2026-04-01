@@ -1,15 +1,17 @@
 name: Check NixOS Flake
 
 concurrency:
-  group: nix-flake
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   push:
+    branches: [main]
     paths-ignore:
       - '.github/**'
       - '.gemini/**'
   pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   setup:
