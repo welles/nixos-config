@@ -61,7 +61,6 @@
       nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs hostname user stateVersion;};
         modules = [
-          {nixpkgs.hostPlatform = "x86_64-linux";}
           inputs.determinate.nixosModules.default
           inputs.disko.nixosModules.disko
           inputs.impermanence.nixosModules.impermanence
