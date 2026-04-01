@@ -12,6 +12,7 @@
   ...
 }: {
   imports = [
+    ../../modules/docker.nix
     ../../modules/networkmanager.nix
     ./boot.nix
     ./networking.nix
@@ -43,8 +44,6 @@
       };
     };
   };
-
-  virtualisation.docker.enable = true;
 
   # System packages for server administration
   environment.systemPackages = let
@@ -89,7 +88,7 @@
 
   users.users.${user} = {
     description = "Schokoladenelch";
-    extraGroups = ["wheel" "docker"];
+    extraGroups = ["wheel"];
     hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
     isNormalUser = true;
     shell = pkgs.zsh;
