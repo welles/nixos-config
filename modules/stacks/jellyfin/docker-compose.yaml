@@ -13,7 +13,7 @@ services:
       retries: 3
       start_period: 30s
       timeout: 30s
-    image: jellyfin/jellyfin:10.11.6
+    image: jellyfin/jellyfin:10.11.7
     networks:
       jellyfin:
         ipv4_address: 10.10.1.10
