@@ -8,7 +8,9 @@
   user,
   ...
 }: {
-  virtualisation.docker.enable = true;
+  imports = [
+    ../../modules/docker.nix
+  ];
 
   programs.nix-ld.enable = true;
 
@@ -41,7 +43,7 @@
     isNormalUser = true;
     initialPassword = "passwort";
     description = "NixOS";
-    extraGroups = ["wheel" "docker"];
+    extraGroups = ["wheel"];
     shell = pkgs.zsh;
   };
 }
