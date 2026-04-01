@@ -1,4 +1,4 @@
-# Desktop Environment Configuration
+# KDE Plasma 6 Desktop Environment
 #
 # Sets up KDE Plasma 6 as the desktop environment with SDDM as the
 # display manager (Wayland session). Configures XDG portals for

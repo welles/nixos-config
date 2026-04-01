@@ -5,7 +5,7 @@
 # across reboots by bind-mounting them from the persistent ZFS dataset.
 # This includes system state (logs, machine-id, SSH host keys), Docker
 # data, and the user's shell history.
-{user, ...}: {
+{...}: {
   fileSystems."/mnt/bucket/persist".neededForBoot = true;
   fileSystems."/mnt/bucket/apps".neededForBoot = true;
 
@@ -29,12 +29,11 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
-    users.${user} = {
+    users.schokoladenelch = {
       directories = [
         ".local/share/zsh"
       ];
-      files = [
-      ];
+      files = [];
     };
   };
 }

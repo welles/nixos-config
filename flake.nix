@@ -1,14 +1,12 @@
 # NixOS Flake Configuration
 #
-# Manages 6 NixOS systems across desktops, laptops, a VM, a home
-# server, and a WSL environment. Each system is assembled from shared
-# global settings, a user-specific configuration (configurations/<user>/),
-# and a machine-specific configuration (machines/<hostname>/).
+# Manages 6 NixOS systems across desktops, laptops, a home server,
+# and a WSL environment. Each system lives in hosts/<hostname>/ and
+# is fully self-contained — it imports only the modules it needs.
 #
 # Systems:
 #   - nico-thinkpad-nixos:        ThinkPad laptop (KDE Plasma desktop)
 #   - nico-thinkbook-nixos:       ThinkBook laptop (KDE Plasma + NVIDIA)
-#   - nico-vm-nixos:              Development VM (Xfce + XRDP)
 #   - eltern-asus-nixos:          Parents' ASUS laptop (Cinnamon, auto-upgrade)
 #   - nico-schokoladenelch-nixos: Home server (ZFS, Docker, Caddy, impermanence)
 #   - nixos-wsl-nixos:            Windows WSL2 development environment
@@ -52,34 +50,47 @@
     self,
     nixpkgs,
     home-manager,
-    plasma-manager,
-    impermanence,
-    sops-nix,
     ...
   } @ inputs: let
     stateVersion = "25.11";
-    mkSystem = hostname: user:
-      nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs hostname user stateVersion;};
-        modules = [
-          inputs.determinate.nixosModules.default
-          inputs.disko.nixosModules.disko
-          inputs.impermanence.nixosModules.impermanence
-          inputs.sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          ./global.nix
-          ./configurations/${user}
-          ./machines/${hostname}
-        ];
-      };
+    commonModules = [
+      inputs.determinate.nixosModules.default
+      inputs.disko.nixosModules.disko
+      inputs.impermanence.nixosModules.impermanence
+      inputs.sops-nix.nixosModules.sops
+      home-manager.nixosModules.home-manager
+    ];
   in {
     nixosConfigurations = {
-      nico-thinkpad-nixos = mkSystem "nico-thinkpad-nixos" "nico";
-      nico-thinkbook-nixos = mkSystem "nico-thinkbook-nixos" "nico";
-      eltern-asus-nixos = mkSystem "eltern-asus-nixos" "eltern";
-      nico-schokoladenelch-nixos = mkSystem "nico-schokoladenelch-nixos" "schokoladenelch";
-      nixos-wsl-nixos = mkSystem "nixos-wsl-nixos" "nixos";
-      nixos-virtualbox-nixos = mkSystem "nixos-virtualbox-nixos" "nixos";
+      nico-thinkpad-nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs stateVersion;};
+        modules = commonModules ++ [./hosts/nico-thinkpad-nixos];
+      };
+
+      nico-thinkbook-nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs stateVersion;};
+        modules = commonModules ++ [./hosts/nico-thinkbook-nixos];
+      };
+
+      eltern-asus-nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs stateVersion;};
+        modules = commonModules ++ [./hosts/eltern-asus-nixos];
+      };
+
+      nico-schokoladenelch-nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs stateVersion;};
+        modules = commonModules ++ [./hosts/nico-schokoladenelch-nixos];
+      };
+
+      nixos-wsl-nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs stateVersion;};
+        modules = commonModules ++ [./hosts/nixos-wsl-nixos];
+      };
+
+      nixos-virtualbox-nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs stateVersion;};
+        modules = commonModules ++ [./hosts/nixos-virtualbox-nixos];
+      };
     };
   };
 }

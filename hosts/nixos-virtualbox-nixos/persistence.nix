@@ -3,7 +3,7 @@
 # The ZFS root dataset is rolled back to a blank snapshot on every boot.
 # This module bind-mounts directories and files from /persist to their
 # expected locations, preserving state across reboots.
-{user, ...}: {
+{...}: {
   fileSystems."/persist".neededForBoot = true;
 
   environment.persistence."/persist" = {
@@ -23,7 +23,7 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
-    users.${user} = {
+    users.nixos = {
       directories = [
         ".local/share/zsh"
       ];

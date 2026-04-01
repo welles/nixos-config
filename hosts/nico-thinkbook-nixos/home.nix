@@ -10,7 +10,7 @@
   ...
 }: {
   imports = [
-    ./plasma.nix
+    ../../modules/home/plasma.nix
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix
@@ -18,9 +18,6 @@
   ];
 
   # --- Appearance & Theming ---
-  # Unified dark theme across GTK, Qt, and GNOME/Flatpak applications.
-  # Uses KDE Breeze Dark with a matching cursor theme.
-
   fonts.fontconfig.enable = true;
 
   home.pointerCursor = {
@@ -60,9 +57,6 @@
   };
 
   # --- Git ---
-  # Extends shared git.nix with SSH commit signing via Bitwarden SSH
-  # agent and SmartGit submodule settings.
-
   programs.git = {
     settings = {
       gpg.format = "ssh";
@@ -81,10 +75,6 @@
   };
 
   # --- Shell & CLI Tools ---
-  # Base shell and CLI tools are imported from packages/shell.nix and
-  # packages/cli-tools.nix. Below are nico-specific extensions.
-
-  # Custom starship prompt symbols
   programs.starship.settings = {
     add_newline = false;
     character = {
@@ -95,7 +85,6 @@
 
   programs.btop.settings.theme_background = false;
 
-  # Desktop-specific CLI tools
   programs.bat.enable = true;
   programs.ripgrep.enable = true;
   programs.konsole.enable = true;
@@ -107,10 +96,6 @@
   };
 
   # --- Session Environment ---
-  # Sets VS Code as default editor, Konsole as default terminal,
-  # enables Wayland for Electron apps via NIXOS_OZONE_WL, and
-  # points SSH_AUTH_SOCK to the Bitwarden SSH agent socket.
-
   home.sessionVariables = {
     SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
     TERMINAL = "konsole";
@@ -123,10 +108,7 @@
     "${config.home.homeDirectory}/.npm-global/bin"
   ];
 
-  # --- Autostart & Desktop Entries ---
-  # Bitwarden starts at login for password/SSH agent access.
-  # Remmina applet is hidden from autostart by default.
-
+  # --- Autostart ---
   xdg.configFile."autostart/bitwarden.desktop".text = ''
     [Desktop Entry]
     Type=Application
@@ -145,10 +127,7 @@
     Hidden=true
   '';
 
-  # --- npm Configuration ---
-  # Global npm prefix to avoid permission issues; exact versions
-  # by default to prevent accidental minor/patch bumps.
-
+  # --- npm ---
   home.file.".npmrc".text = ''
     prefix=${config.home.homeDirectory}/.npm-global
     save-exact=true
@@ -156,8 +135,6 @@
   '';
 
   # --- Cleanup ---
-  # Remove stale GTK 2.0 config files that conflict with home-manager.
-
   home.activation = {
     cleanGtkConfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
       rm -f ${config.home.homeDirectory}/.gtkrc-2.0

@@ -1,4 +1,4 @@
-# Eltern (Parents) Desktop Configuration
+# Parents' ASUS Laptop Configuration
 #
 # Simplified desktop for non-technical users. Uses Cinnamon (easier
 # than Plasma) with auto-login, a quiet boot with Plymouth animation,
@@ -6,17 +6,24 @@
 # up to date without manual intervention.
 {
   pkgs,
-  user,
-  hostname,
+  inputs,
+  stateVersion,
   ...
 }: {
   imports = [
+    ./hardware-configuration.nix
+    ./disk-configuration.nix
+    ../../modules/base.nix
     ../../modules/networkmanager.nix
     ../../modules/avahi.nix
   ];
 
+  networking.hostName = "eltern-asus-nixos";
+  system.stateVersion = stateVersion;
+
+  services.libinput.enable = true;
+
   boot = {
-    #kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       timeout = 0;
       grub = {
@@ -54,7 +61,7 @@
     };
     displayManager.autoLogin = {
       enable = true;
-      user = user;
+      user = "eltern";
     };
   };
 
@@ -71,7 +78,7 @@
     Exec=${pkgs.firefox}/bin/firefox
   '';
 
-  users.users.${user} = {
+  users.users.eltern = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Moni & Gerri";
@@ -82,6 +89,22 @@
     enable = true;
     allowReboot = false;
     dates = "daily";
-    flake = "github:welles/nixos-config#${hostname}";
+    flake = "github:welles/nixos-config#eltern-asus-nixos";
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
+    extraSpecialArgs = {inherit inputs stateVersion;};
+    sharedModules = [
+      {
+        home.username = "eltern";
+        home.homeDirectory = "/home/eltern";
+        home.stateVersion = stateVersion;
+        programs.home-manager.enable = true;
+      }
+    ];
+    users.eltern = import ./home.nix;
   };
 }

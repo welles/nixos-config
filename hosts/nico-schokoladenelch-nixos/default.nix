@@ -1,25 +1,31 @@
-# Schokoladenelch Server Configuration
+# Schokoladenelch Home Server Configuration
 #
 # Home server running on ZFS with an ephemeral root (impermanence).
 # Hosts Docker-based services (Jellyfin, Navidrome, ARK, Windows VM)
 # behind a Caddy reverse proxy, accessible remotely via a Cloudflare
-# tunnel. Pulls together boot, networking, services, and persistence
-# modules.
+# tunnel.
 {
+  inputs,
   config,
   pkgs,
-  user,
+  stateVersion,
   ...
 }: {
   imports = [
-    ../../modules/docker.nix
-    ../../modules/networkmanager.nix
+    ./hardware-configuration.nix
+    ./disk-configuration.nix
     ./boot.nix
     ./networking.nix
     ./services.nix
     ./persistence.nix
+    ../../modules/base.nix
+    ../../modules/docker.nix
+    ../../modules/networkmanager.nix
     ../../modules/stacks/default.nix
   ];
+
+  networking.hostName = "nico-schokoladenelch-nixos";
+  system.stateVersion = stateVersion;
 
   networking.hostId = "c0ffee12";
 
@@ -86,7 +92,7 @@
 
   users.groups.cloudflared = {};
 
-  users.users.${user} = {
+  users.users.schokoladenelch = {
     description = "Schokoladenelch";
     extraGroups = ["wheel"];
     hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
@@ -95,5 +101,22 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
+  };
+
+  # --- Home Manager ---
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "backup";
+    extraSpecialArgs = {inherit inputs stateVersion;};
+    sharedModules = [
+      {
+        home.username = "schokoladenelch";
+        home.homeDirectory = "/home/schokoladenelch";
+        home.stateVersion = stateVersion;
+        programs.home-manager.enable = true;
+      }
+    ];
+    users.schokoladenelch = import ./home.nix;
   };
 }
