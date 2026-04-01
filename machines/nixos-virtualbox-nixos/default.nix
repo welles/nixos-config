@@ -2,10 +2,10 @@
   imports = [
     ./hardware-configuration.nix
     ./disk-configuration.nix
+    ./boot.nix
+    ./desktop.nix
+    ./persistence.nix
   ];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # VirtualBox Guest Additions: shared clipboard, folder sharing,
   # mouse integration, and automatic screen resize.
