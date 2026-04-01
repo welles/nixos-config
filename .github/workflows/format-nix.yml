@@ -1,0 +1,44 @@
+name: Format Nix Files
+
+concurrency:
+  group: nix-format
+  cancel-in-progress: false
+
+on:
+  workflow_run:
+    workflows: ["Update Flake Inputs"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+
+      - name: Format nix files with alejandra
+        run: |
+          find . -name "*.nix" \
+            -not -name "hardware-configuration.nix" \
+            -not -path "./.git/*" \
+            -print0 \
+          | xargs -0 nix run nixpkgs#alejandra --
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Format nix files with alejandra"
+          file_pattern: "**/*.nix"
