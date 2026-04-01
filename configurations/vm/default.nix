@@ -11,6 +11,7 @@
   ...
 }: {
   imports = [
+    ../../modules/networkmanager.nix
     ../../modules/pipewire.nix
   ];
 
@@ -79,7 +80,7 @@
 
   users.users.${user} = {
     description = "VM User";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["wheel"];
     initialPassword = "password";
     isNormalUser = true;
     shell = pkgs.zsh;

@@ -10,6 +10,7 @@
   ...
 }: {
   imports = [
+    ../../modules/networkmanager.nix
     ./boot.nix
     ./desktop.nix
     ./audio.nix
@@ -39,7 +40,7 @@
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Nico";
-    extraGroups = ["networkmanager" "wheel" "docker" "libvirtd"];
+    extraGroups = ["wheel" "docker" "libvirtd"];
     shell = pkgs.zsh;
   };
 
