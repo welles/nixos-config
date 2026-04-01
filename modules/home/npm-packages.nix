@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.programs.npm-packages;
-  installScript = ../scripts/npm-global-install.sh;
+  installScript = ./npm-global-install.sh;
 in {
   options.programs.npm-packages = {
     packages = lib.mkOption {
