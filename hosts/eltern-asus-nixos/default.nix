@@ -5,8 +5,8 @@
 # and Firefox set to autostart. Daily auto-upgrades keep the system
 # up to date without manual intervention.
 {
-  pkgs,
   inputs,
+  pkgs,
   stateVersion,
   ...
 }: {
@@ -82,7 +82,7 @@
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Moni & Gerri";
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "networkmanager"];
   };
 
   system.autoUpgrade = {
@@ -105,6 +105,6 @@
         programs.home-manager.enable = true;
       }
     ];
-    users.eltern = import ./home.nix;
+    users.eltern = {...}: {};
   };
 }

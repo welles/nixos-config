@@ -1,8 +1,7 @@
-# Shared Docker Configuration
+# Docker Configuration
 #
-# Enables the Docker daemon and adds the system user to the docker
-# group for unprivileged socket access.
-{user, ...}: {
+# Enables the Docker daemon. Add the relevant user to the "docker"
+# group in the host's user definition for unprivileged socket access.
+{...}: {
   virtualisation.docker.enable = true;
-  users.users.${user}.extraGroups = ["docker"];
 }

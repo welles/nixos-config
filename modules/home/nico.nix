@@ -1,8 +1,8 @@
 # Nico's Home Manager Configuration
 #
-# User-level configuration for the desktop environment, shell, Git,
-# theming, and autostart applications. Managed by home-manager as
-# a NixOS module.
+# User-level configuration shared across all of Nico's desktop machines.
+# Covers theming, Git signing, shell extensions, session environment,
+# autostart entries, and npm settings.
 {
   config,
   pkgs,
@@ -10,11 +10,11 @@
   ...
 }: {
   imports = [
-    ../../modules/home/plasma.nix
-    ../../modules/home/shell.nix
-    ../../modules/home/cli-tools.nix
-    ../../modules/home/git.nix
-    ../../modules/home/npm-packages.nix
+    ./plasma.nix
+    ./shell.nix
+    ./cli-tools.nix
+    ./git.nix
+    ./npm-packages.nix
   ];
 
   # --- Appearance & Theming ---
@@ -30,18 +30,12 @@
 
   gtk = {
     enable = true;
-
     theme = {
       name = "Breeze-Dark";
       package = pkgs.kdePackages.breeze-gtk;
     };
-
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
   };
 
   qt = {
@@ -50,11 +44,7 @@
     style.name = "breeze";
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-    };
-  };
+  dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
 
   # --- Git ---
   programs.git = {
@@ -74,7 +64,7 @@
     };
   };
 
-  # --- Shell & CLI Tools ---
+  # --- Shell ---
   programs.starship.settings = {
     add_newline = false;
     character = {
@@ -84,7 +74,6 @@
   };
 
   programs.btop.settings.theme_background = false;
-
   programs.bat.enable = true;
   programs.ripgrep.enable = true;
   programs.konsole.enable = true;
@@ -104,9 +93,7 @@
     NIXOS_OZONE_WL = "1";
   };
 
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.npm-global/bin"
-  ];
+  home.sessionPath = ["${config.home.homeDirectory}/.npm-global/bin"];
 
   # --- Autostart ---
   xdg.configFile."autostart/bitwarden.desktop".text = ''
@@ -135,10 +122,8 @@
   '';
 
   # --- Cleanup ---
-  home.activation = {
-    cleanGtkConfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
-      rm -f ${config.home.homeDirectory}/.gtkrc-2.0
-      rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
-    '';
-  };
+  home.activation.cleanGtkConfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+    rm -f ${config.home.homeDirectory}/.gtkrc-2.0
+    rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
+  '';
 }

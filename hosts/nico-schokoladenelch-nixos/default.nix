@@ -18,10 +18,10 @@
     ./networking.nix
     ./services.nix
     ./persistence.nix
+    ./stacks/default.nix
     ../../modules/base.nix
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
-    ../../modules/stacks/default.nix
   ];
 
   networking.hostName = "nico-schokoladenelch-nixos";
@@ -29,7 +29,6 @@
 
   networking.hostId = "c0ffee12";
 
-  # Secrets management via sops-nix
   sops = {
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
@@ -37,26 +36,21 @@
     age.sshKeyPaths = [];
     validateSopsFiles = true;
     secrets = {
-      "cloudflare-ddns-token" = {
-        mode = "0444";
-      };
+      "cloudflare-ddns-token".mode = "0444";
       "cloudflare-tunnel-token" = {
         owner = "cloudflared";
         group = "cloudflared";
         mode = "0440";
       };
-      "msmtp-password" = {
-        mode = "0444";
-      };
+      "msmtp-password".mode = "0444";
     };
   };
 
-  # System packages for server administration
   environment.systemPackages = let
-    create-zfs-dataset = pkgs.writeShellScriptBin "create-zfs-dataset" (builtins.readFile ../../modules/scripts/create-zfs-dataset.sh);
+    create-zfs-dataset = pkgs.writeShellScriptBin "create-zfs-dataset" (builtins.readFile ./scripts/create-zfs-dataset.sh);
     check-mkv = pkgs.writeShellScriptBin "check-mkv" ''
       export PATH=${pkgs.lib.makeBinPath [pkgs.ffmpeg pkgs.findutils pkgs.coreutils]}:$PATH
-      ${builtins.readFile ../../modules/scripts/check-mkv.sh}
+      ${builtins.readFile ./scripts/check-mkv.sh}
     '';
   in
     with pkgs; [
@@ -75,26 +69,20 @@
 
   programs.tmux = {
     enable = true;
-    extraConfig = ''
-      set -g mouse on
-    '';
+    extraConfig = "set -g mouse on";
   };
 
-  # User accounts
-  users.users.root = {
-    hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
-  };
+  users.users.root.hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
 
   users.users.cloudflared = {
     group = "cloudflared";
     isSystemUser = true;
   };
-
   users.groups.cloudflared = {};
 
   users.users.schokoladenelch = {
     description = "Schokoladenelch";
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "docker" "networkmanager"];
     hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -103,7 +91,6 @@
     ];
   };
 
-  # --- Home Manager ---
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;

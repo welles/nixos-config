@@ -23,15 +23,11 @@
   networking.hostName = "nixos-virtualbox-nixos";
   system.stateVersion = stateVersion;
 
-  # VirtualBox Guest Additions: shared clipboard, folder sharing,
-  # mouse integration, and automatic screen resize.
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.guest.dragAndDrop = true;
 
-  # Display driver order suited for VirtualBox virtual GPU.
   services.xserver.videoDrivers = ["virtualbox" "vmware" "modesetting"];
 
-  # DHCP for VirtualBox NAT networking.
   networking.useDHCP = lib.mkDefault true;
 
   programs.nix-ld.enable = true;
@@ -52,15 +48,13 @@
     microsoft-edge
   ];
 
-  environment.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_10}";
-  };
+  environment.sessionVariables.DOTNET_ROOT = "${pkgs.dotnet-sdk_10}";
 
   users.users.nixos = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "NixOS";
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "docker"];
     shell = pkgs.zsh;
     linger = true;
   };
@@ -78,6 +72,6 @@
         programs.home-manager.enable = true;
       }
     ];
-    users.nixos = import ./home.nix;
+    users.nixos = import ../../modules/home/nixos-dev.nix;
   };
 }

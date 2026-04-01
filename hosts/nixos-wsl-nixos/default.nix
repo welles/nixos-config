@@ -42,15 +42,13 @@
     microsoft-edge
   ];
 
-  environment.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_10}";
-  };
+  environment.sessionVariables.DOTNET_ROOT = "${pkgs.dotnet-sdk_10}";
 
   users.users.nixos = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "NixOS";
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "docker"];
     shell = pkgs.zsh;
     linger = true;
   };
@@ -68,6 +66,6 @@
         programs.home-manager.enable = true;
       }
     ];
-    users.nixos = import ./home.nix;
+    users.nixos = import ../../modules/home/nixos-dev.nix;
   };
 }

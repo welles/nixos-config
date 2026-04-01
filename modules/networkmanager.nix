@@ -1,8 +1,8 @@
-# Shared NetworkManager Configuration
+# NetworkManager Configuration
 #
-# Enables NetworkManager for network management and adds the system
-# user to the networkmanager group for unprivileged network control.
-{user, ...}: {
+# Enables NetworkManager for network management. Add the relevant user
+# to the "networkmanager" group in the host's user definition for
+# unprivileged network control.
+{...}: {
   networking.networkmanager.enable = true;
-  users.users.${user}.extraGroups = ["networkmanager"];
 }
