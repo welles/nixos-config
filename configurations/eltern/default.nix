@@ -11,6 +11,7 @@
   ...
 }: {
   imports = [
+    ../../modules/networkmanager.nix
     ../../modules/avahi.nix
   ];
 
@@ -74,7 +75,7 @@
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Moni & Gerri";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["wheel"];
   };
 
   system.autoUpgrade = {

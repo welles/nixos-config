@@ -2,8 +2,8 @@
 #
 # Shared settings applied to every NixOS system in this flake:
 # hostname, state version, timezone (Europe/Berlin), German locale,
-# Nix flakes support, NetworkManager, Zsh, and home-manager
-# integration. Each system's user-specific home.nix is loaded
+# Nix flakes support, Zsh, and home-manager integration. Each
+# system's user-specific home.nix is loaded
 # automatically based on the configuration name passed via the
 # `user` argument.
 {
@@ -30,8 +30,7 @@
     options = "--delete-older-than 30d";
   };
 
-  # Every system uses NetworkManager and Zsh
-  networking.networkmanager.enable = true;
+  # Every system uses Zsh
   programs.zsh.enable = true;
 
   environment.shellAliases = {
