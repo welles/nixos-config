@@ -5,11 +5,6 @@
 # Also defines a VM testing variant (used by `nixos-rebuild build-vm`)
 # with 8GB RAM and virtio GPU acceleration.
 {...}: {
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
-  };
-
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
