@@ -22,5 +22,4 @@
 
   # Override default git email with work identity
   programs.git.settings.user.email = lib.mkForce "welles@mentz.net";
-  programs.git.settings.core.sshCommand = "/mnt/c/Windows/System32/OpenSSH/ssh.exe";
 }

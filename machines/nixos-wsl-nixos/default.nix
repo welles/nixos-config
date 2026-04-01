@@ -16,4 +16,5 @@
   wsl.enable = true;
   wsl.defaultUser = user;
   wsl.interop.includePath = false;
+  wsl.ssh-agent.enable = true;
 }

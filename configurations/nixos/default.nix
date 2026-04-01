@@ -34,11 +34,6 @@
     DOTNET_ROOT = "${pkgs.dotnet-sdk_10}";
   };
 
-  environment.shellAliases = {
-    ssh = "/mnt/c/Windows/System32/OpenSSH/ssh.exe";
-    ssh-add = "/mnt/c/Windows/System32/OpenSSH/ssh-add.exe";
-  };
-
   users.users.${user} = {
     isNormalUser = true;
     initialPassword = "passwort";
