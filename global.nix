@@ -21,6 +21,7 @@
   i18n.defaultLocale = "de_DE.UTF-8";
   console.keyMap = "de";
 
+  nixpkgs.hostPlatform = "x86_64-linux";
   nixpkgs.config.allowUnfree = true;
   nix.settings.auto-optimise-store = true;
   nix.gc = {
