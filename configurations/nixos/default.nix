@@ -40,5 +40,6 @@
     description = "NixOS";
     extraGroups = ["wheel"];
     shell = pkgs.zsh;
+    linger = true;
   };
 }
