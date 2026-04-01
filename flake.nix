@@ -11,7 +11,7 @@
 #   - nico-vm-nixos:              Development VM (Xfce + XRDP)
 #   - eltern-asus-nixos:          Parents' ASUS laptop (Cinnamon, auto-upgrade)
 #   - nico-schokoladenelch-nixos: Home server (ZFS, Docker, Caddy, impermanence)
-#   - nw-wsl-nixos:               Windows WSL2 development environment
+#   - nixos-wsl-nixos:            Windows WSL2 development environment
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -79,7 +79,7 @@
       nico-vm-nixos = mkSystem "nico-vm-nixos" "vm";
       eltern-asus-nixos = mkSystem "eltern-asus-nixos" "eltern";
       nico-schokoladenelch-nixos = mkSystem "nico-schokoladenelch-nixos" "schokoladenelch";
-      nw-wsl-nixos = mkSystem "nw-wsl-nixos" "nw";
+      nixos-wsl-nixos = mkSystem "nixos-wsl-nixos" "nixos";
     };
   };
 }
