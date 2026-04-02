@@ -40,9 +40,11 @@ in {
       ExecStart = "${pkgs.writeShellScript "rclone-nextcloud-start" ''
         nc_user=$(cat ${nextcloudUsernameFile})
         obscured_pass=$(${pkgs.rclone}/bin/rclone obscure "$(cat ${nextcloudPasswordFile})")
-        exec ${pkgs.rclone}/bin/rclone mount \
-          ":webdav,url=https://nextcloud.welles.app/remote.php/dav/files/$nc_user/,vendor=nextcloud,user=$nc_user,pass=$obscured_pass" \
-          ${mountPoint} \
+        exec ${pkgs.rclone}/bin/rclone mount :webdav: ${mountPoint} \
+          --webdav-url "https://nextcloud.welles.app/remote.php/dav/files/$nc_user/" \
+          --webdav-vendor nextcloud \
+          --webdav-user "$nc_user" \
+          --webdav-pass "$obscured_pass" \
           --vfs-cache-mode full \
           --vfs-cache-max-age 24h \
           --dir-cache-time 5m \
