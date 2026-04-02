@@ -13,7 +13,7 @@
   virtualisation.virtualbox.guest.dragAndDrop = true;
 
   # Display driver order suited for VirtualBox virtual GPU.
-  services.xserver.videoDrivers = ["virtualbox" "vmware" "modesetting"];
+  services.xserver.videoDrivers = ["virtualbox" "modesetting"];
 
   # DHCP for VirtualBox NAT networking.
   networking.useDHCP = lib.mkDefault true;
