@@ -36,7 +36,7 @@ in {
     serviceConfig = {
       Type = "notify";
       User = user;
-      Environment = "PATH=/run/wrappers/bin:${pkgs.rclone}/bin";
+      Environment = "PATH=/run/wrappers/bin:${pkgs.rclone}/bin:${pkgs.coreutils}/bin";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
       ExecStart = "${pkgs.writeShellScript "rclone-nextcloud-start" ''
         nc_user=$(cat ${nextcloudUsernameFile})
