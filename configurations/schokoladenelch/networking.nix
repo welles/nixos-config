@@ -22,6 +22,13 @@
     ip saddr 10.10.0.0/16 accept # Allow internal Docker communication
   '';
 
+  # Configure NetworkManager-wait-online to wait for ANY connection instead of ALL.
+  # This prevents the service from failing if some (unused) interfaces are not online.
+  systemd.services.NetworkManager-wait-online.serviceConfig.ExecStart = [
+    ""
+    "${pkgs.networkmanager}/bin/nm-online -q"
+  ];
+
   # TCP BBR congestion control for better network throughput
   boot.kernel.sysctl = {
     "net.core.default_qdisc" = "fq";
