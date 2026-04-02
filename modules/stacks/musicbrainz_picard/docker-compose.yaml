@@ -1,0 +1,40 @@
+name: musicbrainz_picard
+
+services:
+  musicbrainz_picard:
+    container_name: musicbrainz_picard
+    environment:
+      TZ: Europe/Berlin
+      USER_ID: "1000"
+      GROUP_ID: "1000"
+      KEEP_APP_RUNNING: "1"
+      WEB_LISTENING_PORT: "-1"
+    env_file:
+      - /run/secrets/musicbrainz_picard
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 5900 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: jlesage/musicbrainz-picard:latest
+    networks:
+      musicbrainz_picard:
+        ipv4_address: 10.10.13.10
+    ports:
+      - 50130:5900/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/musicbrainz_picard:/config:rw
+      - /mnt/tank/music:/storage:rw
+
+networks:
+  musicbrainz_picard:
+    name: musicbrainz_picard
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.13.0/24

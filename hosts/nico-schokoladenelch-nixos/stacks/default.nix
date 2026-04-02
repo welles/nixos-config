@@ -50,6 +50,24 @@
         paths = [];
       };
     };
+    jdownloader = {
+      enabled = true;
+      secrets = ["jdownloader"];
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
+    musicbrainz_picard = {
+      enabled = true;
+      secrets = ["musicbrainz_picard"];
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     guacamole = {
       enabled = true;
       secrets = [

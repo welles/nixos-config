@@ -1,0 +1,40 @@
+name: jdownloader
+
+services:
+  jdownloader:
+    container_name: jdownloader
+    environment:
+      TZ: Europe/Berlin
+      USER_ID: "1000"
+      GROUP_ID: "1000"
+      KEEP_APP_RUNNING: "1"
+      WEB_LISTENING_PORT: "-1"
+    env_file:
+      - /run/secrets/jdownloader
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 5900 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: jlesage/jdownloader-2:latest
+    networks:
+      jdownloader:
+        ipv4_address: 10.10.12.10
+    ports:
+      - 50120:5900/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/jdownloader:/config:rw
+      - /mnt/tank/downloads:/output:rw
+
+networks:
+  jdownloader:
+    name: jdownloader
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.12.0/24

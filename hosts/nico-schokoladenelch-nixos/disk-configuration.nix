@@ -213,6 +213,22 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "jdownloader" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/jdownloader";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
+          "musicbrainz_picard" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/musicbrainz_picard";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
 
@@ -281,6 +297,15 @@
           "nextcloud" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/nextcloud";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
+
+          "downloads" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/tank/downloads";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
