@@ -18,6 +18,7 @@
     ./virtualisation.nix
     ./services.nix
     ./packages.nix
+    ./rclone.nix
   ];
 
   # Base sops-nix configuration: use a shared age key for all nico machines.
