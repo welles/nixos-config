@@ -46,6 +46,7 @@ in {
           --webdav-vendor nextcloud \
           --webdav-user "$nc_user" \
           --webdav-pass "$obscured_pass" \
+          --verbose \
           --vfs-cache-mode full \
           --vfs-cache-max-age 24h \
           --dir-cache-time 5m \
