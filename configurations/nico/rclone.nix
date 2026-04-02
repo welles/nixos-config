@@ -36,6 +36,7 @@ in {
     serviceConfig = {
       Type = "notify";
       User = user;
+      Environment = "PATH=/run/wrappers/bin:${pkgs.rclone}/bin";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
       ExecStart = "${pkgs.writeShellScript "rclone-nextcloud-start" ''
         nc_user=$(cat ${nextcloudUsernameFile})
@@ -51,7 +52,7 @@ in {
           --transfers 8 \
           --no-update-modtime
       ''}";
-      ExecStop = "-${pkgs.fuse3}/bin/fusermount3 -u ${mountPoint}";
+      ExecStop = "-/run/wrappers/bin/fusermount3 -u ${mountPoint}";
       Restart = "on-failure";
       RestartSec = "5s";
     };
