@@ -27,7 +27,7 @@ services:
     stop_grace_period: 2m
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/bucket/apps/musicbrainz_picard:/config:rw
+      - /mnt/bucket/musicbrainz_picard:/config:rw
       - /mnt/tank/music:/storage:rw
 
 networks:
