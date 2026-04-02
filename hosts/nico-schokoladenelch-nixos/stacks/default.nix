@@ -276,6 +276,12 @@
           apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
           domains = lib.attrNames cfg.proxies;
         };
+
+        # Wait for internet connectivity before updating DNS records
+        systemd.services.cloudflare-dyndns = {
+          after = ["network-online.target"];
+          wants = ["network-online.target"];
+        };
       })
     ];
 in
