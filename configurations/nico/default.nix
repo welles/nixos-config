@@ -20,6 +20,15 @@
     ./packages.nix
   ];
 
+  # Base sops-nix configuration: use a shared age key for all nico machines.
+  # Machine-specific secrets use defaultSopsFile in the machine config;
+  # nico-level secrets (e.g. rclone) specify their sopsFile explicitly.
+  sops = {
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    defaultSopsFormat = "yaml";
+    validateSopsFiles = true;
+  };
+
   # Disable waiting for NetworkManager at boot to speed up startup
   systemd.services.NetworkManager-wait-online.enable = false;
 
