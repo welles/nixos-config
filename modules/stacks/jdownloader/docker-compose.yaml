@@ -27,7 +27,7 @@ services:
     stop_grace_period: 2m
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/bucket/apps/jdownloader:/config:rw
+      - /mnt/bucket/jdownloader:/config:rw
       - /mnt/tank/downloads:/output:rw
 
 networks:
