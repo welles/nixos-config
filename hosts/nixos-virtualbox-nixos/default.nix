@@ -26,7 +26,7 @@
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.guest.dragAndDrop = true;
 
-  services.xserver.videoDrivers = ["virtualbox" "vmware" "modesetting"];
+  services.xserver.videoDrivers = ["virtualbox" "modesetting"];
 
   networking.useDHCP = lib.mkDefault true;
 
