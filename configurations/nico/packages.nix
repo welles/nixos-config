@@ -34,7 +34,6 @@
     google-chrome
     mumble
     remmina
-    spotify
     teamspeak6-client
 
     # Media & graphics
