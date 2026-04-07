@@ -75,6 +75,8 @@ jobs:
   commit:
     needs: generate
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -104,5 +106,5 @@ jobs:
       - name: Commit if changed
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: update configuration graphs"
+          commit_message: "Update configuration graphs file"
           file_pattern: GRAPHS.md
