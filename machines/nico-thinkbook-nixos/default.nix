@@ -14,8 +14,8 @@
   imports = [
     ./hardware-configuration.nix
     ./nvidia-gpu.nix
-    ../../modules/eden
-    ../../modules/xone-dongle
+    ../../modules/eden.nix
+    ../../modules/xone-dongle.nix
   ];
 
   hardware.bluetooth.enable = true;
