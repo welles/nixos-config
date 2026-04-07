@@ -10,6 +10,7 @@
 }: {
   imports = [
     ../../modules/docker.nix
+    ../../modules/headlamp.nix
     ../../modules/tmux.nix
   ];
 
