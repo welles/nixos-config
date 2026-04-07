@@ -76,16 +76,18 @@ let
       #                  for IPC shared memory.  This flag routes shared
       #                  memory through /tmp instead, preventing crashes
       #                  when the shared-memory region cannot be allocated.
-      #   --no-zygote:   The Electron zygote process uses clone() flags
-      #                  (CLONE_NEWPID, CLONE_NEWNET) that WSL kernels
-      #                  restrict, causing a SIGTRAP on startup.  Disabling
-      #                  the zygote spawns renderer processes directly.
+      #   --in-process-gpu: Electron still spawns a GPU subprocess even
+      #                  when --disable-gpu is set (for compositing).  That
+      #                  subprocess crashes on WSL because namespace-based
+      #                  sandbox initialisation fails (SIGTRAP).  Running
+      #                  the GPU logic as a thread in the main process
+      #                  eliminates the subprocess entirely.
       makeWrapper ${pkgs.dbus}/bin/dbus-run-session $out/bin/headlamp \
         --add-flags "$out/opt/headlamp/headlamp" \
         --add-flags "--no-sandbox" \
         --add-flags "--disable-gpu" \
         --add-flags "--disable-dev-shm-usage" \
-        --add-flags "--no-zygote" \
+        --add-flags "--in-process-gpu" \
         --prefix LD_LIBRARY_PATH : "$out/opt/headlamp"
 
       runHook postInstall
