@@ -2,7 +2,7 @@ name: Generate Config Graphs
 
 concurrency:
   group: nix-graph
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 on:
   push:
