@@ -58,10 +58,21 @@ let
       mkdir -p $out/opt/headlamp $out/bin
       cp -r . $out/opt/headlamp/
 
-      # Expose bundled Electron libs at runtime and disable the
-      # Chromium sandbox (requires kernel namespaces, absent in WSL).
+      # Expose bundled Electron libs at runtime and apply WSL workarounds:
+      #   --no-sandbox: WSL kernels lack user-namespace support for the
+      #                 Chromium sandbox.
+      #   --disable-gpu: WSL has no GPU-accessible GL stack; without this
+      #                  ANGLE tries to dlopen libGL.so.1, fails, and the
+      #                  process aborts with SIGTRAP.  SwiftShader software
+      #                  rendering is used instead.
+      #   --disable-features=MediaSessionService: suppresses repeated
+      #                  D-Bus "Failed to connect to socket /run/user/…/bus"
+      #                  errors that occur because WSL does not run a user
+      #                  session bus by default.
       makeWrapper $out/opt/headlamp/headlamp $out/bin/headlamp \
         --add-flags "--no-sandbox" \
+        --add-flags "--disable-gpu" \
+        --add-flags "--disable-features=MediaSessionService" \
         --prefix LD_LIBRARY_PATH : "$out/opt/headlamp"
 
       runHook postInstall
