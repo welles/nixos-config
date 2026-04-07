@@ -59,20 +59,23 @@ let
       cp -r . $out/opt/headlamp/
 
       # Expose bundled Electron libs at runtime and apply WSL workarounds:
-      #   --no-sandbox: WSL kernels lack user-namespace support for the
-      #                 Chromium sandbox.
+      #   dbus-run-session: WSL does not run a persistent user session bus.
+      #                  Electron (Chromium) has multiple D-Bus callers
+      #                  (notifications, file-chooser, media keys, …); when
+      #                  none of them can connect they trigger a CHECK()
+      #                  assertion and the process aborts with SIGTRAP.
+      #                  dbus-run-session starts a private throwaway bus for
+      #                  the lifetime of the process, satisfying all callers.
+      #   --no-sandbox:  WSL kernels lack user-namespace support for the
+      #                  Chromium sandbox.
       #   --disable-gpu: WSL has no GPU-accessible GL stack; without this
       #                  ANGLE tries to dlopen libGL.so.1, fails, and the
-      #                  process aborts with SIGTRAP.  SwiftShader software
-      #                  rendering is used instead.
-      #   --disable-features=MediaSessionService: suppresses repeated
-      #                  D-Bus "Failed to connect to socket /run/user/…/bus"
-      #                  errors that occur because WSL does not run a user
-      #                  session bus by default.
-      makeWrapper $out/opt/headlamp/headlamp $out/bin/headlamp \
+      #                  GPU subprocess aborts with SIGTRAP.  SwiftShader
+      #                  software rendering is used instead.
+      makeWrapper ${pkgs.dbus}/bin/dbus-run-session $out/bin/headlamp \
+        --add-flags "$out/opt/headlamp/headlamp" \
         --add-flags "--no-sandbox" \
         --add-flags "--disable-gpu" \
-        --add-flags "--disable-features=MediaSessionService" \
         --prefix LD_LIBRARY_PATH : "$out/opt/headlamp"
 
       runHook postInstall
