@@ -61,18 +61,54 @@ jobs:
         run: |
           nix eval --json ".#nixosConfigurations.\"${{ matrix.host }}\".graph" > graph.json
 
-      - name: Generate Graphviz source (${{ matrix.host }})
+      - name: Generate Mermaid diagram (${{ matrix.host }})
         run: |
-          nix run github:giomf/nixoscope -- --input graph.json --format gv > graph.gv
+          nix run github:giomf/nixoscope -- --input graph.json --format mm > "${{ matrix.host }}.mm"
 
-      - name: Convert to SVG (${{ matrix.host }})
-        run: |
-          nix shell nixpkgs#graphviz --command \
-            dot -Tsvg graph.gv -o "${{ matrix.host }}.svg"
-
-      - name: Upload SVG artifact (${{ matrix.host }})
+      - name: Upload Mermaid artifact (${{ matrix.host }})
         uses: actions/upload-artifact@v4
         with:
           name: graph-${{ matrix.host }}
-          path: ${{ matrix.host }}.svg
-          retention-days: 30
+          path: ${{ matrix.host }}.mm
+          retention-days: 1
+
+  commit:
+    needs: generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all Mermaid artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: graph-*
+          merge-multiple: true
+          path: graphs-tmp/
+
+      - name: Assemble GRAPHS.md
+        run: |
+          {
+            echo "# NixOS Configuration Graphs"
+            for mm_file in $(ls graphs-tmp/*.mm | sort); do
+              host=$(basename "$mm_file" .mm)
+              echo ""
+              echo "## $host"
+              echo ""
+              echo '```mermaid'
+              cat "$mm_file"
+              echo '```'
+            done
+          } > GRAPHS.md
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add GRAPHS.md
+          if git diff --cached --quiet; then
+            echo "No changes to GRAPHS.md, skipping commit"
+          else
+            git commit -m "chore: update configuration graphs"
+            git push
+          fi
