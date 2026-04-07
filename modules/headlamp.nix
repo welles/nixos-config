@@ -72,10 +72,20 @@ let
       #                  ANGLE tries to dlopen libGL.so.1, fails, and the
       #                  GPU subprocess aborts with SIGTRAP.  SwiftShader
       #                  software rendering is used instead.
+      #   --disable-dev-shm-usage: WSL limits /dev/shm; Chromium uses it
+      #                  for IPC shared memory.  This flag routes shared
+      #                  memory through /tmp instead, preventing crashes
+      #                  when the shared-memory region cannot be allocated.
+      #   --no-zygote:   The Electron zygote process uses clone() flags
+      #                  (CLONE_NEWPID, CLONE_NEWNET) that WSL kernels
+      #                  restrict, causing a SIGTRAP on startup.  Disabling
+      #                  the zygote spawns renderer processes directly.
       makeWrapper ${pkgs.dbus}/bin/dbus-run-session $out/bin/headlamp \
         --add-flags "$out/opt/headlamp/headlamp" \
         --add-flags "--no-sandbox" \
         --add-flags "--disable-gpu" \
+        --add-flags "--disable-dev-shm-usage" \
+        --add-flags "--no-zygote" \
         --prefix LD_LIBRARY_PATH : "$out/opt/headlamp"
 
       runHook postInstall
