@@ -42,3 +42,4 @@ jobs:
         with:
           commit_message: "Format nix files with alejandra"
           file_pattern: "**/*.nix"
+          skip_checkout: true
