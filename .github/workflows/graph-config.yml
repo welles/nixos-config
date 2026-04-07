@@ -1,0 +1,78 @@
+name: Generate Config Graphs
+
+concurrency:
+  group: nix-graph
+  cancel-in-progress: false
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.nix"
+      - "flake.lock"
+      - ".github/workflows/graph-config.yml"
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+
+      - name: Generate host matrix
+        id: set-matrix
+        run: |
+          HOSTS=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json)
+          echo "matrix=$HOSTS" >> $GITHUB_OUTPUT
+
+  generate:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ${{ fromJson(needs.setup.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+
+      - name: Evaluate graph JSON (${{ matrix.host }})
+        run: |
+          nix eval --json ".#nixosConfigurations.\"${{ matrix.host }}\".graph" > graph.json
+
+      - name: Generate Graphviz source (${{ matrix.host }})
+        run: |
+          nix run github:giomf/nixoscope -- --input graph.json --format gv > graph.gv
+
+      - name: Convert to SVG (${{ matrix.host }})
+        run: |
+          nix shell nixpkgs#graphviz --command \
+            dot -Tsvg graph.gv -o "${{ matrix.host }}.svg"
+
+      - name: Upload SVG artifact (${{ matrix.host }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: graph-${{ matrix.host }}
+          path: ${{ matrix.host }}.svg
+          retention-days: 30
