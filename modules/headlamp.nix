@@ -82,12 +82,19 @@ let
       #                  sandbox initialisation fails (SIGTRAP).  Running
       #                  the GPU logic as a thread in the main process
       #                  eliminates the subprocess entirely.
+      #   --no-zygote:   The Electron zygote uses clone() with CLONE_NEWPID/
+      #                  CLONE_NEWNET to pre-fork renderer processes.  WSL
+      #                  kernels restrict these flags, so the zygote fails
+      #                  and renderer processes never start; the window never
+      #                  loads and the app exits cleanly.  --no-zygote spawns
+      #                  renderers directly, bypassing the zygote.
       makeWrapper ${pkgs.dbus}/bin/dbus-run-session $out/bin/headlamp \
         --add-flags "$out/opt/headlamp/headlamp" \
         --add-flags "--no-sandbox" \
         --add-flags "--disable-gpu" \
         --add-flags "--disable-dev-shm-usage" \
         --add-flags "--in-process-gpu" \
+        --add-flags "--no-zygote" \
         --prefix LD_LIBRARY_PATH : "$out/opt/headlamp"
 
       runHook postInstall
