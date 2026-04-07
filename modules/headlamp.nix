@@ -5,8 +5,7 @@
 # application; the bundled Chromium sandbox is disabled via
 # --no-sandbox because WSL kernels do not expose the required
 # user-namespace support.
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   version = "0.41.0";
 
   headlamp = pkgs.stdenv.mkDerivation {
