@@ -5,16 +5,15 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Check NixOS Flake"]
+    types: [completed]
     branches: [main]
-    paths:
-      - "**.nix"
-      - "flake.lock"
-      - ".github/workflows/graph-config.yml"
   workflow_dispatch:
 
 jobs:
   setup:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
