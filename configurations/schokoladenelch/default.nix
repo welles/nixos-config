@@ -14,6 +14,7 @@
   imports = [
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
+    ../../modules/tmux.nix
     ./boot.nix
     ./networking.nix
     ./services.nix
@@ -66,13 +67,6 @@
       ssh-to-age
       systemctl-tui
     ];
-
-  programs.tmux = {
-    enable = true;
-    extraConfig = ''
-      set -g mouse on
-    '';
-  };
 
   # User accounts
   users.users.root = {

@@ -10,6 +10,7 @@
 }: {
   imports = [
     ../../modules/docker.nix
+    ../../modules/tmux.nix
   ];
 
   programs.nix-ld.enable = true;
