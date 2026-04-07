@@ -22,6 +22,7 @@
     ../../modules/base.nix
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
+    ../../modules/tmux.nix
   ];
 
   networking.hostName = "nico-schokoladenelch-nixos";
@@ -66,11 +67,6 @@
       ssh-to-age
       systemctl-tui
     ];
-
-  programs.tmux = {
-    enable = true;
-    extraConfig = "set -g mouse on";
-  };
 
   users.users.root.hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
 

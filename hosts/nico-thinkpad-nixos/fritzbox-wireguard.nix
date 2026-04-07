@@ -25,8 +25,8 @@
   };
 
   sops.secrets = {
-    "wireguard/private-key" = {};
-    "wireguard/preshared-key" = {};
+    "wireguard/private-key" = {sopsFile = ./secrets.yaml;};
+    "wireguard/preshared-key" = {sopsFile = ./secrets.yaml;};
   };
 
   sops.templates."FritzBox.nmconnection" = {

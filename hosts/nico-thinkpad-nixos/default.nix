@@ -24,6 +24,7 @@
     ../../modules/desktop-services.nix
     ../../modules/locale-de.nix
     ../../modules/nico-packages.nix
+    ../../modules/rclone.nix
   ];
 
   networking.hostName = "nico-thinkpad-nixos";

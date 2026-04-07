@@ -1,0 +1,109 @@
+name: Generate Config Graphs
+
+concurrency:
+  group: nix-graph
+  cancel-in-progress: true
+
+on:
+  workflow_run:
+    workflows: ["Check NixOS Flake"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  setup:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+
+      - name: Generate host matrix
+        id: set-matrix
+        run: |
+          HOSTS=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json)
+          echo "matrix=$HOSTS" >> $GITHUB_OUTPUT
+
+  generate:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ${{ fromJson(needs.setup.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+
+      - name: Evaluate graph JSON (${{ matrix.host }})
+        run: |
+          nix eval --json ".#nixosConfigurations.\"${{ matrix.host }}\".graph" > graph.json
+
+      - name: Generate Mermaid diagram (${{ matrix.host }})
+        run: |
+          nix run github:giomf/nixoscope -- --input graph.json --format mm > "${{ matrix.host }}.mm"
+
+      - name: Upload Mermaid artifact (${{ matrix.host }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: graph-${{ matrix.host }}
+          path: ${{ matrix.host }}.mm
+          retention-days: 1
+
+  commit:
+    needs: generate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all Mermaid artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: graph-*
+          merge-multiple: true
+          path: graphs-tmp/
+
+      - name: Assemble GRAPHS.md
+        run: |
+          {
+            echo "# NixOS Configuration Graphs"
+            for mm_file in $(ls graphs-tmp/*.mm | sort); do
+              host=$(basename "$mm_file" .mm)
+              echo ""
+              echo "## $host"
+              echo ""
+              echo '```mermaid'
+              cat "$mm_file"
+              echo '```'
+            done
+          } > GRAPHS.md
+
+      - name: Commit if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update configuration graphs file"
+          file_pattern: GRAPHS.md

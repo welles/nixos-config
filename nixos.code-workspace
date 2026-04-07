@@ -2,12 +2,6 @@
   "folders": [
     {
       "path": "."
-    },
-    {
-      "path": "../.config"
-    },
-    {
-      "path": "../nixos-stacks"
     }
   ],
   "settings": {

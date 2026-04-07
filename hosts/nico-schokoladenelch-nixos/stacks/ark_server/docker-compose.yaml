@@ -5,6 +5,7 @@ services:
     container_name: ark_server
     environment:
       SESSION_NAME: "Nico's Server"
+      SERVER_MAP: Ragnarok
       UPDATE_ON_START: true
       BACKUP_ON_STOP: true
       TZ: Europe/Berlin

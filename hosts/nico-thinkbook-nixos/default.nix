@@ -25,6 +25,7 @@
     ../../modules/desktop-services.nix
     ../../modules/locale-de.nix
     ../../modules/nico-packages.nix
+    ../../modules/rclone.nix
   ];
 
   networking.hostName = "nico-thinkbook-nixos";
@@ -62,6 +63,12 @@
   ];
 
   systemd.services.NetworkManager-wait-online.enable = false;
+
+  sops = {
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    validateSopsFiles = true;
+  };
 
   services.pipewire.extraConfig.pipewire."92-low-latency" = {
     "context.properties"."default.clock.min-quantum" = 1024;

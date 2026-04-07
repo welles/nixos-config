@@ -7,9 +7,9 @@ concurrency:
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - '.github/**'
-      - '.gemini/**'
+    paths:
+      - "**.nix"
+      - ".github/workflows/check-flake.yml"
   pull_request:
     types: [opened, synchronize, reopened]
 

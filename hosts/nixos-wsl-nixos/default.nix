@@ -14,6 +14,8 @@
     inputs.nixos-wsl.nixosModules.default
     ../../modules/base.nix
     ../../modules/docker.nix
+    ../../modules/headlamp.nix
+    ../../modules/tmux.nix
   ];
 
   networking.hostName = "nixos-wsl-nixos";
