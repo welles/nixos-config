@@ -103,7 +103,11 @@ jobs:
           } > GRAPHS.md
 
       - name: Commit if changed
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: planetscale/ghcommit-action@v0.2.0
         with:
           commit_message: "Update configuration graphs file"
-          file_pattern: GRAPHS.md
+          repo: ${{ github.repository }}
+          branch: ${{ github.ref_name }}
+          file_pattern: "GRAPHS.md"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
