@@ -38,8 +38,11 @@ jobs:
           | xargs -0 nix run nixpkgs#alejandra --
 
       - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: planetscale/ghcommit-action@v0.2.0
         with:
           commit_message: "Format nix files with alejandra"
+          repo: ${{ github.repository }}
+          branch: ${{ github.ref_name }}
           file_pattern: "**/*.nix"
-          skip_checkout: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
