@@ -38,7 +38,7 @@ jobs:
           | xargs -0 nix run nixpkgs#alejandra --
 
       - name: Commit and push changes
-        uses: planetscale/ghcommit-action@v0.2.0
+        uses: planetscale/ghcommit-action@v0.2.20
         with:
           commit_message: "Format nix files with alejandra"
           repo: ${{ github.repository }}
