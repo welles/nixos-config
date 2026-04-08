@@ -59,6 +59,7 @@
       check-mkv
       bottom
       ctop
+      httm
       iotop
       lazydocker
       lazygit
