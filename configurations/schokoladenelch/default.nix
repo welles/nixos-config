@@ -15,6 +15,7 @@
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
     ../../modules/tmux.nix
+    ../../modules/scripts/zfs-manual-snapshot
     ./boot.nix
     ./networking.nix
     ./services.nix
