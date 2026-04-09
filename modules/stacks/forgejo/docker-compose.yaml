@@ -41,6 +41,7 @@ services:
       FORGEJO__server__START_SSH_SERVER: "true"
       FORGEJO__server__SSH_PORT: "22"
       FORGEJO__server__SSH_LISTEN_PORT: "2222"
+      FORGEJO__server__SSH_DOMAIN: forgejo.welles.app
       FORGEJO__lfs__PATH: /lfs
       FORGEJO__mailer__ENABLED: "true"
       FORGEJO__mailer__PROTOCOL: smtp+starttls
