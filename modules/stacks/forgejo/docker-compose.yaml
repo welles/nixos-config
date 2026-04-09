@@ -37,6 +37,8 @@ services:
       FORGEJO__server__DOMAIN: forgejo.welles.app
       FORGEJO__server__ROOT_URL: https://forgejo.welles.app
       FORGEJO__server__START_SSH_SERVER: "true"
+      FORGEJO__server__SSH_PORT: "22"
+      FORGEJO__server__SSH_LISTEN_PORT: "2222"
       FORGEJO__lfs__LFS_START_SERVER: "true"
       FORGEJO__lfs__PATH: /lfs
       FORGEJO__mailer__ENABLED: "true"
@@ -63,7 +65,7 @@ services:
         ipv4_address: 10.10.14.10
     ports:
       - 50140:3000/tcp
-      - 50141:22/tcp
+      - 50141:2222/tcp
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
