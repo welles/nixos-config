@@ -55,6 +55,8 @@
       $UPNPC -e "ARK Server" -r 50061 7778 UDP || echo "Failed to forward 7778 UDP"
       sleep 2
       $UPNPC -e "ARK Server" -r 50063 27015 UDP || echo "Failed to forward 27015 UDP"
+      sleep 2
+      $UPNPC -e "Forgejo SSH" -r 50141 22 TCP || echo "Failed to forward 22 TCP"
       echo "Finished requesting port forwards."
     '';
 

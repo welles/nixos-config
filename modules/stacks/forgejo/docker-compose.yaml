@@ -1,0 +1,73 @@
+name: forgejo
+
+services:
+  forgejo_db:
+    container_name: forgejo_db
+    environment:
+      POSTGRES_DB: forgejo
+      POSTGRES_USER: forgejo
+      TZ: Europe/Berlin
+    env_file:
+      - /run/secrets/forgejo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forgejo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: postgres:17.4-alpine
+    networks:
+      forgejo:
+        ipv4_address: 10.10.14.20
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/forgejo/db:/var/lib/postgresql/data
+
+  forgejo_app:
+    container_name: forgejo_app
+    depends_on:
+      forgejo_db:
+        condition: service_healthy
+    environment:
+      FORGEJO__database__DB_TYPE: postgres
+      FORGEJO__database__HOST: forgejo_db:5432
+      FORGEJO__database__NAME: forgejo
+      FORGEJO__database__USER: forgejo
+      FORGEJO__server__DOMAIN: forgejo.welles.app
+      FORGEJO__server__ROOT_URL: https://forgejo.welles.app
+      FORGEJO__server__LFS_START_SERVER: "true"
+      FORGEJO__server__LFS_CONTENT_PATH: /lfs
+      FORGEJO__session__PROVIDER: db
+      FORGEJO__service__DISABLE_REGISTRATION: "true"
+      TZ: Europe/Berlin
+    env_file:
+      - /run/secrets/forgejo
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: codeberg.org/forgejo/forgejo:14.0.3
+    networks:
+      forgejo:
+        ipv4_address: 10.10.14.10
+    ports:
+      - 50140:3000/tcp
+      - 50141:22/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/forgejo/app:/data
+      - /mnt/tank/forgejo_lfs:/lfs
+
+networks:
+  forgejo:
+    name: forgejo
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.14.0/24

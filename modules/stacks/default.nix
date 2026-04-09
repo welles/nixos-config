@@ -41,6 +41,17 @@
         paths = [];
       };
     };
+    forgejo = {
+      enabled = true;
+      secrets = ["forgejo"];
+      proxies = {
+        "forgejo.welles.app" = 50140;
+      };
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     drydock = {
       enabled = false;
       secrets = [];

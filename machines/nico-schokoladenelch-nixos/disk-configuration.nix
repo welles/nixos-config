@@ -229,6 +229,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "forgejo" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/forgejo";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
 
@@ -306,6 +314,14 @@
           "downloads" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/downloads";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
+          "forgejo_lfs" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/tank/forgejo_lfs";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
