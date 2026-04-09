@@ -37,12 +37,19 @@ jobs:
             -print0 \
           | xargs -0 nix run nixpkgs#alejandra --
 
+      - name: Format shell files with shfmt
+        run: |
+          find . -name "*.sh" \
+            -not -path "./.git/*" \
+            -print0 \
+          | xargs -0 nix run nixpkgs#shfmt -- -w
+
       - name: Commit and push changes
         uses: planetscale/ghcommit-action@v0.2.20
         with:
-          commit_message: "Format nix files with alejandra"
+          commit_message: "Format nix and shell files"
           repo: ${{ github.repository }}
           branch: ${{ github.ref_name }}
-          file_pattern: "**/*.nix"
+          file_pattern: "**/*.nix **/*.sh"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
