@@ -15,6 +15,8 @@
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
     ../../modules/tmux.nix
+    ../../modules/scripts/check-mkv
+    ../../modules/scripts/create-zfs-dataset
     ../../modules/scripts/zfs-manual-snapshot
     ../../modules/scripts/zfs-snapshot-diff
     ./boot.nix
@@ -49,27 +51,18 @@
   };
 
   # System packages for server administration
-  environment.systemPackages = let
-    create-zfs-dataset = pkgs.writeShellScriptBin "create-zfs-dataset" (builtins.readFile ../../modules/scripts/create-zfs-dataset.sh);
-    check-mkv = pkgs.writeShellScriptBin "check-mkv" ''
-      export PATH=${pkgs.lib.makeBinPath [pkgs.ffmpeg pkgs.findutils pkgs.coreutils]}:$PATH
-      ${builtins.readFile ../../modules/scripts/check-mkv.sh}
-    '';
-  in
-    with pkgs; [
-      create-zfs-dataset
-      check-mkv
-      bottom
-      ctop
-      httm
-      iotop
-      lazydocker
-      lazygit
-      smartmontools
-      sops
-      ssh-to-age
-      systemctl-tui
-    ];
+  environment.systemPackages = with pkgs; [
+    bottom
+    ctop
+    httm
+    iotop
+    lazydocker
+    lazygit
+    smartmontools
+    sops
+    ssh-to-age
+    systemctl-tui
+  ];
 
   # User accounts
   users.users.root = {
