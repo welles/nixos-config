@@ -16,6 +16,7 @@
     ../../modules/networkmanager.nix
     ../../modules/tmux.nix
     ../../modules/scripts/zfs-manual-snapshot
+    ../../modules/scripts/zfs-snapshot-diff
     ./boot.nix
     ./networking.nix
     ./services.nix
