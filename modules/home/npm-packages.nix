@@ -5,7 +5,10 @@
   ...
 }: let
   cfg = config.programs.npm-packages;
-  installScript = ../scripts/npm-global-install.sh;
+  installScript = pkgs.writeShellScriptBin "npm-global-install" ''
+    export PATH=${pkgs.lib.makeBinPath [pkgs.nodejs pkgs.bash pkgs.coreutils pkgs.gnugrep]}:$PATH
+    ${builtins.readFile ../scripts/npm-global-install/npm-global-install.sh}
+  '';
 in {
   options.programs.npm-packages = {
     packages = lib.mkOption {
@@ -24,6 +27,8 @@ in {
   };
 
   config = {
+    home.packages = [installScript];
+
     systemd.user.services.npm-install-globals = {
       Unit = {
         Description = "Install/Update user global npm packages";
@@ -31,11 +36,7 @@ in {
       };
       Service = {
         Type = "oneshot";
-        ExecStart = "${pkgs.bash}/bin/bash ${installScript} ${lib.escapeShellArgs cfg.packages}";
-        # Nodejs is required for npm
-        Environment = [
-          "PATH=${lib.makeBinPath [pkgs.nodejs pkgs.bash pkgs.coreutils pkgs.gnugrep]}"
-        ];
+        ExecStart = "${installScript}/bin/npm-global-install ${lib.escapeShellArgs cfg.packages}";
         ExecStopPost = "${pkgs.bash}/bin/bash -c 'if [ \"$SERVICE_RESULT\" != \"success\" ]; then ${pkgs.libnotify}/bin/notify-send \"NPM Global Install Failed\" \"Check systemctl --user status npm-install-globals for details\" --urgency=critical; fi'";
       };
       Install = {
