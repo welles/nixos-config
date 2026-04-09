@@ -36,8 +36,16 @@ services:
       FORGEJO__database__USER: forgejo
       FORGEJO__server__DOMAIN: forgejo.welles.app
       FORGEJO__server__ROOT_URL: https://forgejo.welles.app
-      FORGEJO__server__LFS_START_SERVER: "true"
-      FORGEJO__server__LFS_CONTENT_PATH: /lfs
+      FORGEJO__server__START_SSH_SERVER: "true"
+      FORGEJO__lfs__LFS_START_SERVER: "true"
+      FORGEJO__lfs__PATH: /lfs
+      FORGEJO__mailer__ENABLED: "true"
+      FORGEJO__mailer__PROTOCOL: smtp+starttls
+      FORGEJO__mailer__SMTP_ADDR: smtp.ionos.de
+      FORGEJO__mailer__SMTP_PORT: "587"
+      FORGEJO__mailer__FROM: "Forgejo <noreply@welles.email>"
+      FORGEJO__mailer__USER: noreply@welles.email
+      FORGEJO__security__INSTALL_LOCK: "true"
       FORGEJO__session__PROVIDER: db
       FORGEJO__service__DISABLE_REGISTRATION: "true"
       TZ: Europe/Berlin
