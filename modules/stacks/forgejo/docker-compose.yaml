@@ -30,6 +30,7 @@ services:
       forgejo_db:
         condition: service_healthy
     environment:
+      FORGEJO__LFS_START_SERVER: "true"
       FORGEJO__database__DB_TYPE: postgres
       FORGEJO__database__HOST: forgejo_db:5432
       FORGEJO__database__NAME: forgejo
@@ -39,7 +40,6 @@ services:
       FORGEJO__server__START_SSH_SERVER: "true"
       FORGEJO__server__SSH_PORT: "22"
       FORGEJO__server__SSH_LISTEN_PORT: "2222"
-      FORGEJO__lfs__LFS_START_SERVER: "true"
       FORGEJO__lfs__PATH: /lfs
       FORGEJO__mailer__ENABLED: "true"
       FORGEJO__mailer__PROTOCOL: smtp+starttls
