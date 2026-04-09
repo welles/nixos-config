@@ -14,7 +14,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: postgres:16.7-alpine
+    image: postgres:17.9-alpine
     networks:
       nextcloud:
         ipv4_address: 10.10.10.20
