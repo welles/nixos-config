@@ -41,10 +41,9 @@
       RESULT="$TMPDIR/result"
 
       echo "Building new configuration..."
-      nixos-rebuild build \
+      (cd "$TMPDIR" && nixos-rebuild build \
         --flake github:welles/nixos-config#${hostname} \
-        --refresh \
-        --out-link "$RESULT" || exit 1
+        --refresh) || exit 1
 
       echo ""
       echo "=== Package changes ==="
