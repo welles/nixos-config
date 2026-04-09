@@ -9,8 +9,8 @@ set -euo pipefail
 DATASET=$(df --output=fstype,source . 2>/dev/null | tail -n1 | awk '$1 == "zfs" {print $2}')
 
 if [ -z "$DATASET" ]; then
-    echo "Error: '$(pwd)' is not inside a ZFS dataset (or dataset could not be determined)."
-    exit 1
+	echo "Error: '$(pwd)' is not inside a ZFS dataset (or dataset could not be determined)."
+	exit 1
 fi
 
 # Build snapshot name
@@ -21,8 +21,8 @@ echo "Dataset:  $DATASET"
 echo "Snapshot: $SNAPSHOT"
 
 if sudo zfs snapshot "$SNAPSHOT"; then
-    echo "Snapshot created successfully."
+	echo "Snapshot created successfully."
 else
-    echo "Error: Failed to create snapshot '$SNAPSHOT'."
-    exit 1
+	echo "Error: Failed to create snapshot '$SNAPSHOT'."
+	exit 1
 fi
