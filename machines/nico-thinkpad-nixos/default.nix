@@ -35,8 +35,10 @@
     zfs rollback -r main/root@blank && echo -e "\e[32m  rolled back to blank root\e[0m" || echo -e "\e[31m  no blank root snapshot found, skipping rollback\e[0m"
   '';
 
-  # Add ZFS support to the GRUB bootloader (configured in configurations/nico/boot.nix)
+  # Add ZFS support to the GRUB bootloader (configured in configurations/nico/boot.nix).
+  # efiSysMountPoint must match disko's mountpoint for the ESP partition.
   boot.loader.grub.zfsSupport = true;
+  boot.loader.efi.efiSysMountPoint = "/boot";
 
   hardware.bluetooth.enable = true;
   hardware.sensor.iio.enable = true;
