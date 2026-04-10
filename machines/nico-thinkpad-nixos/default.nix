@@ -25,6 +25,10 @@
   # ZFS boot: load ZFS in initrd, import the pool, and roll back the
   # ephemeral root dataset to blank before the rest of the system mounts.
   boot.initrd.supportedFilesystems = ["zfs"];
+  # Ensure nvme module is unconditionally loaded early in initrd (before ZFS
+  # pool scanning), avoiding a race where udev hasn't yet loaded it from
+  # availableKernelModules when zpool import runs.
+  boot.initrd.kernelModules = ["nvme"];
   boot.supportedFilesystems = ["zfs" "exfat"];
   boot.zfs.devNodes = "/dev/disk/by-id";
   boot.zfs.forceImportAll = true;
