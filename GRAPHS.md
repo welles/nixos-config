@@ -4,753 +4,753 @@
 
 ```mermaid
 flowchart TD
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix["`**flake.nix**
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix["`**flake.nix**
 
-_blyjifwlgc96p23s8icm2pz0qzhl5k9h_`"]
-    nv8qbc8pzfrbjkfl0jycg7903cr179v0a_module_nix["`**module.nix**
+_mjk3176vj1yj9bbl19a83wyg53s4qwy3_`"]
+    nwqrk3qsfqx4jswx16c52n26dzhxlmm9g_module_nix["`**module.nix**
 
-_v8qbc8pzfrbjkfl0jycg7903cr179v0a_`"]
-    nv8qbc8pzfrbjkfl0jycg7903cr179v0a_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
+_wqrk3qsfqx4jswx16c52n26dzhxlmm9g_`"]
+    nwqrk3qsfqx4jswx16c52n26dzhxlmm9g_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
 
-_v8qbc8pzfrbjkfl0jycg7903cr179v0a_`"]
-    n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops["`**modules/sops**
+_wqrk3qsfqx4jswx16c52n26dzhxlmm9g_`"]
+    nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops["`**modules/sops**
 
-_4rv2hw0wir9215gb1szfyb9qmhjdx800_`"]
-    n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops_templates["`**modules/sops/templates**
+_v1ghn9xcfc2gxk91l09nqf05xl27hvxk_`"]
+    nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops_templates["`**modules/sops/templates**
 
-_4rv2hw0wir9215gb1szfyb9qmhjdx800_`"]
-    n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
+_v1ghn9xcfc2gxk91l09nqf05xl27hvxk_`"]
+    nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
 
-_4rv2hw0wir9215gb1szfyb9qmhjdx800_`"]
-    nwysxd9h1jx0nhrhsc2g8kh1qykd60bjl_nixos["`**nixos**
+_v1ghn9xcfc2gxk91l09nqf05xl27hvxk_`"]
+    ng2dpapnvwaqaafxx5qlzss9z13bjcvvn_nixos["`**nixos**
 
-_wysxd9h1jx0nhrhsc2g8kh1qykd60bjl_`"]
-    nwysxd9h1jx0nhrhsc2g8kh1qykd60bjl_nixos_common_nix["`**nixos/common.nix**
+_g2dpapnvwaqaafxx5qlzss9z13bjcvvn_`"]
+    ng2dpapnvwaqaafxx5qlzss9z13bjcvvn_nixos_common_nix["`**nixos/common.nix**
 
-_wysxd9h1jx0nhrhsc2g8kh1qykd60bjl_`"]
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_global_nix["`**global.nix**
+_g2dpapnvwaqaafxx5qlzss9z13bjcvvn_`"]
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_global_nix["`**global.nix**
 
-_dgg4rkqmn1lmyqisw2gqy3pjsz419yg1_`"]
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_configurations_eltern["`**configurations/eltern**
+_2ahf0s6nlzjfm844hkm86gxwxva7axjy_`"]
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_configurations_eltern["`**configurations/eltern**
 
-_dgg4rkqmn1lmyqisw2gqy3pjsz419yg1_`"]
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_modules_networkmanager_nix["`**modules/networkmanager.nix**
+_2ahf0s6nlzjfm844hkm86gxwxva7axjy_`"]
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_modules_networkmanager_nix["`**modules/networkmanager.nix**
 
-_dgg4rkqmn1lmyqisw2gqy3pjsz419yg1_`"]
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_modules_avahi_nix["`**modules/avahi.nix**
+_2ahf0s6nlzjfm844hkm86gxwxva7axjy_`"]
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_modules_avahi_nix["`**modules/avahi.nix**
 
-_dgg4rkqmn1lmyqisw2gqy3pjsz419yg1_`"]
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos["`**machines/eltern-asus-nixos**
+_2ahf0s6nlzjfm844hkm86gxwxva7axjy_`"]
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos["`**machines/eltern-asus-nixos**
 
-_dgg4rkqmn1lmyqisw2gqy3pjsz419yg1_`"]
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos_hardware_configuration_nix["`**machines/eltern-asus-nixos/hardware-configuration.nix**
+_2ahf0s6nlzjfm844hkm86gxwxva7axjy_`"]
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos_hardware_configuration_nix["`**machines/eltern-asus-nixos/hardware-configuration.nix**
 
-_dgg4rkqmn1lmyqisw2gqy3pjsz419yg1_`"]
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
+_2ahf0s6nlzjfm844hkm86gxwxva7axjy_`"]
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
 
-_blyjifwlgc96p23s8icm2pz0qzhl5k9h_`"]
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos_disk_configuration_nix["`**machines/eltern-asus-nixos/disk-configuration.nix**
+_mjk3176vj1yj9bbl19a83wyg53s4qwy3_`"]
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos_disk_configuration_nix["`**machines/eltern-asus-nixos/disk-configuration.nix**
 
-_dgg4rkqmn1lmyqisw2gqy3pjsz419yg1_`"]
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix --> nv8qbc8pzfrbjkfl0jycg7903cr179v0a_module_nix
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix --> n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix --> nwysxd9h1jx0nhrhsc2g8kh1qykd60bjl_nixos
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix --> ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_global_nix
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix --> ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_configurations_eltern
-    nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix --> ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos
-    nv8qbc8pzfrbjkfl0jycg7903cr179v0a_module_nix --> nv8qbc8pzfrbjkfl0jycg7903cr179v0a_lib_make_disk_image_nix
-    n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops --> n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops_templates
-    n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops --> n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops_secrets_for_users
-    nwysxd9h1jx0nhrhsc2g8kh1qykd60bjl_nixos --> nwysxd9h1jx0nhrhsc2g8kh1qykd60bjl_nixos_common_nix
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_configurations_eltern --> ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_modules_networkmanager_nix
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_configurations_eltern --> ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_modules_avahi_nix
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos --> ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos_hardware_configuration_nix
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos --> ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos_disk_configuration_nix
-    ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos_hardware_configuration_nix --> nblyjifwlgc96p23s8icm2pz0qzhl5k9h_nixos_modules_installer_scan_not_detected_nix
-    style nblyjifwlgc96p23s8icm2pz0qzhl5k9h_flake_nix fill:#b2c1e5,color:#000000
-    style nv8qbc8pzfrbjkfl0jycg7903cr179v0a_module_nix fill:#b2e5b6,color:#000000
-    style nv8qbc8pzfrbjkfl0jycg7903cr179v0a_lib_make_disk_image_nix fill:#b2e5b6,color:#000000
-    style n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops fill:#b2c3e5,color:#000000
-    style n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops_templates fill:#b2c3e5,color:#000000
-    style n4rv2hw0wir9215gb1szfyb9qmhjdx800_modules_sops_secrets_for_users fill:#b2c3e5,color:#000000
-    style nwysxd9h1jx0nhrhsc2g8kh1qykd60bjl_nixos fill:#b2e5cf,color:#000000
-    style nwysxd9h1jx0nhrhsc2g8kh1qykd60bjl_nixos_common_nix fill:#b2e5cf,color:#000000
-    style ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_global_nix fill:#bdb2e5,color:#000000
-    style ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_configurations_eltern fill:#bdb2e5,color:#000000
-    style ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_modules_networkmanager_nix fill:#bdb2e5,color:#000000
-    style ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_modules_avahi_nix fill:#bdb2e5,color:#000000
-    style ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos fill:#bdb2e5,color:#000000
-    style ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos_hardware_configuration_nix fill:#bdb2e5,color:#000000
-    style nblyjifwlgc96p23s8icm2pz0qzhl5k9h_nixos_modules_installer_scan_not_detected_nix fill:#b2c1e5,color:#000000
-    style ndgg4rkqmn1lmyqisw2gqy3pjsz419yg1_machines_eltern_asus_nixos_disk_configuration_nix fill:#bdb2e5,color:#000000
+_2ahf0s6nlzjfm844hkm86gxwxva7axjy_`"]
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix --> nwqrk3qsfqx4jswx16c52n26dzhxlmm9g_module_nix
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix --> nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix --> ng2dpapnvwaqaafxx5qlzss9z13bjcvvn_nixos
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix --> n2ahf0s6nlzjfm844hkm86gxwxva7axjy_global_nix
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix --> n2ahf0s6nlzjfm844hkm86gxwxva7axjy_configurations_eltern
+    nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix --> n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos
+    nwqrk3qsfqx4jswx16c52n26dzhxlmm9g_module_nix --> nwqrk3qsfqx4jswx16c52n26dzhxlmm9g_lib_make_disk_image_nix
+    nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops --> nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops_templates
+    nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops --> nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops_secrets_for_users
+    ng2dpapnvwaqaafxx5qlzss9z13bjcvvn_nixos --> ng2dpapnvwaqaafxx5qlzss9z13bjcvvn_nixos_common_nix
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_configurations_eltern --> n2ahf0s6nlzjfm844hkm86gxwxva7axjy_modules_networkmanager_nix
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_configurations_eltern --> n2ahf0s6nlzjfm844hkm86gxwxva7axjy_modules_avahi_nix
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos --> n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos_hardware_configuration_nix
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos --> n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos_disk_configuration_nix
+    n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos_hardware_configuration_nix --> nmjk3176vj1yj9bbl19a83wyg53s4qwy3_nixos_modules_installer_scan_not_detected_nix
+    style nmjk3176vj1yj9bbl19a83wyg53s4qwy3_flake_nix fill:#e5b2c9,color:#000000
+    style nwqrk3qsfqx4jswx16c52n26dzhxlmm9g_module_nix fill:#b2e5d2,color:#000000
+    style nwqrk3qsfqx4jswx16c52n26dzhxlmm9g_lib_make_disk_image_nix fill:#b2e5d2,color:#000000
+    style nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops fill:#b2e5cc,color:#000000
+    style nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops_templates fill:#b2e5cc,color:#000000
+    style nv1ghn9xcfc2gxk91l09nqf05xl27hvxk_modules_sops_secrets_for_users fill:#b2e5cc,color:#000000
+    style ng2dpapnvwaqaafxx5qlzss9z13bjcvvn_nixos fill:#b2bce5,color:#000000
+    style ng2dpapnvwaqaafxx5qlzss9z13bjcvvn_nixos_common_nix fill:#b2bce5,color:#000000
+    style n2ahf0s6nlzjfm844hkm86gxwxva7axjy_global_nix fill:#b2e5d9,color:#000000
+    style n2ahf0s6nlzjfm844hkm86gxwxva7axjy_configurations_eltern fill:#b2e5d9,color:#000000
+    style n2ahf0s6nlzjfm844hkm86gxwxva7axjy_modules_networkmanager_nix fill:#b2e5d9,color:#000000
+    style n2ahf0s6nlzjfm844hkm86gxwxva7axjy_modules_avahi_nix fill:#b2e5d9,color:#000000
+    style n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos fill:#b2e5d9,color:#000000
+    style n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos_hardware_configuration_nix fill:#b2e5d9,color:#000000
+    style nmjk3176vj1yj9bbl19a83wyg53s4qwy3_nixos_modules_installer_scan_not_detected_nix fill:#e5b2c9,color:#000000
+    style n2ahf0s6nlzjfm844hkm86gxwxva7axjy_machines_eltern_asus_nixos_disk_configuration_nix fill:#b2e5d9,color:#000000
 ```
 
 ## nico-schokoladenelch-nixos
 
 ```mermaid
 flowchart TD
-    n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix["`**flake.nix**
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix["`**flake.nix**
 
-_0c81494pm8q9axg9789xb01m31afa3l7_`"]
-    n4bljbq3yy2wl9brfnab8vs0lfmz8dj25_module_nix["`**module.nix**
+_q1z9705wy35wvjf076yz3bxvh08zpsjy_`"]
+    ny417p3lymbh65q1hrwwsmnlkziam2lab_module_nix["`**module.nix**
 
-_4bljbq3yy2wl9brfnab8vs0lfmz8dj25_`"]
-    n4bljbq3yy2wl9brfnab8vs0lfmz8dj25_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
+_y417p3lymbh65q1hrwwsmnlkziam2lab_`"]
+    ny417p3lymbh65q1hrwwsmnlkziam2lab_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
 
-_4bljbq3yy2wl9brfnab8vs0lfmz8dj25_`"]
-    nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops["`**modules/sops**
+_y417p3lymbh65q1hrwwsmnlkziam2lab_`"]
+    nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops["`**modules/sops**
 
-_ny994wq50x88y3ws2srlspivc8nh8fmc_`"]
-    nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops_templates["`**modules/sops/templates**
+_vq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_`"]
+    nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops_templates["`**modules/sops/templates**
 
-_ny994wq50x88y3ws2srlspivc8nh8fmc_`"]
-    nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
+_vq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_`"]
+    nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
 
-_ny994wq50x88y3ws2srlspivc8nh8fmc_`"]
-    nmjcx0kk9yx6h4igam3aamfg2qp264dhd_nixos["`**nixos**
+_vq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_`"]
+    n4nmfar5m0ycmvpm90s0c2kdgb846q5ar_nixos["`**nixos**
 
-_mjcx0kk9yx6h4igam3aamfg2qp264dhd_`"]
-    nmjcx0kk9yx6h4igam3aamfg2qp264dhd_nixos_common_nix["`**nixos/common.nix**
+_4nmfar5m0ycmvpm90s0c2kdgb846q5ar_`"]
+    n4nmfar5m0ycmvpm90s0c2kdgb846q5ar_nixos_common_nix["`**nixos/common.nix**
 
-_mjcx0kk9yx6h4igam3aamfg2qp264dhd_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_global_nix["`**global.nix**
+_4nmfar5m0ycmvpm90s0c2kdgb846q5ar_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_global_nix["`**global.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch["`**configurations/schokoladenelch**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch["`**configurations/schokoladenelch**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_docker_nix["`**modules/docker.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_docker_nix["`**modules/docker.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_networkmanager_nix["`**modules/networkmanager.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_networkmanager_nix["`**modules/networkmanager.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_tmux_nix["`**modules/tmux.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_tmux_nix["`**modules/tmux.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_check_mkv["`**modules/scripts/check-mkv**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_check_mkv["`**modules/scripts/check-mkv**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_create_zfs_dataset["`**modules/scripts/create-zfs-dataset**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_create_zfs_dataset["`**modules/scripts/create-zfs-dataset**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_zfs_manual_snapshot["`**modules/scripts/zfs-manual-snapshot**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_zfs_manual_snapshot["`**modules/scripts/zfs-manual-snapshot**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_zfs_snapshot_diff["`**modules/scripts/zfs-snapshot-diff**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_zfs_snapshot_diff["`**modules/scripts/zfs-snapshot-diff**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_boot_nix["`**configurations/schokoladenelch/boot.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_boot_nix["`**configurations/schokoladenelch/boot.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_networking_nix["`**configurations/schokoladenelch/networking.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_networking_nix["`**configurations/schokoladenelch/networking.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_services_nix["`**configurations/schokoladenelch/services.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_services_nix["`**configurations/schokoladenelch/services.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_persistence_nix["`**configurations/schokoladenelch/persistence.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_persistence_nix["`**configurations/schokoladenelch/persistence.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_stacks_default_nix["`**modules/stacks/default.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_stacks_default_nix["`**modules/stacks/default.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos["`**machines/nico-schokoladenelch-nixos**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos["`**machines/nico-schokoladenelch-nixos**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos_hardware_configuration_nix["`**machines/nico-schokoladenelch-nixos/hardware-configuration.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos_hardware_configuration_nix["`**machines/nico-schokoladenelch-nixos/hardware-configuration.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    n0c81494pm8q9axg9789xb01m31afa3l7_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
 
-_0c81494pm8q9axg9789xb01m31afa3l7_`"]
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos_disk_configuration_nix["`**machines/nico-schokoladenelch-nixos/disk-configuration.nix**
+_q1z9705wy35wvjf076yz3bxvh08zpsjy_`"]
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos_disk_configuration_nix["`**machines/nico-schokoladenelch-nixos/disk-configuration.nix**
 
-_hxgfxf0x0hsw5hwi67039xz391fyinrq_`"]
-    n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix --> n4bljbq3yy2wl9brfnab8vs0lfmz8dj25_module_nix
-    n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix --> nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops
-    n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix --> nmjcx0kk9yx6h4igam3aamfg2qp264dhd_nixos
-    n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_global_nix
-    n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch
-    n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos
-    n4bljbq3yy2wl9brfnab8vs0lfmz8dj25_module_nix --> n4bljbq3yy2wl9brfnab8vs0lfmz8dj25_lib_make_disk_image_nix
-    nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops --> nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops_templates
-    nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops --> nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops_secrets_for_users
-    nmjcx0kk9yx6h4igam3aamfg2qp264dhd_nixos --> nmjcx0kk9yx6h4igam3aamfg2qp264dhd_nixos_common_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_docker_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_networkmanager_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_tmux_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_check_mkv
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_create_zfs_dataset
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_zfs_manual_snapshot
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_zfs_snapshot_diff
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_boot_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_networking_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_services_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_persistence_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_stacks_default_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos_hardware_configuration_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos --> nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos_disk_configuration_nix
-    nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos_hardware_configuration_nix --> n0c81494pm8q9axg9789xb01m31afa3l7_nixos_modules_installer_scan_not_detected_nix
-    style n0c81494pm8q9axg9789xb01m31afa3l7_flake_nix fill:#b2dde5,color:#000000
-    style n4bljbq3yy2wl9brfnab8vs0lfmz8dj25_module_nix fill:#b2e2e5,color:#000000
-    style n4bljbq3yy2wl9brfnab8vs0lfmz8dj25_lib_make_disk_image_nix fill:#b2e2e5,color:#000000
-    style nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops fill:#b2e5e2,color:#000000
-    style nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops_templates fill:#b2e5e2,color:#000000
-    style nny994wq50x88y3ws2srlspivc8nh8fmc_modules_sops_secrets_for_users fill:#b2e5e2,color:#000000
-    style nmjcx0kk9yx6h4igam3aamfg2qp264dhd_nixos fill:#b2e5b5,color:#000000
-    style nmjcx0kk9yx6h4igam3aamfg2qp264dhd_nixos_common_nix fill:#b2e5b5,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_global_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_docker_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_networkmanager_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_tmux_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_check_mkv fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_create_zfs_dataset fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_zfs_manual_snapshot fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_scripts_zfs_snapshot_diff fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_boot_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_networking_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_services_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_configurations_schokoladenelch_persistence_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_modules_stacks_default_nix fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos fill:#e5b2dc,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos_hardware_configuration_nix fill:#e5b2dc,color:#000000
-    style n0c81494pm8q9axg9789xb01m31afa3l7_nixos_modules_installer_scan_not_detected_nix fill:#b2dde5,color:#000000
-    style nhxgfxf0x0hsw5hwi67039xz391fyinrq_machines_nico_schokoladenelch_nixos_disk_configuration_nix fill:#e5b2dc,color:#000000
+_nqbjgybrj1zawdhahhlpq6zq8pvirs6p_`"]
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix --> ny417p3lymbh65q1hrwwsmnlkziam2lab_module_nix
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix --> nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix --> n4nmfar5m0ycmvpm90s0c2kdgb846q5ar_nixos
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_global_nix
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch
+    nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos
+    ny417p3lymbh65q1hrwwsmnlkziam2lab_module_nix --> ny417p3lymbh65q1hrwwsmnlkziam2lab_lib_make_disk_image_nix
+    nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops --> nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops_templates
+    nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops --> nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops_secrets_for_users
+    n4nmfar5m0ycmvpm90s0c2kdgb846q5ar_nixos --> n4nmfar5m0ycmvpm90s0c2kdgb846q5ar_nixos_common_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_docker_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_networkmanager_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_tmux_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_check_mkv
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_create_zfs_dataset
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_zfs_manual_snapshot
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_zfs_snapshot_diff
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_boot_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_networking_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_services_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_persistence_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_stacks_default_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos_hardware_configuration_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos --> nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos_disk_configuration_nix
+    nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos_hardware_configuration_nix --> nq1z9705wy35wvjf076yz3bxvh08zpsjy_nixos_modules_installer_scan_not_detected_nix
+    style nq1z9705wy35wvjf076yz3bxvh08zpsjy_flake_nix fill:#e5b2bd,color:#000000
+    style ny417p3lymbh65q1hrwwsmnlkziam2lab_module_nix fill:#dbe5b2,color:#000000
+    style ny417p3lymbh65q1hrwwsmnlkziam2lab_lib_make_disk_image_nix fill:#dbe5b2,color:#000000
+    style nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops fill:#e5b2e5,color:#000000
+    style nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops_templates fill:#e5b2e5,color:#000000
+    style nvq6kz1ffqm1dibnrs3dqmvv8g5c0s19p_modules_sops_secrets_for_users fill:#e5b2e5,color:#000000
+    style n4nmfar5m0ycmvpm90s0c2kdgb846q5ar_nixos fill:#e5b2b3,color:#000000
+    style n4nmfar5m0ycmvpm90s0c2kdgb846q5ar_nixos_common_nix fill:#e5b2b3,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_global_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_docker_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_networkmanager_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_tmux_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_check_mkv fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_create_zfs_dataset fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_zfs_manual_snapshot fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_scripts_zfs_snapshot_diff fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_boot_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_networking_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_services_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_configurations_schokoladenelch_persistence_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_modules_stacks_default_nix fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos fill:#b2b5e5,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos_hardware_configuration_nix fill:#b2b5e5,color:#000000
+    style nq1z9705wy35wvjf076yz3bxvh08zpsjy_nixos_modules_installer_scan_not_detected_nix fill:#e5b2bd,color:#000000
+    style nnqbjgybrj1zawdhahhlpq6zq8pvirs6p_machines_nico_schokoladenelch_nixos_disk_configuration_nix fill:#b2b5e5,color:#000000
 ```
 
 ## nico-thinkbook-nixos
 
 ```mermaid
 flowchart TD
-    nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix["`**flake.nix**
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix["`**flake.nix**
 
-_ci4ilk78vzx4yj50lngqkicdg721nvld_`"]
-    n70qr0kq2n34lvgzpi7as9211ihm7nymq_module_nix["`**module.nix**
+_jaqqyj5hazc7x785yzshhqxaa9hn37fh_`"]
+    ni8k78hyhck4j81hh34k8x9baah2115dn_module_nix["`**module.nix**
 
-_70qr0kq2n34lvgzpi7as9211ihm7nymq_`"]
-    n70qr0kq2n34lvgzpi7as9211ihm7nymq_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
+_i8k78hyhck4j81hh34k8x9baah2115dn_`"]
+    ni8k78hyhck4j81hh34k8x9baah2115dn_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
 
-_70qr0kq2n34lvgzpi7as9211ihm7nymq_`"]
-    nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops["`**modules/sops**
+_i8k78hyhck4j81hh34k8x9baah2115dn_`"]
+    nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops["`**modules/sops**
 
-_j1g4rjidzz2ah9k7rkblxwqchqpy0jjw_`"]
-    nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops_templates["`**modules/sops/templates**
+_mvy5l7h0py86zbn4nplfvgv7ka8qxfsm_`"]
+    nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops_templates["`**modules/sops/templates**
 
-_j1g4rjidzz2ah9k7rkblxwqchqpy0jjw_`"]
-    nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
+_mvy5l7h0py86zbn4nplfvgv7ka8qxfsm_`"]
+    nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
 
-_j1g4rjidzz2ah9k7rkblxwqchqpy0jjw_`"]
-    ndrzd2d194q07kqbq9kbhhj6gw1nvsbi6_nixos["`**nixos**
+_mvy5l7h0py86zbn4nplfvgv7ka8qxfsm_`"]
+    n7nlqyzj6hzl6y9css7zkhcbimxnb34y1_nixos["`**nixos**
 
-_drzd2d194q07kqbq9kbhhj6gw1nvsbi6_`"]
-    ndrzd2d194q07kqbq9kbhhj6gw1nvsbi6_nixos_common_nix["`**nixos/common.nix**
+_7nlqyzj6hzl6y9css7zkhcbimxnb34y1_`"]
+    n7nlqyzj6hzl6y9css7zkhcbimxnb34y1_nixos_common_nix["`**nixos/common.nix**
 
-_drzd2d194q07kqbq9kbhhj6gw1nvsbi6_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_global_nix["`**global.nix**
+_7nlqyzj6hzl6y9css7zkhcbimxnb34y1_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_global_nix["`**global.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico["`**configurations/nico**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico["`**configurations/nico**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_docker_nix["`**modules/docker.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_docker_nix["`**modules/docker.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_networkmanager_nix["`**modules/networkmanager.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_networkmanager_nix["`**modules/networkmanager.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_boot_nix["`**configurations/nico/boot.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_boot_nix["`**configurations/nico/boot.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_desktop_nix["`**configurations/nico/desktop.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_desktop_nix["`**configurations/nico/desktop.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_audio_nix["`**configurations/nico/audio.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_audio_nix["`**configurations/nico/audio.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_pipewire_nix["`**modules/pipewire.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_pipewire_nix["`**modules/pipewire.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_virtualisation_nix["`**configurations/nico/virtualisation.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_virtualisation_nix["`**configurations/nico/virtualisation.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_services_nix["`**configurations/nico/services.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_services_nix["`**configurations/nico/services.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_avahi_nix["`**modules/avahi.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_avahi_nix["`**modules/avahi.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_packages_nix["`**configurations/nico/packages.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_packages_nix["`**configurations/nico/packages.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_rclone_nix["`**configurations/nico/rclone.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_rclone_nix["`**configurations/nico/rclone.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos["`**machines/nico-thinkbook-nixos**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos["`**machines/nico-thinkbook-nixos**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos_hardware_configuration_nix["`**machines/nico-thinkbook-nixos/hardware-configuration.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos_hardware_configuration_nix["`**machines/nico-thinkbook-nixos/hardware-configuration.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nci4ilk78vzx4yj50lngqkicdg721nvld_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
 
-_ci4ilk78vzx4yj50lngqkicdg721nvld_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos_nvidia_gpu_nix["`**machines/nico-thinkbook-nixos/nvidia-gpu.nix**
+_jaqqyj5hazc7x785yzshhqxaa9hn37fh_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos_nvidia_gpu_nix["`**machines/nico-thinkbook-nixos/nvidia-gpu.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_eden_nix["`**modules/eden.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_eden_nix["`**modules/eden.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_xone_dongle_nix["`**modules/xone-dongle.nix**
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_xone_dongle_nix["`**modules/xone-dongle.nix**
 
-_f9pv6c242wk9a1r2q6vaa3wmxz484l3x_`"]
-    nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix --> n70qr0kq2n34lvgzpi7as9211ihm7nymq_module_nix
-    nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix --> nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops
-    nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix --> ndrzd2d194q07kqbq9kbhhj6gw1nvsbi6_nixos
-    nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_global_nix
-    nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico
-    nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos
-    n70qr0kq2n34lvgzpi7as9211ihm7nymq_module_nix --> n70qr0kq2n34lvgzpi7as9211ihm7nymq_lib_make_disk_image_nix
-    nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops --> nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops_templates
-    nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops --> nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops_secrets_for_users
-    ndrzd2d194q07kqbq9kbhhj6gw1nvsbi6_nixos --> ndrzd2d194q07kqbq9kbhhj6gw1nvsbi6_nixos_common_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_docker_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_networkmanager_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_boot_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_desktop_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_audio_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_virtualisation_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_services_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_packages_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_rclone_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_audio_nix --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_pipewire_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_services_nix --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_avahi_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos_hardware_configuration_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos_nvidia_gpu_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_eden_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos --> nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_xone_dongle_nix
-    nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos_hardware_configuration_nix --> nci4ilk78vzx4yj50lngqkicdg721nvld_nixos_modules_installer_scan_not_detected_nix
-    style nci4ilk78vzx4yj50lngqkicdg721nvld_flake_nix fill:#d1e5b2,color:#000000
-    style n70qr0kq2n34lvgzpi7as9211ihm7nymq_module_nix fill:#b2bde5,color:#000000
-    style n70qr0kq2n34lvgzpi7as9211ihm7nymq_lib_make_disk_image_nix fill:#b2bde5,color:#000000
-    style nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops fill:#b2e5c8,color:#000000
-    style nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops_templates fill:#b2e5c8,color:#000000
-    style nj1g4rjidzz2ah9k7rkblxwqchqpy0jjw_modules_sops_secrets_for_users fill:#b2e5c8,color:#000000
-    style ndrzd2d194q07kqbq9kbhhj6gw1nvsbi6_nixos fill:#e5b2b9,color:#000000
-    style ndrzd2d194q07kqbq9kbhhj6gw1nvsbi6_nixos_common_nix fill:#e5b2b9,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_global_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_docker_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_networkmanager_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_boot_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_desktop_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_audio_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_pipewire_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_virtualisation_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_services_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_avahi_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_packages_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_configurations_nico_rclone_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos_hardware_configuration_nix fill:#e0b2e5,color:#000000
-    style nci4ilk78vzx4yj50lngqkicdg721nvld_nixos_modules_installer_scan_not_detected_nix fill:#d1e5b2,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_machines_nico_thinkbook_nixos_nvidia_gpu_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_eden_nix fill:#e0b2e5,color:#000000
-    style nf9pv6c242wk9a1r2q6vaa3wmxz484l3x_modules_xone_dongle_nix fill:#e0b2e5,color:#000000
+_g4cdi40rl48aaywp0ka5nal0ais8qbdj_`"]
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix --> ni8k78hyhck4j81hh34k8x9baah2115dn_module_nix
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix --> nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix --> n7nlqyzj6hzl6y9css7zkhcbimxnb34y1_nixos
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_global_nix
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico
+    njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos
+    ni8k78hyhck4j81hh34k8x9baah2115dn_module_nix --> ni8k78hyhck4j81hh34k8x9baah2115dn_lib_make_disk_image_nix
+    nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops --> nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops_templates
+    nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops --> nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops_secrets_for_users
+    n7nlqyzj6hzl6y9css7zkhcbimxnb34y1_nixos --> n7nlqyzj6hzl6y9css7zkhcbimxnb34y1_nixos_common_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_docker_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_networkmanager_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_boot_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_desktop_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_audio_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_virtualisation_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_services_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_packages_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_rclone_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_audio_nix --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_pipewire_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_services_nix --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_avahi_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos_hardware_configuration_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos_nvidia_gpu_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_eden_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos --> ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_xone_dongle_nix
+    ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos_hardware_configuration_nix --> njaqqyj5hazc7x785yzshhqxaa9hn37fh_nixos_modules_installer_scan_not_detected_nix
+    style njaqqyj5hazc7x785yzshhqxaa9hn37fh_flake_nix fill:#e1e5b2,color:#000000
+    style ni8k78hyhck4j81hh34k8x9baah2115dn_module_nix fill:#e5b2d7,color:#000000
+    style ni8k78hyhck4j81hh34k8x9baah2115dn_lib_make_disk_image_nix fill:#e5b2d7,color:#000000
+    style nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops fill:#b2c5e5,color:#000000
+    style nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops_templates fill:#b2c5e5,color:#000000
+    style nmvy5l7h0py86zbn4nplfvgv7ka8qxfsm_modules_sops_secrets_for_users fill:#b2c5e5,color:#000000
+    style n7nlqyzj6hzl6y9css7zkhcbimxnb34y1_nixos fill:#b2dde5,color:#000000
+    style n7nlqyzj6hzl6y9css7zkhcbimxnb34y1_nixos_common_nix fill:#b2dde5,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_global_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_docker_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_networkmanager_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_boot_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_desktop_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_audio_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_pipewire_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_virtualisation_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_services_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_avahi_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_packages_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_configurations_nico_rclone_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos_hardware_configuration_nix fill:#d0e5b2,color:#000000
+    style njaqqyj5hazc7x785yzshhqxaa9hn37fh_nixos_modules_installer_scan_not_detected_nix fill:#e1e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_machines_nico_thinkbook_nixos_nvidia_gpu_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_eden_nix fill:#d0e5b2,color:#000000
+    style ng4cdi40rl48aaywp0ka5nal0ais8qbdj_modules_xone_dongle_nix fill:#d0e5b2,color:#000000
 ```
 
 ## nico-thinkpad-nixos
 
 ```mermaid
 flowchart TD
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix["`**flake.nix**
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix["`**flake.nix**
 
-_7fr4llwaywmx42mizpyiblq9i7hnqrwl_`"]
-    n237majl5z6h2xbizqvp0n27ix119a85f_module_nix["`**module.nix**
+_kb4vprlq0260qh4wbc3yp9d0wzclm624_`"]
+    nbsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_module_nix["`**module.nix**
 
-_237majl5z6h2xbizqvp0n27ix119a85f_`"]
-    n237majl5z6h2xbizqvp0n27ix119a85f_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
+_bsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_`"]
+    nbsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
 
-_237majl5z6h2xbizqvp0n27ix119a85f_`"]
-    n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops["`**modules/sops**
+_bsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_`"]
+    n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops["`**modules/sops**
 
-_6c422355az3z7s9x1ll1svbcn37afwiy_`"]
-    n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops_templates["`**modules/sops/templates**
+_119k9rs64bng5fhcw8z1gnfxs4pw7xs9_`"]
+    n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops_templates["`**modules/sops/templates**
 
-_6c422355az3z7s9x1ll1svbcn37afwiy_`"]
-    n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
+_119k9rs64bng5fhcw8z1gnfxs4pw7xs9_`"]
+    n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
 
-_6c422355az3z7s9x1ll1svbcn37afwiy_`"]
-    nqfy50wl47w01czmgxgvsdwh8ks61priq_nixos["`**nixos**
+_119k9rs64bng5fhcw8z1gnfxs4pw7xs9_`"]
+    nc622p2pqwlh4zljm1q48a5gahss417lz_nixos["`**nixos**
 
-_qfy50wl47w01czmgxgvsdwh8ks61priq_`"]
-    nqfy50wl47w01czmgxgvsdwh8ks61priq_nixos_common_nix["`**nixos/common.nix**
+_c622p2pqwlh4zljm1q48a5gahss417lz_`"]
+    nc622p2pqwlh4zljm1q48a5gahss417lz_nixos_common_nix["`**nixos/common.nix**
 
-_qfy50wl47w01czmgxgvsdwh8ks61priq_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_global_nix["`**global.nix**
+_c622p2pqwlh4zljm1q48a5gahss417lz_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_global_nix["`**global.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico["`**configurations/nico**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico["`**configurations/nico**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_docker_nix["`**modules/docker.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_docker_nix["`**modules/docker.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_networkmanager_nix["`**modules/networkmanager.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_networkmanager_nix["`**modules/networkmanager.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_boot_nix["`**configurations/nico/boot.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_boot_nix["`**configurations/nico/boot.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_desktop_nix["`**configurations/nico/desktop.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_desktop_nix["`**configurations/nico/desktop.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_audio_nix["`**configurations/nico/audio.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_audio_nix["`**configurations/nico/audio.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_pipewire_nix["`**modules/pipewire.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_pipewire_nix["`**modules/pipewire.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_virtualisation_nix["`**configurations/nico/virtualisation.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_virtualisation_nix["`**configurations/nico/virtualisation.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_services_nix["`**configurations/nico/services.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_services_nix["`**configurations/nico/services.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_avahi_nix["`**modules/avahi.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_avahi_nix["`**modules/avahi.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_packages_nix["`**configurations/nico/packages.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_packages_nix["`**configurations/nico/packages.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_rclone_nix["`**configurations/nico/rclone.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_rclone_nix["`**configurations/nico/rclone.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos["`**machines/nico-thinkpad-nixos**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos["`**machines/nico-thinkpad-nixos**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_hardware_configuration_nix["`**machines/nico-thinkpad-nixos/hardware-configuration.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_hardware_configuration_nix["`**machines/nico-thinkpad-nixos/hardware-configuration.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_nixos_modules_installer_scan_not_detected_nix["`**nixos/modules/installer/scan/not-detected.nix**
 
-_7fr4llwaywmx42mizpyiblq9i7hnqrwl_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_disk_configuration_nix["`**machines/nico-thinkpad-nixos/disk-configuration.nix**
+_kb4vprlq0260qh4wbc3yp9d0wzclm624_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_disk_configuration_nix["`**machines/nico-thinkpad-nixos/disk-configuration.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_impermanence_nix["`**machines/nico-thinkpad-nixos/impermanence.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_impermanence_nix["`**machines/nico-thinkpad-nixos/impermanence.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_fritzbox_wireguard_nix["`**machines/nico-thinkpad-nixos/fritzbox-wireguard.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_fritzbox_wireguard_nix["`**machines/nico-thinkpad-nixos/fritzbox-wireguard.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_mobile_network_nix["`**machines/nico-thinkpad-nixos/mobile-network.nix**
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_mobile_network_nix["`**machines/nico-thinkpad-nixos/mobile-network.nix**
 
-_85hsb4jad4z365xn16s8dxwnd3n0pr7w_`"]
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix --> n237majl5z6h2xbizqvp0n27ix119a85f_module_nix
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix --> n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix --> nqfy50wl47w01czmgxgvsdwh8ks61priq_nixos
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_global_nix
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico
-    n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos
-    n237majl5z6h2xbizqvp0n27ix119a85f_module_nix --> n237majl5z6h2xbizqvp0n27ix119a85f_lib_make_disk_image_nix
-    n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops --> n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops_templates
-    n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops --> n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops_secrets_for_users
-    nqfy50wl47w01czmgxgvsdwh8ks61priq_nixos --> nqfy50wl47w01czmgxgvsdwh8ks61priq_nixos_common_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_docker_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_networkmanager_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_boot_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_desktop_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_audio_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_virtualisation_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_services_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_packages_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_rclone_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_audio_nix --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_pipewire_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_services_nix --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_avahi_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_hardware_configuration_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_disk_configuration_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_impermanence_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_fritzbox_wireguard_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos --> n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_mobile_network_nix
-    n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_hardware_configuration_nix --> n7fr4llwaywmx42mizpyiblq9i7hnqrwl_nixos_modules_installer_scan_not_detected_nix
-    style n7fr4llwaywmx42mizpyiblq9i7hnqrwl_flake_nix fill:#b2e5b3,color:#000000
-    style n237majl5z6h2xbizqvp0n27ix119a85f_module_nix fill:#b2b8e5,color:#000000
-    style n237majl5z6h2xbizqvp0n27ix119a85f_lib_make_disk_image_nix fill:#b2b8e5,color:#000000
-    style n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops fill:#e4e5b2,color:#000000
-    style n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops_templates fill:#e4e5b2,color:#000000
-    style n6c422355az3z7s9x1ll1svbcn37afwiy_modules_sops_secrets_for_users fill:#e4e5b2,color:#000000
-    style nqfy50wl47w01czmgxgvsdwh8ks61priq_nixos fill:#b2e5d7,color:#000000
-    style nqfy50wl47w01czmgxgvsdwh8ks61priq_nixos_common_nix fill:#b2e5d7,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_global_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_docker_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_networkmanager_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_boot_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_desktop_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_audio_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_pipewire_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_virtualisation_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_services_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_modules_avahi_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_packages_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_configurations_nico_rclone_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_hardware_configuration_nix fill:#e5d1b2,color:#000000
-    style n7fr4llwaywmx42mizpyiblq9i7hnqrwl_nixos_modules_installer_scan_not_detected_nix fill:#b2e5b3,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_disk_configuration_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_impermanence_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_fritzbox_wireguard_nix fill:#e5d1b2,color:#000000
-    style n85hsb4jad4z365xn16s8dxwnd3n0pr7w_machines_nico_thinkpad_nixos_mobile_network_nix fill:#e5d1b2,color:#000000
+_z091mjqna8z3dv9inqqv3bdk5h65xps9_`"]
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix --> nbsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_module_nix
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix --> n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix --> nc622p2pqwlh4zljm1q48a5gahss417lz_nixos
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_global_nix
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico
+    nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos
+    nbsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_module_nix --> nbsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_lib_make_disk_image_nix
+    n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops --> n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops_templates
+    n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops --> n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops_secrets_for_users
+    nc622p2pqwlh4zljm1q48a5gahss417lz_nixos --> nc622p2pqwlh4zljm1q48a5gahss417lz_nixos_common_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_docker_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_networkmanager_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_boot_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_desktop_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_audio_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_virtualisation_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_services_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_packages_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_rclone_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_audio_nix --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_pipewire_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_services_nix --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_avahi_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_hardware_configuration_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_disk_configuration_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_impermanence_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_fritzbox_wireguard_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos --> nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_mobile_network_nix
+    nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_hardware_configuration_nix --> nkb4vprlq0260qh4wbc3yp9d0wzclm624_nixos_modules_installer_scan_not_detected_nix
+    style nkb4vprlq0260qh4wbc3yp9d0wzclm624_flake_nix fill:#e5c4b2,color:#000000
+    style nbsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_module_nix fill:#e5b2e5,color:#000000
+    style nbsdk45d3lgdxyfdnwz7qgm1qbs0q2bw0_lib_make_disk_image_nix fill:#e5b2e5,color:#000000
+    style n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops fill:#e5b2d6,color:#000000
+    style n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops_templates fill:#e5b2d6,color:#000000
+    style n119k9rs64bng5fhcw8z1gnfxs4pw7xs9_modules_sops_secrets_for_users fill:#e5b2d6,color:#000000
+    style nc622p2pqwlh4zljm1q48a5gahss417lz_nixos fill:#b2e5dd,color:#000000
+    style nc622p2pqwlh4zljm1q48a5gahss417lz_nixos_common_nix fill:#b2e5dd,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_global_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_docker_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_networkmanager_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_boot_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_desktop_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_audio_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_pipewire_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_virtualisation_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_services_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_modules_avahi_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_packages_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_configurations_nico_rclone_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_hardware_configuration_nix fill:#dde5b2,color:#000000
+    style nkb4vprlq0260qh4wbc3yp9d0wzclm624_nixos_modules_installer_scan_not_detected_nix fill:#e5c4b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_disk_configuration_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_impermanence_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_fritzbox_wireguard_nix fill:#dde5b2,color:#000000
+    style nz091mjqna8z3dv9inqqv3bdk5h65xps9_machines_nico_thinkpad_nixos_mobile_network_nix fill:#dde5b2,color:#000000
 ```
 
 ## nixos-virtualbox-nixos
 
 ```mermaid
 flowchart TD
-    nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix["`**flake.nix**
+    n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix["`**flake.nix**
 
-_smcrmkkccpmmr98gvh4vc9yz3lxz9qw5_`"]
-    n2slvng6n4nmc07i5zj714f5311c0i01r_module_nix["`**module.nix**
+_1jb0jadf465j2dm8qz2hg1lib1pkp2r8_`"]
+    ngm8cw0zv5sfp3y7hcfvh91gwhpckvph6_module_nix["`**module.nix**
 
-_2slvng6n4nmc07i5zj714f5311c0i01r_`"]
-    n2slvng6n4nmc07i5zj714f5311c0i01r_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
+_gm8cw0zv5sfp3y7hcfvh91gwhpckvph6_`"]
+    ngm8cw0zv5sfp3y7hcfvh91gwhpckvph6_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
 
-_2slvng6n4nmc07i5zj714f5311c0i01r_`"]
-    nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops["`**modules/sops**
+_gm8cw0zv5sfp3y7hcfvh91gwhpckvph6_`"]
+    npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops["`**modules/sops**
 
-_d3vz1wq853bf559rkkxqb4grqb02q39q_`"]
-    nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops_templates["`**modules/sops/templates**
+_pppry3v7jjf3allxqml5cq8024yw0m2r_`"]
+    npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops_templates["`**modules/sops/templates**
 
-_d3vz1wq853bf559rkkxqb4grqb02q39q_`"]
-    nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
+_pppry3v7jjf3allxqml5cq8024yw0m2r_`"]
+    npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
 
-_d3vz1wq853bf559rkkxqb4grqb02q39q_`"]
-    nd6fnc679aghg69hjwcyi1lga302zg9lv_nixos["`**nixos**
+_pppry3v7jjf3allxqml5cq8024yw0m2r_`"]
+    ny6k3wrw7ndf2963p69k3xbhdxlvjzgf0_nixos["`**nixos**
 
-_d6fnc679aghg69hjwcyi1lga302zg9lv_`"]
-    nd6fnc679aghg69hjwcyi1lga302zg9lv_nixos_common_nix["`**nixos/common.nix**
+_y6k3wrw7ndf2963p69k3xbhdxlvjzgf0_`"]
+    ny6k3wrw7ndf2963p69k3xbhdxlvjzgf0_nixos_common_nix["`**nixos/common.nix**
 
-_d6fnc679aghg69hjwcyi1lga302zg9lv_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_global_nix["`**global.nix**
+_y6k3wrw7ndf2963p69k3xbhdxlvjzgf0_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_global_nix["`**global.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_configurations_nixos["`**configurations/nixos**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_configurations_nixos["`**configurations/nixos**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_docker_nix["`**modules/docker.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_modules_docker_nix["`**modules/docker.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_headlamp_nix["`**modules/headlamp.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_modules_headlamp_nix["`**modules/headlamp.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_tmux_nix["`**modules/tmux.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_modules_tmux_nix["`**modules/tmux.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos["`**machines/nixos-virtualbox-nixos**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos["`**machines/nixos-virtualbox-nixos**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_hardware_configuration_nix["`**machines/nixos-virtualbox-nixos/hardware-configuration.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_hardware_configuration_nix["`**machines/nixos-virtualbox-nixos/hardware-configuration.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_disk_configuration_nix["`**machines/nixos-virtualbox-nixos/disk-configuration.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_disk_configuration_nix["`**machines/nixos-virtualbox-nixos/disk-configuration.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_boot_nix["`**machines/nixos-virtualbox-nixos/boot.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_boot_nix["`**machines/nixos-virtualbox-nixos/boot.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_desktop_nix["`**machines/nixos-virtualbox-nixos/desktop.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_desktop_nix["`**machines/nixos-virtualbox-nixos/desktop.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_persistence_nix["`**machines/nixos-virtualbox-nixos/persistence.nix**
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_persistence_nix["`**machines/nixos-virtualbox-nixos/persistence.nix**
 
-_qjczwxlwyajj3z3v0x5ml1d4z217wi4g_`"]
-    nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix --> n2slvng6n4nmc07i5zj714f5311c0i01r_module_nix
-    nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix --> nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops
-    nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix --> nd6fnc679aghg69hjwcyi1lga302zg9lv_nixos
-    nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_global_nix
-    nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_configurations_nixos
-    nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos
-    n2slvng6n4nmc07i5zj714f5311c0i01r_module_nix --> n2slvng6n4nmc07i5zj714f5311c0i01r_lib_make_disk_image_nix
-    nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops --> nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops_templates
-    nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops --> nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops_secrets_for_users
-    nd6fnc679aghg69hjwcyi1lga302zg9lv_nixos --> nd6fnc679aghg69hjwcyi1lga302zg9lv_nixos_common_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_configurations_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_docker_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_configurations_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_headlamp_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_configurations_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_tmux_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_hardware_configuration_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_disk_configuration_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_boot_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_desktop_nix
-    nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos --> nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_persistence_nix
-    style nsmcrmkkccpmmr98gvh4vc9yz3lxz9qw5_flake_nix fill:#e5c2b2,color:#000000
-    style n2slvng6n4nmc07i5zj714f5311c0i01r_module_nix fill:#e5b2dc,color:#000000
-    style n2slvng6n4nmc07i5zj714f5311c0i01r_lib_make_disk_image_nix fill:#e5b2dc,color:#000000
-    style nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops fill:#b2e5d8,color:#000000
-    style nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops_templates fill:#b2e5d8,color:#000000
-    style nd3vz1wq853bf559rkkxqb4grqb02q39q_modules_sops_secrets_for_users fill:#b2e5d8,color:#000000
-    style nd6fnc679aghg69hjwcyi1lga302zg9lv_nixos fill:#b2cce5,color:#000000
-    style nd6fnc679aghg69hjwcyi1lga302zg9lv_nixos_common_nix fill:#b2cce5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_global_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_configurations_nixos fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_docker_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_headlamp_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_modules_tmux_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_hardware_configuration_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_disk_configuration_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_boot_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_desktop_nix fill:#b2e5c5,color:#000000
-    style nqjczwxlwyajj3z3v0x5ml1d4z217wi4g_machines_nixos_virtualbox_nixos_persistence_nix fill:#b2e5c5,color:#000000
+_rcipljnvffia47jzwzkadarljilh83zp_`"]
+    n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix --> ngm8cw0zv5sfp3y7hcfvh91gwhpckvph6_module_nix
+    n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix --> npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops
+    n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix --> ny6k3wrw7ndf2963p69k3xbhdxlvjzgf0_nixos
+    n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix --> nrcipljnvffia47jzwzkadarljilh83zp_global_nix
+    n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix --> nrcipljnvffia47jzwzkadarljilh83zp_configurations_nixos
+    n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix --> nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos
+    ngm8cw0zv5sfp3y7hcfvh91gwhpckvph6_module_nix --> ngm8cw0zv5sfp3y7hcfvh91gwhpckvph6_lib_make_disk_image_nix
+    npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops --> npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops_templates
+    npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops --> npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops_secrets_for_users
+    ny6k3wrw7ndf2963p69k3xbhdxlvjzgf0_nixos --> ny6k3wrw7ndf2963p69k3xbhdxlvjzgf0_nixos_common_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_configurations_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_modules_docker_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_configurations_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_modules_headlamp_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_configurations_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_modules_tmux_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_hardware_configuration_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_disk_configuration_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_boot_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_desktop_nix
+    nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos --> nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_persistence_nix
+    style n1jb0jadf465j2dm8qz2hg1lib1pkp2r8_flake_nix fill:#e5b2bb,color:#000000
+    style ngm8cw0zv5sfp3y7hcfvh91gwhpckvph6_module_nix fill:#c1b2e5,color:#000000
+    style ngm8cw0zv5sfp3y7hcfvh91gwhpckvph6_lib_make_disk_image_nix fill:#c1b2e5,color:#000000
+    style npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops fill:#b2e5bf,color:#000000
+    style npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops_templates fill:#b2e5bf,color:#000000
+    style npppry3v7jjf3allxqml5cq8024yw0m2r_modules_sops_secrets_for_users fill:#b2e5bf,color:#000000
+    style ny6k3wrw7ndf2963p69k3xbhdxlvjzgf0_nixos fill:#d9e5b2,color:#000000
+    style ny6k3wrw7ndf2963p69k3xbhdxlvjzgf0_nixos_common_nix fill:#d9e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_global_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_configurations_nixos fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_modules_docker_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_modules_headlamp_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_modules_tmux_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_hardware_configuration_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_disk_configuration_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_boot_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_desktop_nix fill:#d7e5b2,color:#000000
+    style nrcipljnvffia47jzwzkadarljilh83zp_machines_nixos_virtualbox_nixos_persistence_nix fill:#d7e5b2,color:#000000
 ```
 
 ## nixos-wsl-nixos
 
 ```mermaid
 flowchart TD
-    nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix["`**flake.nix**
+    nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix["`**flake.nix**
 
-_qpil96185hkv78kc07dcy24sgr8qzmqw_`"]
-    nm4a86qbs7gnj67lr11pmsl09vizvmn8x_module_nix["`**module.nix**
+_j0z7ky1zzgarfqwm0702q5ngp3vjlr30_`"]
+    nvzkshhpghprfca78ckcn3pg3h8fq1smk_module_nix["`**module.nix**
 
-_m4a86qbs7gnj67lr11pmsl09vizvmn8x_`"]
-    nm4a86qbs7gnj67lr11pmsl09vizvmn8x_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
+_vzkshhpghprfca78ckcn3pg3h8fq1smk_`"]
+    nvzkshhpghprfca78ckcn3pg3h8fq1smk_lib_make_disk_image_nix["`**lib/make-disk-image.nix**
 
-_m4a86qbs7gnj67lr11pmsl09vizvmn8x_`"]
-    n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops["`**modules/sops**
+_vzkshhpghprfca78ckcn3pg3h8fq1smk_`"]
+    ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops["`**modules/sops**
 
-_58jx27dq7j5bd51b7xjhvjm15w64wfcm_`"]
-    n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops_templates["`**modules/sops/templates**
+_djpki8ypgydnnzfj3cm6jr55c26qllmr_`"]
+    ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops_templates["`**modules/sops/templates**
 
-_58jx27dq7j5bd51b7xjhvjm15w64wfcm_`"]
-    n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
+_djpki8ypgydnnzfj3cm6jr55c26qllmr_`"]
+    ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops_secrets_for_users["`**modules/sops/secrets-for-users**
 
-_58jx27dq7j5bd51b7xjhvjm15w64wfcm_`"]
-    nyzi5pmiz9fi6m7mhqg9540zbg09j6rhf_nixos["`**nixos**
+_djpki8ypgydnnzfj3cm6jr55c26qllmr_`"]
+    nnic2ndw7n1f4j4zi2sg4h04xyaqbg015_nixos["`**nixos**
 
-_yzi5pmiz9fi6m7mhqg9540zbg09j6rhf_`"]
-    nyzi5pmiz9fi6m7mhqg9540zbg09j6rhf_nixos_common_nix["`**nixos/common.nix**
+_nic2ndw7n1f4j4zi2sg4h04xyaqbg015_`"]
+    nnic2ndw7n1f4j4zi2sg4h04xyaqbg015_nixos_common_nix["`**nixos/common.nix**
 
-_yzi5pmiz9fi6m7mhqg9540zbg09j6rhf_`"]
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_global_nix["`**global.nix**
+_nic2ndw7n1f4j4zi2sg4h04xyaqbg015_`"]
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_global_nix["`**global.nix**
 
-_x8c3sr9i28nza8jrh5c2lv818lvbkg47_`"]
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_configurations_nixos["`**configurations/nixos**
+_qwh9msjr9q0blixdzvqvhraiaxn49xs4_`"]
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_configurations_nixos["`**configurations/nixos**
 
-_x8c3sr9i28nza8jrh5c2lv818lvbkg47_`"]
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_docker_nix["`**modules/docker.nix**
+_qwh9msjr9q0blixdzvqvhraiaxn49xs4_`"]
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_docker_nix["`**modules/docker.nix**
 
-_x8c3sr9i28nza8jrh5c2lv818lvbkg47_`"]
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_headlamp_nix["`**modules/headlamp.nix**
+_qwh9msjr9q0blixdzvqvhraiaxn49xs4_`"]
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_headlamp_nix["`**modules/headlamp.nix**
 
-_x8c3sr9i28nza8jrh5c2lv818lvbkg47_`"]
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_tmux_nix["`**modules/tmux.nix**
+_qwh9msjr9q0blixdzvqvhraiaxn49xs4_`"]
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_tmux_nix["`**modules/tmux.nix**
 
-_x8c3sr9i28nza8jrh5c2lv818lvbkg47_`"]
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos["`**machines/nixos-wsl-nixos**
+_qwh9msjr9q0blixdzvqvhraiaxn49xs4_`"]
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos["`**machines/nixos-wsl-nixos**
 
-_x8c3sr9i28nza8jrh5c2lv818lvbkg47_`"]
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos_hardware_configuration_nix["`**machines/nixos-wsl-nixos/hardware-configuration.nix**
+_qwh9msjr9q0blixdzvqvhraiaxn49xs4_`"]
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos_hardware_configuration_nix["`**machines/nixos-wsl-nixos/hardware-configuration.nix**
 
-_x8c3sr9i28nza8jrh5c2lv818lvbkg47_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules["`**modules**
+_qwh9msjr9q0blixdzvqvhraiaxn49xs4_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules["`**modules**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_build_tarball_nix["`**modules/build-tarball.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_build_tarball_nix["`**modules/build-tarball.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_docker_desktop_nix["`**modules/docker-desktop.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_docker_desktop_nix["`**modules/docker-desktop.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_interop_nix["`**modules/interop.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_interop_nix["`**modules/interop.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_recovery_nix["`**modules/recovery.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_recovery_nix["`**modules/recovery.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_ssh_agent_nix["`**modules/ssh-agent.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_ssh_agent_nix["`**modules/ssh-agent.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd["`**modules/systemd**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd["`**modules/systemd**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd_native["`**modules/systemd/native**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd_native["`**modules/systemd/native**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd_native_wrap_shell_nix["`**modules/systemd/native/wrap-shell.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd_native_wrap_shell_nix["`**modules/systemd/native/wrap-shell.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_usbip_nix["`**modules/usbip.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_usbip_nix["`**modules/usbip.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_version_nix["`**modules/version.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_version_nix["`**modules/version.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_welcome_nix["`**modules/welcome.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_welcome_nix["`**modules/welcome.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_wsl_conf_nix["`**modules/wsl-conf.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_wsl_conf_nix["`**modules/wsl-conf.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_wsl_distro_nix["`**modules/wsl-distro.nix**
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_wsl_distro_nix["`**modules/wsl-distro.nix**
 
-_njpr2452l02616vr4wyi9m3517lz2gv9_`"]
-    nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix --> nm4a86qbs7gnj67lr11pmsl09vizvmn8x_module_nix
-    nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix --> n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops
-    nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix --> nyzi5pmiz9fi6m7mhqg9540zbg09j6rhf_nixos
-    nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix --> nx8c3sr9i28nza8jrh5c2lv818lvbkg47_global_nix
-    nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix --> nx8c3sr9i28nza8jrh5c2lv818lvbkg47_configurations_nixos
-    nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix --> nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos
-    nm4a86qbs7gnj67lr11pmsl09vizvmn8x_module_nix --> nm4a86qbs7gnj67lr11pmsl09vizvmn8x_lib_make_disk_image_nix
-    n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops --> n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops_templates
-    n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops --> n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops_secrets_for_users
-    nyzi5pmiz9fi6m7mhqg9540zbg09j6rhf_nixos --> nyzi5pmiz9fi6m7mhqg9540zbg09j6rhf_nixos_common_nix
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_configurations_nixos --> nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_docker_nix
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_configurations_nixos --> nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_headlamp_nix
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_configurations_nixos --> nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_tmux_nix
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos --> nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos_hardware_configuration_nix
-    nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_build_tarball_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_docker_desktop_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_interop_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_recovery_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_ssh_agent_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_usbip_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_version_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_welcome_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_wsl_conf_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_wsl_distro_nix
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd_native
-    nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd_native --> nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd_native_wrap_shell_nix
-    style nqpil96185hkv78kc07dcy24sgr8qzmqw_flake_nix fill:#b2c4e5,color:#000000
-    style nm4a86qbs7gnj67lr11pmsl09vizvmn8x_module_nix fill:#b2e5e4,color:#000000
-    style nm4a86qbs7gnj67lr11pmsl09vizvmn8x_lib_make_disk_image_nix fill:#b2e5e4,color:#000000
-    style n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops fill:#d1b2e5,color:#000000
-    style n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops_templates fill:#d1b2e5,color:#000000
-    style n58jx27dq7j5bd51b7xjhvjm15w64wfcm_modules_sops_secrets_for_users fill:#d1b2e5,color:#000000
-    style nyzi5pmiz9fi6m7mhqg9540zbg09j6rhf_nixos fill:#bbe5b2,color:#000000
-    style nyzi5pmiz9fi6m7mhqg9540zbg09j6rhf_nixos_common_nix fill:#bbe5b2,color:#000000
-    style nx8c3sr9i28nza8jrh5c2lv818lvbkg47_global_nix fill:#b2e5ba,color:#000000
-    style nx8c3sr9i28nza8jrh5c2lv818lvbkg47_configurations_nixos fill:#b2e5ba,color:#000000
-    style nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_docker_nix fill:#b2e5ba,color:#000000
-    style nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_headlamp_nix fill:#b2e5ba,color:#000000
-    style nx8c3sr9i28nza8jrh5c2lv818lvbkg47_modules_tmux_nix fill:#b2e5ba,color:#000000
-    style nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos fill:#b2e5ba,color:#000000
-    style nx8c3sr9i28nza8jrh5c2lv818lvbkg47_machines_nixos_wsl_nixos_hardware_configuration_nix fill:#b2e5ba,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_build_tarball_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_docker_desktop_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_interop_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_recovery_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_ssh_agent_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd_native fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_systemd_native_wrap_shell_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_usbip_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_version_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_welcome_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_wsl_conf_nix fill:#e5dab2,color:#000000
-    style nnjpr2452l02616vr4wyi9m3517lz2gv9_modules_wsl_distro_nix fill:#e5dab2,color:#000000
+_qp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_`"]
+    nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix --> nvzkshhpghprfca78ckcn3pg3h8fq1smk_module_nix
+    nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix --> ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops
+    nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix --> nnic2ndw7n1f4j4zi2sg4h04xyaqbg015_nixos
+    nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix --> nqwh9msjr9q0blixdzvqvhraiaxn49xs4_global_nix
+    nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix --> nqwh9msjr9q0blixdzvqvhraiaxn49xs4_configurations_nixos
+    nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix --> nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos
+    nvzkshhpghprfca78ckcn3pg3h8fq1smk_module_nix --> nvzkshhpghprfca78ckcn3pg3h8fq1smk_lib_make_disk_image_nix
+    ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops --> ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops_templates
+    ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops --> ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops_secrets_for_users
+    nnic2ndw7n1f4j4zi2sg4h04xyaqbg015_nixos --> nnic2ndw7n1f4j4zi2sg4h04xyaqbg015_nixos_common_nix
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_configurations_nixos --> nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_docker_nix
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_configurations_nixos --> nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_headlamp_nix
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_configurations_nixos --> nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_tmux_nix
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos --> nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos_hardware_configuration_nix
+    nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_build_tarball_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_docker_desktop_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_interop_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_recovery_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_ssh_agent_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_usbip_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_version_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_welcome_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_wsl_conf_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_wsl_distro_nix
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd_native
+    nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd_native --> nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd_native_wrap_shell_nix
+    style nj0z7ky1zzgarfqwm0702q5ngp3vjlr30_flake_nix fill:#d7e5b2,color:#000000
+    style nvzkshhpghprfca78ckcn3pg3h8fq1smk_module_nix fill:#b2e5be,color:#000000
+    style nvzkshhpghprfca78ckcn3pg3h8fq1smk_lib_make_disk_image_nix fill:#b2e5be,color:#000000
+    style ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops fill:#e5b2cc,color:#000000
+    style ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops_templates fill:#e5b2cc,color:#000000
+    style ndjpki8ypgydnnzfj3cm6jr55c26qllmr_modules_sops_secrets_for_users fill:#e5b2cc,color:#000000
+    style nnic2ndw7n1f4j4zi2sg4h04xyaqbg015_nixos fill:#b2bfe5,color:#000000
+    style nnic2ndw7n1f4j4zi2sg4h04xyaqbg015_nixos_common_nix fill:#b2bfe5,color:#000000
+    style nqwh9msjr9q0blixdzvqvhraiaxn49xs4_global_nix fill:#e5b2d1,color:#000000
+    style nqwh9msjr9q0blixdzvqvhraiaxn49xs4_configurations_nixos fill:#e5b2d1,color:#000000
+    style nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_docker_nix fill:#e5b2d1,color:#000000
+    style nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_headlamp_nix fill:#e5b2d1,color:#000000
+    style nqwh9msjr9q0blixdzvqvhraiaxn49xs4_modules_tmux_nix fill:#e5b2d1,color:#000000
+    style nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos fill:#e5b2d1,color:#000000
+    style nqwh9msjr9q0blixdzvqvhraiaxn49xs4_machines_nixos_wsl_nixos_hardware_configuration_nix fill:#e5b2d1,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_build_tarball_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_docker_desktop_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_interop_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_recovery_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_ssh_agent_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd_native fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_systemd_native_wrap_shell_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_usbip_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_version_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_welcome_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_wsl_conf_nix fill:#e5b2c2,color:#000000
+    style nqp7d4zzlhlh7bfx2agiqgj5kq83mgq5v_modules_wsl_distro_nix fill:#e5b2c2,color:#000000
 ```
