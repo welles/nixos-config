@@ -37,6 +37,12 @@ sudo nix --experimental-features "nix-command flakes" run github:nix-community/d
 sudo zfs snapshot bucket/root@blank
 ```
 
+## Increase Live USB Disk Size
+```bash
+sudo swapon /dev/... # Enable swap on disk
+sudo mount -o remount,size=20G,noatime / # Increase tmpfs of live USB to RAM+Swap-20% gigabytes
+```
+
 ## Install
 
 ```bash
