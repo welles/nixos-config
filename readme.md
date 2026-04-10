@@ -18,9 +18,12 @@ nix-shell --packages git --run "git clone https://github.com/welles/nixos-config
 sudo nixos-generate-config --root /mnt --no-filesystems --show-hardware-config > ./machines/$HOSTNAME/hardware-configuration.nix
 ```
 
-## Zero Out Existing Disk (SSD only)
+## Zero Out Existing Disk
 ```bash
-sudo blkdiscard -f /dev/nvme0n1
+sudo sgdisk --zap-all /dev/nvme0n1
+sudo wipefs -a /dev/nvme0n1
+sudo blkdiscard -f /dev/nvme0n1 # SSD only
+
 ```
 
 ## Disko
