@@ -28,6 +28,7 @@
         "Music"
         "Pictures"
         "Videos"
+        ".config/Bitwarden"
         ".local/share/zsh"
         ".mozilla"
         ".npm-global"
