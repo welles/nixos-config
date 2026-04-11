@@ -30,6 +30,7 @@
         "Videos"
         ".local/share/zsh"
         ".mozilla"
+        ".npm-global"
       ];
     };
   };
