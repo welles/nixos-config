@@ -29,8 +29,8 @@
         "Pictures"
         "Videos"
         ".config/Bitwarden"
+        ".config/mozilla/firefox"
         ".local/share/zsh"
-        ".mozilla"
         ".npm-global"
       ];
     };
