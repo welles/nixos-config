@@ -32,6 +32,7 @@
         ".config/mozilla/firefox"
         ".local/share/zsh"
         ".npm-global"
+        ".claude"
       ];
     };
   };
