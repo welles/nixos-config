@@ -22,6 +22,9 @@
       "/etc/ssh/ssh_host_rsa_key"
     ];
     users.${user} = {
+      files = [
+        ".ssh/known_hosts"
+      ];
       directories = [
         ".claude"
         ".gemini"
