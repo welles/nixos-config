@@ -8,6 +8,14 @@
 # - Left-aligned floating panel with Kickoff menu and system tray
 # - KZones window tiling layouts (50/50, fullscreen, thirds, sidebar)
 {pkgs, ...}: {
+  # Dolphin file manager settings: compact view, hidden files, item size.
+  # xdg.dataFile sets the global view properties (ViewMode) as a symlink; if the
+  # user changes view settings in the UI, the next rebuild will restore these.
+  xdg.dataFile."dolphin/view_properties/global/.directory".text = ''
+    [Dolphin]
+    ViewMode=1
+  '';
+
   programs.plasma = {
     enable = true;
     overrideConfig = true;
@@ -119,6 +127,12 @@
     };
 
     configFile = {
+      "dolphinrc" = {
+        "General"."GlobalViewProps" = true;
+        "General"."ShowHiddenFiles" = true;
+        "CompactMode"."PreviewSize" = 32;
+      };
+
       "breezerc"."Common" = {
         "ShadowSize" = "ShadowNone";
         "OutlineIntensity" = "OutlineOff";
