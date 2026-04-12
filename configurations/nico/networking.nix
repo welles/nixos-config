@@ -41,6 +41,6 @@
 
       [proxy]
     '';
-    path = "/etc/NetworkManager/system-connections/Welles Intern.nmconnection";
+    path = "/var/lib/NetworkManager/system-connections/Welles Intern.nmconnection";
   };
 }
