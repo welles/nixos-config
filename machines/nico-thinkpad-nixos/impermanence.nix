@@ -24,6 +24,7 @@
     users.${user} = {
       files = [
         ".claude.json"
+        ".config/dolphinrc"
         ".config/lazygit/config.yml"
         ".ssh/known_hosts"
         ".zsh_history"
@@ -35,6 +36,7 @@
         ".config/Code"
         ".config/google-chrome"
         ".config/mozilla/firefox"
+        ".local/share/dolphin"
         ".local/share/kwalletd"
         ".local/state/lazygit"
         ".npm-global"

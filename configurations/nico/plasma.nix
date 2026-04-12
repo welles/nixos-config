@@ -7,29 +7,7 @@
 # - Breeze Dark workspace theme with Mountain wallpaper
 # - Left-aligned floating panel with Kickoff menu and system tray
 # - KZones window tiling layouts (50/50, fullscreen, thirds, sidebar)
-{
-  pkgs,
-  lib,
-  ...
-}: let
-  # Dolphin global view properties file content.
-  # With GlobalViewProps=true, KDE 6 Dolphin reads ShowHiddenFiles and ViewMode
-  # from this file rather than dolphinrc. ViewMode=1 is compact view.
-  dolphinGlobalDirectory = pkgs.writeText "dolphin-global-directory" ''
-    [Dolphin]
-    ShowHiddenFiles=true
-    ViewMode=1
-  '';
-in {
-  # Write the global view properties on every activation as a real file (not a
-  # symlink) so Dolphin can update it freely during the session. With impermanence,
-  # the file is wiped on reboot and recreated here on each login.
-  home.activation.dolphinViewProps = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    dir="$HOME/.local/share/dolphin/view_properties/global"
-    $DRY_RUN_CMD mkdir -p "$dir"
-    $DRY_RUN_CMD cp ${dolphinGlobalDirectory} "$dir/.directory"
-  '';
-
+{pkgs, ...}: {
   programs.plasma = {
     enable = true;
     overrideConfig = true;
@@ -141,11 +119,6 @@ in {
     };
 
     configFile = {
-      "dolphinrc" = {
-        "General"."GlobalViewProps" = true;
-        "CompactMode"."PreviewSize" = 32;
-      };
-
       "breezerc"."Common" = {
         "ShadowSize" = "ShadowNone";
         "OutlineIntensity" = "OutlineOff";
