@@ -4,6 +4,14 @@
 # The WiFi password is stored securely in sops and injected into
 # the NetworkManager connection profile using a sops template.
 {config, ...}: {
+  # Ensure NetworkManager starts only after sops-nix has written the
+  # connection template to disk. Without this ordering, NM may scan its
+  # connections directory before the sops template is rendered and miss
+  # the profile entirely, preventing auto-connect on boot.
+  systemd.services.NetworkManager = {
+    wants = ["sops-nix.service"];
+    after = ["sops-nix.service"];
+  };
   # Define the sops secret for the WiFi password.
   # This secret must be added to configurations/nico/secrets.yaml.
   sops.secrets."wifi-welles-intern-password" = {
