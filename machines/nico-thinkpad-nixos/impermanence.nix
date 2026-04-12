@@ -29,10 +29,15 @@
         "Pictures"
         "Videos"
         ".config/Bitwarden"
+        ".local/share/kwalletd"
         ".config/mozilla/firefox"
+        ".config/google-chrome"
         ".local/share/zsh"
         ".npm-global"
         ".claude"
+        ".config/Code"
+        ".config/.gemini"
+        ".vscode"
       ];
     };
   };
