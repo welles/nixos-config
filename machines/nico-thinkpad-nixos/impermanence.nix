@@ -5,39 +5,39 @@
   environment.persistence."/persist" = {
     hideMounts = true;
     directories = [
-      "/var/log"
-      "/var/lib/nixos"
-      "/var/lib/systemd/coredump"
-      "/var/lib/systemd/timers"
-      "/var/lib/sops-nix"
       "/var/lib/bluetooth"
       "/var/lib/NetworkManager"
+      "/var/lib/nixos"
+      "/var/lib/sops-nix"
+      "/var/lib/systemd/coredump"
+      "/var/lib/systemd/timers"
+      "/var/log"
     ];
     files = [
-      "/etc/machine-id"
       "/etc/adjtime"
-      "/etc/ssh/ssh_host_rsa_key"
-      "/etc/ssh/ssh_host_rsa_key.pub"
-      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/machine-id"
       "/etc/ssh/ssh_host_ed25519_key.pub"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_rsa_key.pub"
+      "/etc/ssh/ssh_host_rsa_key"
     ];
     users.${user} = {
       directories = [
+        ".claude"
+        ".config/.gemini"
+        ".config/Bitwarden"
+        ".config/Code"
+        ".config/google-chrome"
+        ".config/mozilla/firefox"
+        ".local/share/kwalletd"
+        ".local/share/zsh"
+        ".npm-global"
+        ".vscode"
         "Documents"
         "Downloads"
         "Music"
         "Pictures"
         "Videos"
-        ".config/Bitwarden"
-        ".local/share/kwalletd"
-        ".config/mozilla/firefox"
-        ".config/google-chrome"
-        ".local/share/zsh"
-        ".npm-global"
-        ".claude"
-        ".config/Code"
-        ".config/.gemini"
-        ".vscode"
       ];
     };
   };
