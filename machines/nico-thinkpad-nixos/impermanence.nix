@@ -23,7 +23,10 @@
     ];
     users.${user} = {
       files = [
+        ".claude.json"
+        ".config/lazygit/config.toml"
         ".ssh/known_hosts"
+        ".zsh_history"
       ];
       directories = [
         ".claude"
@@ -33,7 +36,6 @@
         ".config/google-chrome"
         ".config/mozilla/firefox"
         ".local/share/kwalletd"
-        ".local/share/zsh"
         ".npm-global"
         ".vscode"
         "Documents"
