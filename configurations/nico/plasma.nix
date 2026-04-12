@@ -8,6 +8,12 @@
 # - Left-aligned floating panel with Kickoff menu and system tray
 # - KZones window tiling layouts (50/50, fullscreen, thirds, sidebar)
 {pkgs, ...}: {
+  # Dolphin file manager: compact view mode via global view properties
+  xdg.dataFile."dolphin/view_properties/global/.directory".text = ''
+    [Dolphin]
+    ViewMode=1
+  '';
+
   programs.plasma = {
     enable = true;
     overrideConfig = true;
@@ -119,6 +125,11 @@
     };
 
     configFile = {
+      "dolphinrc"."General" = {
+        "GlobalViewProps" = true;
+        "ShowHiddenFiles" = true;
+      };
+
       "breezerc"."Common" = {
         "ShadowSize" = "ShadowNone";
         "OutlineIntensity" = "OutlineOff";
