@@ -20,6 +20,14 @@
   ];
 
   # Required by ZFS — must be unique across all machines in the pool.
+  # Point the sops age key directly at the persist path, bypassing the
+  # /var/lib/sops-nix bind mount. That bind mount is set up by systemd
+  # (impermanence), which runs after the stage-2 activation script where
+  # sops reads the key — causing sops to fail on every boot. /persist is
+  # marked neededForBoot so it is available in stage 1, making the key
+  # readable in time. Mirrors the pattern used in schokoladenelch.
+  sops.age.keyFile = lib.mkForce "/persist/var/lib/sops-nix/key.txt";
+
   networking.hostId = "0aea17fa";
 
   # ZFS boot: load ZFS in initrd, import the pool, and roll back the
