@@ -24,7 +24,7 @@
     users.${user} = {
       directories = [
         ".claude"
-        ".config/.gemini"
+        ".gemini"
         ".config/Bitwarden"
         ".config/Code"
         ".config/google-chrome"
