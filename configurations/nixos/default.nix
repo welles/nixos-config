@@ -21,6 +21,7 @@
     lazydocker
     k9s
     k0sctl
+    kdePackages.dolphin
     kubeseal
     kubelogin
     jetbrains.rider
