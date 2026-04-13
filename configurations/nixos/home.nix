@@ -22,6 +22,7 @@
 
   home.sessionPath = [
     "${config.home.homeDirectory}/.npm-global/bin"
+    "${config.home.homeDirectory}/.dotnet/tools"
   ];
 
   # Override default git email with work identity
