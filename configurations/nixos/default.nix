@@ -26,6 +26,7 @@
     kubelogin
     jetbrains.rider
     dotnet-sdk_10
+    mercurial
     nodejs
     vscode
     firefox-devedition
