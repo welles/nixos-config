@@ -34,6 +34,10 @@
     microsoft-edge
   ];
 
+  environment.shellAliases = {
+    start-rider = "tmux new -d -s rider -- rider";
+  };
+
   environment.sessionVariables = {
     DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
   };
