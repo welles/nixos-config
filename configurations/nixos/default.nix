@@ -36,11 +36,16 @@
 
   environment.shellAliases = {
     start-rider = "tmux new -d -s rider -- rider";
+    export-dev-cert = "mkdir -p /home/${user}/.certs && dotnet dev-certs https --format PEM -ep /home/${user}/.certs/dotnet-dev-cert.crt";
   };
 
   environment.sessionVariables = {
     DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
   };
+
+  security.pki.certificateFiles = [ 
+    "/home/${user}/.certs/dotnet-dev-cert.crt" 
+  ];
 
   users.users.${user} = {
     isNormalUser = true;
