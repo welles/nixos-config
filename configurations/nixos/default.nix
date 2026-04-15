@@ -43,8 +43,8 @@
     DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
   };
 
-  security.pki.certificateFiles = [ 
-    "/home/${user}/.certs/dotnet-dev-cert.crt" 
+  security.pki.certificateFiles = [
+    /home/${user}/.certs/dotnet-dev-cert.crt
   ];
 
   users.users.${user} = {
