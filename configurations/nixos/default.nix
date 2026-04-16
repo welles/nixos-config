@@ -32,6 +32,7 @@
     firefox-devedition
     google-chrome
     microsoft-edge
+    xdg-utils
   ];
 
   environment.shellAliases = {
