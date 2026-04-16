@@ -144,6 +144,17 @@
         paths = [];
       };
     };
+    windmill = {
+      enabled = true;
+      secrets = ["windmill"];
+      proxies = {
+        "windmill.welles.app" = 50150;
+      };
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     windows = {
       enabled = true;
       secrets = ["windows"];
