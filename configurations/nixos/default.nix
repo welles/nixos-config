@@ -33,6 +33,7 @@
     google-chrome
     microsoft-edge
     xdg-utils
+    desktop-file-utils
   ];
 
   environment.shellAliases = {
