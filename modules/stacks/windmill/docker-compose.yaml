@@ -14,7 +14,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: postgres:17-alpine
+    image: postgres:16
     networks:
       windmill:
         ipv4_address: 10.10.15.20
@@ -22,7 +22,7 @@ services:
     stop_grace_period: 2m
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/bucket/apps/windmill/db:/var/lib/postgresql/data
+      - /mnt/bucket/windmill/db:/var/lib/postgresql/data
 
   windmill_app:
     container_name: windmill_app
@@ -51,7 +51,7 @@ services:
     stop_grace_period: 2m
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/bucket/apps/windmill/app:/persistent_volume
+      - /mnt/bucket/windmill/app:/persistent_volume
 
   windmill_worker:
     container_name: windmill_worker

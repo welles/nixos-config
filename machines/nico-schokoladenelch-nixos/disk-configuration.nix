@@ -237,6 +237,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "windmill" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/windmill";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
 
