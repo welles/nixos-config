@@ -61,7 +61,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    image: codeberg.org/forgejo/forgejo:14.0.3
+    image: codeberg.org/forgejo/forgejo:14.0.4
     networks:
       forgejo:
         ipv4_address: 10.10.14.10
