@@ -1,0 +1,89 @@
+name: windmill
+
+services:
+  windmill_db:
+    container_name: windmill_db
+    environment:
+      POSTGRES_DB: windmill
+      POSTGRES_USER: windmill
+      TZ: Europe/Berlin
+    env_file:
+      - /run/secrets/windmill
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U windmill"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: postgres:17-alpine
+    networks:
+      windmill:
+        ipv4_address: 10.10.15.20
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/apps/windmill/db:/var/lib/postgresql/data
+
+  windmill_app:
+    container_name: windmill_app
+    depends_on:
+      windmill_db:
+        condition: service_healthy
+    environment:
+      BASE_URL: https://windmill.welles.app
+      MODE: server
+      TZ: Europe/Berlin
+    env_file:
+      - /run/secrets/windmill
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/version || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: ghcr.io/windmill-labs/windmill:2
+    networks:
+      windmill:
+        ipv4_address: 10.10.15.10
+    ports:
+      - 50150:8000/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/apps/windmill/app:/persistent_volume
+
+  windmill_worker:
+    container_name: windmill_worker
+    depends_on:
+      windmill_app:
+        condition: service_healthy
+    environment:
+      MODE: worker
+      WORKER_GROUP: default
+      TZ: Europe/Berlin
+    env_file:
+      - /run/secrets/windmill
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f windmill > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: ghcr.io/windmill-labs/windmill:2
+    networks:
+      windmill:
+        ipv4_address: 10.10.15.30
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  windmill:
+    name: windmill
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.15.0/24
