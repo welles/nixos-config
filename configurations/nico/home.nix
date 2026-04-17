@@ -117,7 +117,7 @@
     EDITOR = "code";
     SOPS_EDITOR = "nano";
     NIXOS_OZONE_WL = "1";
-    SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/keys.txt";
+    SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
   };
 
   home.sessionPath = [
