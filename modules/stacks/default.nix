@@ -306,5 +306,18 @@
         };
       })
     ];
+  proxiedStacks = lib.filterAttrs (_: cfg: cfg.proxies != {}) activeStacks;
 in
-  lib.mkMerge (lib.mapAttrsToList createStackConfig activeStacks)
+  lib.mkMerge (
+    lib.mapAttrsToList createStackConfig activeStacks
+    ++ [
+      {
+        systemd.services.caddy = {
+          after =
+            ["cloudflare-dyndns.service"]
+            ++ map (name: "docker-compose-${name}.service") (lib.attrNames proxiedStacks);
+          wants = ["cloudflare-dyndns.service"];
+        };
+      }
+    ]
+  )
