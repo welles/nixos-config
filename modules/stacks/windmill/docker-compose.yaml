@@ -41,7 +41,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    image: ghcr.io/windmill-labs/windmill:2
+    image: ghcr.io/windmill-labs/windmill:1.686.0
     networks:
       windmill:
         ipv4_address: 10.10.15.10
@@ -70,7 +70,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    image: ghcr.io/windmill-labs/windmill:2
+    image: ghcr.io/windmill-labs/windmill:1.686.0
     networks:
       windmill:
         ipv4_address: 10.10.15.30
