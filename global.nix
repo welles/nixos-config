@@ -68,9 +68,11 @@
     backupFileExtension = "backup";
     sharedModules = [
       {
-        home.username = user;
-        home.homeDirectory = "/home/${user}";
-        home.stateVersion = stateVersion;
+        home = {
+          username = user;
+          homeDirectory = "/home/${user}";
+          stateVersion = stateVersion;
+        };
         programs.home-manager.enable = true;
       }
     ];

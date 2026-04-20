@@ -5,25 +5,27 @@
 # yazi (terminal file manager), btop (system monitor), and starship
 # (cross-shell prompt).
 _: {
-  programs.starship.enable = true;
+  programs = {
+    starship.enable = true;
 
-  programs.eza = {
-    enable = true;
-    enableZshIntegration = true;
-    icons = "auto";
-    git = true;
+    eza = {
+      enable = true;
+      enableZshIntegration = true;
+      icons = "auto";
+      git = true;
+    };
+
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    yazi = {
+      enable = true;
+      enableZshIntegration = true;
+      settings.manager.show_hidden = true;
+    };
+
+    btop.enable = true;
   };
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.yazi = {
-    enable = true;
-    enableZshIntegration = true;
-    settings.manager.show_hidden = true;
-  };
-
-  programs.btop.enable = true;
 }
