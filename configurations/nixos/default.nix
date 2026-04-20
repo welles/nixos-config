@@ -61,8 +61,7 @@
     firefox-devedition
     google-chrome
     microsoft-edge
-    xdg-utils
-    desktop-file-utils
+    sourcegit
   ];
 
   environment.shellAliases = {
