@@ -30,28 +30,37 @@
 
   # ZFS boot: load ZFS in initrd, import the pool, and roll back the
   # ephemeral root dataset to blank before the rest of the system mounts.
-  boot.initrd.supportedFilesystems = ["zfs"];
-  # Ensure nvme module is unconditionally loaded early in initrd (before ZFS
-  # pool scanning), avoiding a race where udev hasn't yet loaded it from
-  # availableKernelModules when zpool import runs.
-  boot.initrd.kernelModules = ["nvme"];
-  boot.supportedFilesystems = ["zfs" "exfat"];
-  boot.zfs.devNodes = "/dev/disk/by-id";
-  boot.zfs.forceImportAll = true;
+  boot = {
+    initrd = {
+      supportedFilesystems = ["zfs"];
+      # Ensure nvme module is unconditionally loaded early in initrd (before ZFS
+      # pool scanning), avoiding a race where udev hasn't yet loaded it from
+      # availableKernelModules when zpool import runs.
+      kernelModules = ["nvme"];
+      postDeviceCommands = lib.mkAfter ''
+        udevadm settle
+        zpool import -d /dev/disk/by-id -N -f main || true
+        zfs rollback -r main/root@blank && echo -e "\e[32m  rolled back to blank root\e[0m" || echo -e "\e[31m  no blank root snapshot found, skipping rollback\e[0m"
+      '';
+    };
+    supportedFilesystems = ["zfs" "exfat"];
+    zfs = {
+      devNodes = "/dev/disk/by-id";
+      forceImportAll = true;
+    };
 
-  boot.initrd.postDeviceCommands = lib.mkAfter ''
-    udevadm settle
-    zpool import -d /dev/disk/by-id -N -f main || true
-    zfs rollback -r main/root@blank && echo -e "\e[32m  rolled back to blank root\e[0m" || echo -e "\e[31m  no blank root snapshot found, skipping rollback\e[0m"
-  '';
+    # Add ZFS support to the GRUB bootloader (configured in configurations/nico/boot.nix).
+    # efiSysMountPoint must match disko's mountpoint for the ESP partition.
+    loader = {
+      grub.zfsSupport = true;
+      efi.efiSysMountPoint = "/boot";
+    };
+  };
 
-  # Add ZFS support to the GRUB bootloader (configured in configurations/nico/boot.nix).
-  # efiSysMountPoint must match disko's mountpoint for the ESP partition.
-  boot.loader.grub.zfsSupport = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
-
-  hardware.bluetooth.enable = true;
-  hardware.sensor.iio.enable = true;
+  hardware = {
+    bluetooth.enable = true;
+    sensor.iio.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     libinput

@@ -211,92 +211,98 @@
           mode = "0400";
         };
 
-        systemd.services."restic-backup-${name}" = {
-          description = "Restic Backup - ${name}";
-          requires = ["docker.service"];
-          after = ["docker.service"];
-          unitConfig.OnFailure = "restic-backup-notify-${name}.service";
+        systemd = {
+          services = {
+            "restic-backup-${name}" = {
+              description = "Restic Backup - ${name}";
+              requires = ["docker.service"];
+              after = ["docker.service"];
+              unitConfig.OnFailure = "restic-backup-notify-${name}.service";
 
-          serviceConfig = {
-            Type = "oneshot";
-            EnvironmentFile = config.sops.secrets."restic-${name}".path;
+              serviceConfig = {
+                Type = "oneshot";
+                EnvironmentFile = config.sops.secrets."restic-${name}".path;
+              };
+
+              script = let
+                docker = "${pkgs.docker}/bin/docker";
+                restic = "${pkgs.restic}/bin/restic";
+                flock = "${pkgs.util-linux}/bin/flock";
+                composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
+                repo = "s3:https://s3.eu-central-003.backblazeb2.com/schokoladenelch-${name}";
+                pathArgs = lib.concatMapStringsSep " " (p: lib.escapeShellArg p) cfg.backup.paths;
+              in ''
+                exec ${flock} /run/lock/restic-backup.lock ${pkgs.bash}/bin/bash -c '
+                  ${docker} compose -f ${composefile} down
+
+                  ${restic} -r ${repo} snapshots > /dev/null 2>&1 || ${restic} -r ${repo} init
+
+                  ${restic} -r ${repo} backup ${pathArgs}
+
+                  ${docker} compose -f ${composefile} up -d --remove-orphans
+                '
+              '';
+
+              preStop = let
+                docker = "${pkgs.docker}/bin/docker";
+                composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
+              in ''
+                ${docker} compose -f ${composefile} up -d --remove-orphans
+              '';
+            };
+
+            "restic-backup-notify-${name}" = {
+              description = "Restic Backup Failure Notification - ${name}";
+              serviceConfig.Type = "oneshot";
+              script = let
+                sendmail = "${pkgs.msmtp}/bin/sendmail";
+              in ''
+                ${sendmail} -t <<EOF
+                To: nico@welles.email
+                From: noreply@welles.email
+                Subject: [restic] Backup failed for stack ${name}
+
+                The restic backup for docker compose stack "${name}" failed.
+
+                Host: $(${pkgs.hostname}/bin/hostname)
+                Time: $(date --iso-8601=seconds)
+
+                Journal output (last 50 lines):
+                $(journalctl -u restic-backup-${name}.service -n 50 --no-pager)
+                EOF
+              '';
+            };
           };
 
-          script = let
-            docker = "${pkgs.docker}/bin/docker";
-            restic = "${pkgs.restic}/bin/restic";
-            flock = "${pkgs.util-linux}/bin/flock";
-            composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
-            repo = "s3:https://s3.eu-central-003.backblazeb2.com/schokoladenelch-${name}";
-            pathArgs = lib.concatMapStringsSep " " (p: lib.escapeShellArg p) cfg.backup.paths;
-          in ''
-            exec ${flock} /run/lock/restic-backup.lock ${pkgs.bash}/bin/bash -c '
-              ${docker} compose -f ${composefile} down
-
-              ${restic} -r ${repo} snapshots > /dev/null 2>&1 || ${restic} -r ${repo} init
-
-              ${restic} -r ${repo} backup ${pathArgs}
-
-              ${docker} compose -f ${composefile} up -d --remove-orphans
-            '
-          '';
-
-          preStop = let
-            docker = "${pkgs.docker}/bin/docker";
-            composefile = "/etc/docker-compose/${name}/docker-compose.yaml";
-          in ''
-            ${docker} compose -f ${composefile} up -d --remove-orphans
-          '';
-        };
-
-        systemd.services."restic-backup-notify-${name}" = {
-          description = "Restic Backup Failure Notification - ${name}";
-          serviceConfig.Type = "oneshot";
-          script = let
-            sendmail = "${pkgs.msmtp}/bin/sendmail";
-          in ''
-            ${sendmail} -t <<EOF
-            To: nico@welles.email
-            From: noreply@welles.email
-            Subject: [restic] Backup failed for stack ${name}
-
-            The restic backup for docker compose stack "${name}" failed.
-
-            Host: $(${pkgs.hostname}/bin/hostname)
-            Time: $(date --iso-8601=seconds)
-
-            Journal output (last 50 lines):
-            $(journalctl -u restic-backup-${name}.service -n 50 --no-pager)
-            EOF
-          '';
-        };
-
-        systemd.timers."restic-backup-${name}" = {
-          description = "Daily Restic Backup Timer - ${name}";
-          wantedBy = ["timers.target"];
-          timerConfig = {
-            OnCalendar = "*-*-* 03:00:00";
-            Persistent = true;
+          timers."restic-backup-${name}" = {
+            description = "Daily Restic Backup Timer - ${name}";
+            wantedBy = ["timers.target"];
+            timerConfig = {
+              OnCalendar = "*-*-* 03:00:00";
+              Persistent = true;
+            };
           };
         };
       })
 
       (lib.mkIf (cfg.proxies != {}) {
-        services.caddy = {
-          enable = true;
-          virtualHosts =
-            lib.mapAttrs (_domain: port: {
-              extraConfig = ''
-                header Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
-                reverse_proxy 127.0.0.1:${toString port}
-              '';
-            })
-            cfg.proxies;
-        };
-        services.cloudflare-dyndns = {
-          enable = true;
-          apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
-          domains = lib.attrNames cfg.proxies;
+        services = {
+          caddy = {
+            enable = true;
+            virtualHosts =
+              lib.mapAttrs (_domain: port: {
+                extraConfig = ''
+                  header Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
+                  reverse_proxy 127.0.0.1:${toString port}
+                '';
+              })
+              cfg.proxies;
+          };
+          cloudflare-dyndns = {
+            enable = true;
+            apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
+            domains = lib.attrNames cfg.proxies;
+          };
         };
 
         # Wait for internet connectivity before updating DNS records

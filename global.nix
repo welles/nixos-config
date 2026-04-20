@@ -71,7 +71,7 @@
         home = {
           username = user;
           homeDirectory = "/home/${user}";
-          stateVersion = stateVersion;
+          inherit stateVersion;
         };
         programs.home-manager.enable = true;
       }

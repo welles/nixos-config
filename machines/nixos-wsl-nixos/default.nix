@@ -14,8 +14,10 @@
     inputs.nixos-wsl.nixosModules.default
   ];
 
-  wsl.enable = true;
-  wsl.defaultUser = user;
-  wsl.interop.includePath = false;
-  wsl.ssh-agent.enable = true;
+  wsl = {
+    enable = true;
+    defaultUser = user;
+    interop.includePath = false;
+    ssh-agent.enable = true;
+  };
 }

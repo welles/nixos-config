@@ -15,12 +15,57 @@
   lib,
   ...
 }: {
-  services.caddy = {
-    enable = true;
-    email = "admin@welles.email";
-  };
+  services = {
+    caddy = {
+      enable = true;
+      email = "admin@welles.email";
+    };
 
-  services.cloudflared.enable = true;
+    cloudflared.enable = true;
+
+    cockpit = {
+      enable = true;
+      settings.WebService = {
+        AllowUnencrypted = "true";
+        ProtocolHeader = "X-Forwarded-Proto";
+        Origins = lib.mkForce "https://cockpit.welles.app wss://cockpit.welles.app";
+      };
+    };
+
+    fail2ban.enable = true;
+
+    glances = {
+      enable = true;
+      extraArgs = ["--webserver" "--disable-check-update"];
+    };
+
+    openssh = {
+      enable = true;
+      openFirewall = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+        Macs = [
+          "hmac-sha2-512-etm@openssh.com"
+          "hmac-sha2-256-etm@openssh.com"
+          "umac-128-etm@openssh.com"
+          "hmac-sha2-512" # Cloudflare required
+          "hmac-sha2-256" # Cloudflare required
+        ];
+      };
+    };
+
+    # ZFS maintenance: periodic scrubs, TRIM for SSDs, and automatic snapshots
+    zfs = {
+      autoScrub.enable = true;
+      trim.enable = true;
+      autoSnapshot.enable = true;
+    };
+
+    # Keep user processes alive after logout (for tmux sessions)
+    logind.settings.Login.KillUserProcesses = false;
+  };
 
   systemd.services.cloudflared-tunnel = {
     description = "Cloudflare Tunnel (Remotely Managed)";
@@ -37,22 +82,6 @@
       StateDirectory = "cloudflared";
       WorkingDirectory = "/var/lib/cloudflared";
     };
-  };
-
-  services.cockpit = {
-    enable = true;
-    settings.WebService = {
-      AllowUnencrypted = "true";
-      ProtocolHeader = "X-Forwarded-Proto";
-      Origins = lib.mkForce "https://cockpit.welles.app wss://cockpit.welles.app";
-    };
-  };
-
-  services.fail2ban.enable = true;
-
-  services.glances = {
-    enable = true;
-    extraArgs = ["--webserver" "--disable-check-update"];
   };
 
   programs.msmtp = {
@@ -73,29 +102,4 @@
       };
     };
   };
-
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "no";
-      Macs = [
-        "hmac-sha2-512-etm@openssh.com"
-        "hmac-sha2-256-etm@openssh.com"
-        "umac-128-etm@openssh.com"
-        "hmac-sha2-512" # Cloudflare required
-        "hmac-sha2-256" # Cloudflare required
-      ];
-    };
-  };
-
-  # ZFS maintenance: periodic scrubs, TRIM for SSDs, and automatic snapshots
-  services.zfs.autoScrub.enable = true;
-  services.zfs.trim.enable = true;
-  services.zfs.autoSnapshot.enable = true;
-
-  # Keep user processes alive after logout (for tmux sessions)
-  services.logind.settings.Login.KillUserProcesses = false;
 }

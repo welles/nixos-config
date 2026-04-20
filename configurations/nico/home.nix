@@ -23,12 +23,49 @@
 
   fonts.fontconfig.enable = true;
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    name = "Breeze_Light";
-    package = pkgs.kdePackages.breeze;
-    size = 24;
+  home = {
+    pointerCursor = {
+      gtk.enable = true;
+      x11.enable = true;
+      name = "Breeze_Light";
+      package = pkgs.kdePackages.breeze;
+      size = 24;
+    };
+
+    # --- Session Environment ---
+    # Sets VS Code as default editor, Konsole as default terminal,
+    # enables Wayland for Electron apps via NIXOS_OZONE_WL, and
+    # points SSH_AUTH_SOCK to the Bitwarden SSH agent socket.
+    sessionVariables = {
+      SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
+      TERMINAL = "konsole";
+      EDITOR = "code";
+      SOPS_EDITOR = "nano";
+      NIXOS_OZONE_WL = "1";
+      SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
+    };
+
+    sessionPath = [
+      "${config.home.homeDirectory}/.npm-global/bin"
+    ];
+
+    # --- npm Configuration ---
+    # Global npm prefix to avoid permission issues; exact versions
+    # by default to prevent accidental minor/patch bumps.
+    file.".npmrc".text = ''
+      prefix=${config.home.homeDirectory}/.npm-global
+      save-exact=true
+      save-prefix=
+    '';
+
+    # --- Cleanup ---
+    # Remove stale GTK 2.0 config files that conflict with home-manager.
+    activation = {
+      cleanGtkConfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+        rm -f ${config.home.homeDirectory}/.gtkrc-2.0
+        rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
+      '';
+    };
   };
 
   gtk = {
@@ -63,66 +100,50 @@
   # Extends shared git.nix with SSH commit signing via Bitwarden SSH
   # agent and SmartGit submodule settings.
 
-  programs.git = {
-    settings = {
-      gpg.format = "ssh";
-      gui.pruneduringfetch = true;
-      "smartgit \"submodule\"" = {
-        fetchalways = true;
-        update = true;
-        initializenew = true;
+  programs = {
+    git = {
+      settings = {
+        gpg.format = "ssh";
+        gui.pruneduringfetch = true;
+        "smartgit \"submodule\"" = {
+          fetchalways = true;
+          update = true;
+          initializenew = true;
+        };
+        push.recurseSubmodules = "check";
       };
-      push.recurseSubmodules = "check";
+      signing = {
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
+        signByDefault = true;
+      };
     };
-    signing = {
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
-      signByDefault = true;
+
+    # --- Shell & CLI Tools ---
+    # Base shell and CLI tools are imported from packages/shell.nix and
+    # packages/cli-tools.nix. Below are nico-specific extensions.
+
+    # Custom starship prompt symbols
+    starship.settings = {
+      add_newline = false;
+      character = {
+        success_symbol = "[➜](bold green)";
+        error_symbol = "[➜](bold red)";
+      };
+    };
+
+    btop.settings.theme_background = false;
+
+    # Desktop-specific CLI tools
+    bat.enable = true;
+    ripgrep.enable = true;
+    konsole.enable = true;
+
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
     };
   };
-
-  # --- Shell & CLI Tools ---
-  # Base shell and CLI tools are imported from packages/shell.nix and
-  # packages/cli-tools.nix. Below are nico-specific extensions.
-
-  # Custom starship prompt symbols
-  programs.starship.settings = {
-    add_newline = false;
-    character = {
-      success_symbol = "[➜](bold green)";
-      error_symbol = "[➜](bold red)";
-    };
-  };
-
-  programs.btop.settings.theme_background = false;
-
-  # Desktop-specific CLI tools
-  programs.bat.enable = true;
-  programs.ripgrep.enable = true;
-  programs.konsole.enable = true;
-
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
-
-  # --- Session Environment ---
-  # Sets VS Code as default editor, Konsole as default terminal,
-  # enables Wayland for Electron apps via NIXOS_OZONE_WL, and
-  # points SSH_AUTH_SOCK to the Bitwarden SSH agent socket.
-
-  home.sessionVariables = {
-    SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
-    TERMINAL = "konsole";
-    EDITOR = "code";
-    SOPS_EDITOR = "nano";
-    NIXOS_OZONE_WL = "1";
-    SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
-  };
-
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.npm-global/bin"
-  ];
 
   # --- Autostart & Desktop Entries ---
   # Bitwarden starts at login for password/SSH agent access.
@@ -145,24 +166,4 @@
     Exec=remmina -i
     Hidden=true
   '';
-
-  # --- npm Configuration ---
-  # Global npm prefix to avoid permission issues; exact versions
-  # by default to prevent accidental minor/patch bumps.
-
-  home.file.".npmrc".text = ''
-    prefix=${config.home.homeDirectory}/.npm-global
-    save-exact=true
-    save-prefix=
-  '';
-
-  # --- Cleanup ---
-  # Remove stale GTK 2.0 config files that conflict with home-manager.
-
-  home.activation = {
-    cleanGtkConfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
-      rm -f ${config.home.homeDirectory}/.gtkrc-2.0
-      rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
-    '';
-  };
 }

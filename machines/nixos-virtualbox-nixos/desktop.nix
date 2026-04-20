@@ -4,12 +4,16 @@
 # Auto-login enabled since this is a non-production VM.
 # XFCE configuration regenerates from defaults on each boot (declarative).
 {user, ...}: {
-  services.xserver.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  services = {
+    xserver = {
+      enable = true;
+      displayManager.lightdm.enable = true;
+      desktopManager.xfce.enable = true;
+    };
 
-  services.displayManager.autoLogin = {
-    enable = true;
-    inherit user;
+    displayManager.autoLogin = {
+      enable = true;
+      inherit user;
+    };
   };
 }

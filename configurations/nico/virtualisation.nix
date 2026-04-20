@@ -5,17 +5,20 @@
 # Also defines a VM testing variant (used by `nixos-rebuild build-vm`)
 # with 8GB RAM and virtio GPU acceleration.
 _: {
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
+  virtualisation = {
+    libvirtd.enable = true;
 
-  virtualisation.vmVariant = {
-    virtualisation.useBootLoader = true;
-    virtualisation.useEFIBoot = true;
-    boot.loader.timeout = 30;
-    virtualisation = {
-      memorySize = 8192;
-      cores = 4;
-      qemu.options = ["-vga virtio" "-display gtk,gl=on"];
+    vmVariant = {
+      virtualisation = {
+        useBootLoader = true;
+        useEFIBoot = true;
+        memorySize = 8192;
+        cores = 4;
+        qemu.options = ["-vga virtio" "-display gtk,gl=on"];
+      };
+      boot.loader.timeout = 30;
     };
   };
+
+  programs.virt-manager.enable = true;
 }

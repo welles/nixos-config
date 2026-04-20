@@ -31,8 +31,10 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
-    age.keyFile = "/mnt/bucket/persist/var/lib/sops-nix/key.txt";
-    age.sshKeyPaths = [];
+    age = {
+      keyFile = "/mnt/bucket/persist/var/lib/sops-nix/key.txt";
+      sshKeyPaths = [];
+    };
     validateSopsFiles = true;
     secrets = {
       "cloudflare-ddns-token" = {
@@ -64,25 +66,29 @@
   ];
 
   # User accounts
-  users.users.root = {
-    hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
-  };
+  users = {
+    users = {
+      root = {
+        hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
+      };
 
-  users.users.cloudflared = {
-    group = "cloudflared";
-    isSystemUser = true;
-  };
+      cloudflared = {
+        group = "cloudflared";
+        isSystemUser = true;
+      };
 
-  users.groups.cloudflared = {};
+      ${user} = {
+        description = "Schokoladenelch";
+        extraGroups = ["wheel"];
+        hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
+        isNormalUser = true;
+        shell = pkgs.zsh;
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
+        ];
+      };
+    };
 
-  users.users.${user} = {
-    description = "Schokoladenelch";
-    extraGroups = ["wheel"];
-    hashedPassword = "$6$Zb.Cx7FJDZo/huz/$ZcGBfYXbCxpmBEeJd10XSYobATn3AhHY76GsDt/bVBi2ciu3vgAl2tMvFZo.41S9BOv2xDLKSG9t/.wcn2qA11";
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
-    ];
+    groups.cloudflared = {};
   };
 }

@@ -9,16 +9,18 @@
     ../../modules/avahi.nix
   ];
 
-  services.printing = {
-    enable = true;
-    drivers = [
-      pkgs.gutenprint
-      pkgs.gutenprintBin
-    ];
+  services = {
+    printing = {
+      enable = true;
+      drivers = [
+        pkgs.gutenprint
+        pkgs.gutenprintBin
+      ];
+    };
+
+    flatpak.enable = true;
+
+    udisks2.enable = true;
+    gvfs.enable = true;
   };
-
-  services.flatpak.enable = true;
-
-  services.udisks2.enable = true;
-  services.gvfs.enable = true;
 }

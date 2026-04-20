@@ -3,13 +3,15 @@
   lib,
   ...
 }: {
-  services.xserver.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  services = {
+    xserver.enable = true;
+    desktopManager.plasma6.enable = true;
 
-  services.xrdp = {
-    enable = true;
-    defaultWindowManager = "${pkgs.kdePackages.plasma-workspace}/bin/startplasma-x11";
-    openFirewall = true;
+    xrdp = {
+      enable = true;
+      defaultWindowManager = "${pkgs.kdePackages.plasma-workspace}/bin/startplasma-x11";
+      openFirewall = true;
+    };
   };
 
   # Override xrdp-sesman PAM: the default `login` chain pulls in modules (pam_loginuid etc.) that fail under the WSL kernel
