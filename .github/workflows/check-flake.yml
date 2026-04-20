@@ -14,6 +14,27 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+
+      - name: Run deadnix
+        run: nix run nixpkgs#deadnix -- --fail .
+
+      - name: Run statix
+        run: nix run nixpkgs#statix -- check
+
   setup:
     runs-on: ubuntu-latest
     outputs:
