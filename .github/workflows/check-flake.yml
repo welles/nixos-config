@@ -62,7 +62,7 @@ jobs:
           echo "matrix=$HOSTS" >> $GITHUB_OUTPUT
 
   evaluate:
-    needs: setup
+    needs: [lint, setup]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
