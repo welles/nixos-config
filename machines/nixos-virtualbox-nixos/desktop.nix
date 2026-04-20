@@ -10,6 +10,6 @@
 
   services.displayManager.autoLogin = {
     enable = true;
-    user = user;
+    inherit user;
   };
 }

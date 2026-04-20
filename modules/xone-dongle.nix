@@ -49,8 +49,8 @@
 
           echo "Verarbeite ${item.targetName}..."
           cabextract "${pkgs.fetchurl {
-            url = item.url;
-            hash = item.hash;
+            inherit (item) url;
+            inherit (item) hash;
           }}"
 
           mkdir -p $out/lib/firmware

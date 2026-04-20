@@ -4,7 +4,7 @@
 # eza (ls replacement with git integration), fzf (fuzzy finder),
 # yazi (terminal file manager), btop (system monitor), and starship
 # (cross-shell prompt).
-{...}: {
+_: {
   programs.starship.enable = true;
 
   programs.eza = {

@@ -4,7 +4,7 @@
 # and libvirtd with virt-manager for running virtual machines.
 # Also defines a VM testing variant (used by `nixos-rebuild build-vm`)
 # with 8GB RAM and virtio GPU acceleration.
-{...}: {
+_: {
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 

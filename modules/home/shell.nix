@@ -3,7 +3,7 @@
 # Base Zsh setup shared across all user profiles: Oh-my-zsh with
 # autosuggestions, syntax highlighting, completion, and fastfetch
 # greeting on new shells.
-{...}: {
+_: {
   programs.fastfetch.enable = true;
 
   programs.zsh = {

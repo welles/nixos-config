@@ -6,7 +6,6 @@
 # tunnel. Pulls together boot, networking, services, and persistence
 # modules.
 {
-  config,
   pkgs,
   user,
   ...

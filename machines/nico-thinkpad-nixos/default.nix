@@ -5,10 +5,8 @@
 # snapshot on every boot; only data explicitly listed in impermanence.nix
 # survives via bind-mounts from main/persist.
 {
-  config,
   lib,
   pkgs,
-  modulesPath,
   ...
 }: {
   imports = [

@@ -166,7 +166,7 @@
     };
   };
 
-  activeStacks = lib.filterAttrs (name: cfg: cfg.enabled) stacks;
+  activeStacks = lib.filterAttrs (_name: cfg: cfg.enabled) stacks;
 
   createStackConfig = name: cfg:
     lib.mkMerge [
@@ -196,7 +196,7 @@
       }
 
       (lib.mkIf (cfg.secrets != []) {
-        sops.secrets = lib.genAttrs cfg.secrets (secretName: {
+        sops.secrets = lib.genAttrs cfg.secrets (_secretName: {
           owner = "root";
           group = "docker";
           mode = "0440";
@@ -285,7 +285,7 @@
         services.caddy = {
           enable = true;
           virtualHosts =
-            lib.mapAttrs (domain: port: {
+            lib.mapAttrs (_domain: port: {
               extraConfig = ''
                 header Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
                 reverse_proxy 127.0.0.1:${toString port}

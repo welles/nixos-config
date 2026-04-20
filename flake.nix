@@ -49,12 +49,8 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     home-manager,
-    plasma-manager,
-    impermanence,
-    sops-nix,
     ...
   } @ inputs: let
     stateVersion = "25.11";

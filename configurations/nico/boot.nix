@@ -2,7 +2,7 @@
 #
 # Configures GRUB as the bootloader with EFI support. Adds exFAT
 # filesystem support for external USB drives.
-{pkgs, ...}: {
+_: {
   boot = {
     loader = {
       systemd-boot.enable = false;

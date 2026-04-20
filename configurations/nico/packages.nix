@@ -2,11 +2,7 @@
 #
 # All user-facing applications and CLI tools installed system-wide.
 # Grouped by category for easier maintenance.
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     # Nix tooling
     alejandra

@@ -4,13 +4,7 @@
 # NVIDIA hybrid GPU module for Intel + RTX offload rendering.
 # This is the primary gaming machine — all gaming peripherals, services,
 # and packages live here.
-{
-  config,
-  lib,
-  pkgs,
-  modulesPath,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./nvidia-gpu.nix
