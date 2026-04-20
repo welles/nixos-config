@@ -14,6 +14,10 @@
   stateVersion,
   ...
 }: {
+  imports = [
+    ./modules/tmux.nix
+  ];
+
   networking.hostName = hostname;
   system.stateVersion = stateVersion;
 

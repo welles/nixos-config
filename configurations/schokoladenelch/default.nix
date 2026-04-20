@@ -13,7 +13,6 @@
   imports = [
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
-    ../../modules/tmux.nix
     ../../modules/scripts/check-mkv
     ../../modules/scripts/create-zfs-dataset
     ../../modules/scripts/zfs-manual-snapshot
