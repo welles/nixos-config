@@ -74,7 +74,8 @@
 
   users.users.${user} = {
     isNormalUser = true;
-    initialPassword = "passwort";
+    # hashedPassword (not initialPassword) so xrdp can always authenticate — initialPassword only applies on first account creation
+    hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";
     description = "NixOS";
     extraGroups = ["wheel"];
     shell = pkgs.zsh;
