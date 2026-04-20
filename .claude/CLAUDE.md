@@ -1,10 +1,11 @@
 # Claude Instructions
 
 ## After changing .nix files
-Run `alejandra` on any modified `.nix` files to ensure consistent formatting:
-```
-alejandra <file>
-```
+Ensure all modified `.nix` files are formatted and linted:
+1. Run `alejandra <file>` to ensure consistent formatting.
+2. Run `deadnix --edit <file>` to remove unused code and fix common issues.
+3. Run `statix fix <file>` to apply automated linting fixes.
+4. Run `statix check <file>` to identify any remaining linting errors and fix them manually.
 
 ## After implementing instructions
 1. Infer the hostname of the NixOS flake configuration being worked on (it may differ from the machine Claude is running on — check `flake.nix` for the `nixosConfigurations` attribute names).
