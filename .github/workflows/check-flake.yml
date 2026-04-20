@@ -30,10 +30,19 @@ jobs:
           restore-prefixes-first-match: nix-${{ runner.os }}-
 
       - name: Run deadnix
-        run: nix run nixpkgs#deadnix -- --fail .
+        run: |
+          mapfile -t nix_files < <(find . -name '*.nix' ! -name 'hardware-configuration.nix' -not -path './.git/*')
+          nix run nixpkgs#deadnix -- --fail "${nix_files[@]}"
 
       - name: Run statix
-        run: nix run nixpkgs#statix -- check
+        run: |
+          nix shell nixpkgs#statix -c bash -c '
+            exit_code=0
+            while IFS= read -r -d "" f; do
+              statix check "$f" || exit_code=1
+            done < <(find . -name "*.nix" ! -name "hardware-configuration.nix" -not -path "./.git/*" -print0)
+            exit $exit_code
+          '
 
   setup:
     runs-on: ubuntu-latest
