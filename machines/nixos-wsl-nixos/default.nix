@@ -10,6 +10,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./desktop.nix
     inputs.nixos-wsl.nixosModules.default
   ];
 
