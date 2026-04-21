@@ -25,15 +25,6 @@
     "${config.home.homeDirectory}/.dotnet/tools"
   ];
 
-  # Auto-attach to (or create) the "main" tmux session on every new console.
-  # mkBefore ensures this runs before fastfetch so the greeting only appears
-  # inside the tmux session, not in the brief outer shell.
-  programs.zsh.initContent = lib.mkBefore ''
-    if [ -z "$TMUX" ]; then
-      tmux new-session -A -s main
-    fi
-  '';
-
   # Override default git email with work identity
   programs.git.settings.user.email = lib.mkForce "welles@mentz.net";
 }
