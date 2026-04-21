@@ -100,7 +100,7 @@
       -----END CERTIFICATE-----
       ''
     ];
-    certificateFiles = [/home/nixos/.local/share/mkcert/rootCA.pem];
+    # certificateFiles = [/home/nixos/.local/share/mkcert/rootCA.pem];
   };
 
   users.users.${user} = {
