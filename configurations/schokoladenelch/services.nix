@@ -3,7 +3,6 @@
 # Configures the core services that make this machine a home server:
 # - Caddy: HTTPS reverse proxy for Docker stacks
 # - Cloudflared: Cloudflare tunnel for remote access without port forwarding
-# - Cockpit: Web-based server management UI (port 9090, LAN only)
 # - Fail2ban: Intrusion prevention by banning repeated auth failures
 # - Glances: Web-based system monitoring dashboard
 # - msmtp: Outbound email relay via Ionos SMTP (for notifications)
@@ -12,7 +11,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }: {
   services = {
@@ -22,15 +20,6 @@
     };
 
     cloudflared.enable = true;
-
-    cockpit = {
-      enable = true;
-      settings.WebService = {
-        AllowUnencrypted = "true";
-        ProtocolHeader = "X-Forwarded-Proto";
-        Origins = lib.mkForce "https://cockpit.welles.app wss://cockpit.welles.app";
-      };
-    };
 
     fail2ban.enable = true;
 
