@@ -37,11 +37,20 @@
       # pool scanning), avoiding a race where udev hasn't yet loaded it from
       # availableKernelModules when zpool import runs.
       kernelModules = ["nvme"];
-      postDeviceCommands = lib.mkAfter ''
-        udevadm settle
-        zpool import -d /dev/disk/by-id -N -f main || true
-        zfs rollback -r main/root@blank && echo -e "\e[32m  rolled back to blank root\e[0m" || echo -e "\e[31m  no blank root snapshot found, skipping rollback\e[0m"
-      '';
+      systemd.services.rollback-root = {
+        description = "Rollback ZFS root dataset to a blank snapshot";
+        wantedBy = ["initrd.target"];
+        after = ["zfs-import-main.service"];
+        before = ["sysroot.mount"];
+        path = [pkgs.zfs];
+        unitConfig.DefaultDependencies = "no";
+        serviceConfig.Type = "oneshot";
+        script = ''
+          zfs rollback -r main/root@blank \
+            && echo -e "\e[32m  rolled back to blank root\e[0m" \
+            || echo -e "\e[31m  no blank root snapshot found, skipping rollback\e[0m"
+        '';
+      };
     };
     supportedFilesystems = ["zfs" "exfat"];
     zfs = {
