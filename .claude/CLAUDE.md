@@ -20,12 +20,13 @@ Ensure all modified `.nix` files are formatted and linted:
 
    **Claude Code on the web (`CLAUDE_CODE_REMOTE=true`):** `api.flakehub.com`
    and `install.determinate.systems` are outside the egress allowlist, so the
-   real `determinate` input cannot be fetched. Use the local stub at
-   `.claude/stubs/determinate` — it replaces `determinate` with an empty NixOS
-   module so the rest of the configuration evaluates normally:
+   real `determinate` and `nixpkgs` (now on FlakeHub) inputs cannot be fetched.
+   Override both with local/GitHub alternatives so the rest of the configuration
+   evaluates normally:
    ```
    nix build --dry-run \
      --override-input determinate path:$CLAUDE_PROJECT_DIR/.claude/stubs/determinate \
+     --override-input nixpkgs github:nixos/nixpkgs/nixos-unstable \
      .#nixosConfigurations."<hostname>".config.system.build.toplevel
    ```
 
