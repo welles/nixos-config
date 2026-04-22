@@ -2,9 +2,24 @@
   "permissions": {
     "allow": [
       "Bash(alejandra:*)",
+      "Bash(deadnix:*)",
+      "Bash(statix:*)",
+      "Bash(nix:*)",
       "Bash(nixos-rebuild dry-build:*)",
       "Edit",
       "Write"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
     ]
   },
   "mcpServers": {
