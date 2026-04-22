@@ -43,36 +43,77 @@ if ! command -v nix >/dev/null 2>&1; then
   exit 1
 fi
 
-# Pin nixpkgs to whatever flake.lock pins so tool installs go straight to the
-# binary cache. flakehub.com / api.github.com / install.determinate.systems
-# are either blocked by the egress allowlist or rate-limited on the shared
-# egress IP, so an unpinned `nixpkgs#...` reference fails to resolve.
-rev="$(jq -r '.nodes.nixpkgs.locked.rev' "$CLAUDE_PROJECT_DIR/flake.lock")"
-if [ -z "$rev" ] || [ "$rev" = "null" ]; then
-  log "could not read nixpkgs rev from flake.lock; aborting"
-  exit 1
-fi
+# Install linting tools as static binaries directly from GitHub releases.
+#
+# Binary caches (cache.nixos.org, install.determinate.systems) and upstream
+# source tarball hosts are outside the web container's egress allowlist, so
+# `nix profile add` tries to build ~1400 derivations from scratch and fails
+# when it cannot download any source tarballs.  GitHub release downloads are
+# in the allowlist and work reliably.
+TOOLS_BIN="${HOME}/.local/bin"
+mkdir -p "$TOOLS_BIN"
 
-# Install only what isn't already in the profile, so resume/clear
-# SessionStart invocations don't error out with "already installed".
-installed="$(nix profile list --json 2>/dev/null || echo '{"elements":{}}')"
-missing=()
-for tool in alejandra deadnix statix nixos-rebuild; do
-  if ! printf '%s' "$installed" | jq -e --arg t "$tool" '.elements[$t]' >/dev/null; then
-    missing+=("github:NixOS/nixpkgs/${rev}#${tool}")
+arch="$(uname -m)"  # x86_64 or aarch64
+
+# Download and install a prebuilt static binary from a GitHub release.
+# $1 = tool name
+# $2 = GitHub owner/repo
+# $3 = ERE pattern matched against the release asset filename
+install_github_release() {
+  local tool="$1" repo="$2" pattern="$3"
+
+  if [ -x "${TOOLS_BIN}/${tool}" ]; then
+    log "${tool} already installed"
+    return 0
   fi
-done
 
-if [ ${#missing[@]} -gt 0 ]; then
-  log "installing ${#missing[@]} tool(s) from nixpkgs@${rev:0:12}"
-  nix profile add "${missing[@]}"
-else
-  log "alejandra, deadnix, statix, nixos-rebuild already installed"
-fi
+  log "installing ${tool} from github.com/${repo}"
+
+  local asset_tsv
+  asset_tsv="$(curl -fsSL "https://api.github.com/repos/${repo}/releases/latest" \
+    | jq -r ".assets[] | select(.name | test(\"${pattern}\")) | [.name, .browser_download_url] | @tsv" \
+    | head -1)"
+
+  if [ -z "$asset_tsv" ]; then
+    log "WARNING: no release asset for ${tool} matching '${pattern}' — skipping"
+    return 0
+  fi
+
+  local name url
+  name="$(printf '%s' "$asset_tsv" | cut -f1)"
+  url="$(printf '%s' "$asset_tsv" | cut -f2)"
+
+  local tmp_dir
+  tmp_dir="$(mktemp -d)"
+  trap 'rm -rf "$tmp_dir"' RETURN
+
+  curl -fsSL "$url" -o "${tmp_dir}/${name}"
+
+  if [[ "$name" == *.tar.gz || "$name" == *.tgz ]]; then
+    tar -xzf "${tmp_dir}/${name}" -C "$tmp_dir"
+    find "$tmp_dir" -name "$tool" -type f | head -1 \
+      | xargs -I{} install -m755 {} "${TOOLS_BIN}/${tool}"
+  elif [[ "$name" == *.zip ]]; then
+    unzip -q "${tmp_dir}/${name}" -d "$tmp_dir"
+    find "$tmp_dir" -name "$tool" -type f | head -1 \
+      | xargs -I{} install -m755 {} "${TOOLS_BIN}/${tool}"
+  else
+    install -m755 "${tmp_dir}/${name}" "${TOOLS_BIN}/${tool}"
+  fi
+
+  log "${tool} installed"
+}
+
+install_github_release alejandra "kamadorueda/alejandra" "${arch}-unknown-linux"
+install_github_release deadnix   "astro/deadnix"         "deadnix-${arch}-unknown-linux"
+install_github_release statix    "oppiliappan/statix"    "statix-${arch}-unknown-linux"
+
+# nixos-rebuild dry-build is skipped when CLAUDE_CODE_REMOTE=true (see CLAUDE.md),
+# so nixos-rebuild is not installed in the web environment.
 
 if [ -n "${CLAUDE_ENV_FILE:-}" ]; then
   {
-    echo 'export PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"'
+    echo "export PATH=\"${TOOLS_BIN}:/nix/var/nix/profiles/default/bin:\$PATH\""
   } >> "$CLAUDE_ENV_FILE"
 fi
 
