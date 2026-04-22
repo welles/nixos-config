@@ -9,13 +9,22 @@ Ensure all modified `.nix` files are formatted and linted:
 
 ## After implementing instructions
 1. Infer the hostname of the NixOS flake configuration being worked on (it may differ from the machine Claude is running on — check `flake.nix` for the `nixosConfigurations` attribute names).
-2. Dry-run build the configuration to check for errors:
+2. Dry-run build the configuration to check for errors.
+
+   **Local session:**
    ```
    nixos-rebuild dry-build --flake .#<hostname>
    ```
-3. If any errors are found, fix them automatically and rebuild until it succeeds.
 
-**Skip step 2 when `CLAUDE_CODE_REMOTE=true`** (Claude Code on the web). The
-flake's `api.flakehub.com` inputs are outside that environment's egress
-allowlist, so dry-build fails before it can evaluate. CI covers the same
-check on every PR (`.github/workflows/check-flake.yml`).
+   **Claude Code on the web (`CLAUDE_CODE_REMOTE=true`):** `api.flakehub.com`
+   and `install.determinate.systems` are outside the egress allowlist, so the
+   real `determinate` input cannot be fetched. Use the local stub at
+   `.claude/stubs/determinate` — it replaces `determinate` with an empty NixOS
+   module so the rest of the configuration evaluates normally:
+   ```
+   nix build --dry-run \
+     --override-input determinate path:$CLAUDE_PROJECT_DIR/.claude/stubs/determinate \
+     .#nixosConfigurations."<hostname>".config.system.build.toplevel
+   ```
+
+3. If any errors are found, fix them automatically and rebuild until it succeeds.
