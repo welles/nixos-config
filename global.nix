@@ -29,11 +29,17 @@
 
   nixpkgs.hostPlatform = "x86_64-linux";
   nixpkgs.config.allowUnfree = true;
-  nix.settings.auto-optimise-store = true;
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      extra-substituters = ["https://cache.determinate.systems"];
+      extra-trusted-public-keys = ["cache.determinate.systems-1:BRRnvKBRBHCOUMmMQF0A+wl3q0Oo7xRKpuaQtRrNEw="];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   # Every system uses Zsh
@@ -72,6 +78,7 @@
     users.${user} = import ./configurations/${user}/home.nix;
     backupFileExtension = "backup";
     sharedModules = [
+      inputs.determinate.homeManagerModules.default
       {
         home = {
           username = user;
