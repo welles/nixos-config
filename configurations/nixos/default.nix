@@ -30,13 +30,13 @@
       libkrb5
       keyutils
       # X11/Graphics libs (even for backend, some helpers need these)
-      xorg.libX11
-      xorg.libXext
-      xorg.libXrender
-      xorg.libXcomposite
-      xorg.libXdamage
-      xorg.libXtst
-      xorg.libXi
+      libx11
+      libxext
+      libxrender
+      libxcomposite
+      libxdamage
+      libxtst
+      libxi
       glib
       nss
       at-spi2-atk
