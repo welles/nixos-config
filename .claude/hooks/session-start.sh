@@ -13,12 +13,24 @@ fi
 log() { printf '[session-start] %s\n' "$*" >&2; }
 
 if ! command -v nix >/dev/null 2>&1; then
+  # install.determinate.systems isn't in the Claude Code web egress allowlist,
+  # so fetch the standalone installer binary from the GitHub release (which is)
+  # and invoke it with the same arguments the shell script would.
+  log "downloading Determinate nix-installer binary"
+  arch="$(uname -m)"
+  installer="$(mktemp)"
+  curl -fsSL \
+    "https://github.com/DeterminateSystems/nix-installer/releases/latest/download/nix-installer-${arch}-linux" \
+    -o "$installer"
+  chmod +x "$installer"
+
   log "installing Determinate Nix"
-  curl -fsSL https://install.determinate.systems/nix \
-    | sh -s -- install linux \
-        --no-confirm \
-        --init none \
-        --determinate
+  "$installer" install linux \
+    --no-confirm \
+    --init none \
+    --determinate
+
+  rm -f "$installer"
 fi
 
 for profile in /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh \
