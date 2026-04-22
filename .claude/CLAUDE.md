@@ -9,7 +9,9 @@ Ensure all modified `.nix` files are formatted and linted:
 
 ## After implementing instructions
 1. Infer the hostname of the NixOS flake configuration being worked on (it may differ from the machine Claude is running on — check `flake.nix` for the `nixosConfigurations` attribute names).
-2. Dry-run build the configuration to check for errors.
+2. Stage any newly created `.nix` files with `git add`. Nix flakes only see
+   git-tracked files, so untracked files are silently ignored by the build.
+3. Dry-run build the configuration to check for errors.
 
    **Local session:**
    ```
@@ -27,4 +29,4 @@ Ensure all modified `.nix` files are formatted and linted:
      .#nixosConfigurations."<hostname>".config.system.build.toplevel
    ```
 
-3. If any errors are found, fix them automatically and rebuild until it succeeds.
+4. If any errors are found, fix them automatically and rebuild until it succeeds.
