@@ -13,6 +13,5 @@
   inputs = {};
   outputs = _: {
     nixosModules.default = {};
-    homeManagerModules.default = {};
   };
 }
