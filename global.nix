@@ -78,7 +78,6 @@
     users.${user} = import ./configurations/${user}/home.nix;
     backupFileExtension = "backup";
     sharedModules = [
-      inputs.determinate.homeManagerModules.default
       {
         home = {
           username = user;
