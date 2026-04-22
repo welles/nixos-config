@@ -1,9 +1,5 @@
 {hostname, ...}: {
-  programs.nh = {
-    enable = true;
-    # Pull config from GitHub, matching the nixos-switch / nixos-boot aliases.
-    flake = "github:welles/nixos-config";
-  };
+  programs.nh.enable = true;
 
   environment.shellAliases = {
     nh-switch = "nh os switch github:welles/nixos-config#${hostname}";
