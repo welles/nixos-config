@@ -14,3 +14,8 @@ Ensure all modified `.nix` files are formatted and linted:
    nixos-rebuild dry-build --flake .#<hostname>
    ```
 3. If any errors are found, fix them automatically and rebuild until it succeeds.
+
+**Skip step 2 when `CLAUDE_CODE_REMOTE=true`** (Claude Code on the web). The
+flake's `api.flakehub.com` inputs are outside that environment's egress
+allowlist, so dry-build fails before it can evaluate. CI covers the same
+check on every PR (`.github/workflows/check-flake.yml`).
