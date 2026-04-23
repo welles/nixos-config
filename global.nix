@@ -85,6 +85,10 @@
           inherit stateVersion;
         };
         programs.home-manager.enable = true;
+
+        # Adopt new Home Manager defaults (standard for stateVersion >= 26.05)
+        gtk.gtk4.theme = null;
+        xdg.userDirs.setSessionVariables = false;
       }
     ];
   };
