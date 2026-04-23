@@ -10,7 +10,6 @@
   inputs,
   hostname,
   pkgs,
-  lib,
   user,
   stateVersion,
   ...
