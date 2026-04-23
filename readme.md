@@ -39,8 +39,9 @@ sudo zfs snapshot bucket/root@blank
 
 ## Increase Live USB Disk Size
 ```bash
+df -h # Show current disk usage
 sudo swapon /dev/... # Enable swap on disk
-sudo mount -o remount,size=20G,noatime / # Increase tmpfs of live USB to RAM+Swap-20% gigabytes
+sudo mount -o remount,size=50G,noatime / # Increase tmpfs of live USB to RAM+Swap-20% gigabytes
 ```
 
 ## Install
