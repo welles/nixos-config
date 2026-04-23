@@ -70,5 +70,5 @@
   '';
 
   # Enable plasma-manager home-manager module for KDE Plasma configuration
-  home-manager.sharedModules = [inputs.plasma-manager.homeModules.plasma-manager];
+  home-manager.sharedModules = [inputs.plasma-manager-unstable.homeModules.plasma-manager];
 }

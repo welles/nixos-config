@@ -25,7 +25,7 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    plasma-manager = {
+    plasma-manager-unstable = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.home-manager.follows = "home-manager-unstable";
@@ -76,12 +76,12 @@
     mkUnstableSystem = mkSystem nixpkgs-unstable home-manager-unstable;
   in {
     nixosConfigurations = {
-      nico-thinkpad-nixos        = mkUnstableSystem "nico-thinkpad-nixos"        "nico";
-      nico-thinkbook-nixos       = mkUnstableSystem "nico-thinkbook-nixos"       "nico";
-      eltern-asus-nixos          = mkStableSystem   "eltern-asus-nixos"          "eltern";
-      nico-schokoladenelch-nixos = mkStableSystem   "nico-schokoladenelch-nixos" "schokoladenelch";
-      nixos-wsl-nixos            = mkUnstableSystem "nixos-wsl-nixos"            "nixos";
-      nixos-virtualbox-nixos     = mkUnstableSystem "nixos-virtualbox-nixos"     "nixos";
+      nico-thinkpad-nixos = mkUnstableSystem "nico-thinkpad-nixos" "nico";
+      nico-thinkbook-nixos = mkUnstableSystem "nico-thinkbook-nixos" "nico";
+      eltern-asus-nixos = mkStableSystem "eltern-asus-nixos" "eltern";
+      nico-schokoladenelch-nixos = mkStableSystem "nico-schokoladenelch-nixos" "schokoladenelch";
+      nixos-wsl-nixos = mkUnstableSystem "nixos-wsl-nixos" "nixos";
+      nixos-virtualbox-nixos = mkUnstableSystem "nixos-virtualbox-nixos" "nixos";
     };
   };
 }
