@@ -177,6 +177,27 @@
         "type": "github"
       }
     },
+    "home-manager-unstable": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776904464,
+        "narHash": "sha256-sBUCj7/4d3Hoevpu3oQp8ccJNA1EDeVmFi1F8O6VJro=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "667b3c47325441e6a444faaf405bba76ec70338a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "master",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "impermanence": {
       "inputs": {
         "home-manager": [
@@ -288,6 +309,20 @@
         "type": "github"
       }
     },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1775888245,
+        "narHash": "sha256-nwASzrRDD1JBEu/o8ekKYEXm/oJW6EMCzCRdrwcLe90=",
+        "rev": "13043924aaa7375ce482ebe2494338e058282925",
+        "revCount": 978638,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/DeterminateSystems/nixpkgs-weekly/0.1.978638%2Brev-13043924aaa7375ce482ebe2494338e058282925/019d8a9c-62d4-7081-8145-107410bd19e6/source.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/0.1"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1775888245,
@@ -313,16 +348,16 @@
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/NixOS/nixpkgs/0"
+        "url": "https://flakehub.com/f/NixOS/nixpkgs/0.2511"
       }
     },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
-          "home-manager"
+          "home-manager-unstable"
         ],
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
@@ -344,9 +379,11 @@
         "determinate": "determinate",
         "disko": "disko",
         "home-manager": "home-manager",
+        "home-manager-unstable": "home-manager-unstable",
         "impermanence": "impermanence",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-unstable": "nixpkgs-unstable",
         "plasma-manager": "plasma-manager",
         "sops-nix": "sops-nix"
       }
