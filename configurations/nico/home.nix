@@ -81,6 +81,7 @@
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
     };
+    gtk4.theme = null;
   };
 
   qt = {
@@ -148,16 +149,19 @@
   # Force English names for standard user directories (Documents, Downloads, etc.)
   # even though the system locale is German. This ensures consistency with
   # the impermanence configuration and prevents localized folder creation.
-  xdg.userDirs = {
-    enable = true;
-    createDirectories = true;
-    documents = "$HOME/Documents";
-    download = "$HOME/Downloads";
-    music = "$HOME/Music";
-    pictures = "$HOME/Pictures";
-    videos = "$HOME/Videos";
-    desktop = "$HOME/Desktop";
-    publicShare = "$HOME/Public";
-    templates = "$HOME/Templates";
+  xdg = {
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+      setSessionVariables = false;
+      documents = "$HOME/Documents";
+      download = "$HOME/Downloads";
+      music = "$HOME/Music";
+      pictures = "$HOME/Pictures";
+      videos = "$HOME/Videos";
+      desktop = "$HOME/Desktop";
+      publicShare = "$HOME/Public";
+      templates = "$HOME/Templates";
+    };
   };
 }
