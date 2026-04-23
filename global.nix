@@ -10,6 +10,7 @@
   inputs,
   hostname,
   pkgs,
+  lib,
   user,
   stateVersion,
   ...
@@ -78,7 +79,7 @@
     users.${user} = import ./configurations/${user}/home.nix;
     backupFileExtension = "backup";
     sharedModules = [
-      {
+      ({lib, ...}: {
         home = {
           username = user;
           homeDirectory = "/home/${user}";
@@ -87,9 +88,11 @@
         programs.home-manager.enable = true;
 
         # Adopt new Home Manager defaults (standard for stateVersion >= 26.05)
-        gtk.gtk4.theme = null;
-        xdg.userDirs.setSessionVariables = false;
-      }
+        xdg.userDirs = lib.optionalAttrs (lib.versionAtLeast stateVersion "26.05") {
+          gtk.gtk4.theme = null;
+          setSessionVariables = false;
+        };
+      })
     ];
   };
 }
