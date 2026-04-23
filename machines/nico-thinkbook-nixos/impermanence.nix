@@ -22,10 +22,10 @@
         ".claude.json"
         ".config/dolphinrc"
         ".config/lazygit/config.yml"
-        ".ssh/known_hosts"
         ".zsh_history"
       ];
       directories = [
+        ".ssh"
         ".claude"
         ".gemini"
         ".config/Bitwarden"
