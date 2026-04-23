@@ -40,6 +40,7 @@
         ".local/share/PrismLauncher"
         ".npm-global"
         ".vscode"
+        "Desktop"
         "Documents"
         "Downloads"
         "Music"

@@ -37,6 +37,7 @@
         ".local/state/lazygit"
         ".npm-global"
         ".vscode"
+        "Desktop"
         "Documents"
         "Downloads"
         "Music"
