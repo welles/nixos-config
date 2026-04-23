@@ -351,7 +351,7 @@
         "url": "https://flakehub.com/f/NixOS/nixpkgs/0.2511"
       }
     },
-    "plasma-manager": {
+    "plasma-manager-unstable": {
       "inputs": {
         "home-manager": [
           "home-manager-unstable"
@@ -384,7 +384,7 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "plasma-manager": "plasma-manager",
+        "plasma-manager-unstable": "plasma-manager-unstable",
         "sops-nix": "sops-nix"
       }
     },
