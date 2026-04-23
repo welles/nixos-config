@@ -15,7 +15,7 @@
 #   - nixos-virtualbox-nixos:     VirtualBox VM development environment
 {
   inputs = {
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.2511";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
