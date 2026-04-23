@@ -144,6 +144,23 @@
     };
   };
 
+  # --- XDG User Directories ---
+  # Force English names for standard user directories (Documents, Downloads, etc.)
+  # even though the system locale is German. This ensures consistency with
+  # the impermanence configuration and prevents localized folder creation.
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    documents = "$HOME/Documents";
+    download = "$HOME/Downloads";
+    music = "$HOME/Music";
+    pictures = "$HOME/Pictures";
+    videos = "$HOME/Videos";
+    desktop = "$HOME/Desktop";
+    publicShare = "$HOME/Public";
+    templates = "$HOME/Templates";
+  };
+
   # --- Autostart & Desktop Entries ---
   # Bitwarden starts at login for password/SSH agent access.
   # Remmina applet is hidden from autostart by default.
