@@ -160,26 +160,4 @@
     publicShare = "$HOME/Public";
     templates = "$HOME/Templates";
   };
-
-  # --- Autostart & Desktop Entries ---
-  # Bitwarden starts at login for password/SSH agent access.
-  # Remmina applet is hidden from autostart by default.
-
-  xdg.configFile."autostart/bitwarden.desktop".text = ''
-    [Desktop Entry]
-    Type=Application
-    Name=Bitwarden
-    Comment=Bitwarden startup script
-    Exec=${pkgs.bitwarden-desktop}/bin/bitwarden
-    StartupNotify=false
-    Terminal=false
-  '';
-
-  xdg.configFile."autostart/remmina-applet.desktop".text = ''
-    [Desktop Entry]
-    Type=Application
-    Name=Remmina Applet
-    Exec=remmina -i
-    Hidden=true
-  '';
 }
