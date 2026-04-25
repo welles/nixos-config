@@ -20,8 +20,6 @@
     users.${user} = {
       files = [
         ".claude.json"
-        ".config/dolphinrc"
-        ".config/lazygit/config.yml"
         ".zsh_history"
       ];
       directories = [
