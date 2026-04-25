@@ -163,5 +163,17 @@
       publicShare = "$HOME/Public";
       templates = "$HOME/Templates";
     };
+
+    # --- Autostart ---
+    # Bitwarden starts at login for password/SSH agent access.
+    configFile."autostart/bitwarden.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Bitwarden
+      Comment=Bitwarden startup script
+      Exec=${pkgs.bitwarden-desktop}/bin/bitwarden
+      StartupNotify=false
+      Terminal=false
+    '';
   };
 }
