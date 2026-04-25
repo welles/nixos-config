@@ -13,6 +13,8 @@ stdenv.mkDerivation rec {
     sha256 = "05yrdgjllikpbjhmw0fvf85rhbg4lmbyldhv62lkkf84gw8mby6p";
   };
 
+  dontBuild = true;
+
   installPhase = ''
     mkdir -p $out/share/kwin/scripts/mousetiler
     cp -r * $out/share/kwin/scripts/mousetiler/
