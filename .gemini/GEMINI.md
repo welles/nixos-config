@@ -9,8 +9,8 @@ Ensure all modified `.nix` files are formatted and linted:
 
 ## After implementing instructions
 1. Infer the hostname of the NixOS flake configuration being worked on (it may differ from the machine Gemini CLI is running on — check `flake.nix` for the `nixosConfigurations` attribute names).
-2. Dry-run build the configuration to check for errors:
+2. Build the configuration to check for errors (this ensures builders run without modifying the host system):
    ```
-   nixos-rebuild dry-build --flake .#<hostname>
+   nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel --no-link
    ```
 3. If any errors are found, fix them automatically and rebuild until it succeeds.
