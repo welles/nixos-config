@@ -70,7 +70,7 @@
 
     # KDE extensions
     kdePackages.partitionmanager
-    (pkgs.callPackage ./kwin-mousetiler.nix {})
+    # (pkgs.callPackage ./kwin-mousetiler.nix {})
     (pkgs.callPackage ./kwin-rememberwindowpositions.nix {})
   ];
 }
