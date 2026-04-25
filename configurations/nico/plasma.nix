@@ -6,7 +6,6 @@
 # - Fonts (Noto Sans / Fira Code Nerd Font)
 # - Breeze Dark workspace theme with Mountain wallpaper
 # - Left-aligned floating panel with Kickoff menu and system tray
-# - KZones window tiling layouts (50/50, fullscreen, thirds, sidebar)
 {pkgs, ...}: {
   programs.plasma = {
     enable = true;
@@ -140,92 +139,6 @@
         "BottomLeft" = "ShowDesktop";
         "Top" = "KRunner";
         "TopLeft" = "ApplicationLauncher";
-      };
-      "kwinrc"."Plugins" = {
-        "kzonesEnabled" = true;
-      };
-      "kwinrc"."Script-kzones" = {
-        "autoSnapAllNew" = false;
-        "layoutsJson" = builtins.toJSON [
-          {
-            name = "50/50";
-            padding = 10;
-            zones = [
-              {
-                x = 0;
-                y = 0;
-                width = 50;
-                height = 100;
-              }
-              {
-                x = 50;
-                y = 0;
-                width = 50;
-                height = 100;
-              }
-            ];
-          }
-          {
-            name = "100";
-            padding = 10;
-            zones = [
-              {
-                x = 0;
-                y = 0;
-                width = 100;
-                height = 100;
-              }
-            ];
-          }
-          {
-            name = "33/33/33";
-            padding = 10;
-            zones = [
-              {
-                x = 0;
-                y = 0;
-                width = 33;
-                height = 100;
-              }
-              {
-                x = 33;
-                y = 0;
-                width = 34;
-                height = 100;
-              }
-              {
-                x = 67;
-                y = 0;
-                width = 33;
-                height = 100;
-              }
-            ];
-          }
-          {
-            name = "20-20/80";
-            padding = 10;
-            zones = [
-              {
-                x = 0;
-                y = 0;
-                width = 20;
-                height = 50;
-              }
-              {
-                x = 0;
-                y = 50;
-                width = 20;
-                height = 50;
-              }
-              {
-                x = 20;
-                y = 0;
-                width = 80;
-                height = 100;
-              }
-            ];
-          }
-        ];
       };
     };
 

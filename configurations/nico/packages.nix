@@ -68,7 +68,6 @@
     systemctl-tui
 
     # KDE extensions
-    kdePackages.kzones
     kdePackages.partitionmanager
   ];
 }
