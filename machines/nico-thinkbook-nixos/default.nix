@@ -20,6 +20,7 @@
     ./nvidia-gpu.nix
     ../../modules/eden.nix
     ../../modules/xone-dongle.nix
+    ../../modules/scripts/check-persist
   ];
 
   # Required by ZFS — must be unique across all machines in the pool.
