@@ -57,10 +57,6 @@
 
   programs.firefox.enable = true;
 
-  environment.shellAliases = {
-    ls-gpus = "lspci | grep -E 'VGA|3D'";
-  };
-
   # Set the user's profile picture for the login screen
   system.activationScripts.set-profile-icon.text = ''
     mkdir -p /var/lib/AccountsService/icons
