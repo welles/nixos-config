@@ -110,7 +110,6 @@ _: {
       };
       "kwinrc"."ElectricBorders" = {
         "BottomLeft" = "ShowDesktop";
-        "Top" = "KRunner";
         "TopLeft" = "ApplicationLauncher";
       };
       "kwinrc"."Plugins" = {
