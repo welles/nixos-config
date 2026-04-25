@@ -51,7 +51,7 @@ in {
     environment.systemPackages = [
       (pkgs.writeShellScriptBin "check-persist" ''
         export PATH=${pkgs.lib.makeBinPath [pkgs.findutils pkgs.coreutils]}:$PATH
-        ${builtins.readFile ./check-persist.sh} "$@" ${pathsFile}
+        exec ${pkgs.bash}/bin/bash ${./check-persist.sh} "${pathsFile}" "$@"
       '')
     ];
   };
