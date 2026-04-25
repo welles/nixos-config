@@ -80,32 +80,6 @@
         signByDefault = true;
       };
     };
-
-    # --- Shell & CLI Tools ---
-    # Base shell and CLI tools are imported from packages/shell.nix and
-    # packages/cli-tools.nix. Below are nico-specific extensions.
-
-    # Custom starship prompt symbols
-    starship.settings = {
-      add_newline = false;
-      character = {
-        success_symbol = "[➜](bold green)";
-        error_symbol = "[➜](bold red)";
-      };
-    };
-
-    btop.settings.theme_background = false;
-
-    # Desktop-specific CLI tools
-    bat.enable = true;
-    ripgrep.enable = true;
-    konsole.enable = true;
-
-    direnv = {
-      enable = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
   };
 
   # --- XDG User Directories ---
