@@ -55,8 +55,6 @@
     shell = pkgs.zsh;
   };
 
-  programs.firefox.enable = true;
-
   # Set the user's profile picture for the login screen
   system.activationScripts.set-profile-icon.text = ''
     mkdir -p /var/lib/AccountsService/icons

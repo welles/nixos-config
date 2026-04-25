@@ -29,6 +29,7 @@
     # Internet & communication
     discord
     google-chrome
+    firefox-devedition
     mumble
     remmina
     teamspeak6-client
