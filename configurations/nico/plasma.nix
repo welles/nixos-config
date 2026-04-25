@@ -140,6 +140,10 @@
         "Top" = "KRunner";
         "TopLeft" = "ApplicationLauncher";
       };
+      "kwinrc"."Plugins" = {
+        "mousetilerEnabled" = true;
+        "rememberwindowpositionsEnabled" = true;
+      };
     };
 
     input.keyboard = {
