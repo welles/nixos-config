@@ -17,6 +17,6 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/share/kwin/scripts/mousetiler
-    cp -r * $out/share/kwin/scripts/mousetiler/
+    cp -r src/* $out/share/kwin/scripts/mousetiler/
   '';
 }

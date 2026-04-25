@@ -17,6 +17,6 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/share/kwin/scripts/rememberwindowpositions
-    cp -r * $out/share/kwin/scripts/rememberwindowpositions/
+    cp -r src/* $out/share/kwin/scripts/rememberwindowpositions/
   '';
 }
