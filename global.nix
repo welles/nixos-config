@@ -16,7 +16,6 @@
 }: {
   imports = [
     ./modules/tmux.nix
-    ./modules/nh.nix
   ];
 
   networking.hostName = hostname;
