@@ -1,6 +1,7 @@
 {
   stdenv,
   fetchFromGitHub,
+  zip,
 }:
 stdenv.mkDerivation rec {
   pname = "kwin-rememberwindowpositions";
@@ -12,6 +13,8 @@ stdenv.mkDerivation rec {
     rev = version;
     sha256 = "0fh31w0dgnjdqgbsnsw3zsxammb0m177m6x9iwbhn628dysv14bm";
   };
+
+  nativeBuildInputs = [zip];
 
   installPhase = ''
     mkdir -p $out/share/kwin/scripts/rememberwindowpositions
