@@ -15,7 +15,6 @@
     ./boot.nix
     ./desktop.nix
     ./audio.nix
-    ./virtualisation.nix
     ./services.nix
     ./packages.nix
     ./rclone.nix
