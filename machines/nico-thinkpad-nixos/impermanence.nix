@@ -31,7 +31,7 @@
         ".config/Bitwarden"
         ".config/Code"
         ".config/google-chrome"
-        ".config/mozilla/firefox"
+        ".config/mozilla/firefox-devedition"
         ".local/share/dolphin"
         ".local/share/kwalletd"
         ".local/state/lazygit"
