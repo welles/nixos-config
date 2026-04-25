@@ -24,15 +24,11 @@
 
   home = {
     # --- Session Environment ---
-    # Sets VS Code as default editor, Konsole as default terminal,
-    # enables Wayland for Electron apps via NIXOS_OZONE_WL, and
-    # points SSH_AUTH_SOCK to the Bitwarden SSH agent socket.
     sessionVariables = {
       SSH_AUTH_SOCK = "${config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
       TERMINAL = "konsole";
       EDITOR = "code";
       SOPS_EDITOR = "nano";
-      NIXOS_OZONE_WL = "1";
       SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
     };
 
