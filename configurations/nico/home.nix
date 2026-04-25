@@ -18,19 +18,11 @@
   ];
 
   # --- Appearance & Theming ---
-  # Unified dark theme across GTK, Qt, and GNOME/Flatpak applications.
-  # Uses KDE Breeze Dark with a matching cursor theme.
+  # Theming is managed via the Plasma Look and Feel settings in plasma.nix.
 
   fonts.fontconfig.enable = true;
 
   home = {
-    pointerCursor = {
-      gtk.enable = true;
-      name = "Breeze_Light";
-      package = pkgs.kdePackages.breeze;
-      size = 24;
-    };
-
     # --- Session Environment ---
     # Sets VS Code as default editor, Konsole as default terminal,
     # enables Wayland for Electron apps via NIXOS_OZONE_WL, and
@@ -64,35 +56,6 @@
         rm -f ${config.home.homeDirectory}/.gtkrc-2.0
         rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
       '';
-    };
-  };
-
-  gtk = {
-    enable = true;
-
-    theme = {
-      name = "Breeze-Dark";
-      package = pkgs.kdePackages.breeze-gtk;
-    };
-
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.theme = null;
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "kde";
-    style.name = "breeze";
-  };
-
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
     };
   };
 

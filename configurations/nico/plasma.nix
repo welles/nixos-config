@@ -2,11 +2,10 @@
 #
 # Declarative Plasma settings managed by plasma-manager. Configures:
 # - Power management profiles (AC, battery, low battery) with hibernate
-# - KWin effects (wobbly windows, blur, translucency, zoom)
 # - Fonts (Noto Sans / Fira Code Nerd Font)
-# - Breeze Dark workspace theme with Mountain wallpaper
+# - Default Breeze Dark look and feel
 # - Left-aligned floating panel with Kickoff menu and system tray
-{pkgs, ...}: {
+_: {
   programs.plasma = {
     enable = true;
     overrideConfig = true;
@@ -94,18 +93,6 @@
       autoLock = false;
     };
 
-    kwin = {
-      borderlessMaximizedWindows = false;
-      effects = {
-        wobblyWindows.enable = true;
-        translucency.enable = true;
-        blur.enable = true;
-        dimInactive.enable = false;
-        slideBack.enable = true;
-        zoom.enable = true;
-      };
-    };
-
     fonts = {
       general = {
         family = "Noto Sans";
@@ -118,20 +105,6 @@
     };
 
     configFile = {
-      "breezerc"."Common" = {
-        "ShadowSize" = "ShadowNone";
-        "OutlineIntensity" = "OutlineOff";
-      };
-      "kscreenlockerrc" = {
-        "Greeter" = {
-          "WallpaperPlugin" = "org.kde.image";
-        };
-        "Greeter/Wallpaper/org.kde.image/General" = {
-          "DynamicMode" = 3;
-          "Image" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
-          "ImagePreview" = "file://${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
-        };
-      };
       "kwinrc"."NightColor" = {
         "Active" = true;
       };
@@ -151,12 +124,7 @@
     };
 
     workspace = {
-      colorScheme = "BreezeDark";
-      iconTheme = "breeze-dark";
-      theme = "breeze-dark";
-      cursor.theme = "Breeze_Light";
-      wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
-      splashScreen.theme = "None";
+      lookAndFeel = "org.kde.breezedark.desktop";
     };
 
     panels = [
