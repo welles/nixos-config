@@ -29,7 +29,7 @@
         ".config/Bitwarden"
         ".config/Code"
         ".config/google-chrome"
-        ".config/mozilla/firefox-devedition"
+        ".config/mozilla/firefox"
         ".config/smartgit"
         ".local/share/applications"
         ".local/share/dolphin"
