@@ -29,6 +29,7 @@
         ".config/Bitwarden"
         ".config/Code"
         ".config/discord"
+        ".config/easyeffects"
         ".config/google-chrome"
         ".config/mozilla/firefox"
         ".config/smartgit"
