@@ -30,6 +30,7 @@
         ".config/Code"
         ".config/discord"
         ".config/easyeffects"
+        ".config/fsearch"
         ".config/google-chrome"
         ".config/mozilla/firefox"
         ".config/smartgit"

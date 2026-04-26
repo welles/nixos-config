@@ -31,6 +31,7 @@
         ".config/Bitwarden"
         ".config/Code"
         ".config/discord"
+        ".config/fsearch"
         ".config/google-chrome"
         ".config/mozilla/firefox"
         ".local/share/dolphin"
