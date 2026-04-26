@@ -30,6 +30,7 @@
         ".gemini"
         ".config/Bitwarden"
         ".config/Code"
+        ".config/discord"
         ".config/google-chrome"
         ".config/mozilla/firefox"
         ".local/share/dolphin"
