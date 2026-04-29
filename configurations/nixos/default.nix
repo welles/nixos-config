@@ -65,7 +65,6 @@
       google-chrome
       microsoft-edge
       sourcegit
-      smartgit
     ];
 
     sessionVariables = {
