@@ -69,6 +69,7 @@
 
     sessionVariables = {
       DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
+      DONT_PROMPT_WSL_INSTALL = "true"; # Hide warnign when running VS Code in WSL
     };
   };
 
