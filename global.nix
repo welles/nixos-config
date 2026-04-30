@@ -34,6 +34,13 @@
         openldap = prev.openldap.overrideAttrs (_: {
           doCheck = false;
         });
+        pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+          (_: python-prev: {
+            aioboto3 = python-prev.aioboto3.overridePythonAttrs (_: {
+              doCheck = false;
+            });
+          })
+        ];
       })
     ];
   };
