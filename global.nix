@@ -31,7 +31,7 @@
   nix = {
     settings = {
       auto-optimise-store = true;
-      extra-substituters = ["https://install.determinate.systems"];
+      extra-substituters = ["https://cache.flakehub.com"];
       extra-trusted-public-keys = ["cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="];
     };
     gc = {
