@@ -33,6 +33,7 @@
         ".config/discord"
         ".config/fsearch"
         ".config/google-chrome"
+        ".config/kde.org"
         ".config/mozilla/firefox"
         ".local/share/dolphin"
         ".local/share/kwalletd"

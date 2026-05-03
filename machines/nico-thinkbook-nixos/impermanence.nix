@@ -32,6 +32,7 @@
         ".config/easyeffects"
         ".config/fsearch"
         ".config/google-chrome"
+        ".config/kde.org"
         ".config/mozilla/firefox"
         ".config/smartgit"
         ".local/share/applications"
