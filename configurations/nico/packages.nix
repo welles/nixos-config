@@ -67,6 +67,7 @@
     usbutils
     xfsprogs
     systemctl-tui
+    _7zz
 
     # KDE extensions
     kdePackages.partitionmanager
