@@ -34,7 +34,6 @@
         ".config/google-chrome"
         ".config/kde.org"
         ".config/mozilla/firefox"
-        ".config/smartgit"
         ".local/share/applications"
         ".local/share/dolphin"
         ".local/share/kwalletd"

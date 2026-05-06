@@ -23,7 +23,6 @@
 
     # Version control
     lazygit
-    smartgit
     sourcegit
 
     # Internet & communication
