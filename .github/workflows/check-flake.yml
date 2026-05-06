@@ -6,12 +6,12 @@ concurrency:
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
       - "**.nix"
       - ".github/workflows/check-flake.yml"
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   lint:
@@ -45,6 +45,7 @@ jobs:
           '
 
   setup:
+    needs: lint
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -71,7 +72,7 @@ jobs:
           echo "matrix=$HOSTS" >> $GITHUB_OUTPUT
 
   evaluate:
-    needs: [lint, setup]
+    needs: setup
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
