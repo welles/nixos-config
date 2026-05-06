@@ -8,35 +8,9 @@ Ensure all modified `.nix` files are formatted and linted:
 4. Run `statix check <file>` to identify any remaining linting errors and fix them manually.
 
 ## After implementing instructions
-1. Infer the hostname of the NixOS flake configuration being worked on (it may differ from the machine Claude is running on — check `flake.nix` for the `nixosConfigurations` attribute names).
-2. Stage any newly created `.nix` files with `git add`. Nix flakes only see
-   git-tracked files, so untracked files are silently ignored by the build.
-3. Dry-run build the configuration to check for errors.
-
-   **Local session:**
+1. Infer the hostname of the NixOS flake configuration being worked on (it may differ from the machine Gemini CLI is running on — check `flake.nix` for the `nixosConfigurations` attribute names).
+2. Build the configuration to check for errors (this ensures builders run without modifying the host system):
    ```
-   nixos-rebuild dry-build --flake .#<hostname>
+   nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel --no-link
    ```
-
-   **Claude Code on the web (`CLAUDE_CODE_REMOTE=true`):** `api.flakehub.com`
-   and `install.determinate.systems` are outside the egress allowlist, so the
-   real `determinate` and `nixpkgs` (now on FlakeHub) inputs cannot be fetched.
-   Override both so the rest of the configuration evaluates normally.
-
-   First, find the nixpkgs store path that is already in the local Nix store
-   (avoids any network fetch):
-   ```
-   NIX_STORE_NIXPKGS=$(find /nix/store -maxdepth 1 -name "*-source" -not -name "*.drv" \
-     -exec sh -c '[ -f "$1/lib/default.nix" ] && [ -f "$1/pkgs/top-level/all-packages.nix" ] && echo "$1"' _ {} \; | head -1)
-   ```
-
-   Then build:
-   ```
-   nix build --dry-run \
-     --option substituters "" \
-     --override-input determinate path:$CLAUDE_PROJECT_DIR/.claude/stubs/determinate \
-     --override-input nixpkgs path:$NIX_STORE_NIXPKGS \
-     .#nixosConfigurations."<hostname>".config.system.build.toplevel
-   ```
-
-4. If any errors are found, fix them automatically and rebuild until it succeeds.
+3. If any errors are found, fix them automatically and rebuild until it succeeds.

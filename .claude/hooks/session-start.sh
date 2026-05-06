@@ -14,24 +14,15 @@ log() { printf '[session-start] %s\n' "$*" >&2; }
 
 # The web container uses gVisor (runsc), whose syscall emulation breaks Nix's
 # user-namespace build sandbox, so we disable it. Install is non-daemon
-# (--init none) because there is no systemd. We skip --determinate: its
-# default substituter (install.determinate.systems) is not in the egress
-# allowlist, and its lazy-trees profile build trips on the same gVisor
-# wait() issue.
+# because there is no systemd.
 if ! command -v nix >/dev/null 2>&1 && [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then
-	log "downloading nix-installer binary from GitHub release"
-	arch="$(uname -m)"
-	installer="$(mktemp)"
-	curl -fsSL \
-		"https://github.com/DeterminateSystems/nix-installer/releases/latest/download/nix-installer-${arch}-linux" \
-		-o "$installer"
-	chmod +x "$installer"
-
 	log "installing Nix"
-	"$installer" install linux \
-		--no-confirm \
-		--init none \
-		--extra-conf 'sandbox = false'
+	installer="$(mktemp)"
+	curl -fsSL https://nixos.org/nix/install -o "$installer"
+	sh "$installer" --no-daemon
+
+	mkdir -p ~/.config/nix
+	echo "sandbox = false" >> ~/.config/nix/nix.conf
 
 	rm -f "$installer"
 fi
@@ -67,10 +58,7 @@ if [ ${#missing_tools[@]} -eq 0 ]; then
 else
 	log "installing ${#missing_tools[@]} tool(s) from nixpkgs@${rev:0:12}"
 
-	# Scope substituters to cache.nixos.org only.  The Determinate Nix installer
-	# appends install.determinate.systems as an extra substituter; that host is
-	# not in the egress allowlist and causes every nix invocation to fail before
-	# it can even try the real binary cache.
+	# Scope substituters to cache.nixos.org only.
 	if nix profile add \
 		--option substituters 'https://cache.nixos.org' \
 		--option trusted-substituters 'https://cache.nixos.org' \
