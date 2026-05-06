@@ -12,6 +12,7 @@ _: {
       user.email = "nico@welles.email";
       init.defaultBranch = "main";
       pull.rebase = true;
+      rebase.autoStash = true;
     };
   };
 }
