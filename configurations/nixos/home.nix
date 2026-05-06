@@ -10,7 +10,6 @@
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
-    ../../modules/home/ghostty.nix
     ../../modules/home/git.nix
   ];
 
