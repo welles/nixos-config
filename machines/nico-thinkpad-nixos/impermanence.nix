@@ -37,6 +37,7 @@
         ".config/mozilla/firefox"
         ".local/share/dolphin"
         ".local/share/kwalletd"
+        ".local/share/remmina"
         ".local/state/lazygit"
         ".npm-global"
         ".vscode"
