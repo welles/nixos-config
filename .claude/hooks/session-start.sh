@@ -22,7 +22,7 @@ if ! command -v nix >/dev/null 2>&1 && [ ! -x /nix/var/nix/profiles/default/bin/
 	sh "$installer" --no-daemon
 
 	mkdir -p ~/.config/nix
-	echo "sandbox = false" >> ~/.config/nix/nix.conf
+	echo "sandbox = false" >>~/.config/nix/nix.conf
 
 	rm -f "$installer"
 fi
