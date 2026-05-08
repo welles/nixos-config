@@ -32,7 +32,8 @@
 
     supportedFilesystems = ["zfs"];
     zfs = {
-      forceImportAll = true;
+      forceImportRoot = false;
+      forceImportAll = false;
       devNodes = "/dev/disk/by-id";
     };
 

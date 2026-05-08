@@ -64,7 +64,8 @@
     supportedFilesystems = ["zfs" "exfat"];
     zfs = {
       devNodes = "/dev/disk/by-id";
-      forceImportAll = true;
+      forceImportRoot = false;
+      forceImportAll = false;
     };
 
     # Add ZFS support to the GRUB bootloader (configured in configurations/nico/boot.nix).
