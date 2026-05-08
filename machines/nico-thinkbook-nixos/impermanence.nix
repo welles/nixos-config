@@ -20,7 +20,7 @@
     users.${user} = {
       files = [
         ".claude.json"
-        # ".config/kdeglobals"
+        ".config/kdeglobals"
         ".zsh_history"
       ];
       directories = [

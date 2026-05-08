@@ -21,7 +21,7 @@
       files = [
         ".claude.json"
         ".config/dolphinrc"
-        # ".config/kdeglobals"
+        ".config/kdeglobals"
         ".config/lazygit/config.yml"
         ".zsh_history"
       ];
