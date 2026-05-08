@@ -77,6 +77,11 @@
         rm -f ${config.home.homeDirectory}/.gtkrc-2.0
         rm -f ${config.home.homeDirectory}/.gtkrc-2.0.backup
       '';
+
+      # Restart desktop portal service to correctly apply dark-mode settings to apps
+      restartDesktopPortal = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        $DRY_RUN_CMD systemctl --user restart xdg-desktop-portal.service xdg-desktop-portal-kde.service || true
+      '';
     };
   };
 
