@@ -21,6 +21,7 @@
       files = [
         ".claude.json"
         ".config/dolphinrc"
+        # ".config/kdeglobals"
         ".config/lazygit/config.yml"
         ".zsh_history"
       ];
@@ -30,6 +31,7 @@
         ".gemini"
         ".config/Bitwarden"
         ".config/Code"
+        ".config/dconf"
         ".config/discord"
         ".config/fsearch"
         ".config/google-chrome"
