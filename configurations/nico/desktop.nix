@@ -4,6 +4,8 @@
 # display manager (Wayland session). Configures XDG portals for
 # sandboxed application integration and sets a custom SDDM wallpaper.
 {pkgs, ...}: {
+  programs.dconf.enable = true;
+
   services = {
     xserver.enable = true;
     displayManager.sddm = {
