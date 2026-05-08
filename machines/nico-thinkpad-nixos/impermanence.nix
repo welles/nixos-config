@@ -20,8 +20,6 @@
     users.${user} = {
       files = [
         ".claude.json"
-        ".config/dolphinrc"
-        ".config/lazygit/config.yml"
         ".zsh_history"
       ];
       directories = [
@@ -35,10 +33,10 @@
         ".config/google-chrome"
         ".config/kde.org"
         ".config/mozilla/firefox"
+        ".local/share/applications"
         ".local/share/dolphin"
         ".local/share/kwalletd"
         ".local/share/remmina"
-        ".local/state/lazygit"
         ".npm-global"
         ".vscode"
         "Desktop"
