@@ -118,7 +118,7 @@
     oversteer
     prismlauncher
     streamcontroller
-    (bottles.override {removeWarningPopup = true;})
+    # (bottles.override {removeWarningPopup = true;})
   ];
 
   # services.fprintd = {
