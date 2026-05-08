@@ -20,7 +20,6 @@
     users.${user} = {
       files = [
         ".claude.json"
-        ".config/kdeglobals"
         ".zsh_history"
       ];
       directories = [
@@ -29,7 +28,6 @@
         ".gemini"
         ".config/Bitwarden"
         ".config/Code"
-        ".config/dconf"
         ".config/discord"
         ".config/easyeffects"
         ".config/fsearch"
