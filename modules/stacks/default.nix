@@ -24,7 +24,7 @@
 }: let
   stacks = {
     ark_server = {
-      enabled = true;
+      enabled = false;
       secrets = ["ark_server"];
       proxies = {};
       backup = {
