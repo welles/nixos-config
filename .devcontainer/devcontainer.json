@@ -1,15 +1,6 @@
 {
   "name": "Nix Codespace",
   "features": {
-    "ghcr.io/devcontainers/features/nix:1": {
-      "version": "latest",
-      "multiUser": true,
-      "packages": [
-        "alejandra",
-        "deadnix",
-        "statix",
-        "nixfmt"
-      ]
-    }
+    "ghcr.io/devcontainers/features/nix:1": {}
   }
 }
