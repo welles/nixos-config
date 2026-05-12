@@ -7,5 +7,6 @@
   imports = [
     ./hardware-configuration.nix
     ./disk-configuration.nix
+    ../../modules/scripts/check-persist
   ];
 }
