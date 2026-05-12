@@ -11,9 +11,6 @@
     ../../modules/home/git.nix
   ];
 
-  # Allow git operations in the stacks directory owned by root
-  programs.git.settings.safe.directory = "/mnt/bucket/stacks";
-
   # Store Zsh history on the persistent dataset
   programs.zsh.history.path = "${config.home.homeDirectory}/.local/share/zsh/history";
 }
