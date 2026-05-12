@@ -27,7 +27,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/musicbrainz_picard:/config:rw
-      - /mnt/tank/music:/storage:rw
+      - /mnt/tank/music:/storage/music:rw
+      - /mnt/tank/music_v2:/storage/music_v2:rw
 
 networks:
   musicbrainz_picard:
