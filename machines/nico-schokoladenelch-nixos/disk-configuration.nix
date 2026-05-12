@@ -292,6 +292,15 @@
             };
           };
 
+          "music_v2" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/tank/music_v2";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
+
           "ark_server_backups" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/ark_server_backups";
