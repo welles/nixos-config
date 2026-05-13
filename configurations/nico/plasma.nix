@@ -113,8 +113,8 @@ _: {
         "TopLeft" = "ApplicationLauncher";
       };
       "kwinrc"."Plugins" = {
-        "mousetilerEnabled" = true;
-        "rememberwindowpositionsEnabled" = true;
+        # "mousetilerEnabled" = true;
+        # "rememberwindowpositionsEnabled" = true;
       };
     };
 
