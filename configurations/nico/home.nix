@@ -80,7 +80,7 @@
 
       # Restart desktop portal service to correctly apply dark-mode settings to apps
       restartDesktopPortal = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        $DRY_RUN_CMD systemctl --user restart xdg-desktop-portal.service xdg-desktop-portal-gtk.service plasma-xdg-desktop-portal-kde.service || true
+        $DRY_RUN_CMD systemctl --user restart plasma-xdg-desktop-portal-kde.service || true
       '';
     };
   };
