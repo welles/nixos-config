@@ -10,7 +10,6 @@
 }: {
   imports = [
     ../../modules/docker.nix
-    ../../modules/headlamp.nix
   ];
 
   programs.nix-ld = {
@@ -48,6 +47,7 @@
 
   environment = {
     systemPackages = with pkgs; [
+      headlamp
       hoppscotch
       lazygit
       lazydocker
