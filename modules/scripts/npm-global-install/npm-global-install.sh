@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 
-# User NPM Package Installer
-# Installs or updates a list of npm packages into ~/.npm-global
-
-PACKAGES=("$@")
-
-if [ ${#PACKAGES[@]} -eq 0 ]; then
-	echo "No packages provided to install."
-	exit 0
-fi
+# User NPM Package Updater
+# Updates globally installed npm packages in ~/.npm-global
 
 # Ensure npm is available
 if ! command -v npm &>/dev/null; then
@@ -16,21 +9,32 @@ if ! command -v npm &>/dev/null; then
 	exit 1
 fi
 
-# npm will use the prefix from ~/.npmrc automatically
-# but we can be explicit to be safe
-NPM_PREFIX="$HOME/.npm-global"
-mkdir -p "$NPM_PREFIX"
+# Ensure jq is available
+if ! command -v jq &>/dev/null; then
+	echo "Error: jq not found. Please ensure it is installed."
+	exit 1
+fi
 
-echo "User NPM Install started at $(date)"
-echo "Packages: ${PACKAGES[*]}"
+echo "User NPM Global Update started at $(date)"
+
+# Get the list of currently installed global packages
+mapfile -t PACKAGES < <(npm ls -g --depth=0 --json | jq -r '(.dependencies // {}) | keys[]')
+
+if [ ${#PACKAGES[@]} -eq 0 ] || [ -z "${PACKAGES[0]}" ]; then
+	echo "No globally installed packages found to update."
+	echo "User NPM Global Update finished at $(date)"
+	exit 0
+fi
+
+echo "Packages to update: ${PACKAGES[*]}"
 
 for pkg in "${PACKAGES[@]}"; do
-	echo "Processing $pkg..."
-	if npm install -g "$pkg"; then
-		echo "Successfully installed/updated $pkg"
+	echo "Updating $pkg..."
+	if npm install -g "$pkg@latest"; then
+		echo "Successfully updated $pkg"
 	else
-		echo "Failed to install $pkg"
+		echo "Failed to update $pkg"
 	fi
 done
 
-echo "User NPM Install finished at $(date)"
+echo "User NPM Global Update finished at $(date)"
