@@ -11,6 +11,7 @@
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix
+    ../../modules/scripts/npm-global-install
   ];
 
   # NPM Settings
