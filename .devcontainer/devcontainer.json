@@ -7,7 +7,9 @@
         "alejandra",
         "deadnix",
         "statix",
-        "nixfmt"
+        "nixfmt",
+        "lazygit",
+        "nodejs"
       ]
     }
   },
