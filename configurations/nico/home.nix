@@ -133,6 +133,7 @@
 
     # --- Lazygit ---
     configFile."lazygit/config.yml".text = ''
+      disableStartupPopups: true
       gui:
         nerdFontsVersion: "3"
         promptToReturnFromSubprocess: false
