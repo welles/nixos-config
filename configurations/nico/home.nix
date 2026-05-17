@@ -89,6 +89,23 @@
   # Extends shared git.nix with SSH commit signing via Bitwarden.
 
   programs = {
+    konsole = {
+      enable = true;
+      profiles.default = {
+        name = "Default";
+        font = {
+          name = "FiraCode Nerd Font";
+          size = 11;
+        };
+        extraConfig = {
+          Appearance = {
+            EnableLigatures = true;
+          };
+        };
+      };
+      defaultProfile = "default";
+    };
+
     git = {
       settings = {
         gpg.format = "ssh";
