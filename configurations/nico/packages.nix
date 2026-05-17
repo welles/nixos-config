@@ -7,7 +7,7 @@
     # Nix tooling
     alejandra
     deadnix
-    # mcp-nixos
+    mcp-nixos
     sops
     ssh-to-age
     statix
