@@ -130,5 +130,19 @@
       StartupNotify=false
       Terminal=false
     '';
+
+    # --- Lazygit ---
+    configFile."lazygit/config.yml".text = ''
+      gui:
+        nerdFontsVersion: "3"
+        promptToReturnFromSubprocess: false
+        showIcons: true
+      git:
+        paging:
+          colorArg: always
+          pager: delta --dark --paging=never
+        log:
+          showGraph: always
+    '';
   };
 }

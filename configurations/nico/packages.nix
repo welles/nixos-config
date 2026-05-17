@@ -22,6 +22,7 @@
     vscode
 
     # Version control
+    delta
     lazygit
     sourcegit
 
