@@ -65,6 +65,7 @@
     unrar
     usbutils
     xfsprogs
+    solaar
     systemctl-tui
     _7zz
 
