@@ -99,7 +99,7 @@ _: {
         pointSize = 11;
       };
       fixedWidth = {
-        family = "Fira Code Nerd Font";
+        family = "FiraCode Nerd Font";
         pointSize = 11;
       };
     };

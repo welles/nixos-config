@@ -61,7 +61,6 @@
     gparted
     lazydocker
     mission-center
-    nerd-fonts.fira-code
     pciutils
     unrar
     usbutils
@@ -73,5 +72,9 @@
     kdePackages.partitionmanager
     # (pkgs.callPackage ./kwin-mousetiler.nix {})
     # (pkgs.callPackage ./kwin-rememberwindowpositions.nix {})
+  ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
   ];
 }
