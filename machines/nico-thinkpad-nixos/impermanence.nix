@@ -37,6 +37,7 @@
         ".local/share/dolphin"
         ".local/share/kwalletd"
         ".local/share/remmina"
+        ".local/state/wireplumber"
         ".npm-global"
         ".vscode"
         "Desktop"

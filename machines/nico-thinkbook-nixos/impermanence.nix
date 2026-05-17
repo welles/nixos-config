@@ -41,6 +41,7 @@
         ".local/share/Steam"
         ".local/share/bottles"
         ".local/share/PrismLauncher"
+        ".local/state/wireplumber"
         ".npm-global"
         ".vscode"
         "Desktop"
