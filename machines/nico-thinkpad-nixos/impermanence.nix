@@ -26,6 +26,7 @@
         ".ssh"
         ".claude"
         ".gemini"
+        ".sourcegit"
         ".config/Bitwarden"
         ".config/Code"
         ".config/discord"
