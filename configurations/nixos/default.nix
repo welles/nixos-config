@@ -67,6 +67,7 @@
       microsoft-edge
       sourcegit
       bruno
+      openssl
     ];
 
     sessionVariables = {
