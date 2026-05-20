@@ -55,7 +55,7 @@
 
         # 2. Inject the certificate into Firefox profiles if it exists now
         if [ -f "$CERT_PATH" ]; then
-          for profile_dir in ${config.home.homeDirectory}/.mozilla/firefox/*/; do
+          for profile_dir in ${config.home.homeDirectory}/.config/mozilla/firefox/*/; do
             if [ -d "$profile_dir" ] && [ -f "$profile_dir/cert9.db" ]; then
               echo "Injecting ASP.NET Core dev cert into Firefox profile: $(basename "$profile_dir")"
               ${pkgs.nss.tools}/bin/certutil -d sql:"$profile_dir" -A -t "P,," -n "localhost-dev" -i "$CERT_PATH"
