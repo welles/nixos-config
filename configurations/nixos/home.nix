@@ -26,6 +26,10 @@
     "${config.home.homeDirectory}/.dotnet/tools"
   ];
 
+  home.sessionVariables = {
+    SSL_CERT_DIR = "${config.home.homeDirectory}/.aspnet/dev-certs/trust:/etc/ssl/certs";
+  };
+
   # Override default git email with work identity
   programs.git.settings.user.email = lib.mkForce "welles@mentz.net";
 }
