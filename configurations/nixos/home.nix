@@ -14,20 +14,22 @@
     ../../modules/scripts/npm-global-install
   ];
 
-  # NPM Settings
-  home.file.".npmrc".text = ''
-    prefix=${config.home.homeDirectory}/.npm-global
-    save-exact=true
-    save-prefix=
-  '';
+  home = {
+    # NPM Settings
+    file.".npmrc".text = ''
+      prefix=${config.home.homeDirectory}/.npm-global
+      save-exact=true
+      save-prefix=
+    '';
 
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.npm-global/bin"
-    "${config.home.homeDirectory}/.dotnet/tools"
-  ];
+    sessionPath = [
+      "${config.home.homeDirectory}/.npm-global/bin"
+      "${config.home.homeDirectory}/.dotnet/tools"
+    ];
 
-  home.sessionVariables = {
-    SSL_CERT_DIR = "${config.home.homeDirectory}/.aspnet/dev-certs/trust:/etc/ssl/certs";
+    sessionVariables = {
+      SSL_CERT_DIR = "${config.home.homeDirectory}/.aspnet/dev-certs/trust:/etc/ssl/certs";
+    };
   };
 
   # Override default git email with work identity
