@@ -7,6 +7,7 @@
       enable = true;
       defaultWindowManager = "${pkgs.kdePackages.plasma-workspace}/bin/startplasma-x11";
       openFirewall = true;
+      port = 3390;
     };
   };
 }
