@@ -55,6 +55,7 @@
       k0sctl
       kdePackages.dolphin
       kind
+      kubectl
       kubeseal
       kubelogin
       jetbrains.rider
