@@ -57,7 +57,7 @@
       kind
       kubectl
       kubeseal
-      kubelogin
+      kubelogin-oidc
       jetbrains.rider
       dotnet-sdk_10
       mercurial
