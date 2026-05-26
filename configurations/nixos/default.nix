@@ -69,6 +69,7 @@
       sourcegit
       bruno
       openssl
+      kubernetes-helm
     ];
 
     sessionVariables = {
