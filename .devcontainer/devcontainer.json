@@ -10,7 +10,8 @@
         "statix",
         "nixfmt",
         "lazygit",
-        "nodejs"
+        "nodejs",
+        "mcp-nixos"
       ]
     }
   },
