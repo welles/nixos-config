@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
   "name": "Nix Codespace",
   "image": "mcr.microsoft.com/devcontainers/base:debian",
   "features": {
@@ -13,5 +14,8 @@
       ]
     }
   },
-  "postCreateCommand": "nix-store --optimize"
+  "postCreateCommand": {
+    "nix-store": "nix-store --optimize",
+    "npm-globals": "mkdir -p $HOME/.npm-global && npm config set prefix $HOME/.npm-global && export PATH=$HOME/.npm-global/bin:$PATH"
+  }
 }
