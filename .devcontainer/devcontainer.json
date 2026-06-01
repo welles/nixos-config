@@ -16,7 +16,16 @@
     }
   },
   "postCreateCommand": {
-    "nix-store": "nix-store --optimize",
-    "npm-globals": "mkdir -p $HOME/.npm-global && npm config set prefix $HOME/.npm-global && export PATH=$HOME/.npm-global/bin:$PATH"
-  }
+    "nix-store": "nix-store --optimize"
+    // "npm-globals": "npm config set prefix /home/vscode/.npm-global"
+  },
+  "containerEnv": {
+    "NPM_CONFIG_PREFIX": "/home/vscode/.npm-global"
+  },
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/vscode/.npm-global/bin"
+  },
+  "mounts": [
+    "source=devcontainer-npm-global,target=/home/vscode/.npm-global,type=volume"
+  ]
 }
