@@ -11,7 +11,7 @@ _: {
     disk = {
       main = {
         type = "disk";
-        device = "/dev/disk/by-id/REPLACE_WITH_DISK_ID";
+        device = "/dev/disk/by-id/nvme-Samsung_980_PRO_with_Heatsink_1TB_S6WSNS0RB80576F";
         content = {
           type = "gpt";
           partitions = {
