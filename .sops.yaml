@@ -17,3 +17,7 @@ creation_rules:
     key_groups:
       - age:
           - *master_key
+  - path_regex: modules/wifi-welles-starlink/secrets.yaml$
+    key_groups:
+      - age:
+          - *master_key
