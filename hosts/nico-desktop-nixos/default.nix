@@ -11,7 +11,10 @@
     ./disk-configuration.nix
     ./impermanence.nix
     ./desktop.nix
-    ./plasma.nix
+    ../../modules/pipewire.nix
+    ./networking.nix
+    ./packages.nix
+    ./services.nix
     ./nvidia-gpu.nix
     ../../modules/tmux.nix
   ];
@@ -110,6 +113,7 @@
     home = "/home/nico";
     shell = pkgs.zsh;
     hashedPasswordFile = config.sops.secrets."user-password".path;
+    extraGroups = ["wheel" "networkmanager"];
   };
 
   environment.systemPackages = [
