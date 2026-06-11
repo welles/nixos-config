@@ -35,7 +35,7 @@ mkUnstableHostSystem   hostname        # nixpkgs-unstable
 
 | Host | Old layout | New layout | Status |
 |------|-----------|------------|--------|
-| `nico-desktop-nixos` | — (new machine) | `hosts/nico-desktop-nixos/` | In progress |
+| `nico-desktop-nixos` | — (new machine) | `hosts/nico-desktop-nixos/` | In progress — base + ZFS/impermanence done; desktop config (packages, KDE, audio, etc.) and home.nix still to be filled |
 | `nico-thinkpad-nixos` | `configurations/nico/` + `machines/nico-thinkpad-nixos/` | — | Not started |
 | `nico-thinkbook-nixos` | `configurations/nico/` + `machines/nico-thinkbook-nixos/` | — | Not started |
 | `nico-schokoladenelch-nixos` | `configurations/schokoladenelch/` + `machines/nico-schokoladenelch-nixos/` | — | Not started |
@@ -53,3 +53,10 @@ mkUnstableHostSystem   hostname        # nixpkgs-unstable
 - `hosts/nico-desktop-nixos/machine-configuration.nix` already existed (nixos-generate-config output for AMD x86_64 desktop)
 - `hosts/nico-desktop-nixos/home.nix` is a stub — to be filled out with user home-manager config
 - Build verified: `nico-desktop-nixos` evaluates successfully; existing hosts unaffected
+
+### 2026-06-11 (continued)
+
+- Replaced stub `disk-configuration.nix` with a disko ZFS layout: 1GB ESP (vfat), 8GB swap, rest ZFS `main` pool with `root` (ephemeral), `nix`, and `persist` datasets. Disk ID is a placeholder (`REPLACE_WITH_DISK_ID`) for the user to fill in.
+- Created `impermanence.nix`: marks `/persist` neededForBoot, persists standard system dirs and nico's home dirs/files
+- Updated `default.nix`: added `networking.hostId`, `sops.age.keyFile` pointing at persist, ZFS initrd with systemd rollback-root service, GRUB+ZFS+EFI boot loader config
+- Build verified clean
