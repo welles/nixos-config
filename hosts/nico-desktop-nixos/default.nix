@@ -9,6 +9,7 @@
     ./machine-configuration.nix
     ./disk-configuration.nix
     ./impermanence.nix
+    ./desktop.nix
     ../../modules/tmux.nix
   ];
 
@@ -135,6 +136,7 @@
     users.nico = import ./home.nix;
     backupFileExtension = "backup";
     sharedModules = [
+      inputs.plasma-manager-unstable.homeModules.plasma-manager
       {
         home = {
           username = "nico";
