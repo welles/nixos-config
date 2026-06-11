@@ -7,6 +7,7 @@
 {pkgs, ...}: {
   imports = [
     ../../modules/avahi.nix
+    ../../modules/removable-media.nix
   ];
 
   services = {
@@ -19,8 +20,5 @@
     };
 
     flatpak.enable = true;
-
-    udisks2.enable = true;
-    gvfs.enable = true;
   };
 }

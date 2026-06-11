@@ -11,11 +11,11 @@
 }: {
   imports = [
     ../../modules/docker.nix
+    ../../modules/kde-plasma.nix
     ../../modules/networkmanager.nix
     ../../modules/profile-icon
     ../../modules/wifi-welles-intern
     ./boot.nix
-    ./desktop.nix
     ./audio.nix
     ./services.nix
     ./packages.nix

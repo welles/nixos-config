@@ -3,12 +3,11 @@
 
   services = {
     xserver.enable = true;
+    xserver.xkb.layout = "de";
     displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
     power-profiles-daemon.enable = true;
   };
-
-  services.xserver.xkb.layout = "de";
 
   xdg.portal = {
     enable = true;

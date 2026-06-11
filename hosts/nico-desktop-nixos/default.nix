@@ -4,7 +4,7 @@
     ../../modules/profile-icon
     ./disk-configuration.nix
     ./impermanence.nix
-    ./desktop.nix
+    ../../modules/kde-plasma.nix
     ../../modules/pipewire.nix
     ./networking.nix
     ./packages.nix

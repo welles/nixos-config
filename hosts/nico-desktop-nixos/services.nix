@@ -1,6 +1,5 @@
-_: {
-  services.udisks2.enable = true;
-  services.gvfs.enable = true;
+{...}: {
+  imports = [../../modules/removable-media.nix];
 
   programs.steam = {
     enable = true;
