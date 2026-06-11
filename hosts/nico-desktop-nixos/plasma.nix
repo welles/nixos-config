@@ -3,6 +3,10 @@ _: {
     enable = true;
     overrideConfig = true;
 
+    workspace = {
+      lookAndFeel = "org.kde.breezedark.desktop";
+    };
+
     panels = [
       {
         location = "left";
