@@ -12,13 +12,13 @@
   imports = [
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
+    ../../modules/wifi-welles-intern
     ./boot.nix
     ./desktop.nix
     ./audio.nix
     ./services.nix
     ./packages.nix
     ./rclone.nix
-    ./networking.nix
   ];
 
   # Base sops-nix configuration: use a shared age key for all nico machines.

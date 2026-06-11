@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ../../modules/wifi-welles-intern
     ../../modules/wifi-welles-starlink
   ];
 
