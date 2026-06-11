@@ -9,6 +9,7 @@
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix
+    ../../modules/home/npm.nix
   ];
 
   dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";

@@ -14,7 +14,7 @@
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix
-    ../../modules/scripts/npm-global-install
+    ../../modules/home/npm.nix
   ];
 
   # --- Appearance & Theming ---
@@ -56,19 +56,6 @@
       SOPS_EDITOR = "nano";
       SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
     };
-
-    sessionPath = [
-      "${config.home.homeDirectory}/.npm-global/bin"
-    ];
-
-    # --- npm Configuration ---
-    # Global npm prefix to avoid permission issues; exact versions
-    # by default to prevent accidental minor/patch bumps.
-    file.".npmrc".text = ''
-      prefix=${config.home.homeDirectory}/.npm-global
-      save-exact=true
-      save-prefix=
-    '';
 
     # --- Cleanup ---
     # Remove stale GTK 2.0 config files that conflict with home-manager.
