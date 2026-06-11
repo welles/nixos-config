@@ -1,0 +1,94 @@
+{
+  inputs,
+  hostname,
+  pkgs,
+  ...
+}: {
+  imports = [
+    ./machine-configuration.nix
+    ./disk-configuration.nix
+    ../../modules/tmux.nix
+  ];
+
+  networking.hostName = hostname;
+  system.stateVersion = "26.05";
+
+  time.timeZone = "Europe/Berlin";
+
+  i18n.defaultLocale = "de_DE.UTF-8";
+  console.keyMap = "de";
+
+  nixpkgs = {
+    hostPlatform = "x86_64-linux";
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "electron-39.8.10"
+      ];
+    };
+  };
+
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = ["nix-command" "flakes"];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
+
+  programs.zsh.enable = true;
+
+  users.users.nico = {
+    isNormalUser = true;
+    home = "/home/nico";
+    shell = pkgs.zsh;
+  };
+
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "nixos-diff" ''
+      TMPDIR=$(mktemp -d)
+      trap 'rm -rf "$TMPDIR"' EXIT
+      RESULT="$TMPDIR/result"
+
+      echo "Building new configuration..."
+      (cd "$TMPDIR" && nixos-rebuild build \
+        --flake github:welles/nixos-config#${hostname} \
+        --refresh) || exit 1
+
+      echo ""
+      echo "=== Package changes ==="
+      ${pkgs.nvd}/bin/nvd diff /run/current-system "$RESULT"
+
+      echo ""
+      echo "=== Service changes ==="
+      sudo "$RESULT/bin/switch-to-configuration" dry-activate
+    '')
+  ];
+
+  environment.shellAliases = {
+    nixos-switch = "sudo nixos-rebuild switch --flake github:welles/nixos-config#${hostname} --refresh";
+    nixos-boot = "sudo nixos-rebuild boot --flake github:welles/nixos-config#${hostname} --refresh";
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = {inherit inputs;};
+    users.nico = import ./home.nix;
+    backupFileExtension = "backup";
+    sharedModules = [
+      {
+        home = {
+          username = "nico";
+          homeDirectory = "/home/nico";
+          stateVersion = "26.05";
+        };
+        programs.home-manager.enable = true;
+      }
+    ];
+  };
+}

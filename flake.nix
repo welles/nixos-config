@@ -72,6 +72,20 @@
       };
     mkStableSystem = mkSystem nixpkgs home-manager;
     mkUnstableSystem = mkSystem nixpkgs-unstable home-manager-unstable;
+    # New-style builder: everything lives under hosts/<hostname>/
+    # The host owns its stateVersion and user — no global.nix, no configurations/ split.
+    mkHostSystem = pkgs: hm: hostname:
+      pkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs hostname;};
+        modules = [
+          inputs.disko.nixosModules.disko
+          inputs.impermanence.nixosModules.impermanence
+          inputs.sops-nix.nixosModules.sops
+          hm.nixosModules.home-manager
+          ./hosts/${hostname}
+        ];
+      };
+    mkUnstableHostSystem = mkHostSystem nixpkgs-unstable home-manager-unstable;
   in {
     nixosConfigurations = {
       nico-thinkpad-nixos = mkUnstableSystem "nico-thinkpad-nixos" "nico";
@@ -80,6 +94,7 @@
       nico-schokoladenelch-nixos = mkStableSystem "nico-schokoladenelch-nixos" "schokoladenelch";
       nixos-wsl-nixos = mkUnstableSystem "nixos-wsl-nixos" "nixos";
       nixos-virtualbox-nixos = mkUnstableSystem "nixos-virtualbox-nixos" "nixos";
+      nico-desktop-nixos = mkUnstableHostSystem "nico-desktop-nixos";
     };
   };
 }
