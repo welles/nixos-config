@@ -1,6 +1,6 @@
 {hostname, ...}: {
   imports = [
-    ./machine-configuration.nix
+    ./hardware-configuration.nix
     ./disk-configuration.nix
     ./impermanence.nix
     ./desktop.nix
