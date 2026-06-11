@@ -13,3 +13,7 @@ creation_rules:
     key_groups:
       - age:
           - *master_key
+  - path_regex: hosts/nico-desktop-nixos/secrets.yaml$
+    key_groups:
+      - age:
+          - *master_key

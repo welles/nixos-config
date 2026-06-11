@@ -1,6 +1,7 @@
 {
   inputs,
   hostname,
+  config,
   lib,
   pkgs,
   ...
@@ -51,6 +52,11 @@
   # is set up by systemd after the stage-2 activation where sops reads
   # the key — so the bind mount would be too late on first boot.
   sops.age.keyFile = lib.mkForce "/persist/var/lib/sops-nix/key.txt";
+
+  sops.secrets."user-password" = {
+    sopsFile = ./secrets.yaml;
+    neededForUsers = true;
+  };
 
   boot = {
     initrd = {
@@ -103,6 +109,7 @@
     isNormalUser = true;
     home = "/home/nico";
     shell = pkgs.zsh;
+    hashedPasswordFile = config.sops.secrets."user-password".path;
   };
 
   environment.systemPackages = [
