@@ -3,6 +3,17 @@ _: {
     enable = true;
     overrideConfig = true;
 
+    powerdevil.AC = {
+      turnOffDisplay = {
+        idleTimeout = 28800;
+        idleTimeoutWhenLocked = 60;
+      };
+      dimDisplay.enable = false;
+      autoSuspend.action = "nothing";
+      powerButtonAction = "hibernate";
+      powerProfile = "performance";
+    };
+
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
     };
