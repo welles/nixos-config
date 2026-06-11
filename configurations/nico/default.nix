@@ -12,6 +12,7 @@
   imports = [
     ../../modules/docker.nix
     ../../modules/networkmanager.nix
+    ../../modules/profile-icon
     ../../modules/wifi-welles-intern
     ./boot.nix
     ./desktop.nix
@@ -54,13 +55,6 @@
     extraGroups = ["wheel" "libvirtd"];
     shell = pkgs.zsh;
   };
-
-  # Set the user's profile picture for the login screen
-  system.activationScripts.set-profile-icon.text = ''
-    mkdir -p /var/lib/AccountsService/icons
-
-    cp ${./floating.png} /var/lib/AccountsService/icons/${user}
-  '';
 
   # Enable plasma-manager home-manager module for KDE Plasma configuration
   home-manager.sharedModules = [inputs.plasma-manager-unstable.homeModules.plasma-manager];
