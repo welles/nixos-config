@@ -10,6 +10,7 @@
     ./disk-configuration.nix
     ./impermanence.nix
     ./desktop.nix
+    ./plasma.nix
     ./nvidia-gpu.nix
     ../../modules/tmux.nix
   ];
