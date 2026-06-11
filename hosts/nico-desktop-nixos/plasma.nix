@@ -14,6 +14,8 @@ _: {
       powerProfile = "performance";
     };
 
+    kscreenlocker.autoLock = false;
+
     input.keyboard.numlockOnStartup = "on";
 
     workspace = {
