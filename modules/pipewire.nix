@@ -11,6 +11,11 @@ _: {
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    extraConfig.pipewire."92-low-latency" = {
+      "context.properties" = {
+        "default.clock.min-quantum" = 1024;
+      };
+    };
   };
 
   security.rtkit.enable = true;
