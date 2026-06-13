@@ -1,8 +1,6 @@
 {...}: {
   imports = [../../modules/removable-media.nix];
 
-  programs.coolercontrol.enable = true;
-
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
