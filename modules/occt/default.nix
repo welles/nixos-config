@@ -61,6 +61,7 @@
         pkgs.libxcomposite
         pkgs.libice
         pkgs.libsm
+        pkgs.vulkan-loader
       ]
       ++ lib.optionals nvidiaEnabled [
         config.hardware.nvidia.package
