@@ -5,6 +5,7 @@
   ...
 }: let
   nvidiaEnabled = lib.elem "nvidia" config.services.xserver.videoDrivers;
+  primeOffload = config.hardware.nvidia.prime.offload.enable;
   pname = "occt";
 
   src = pkgs.fetchurl {
@@ -67,6 +68,16 @@
         config.hardware.nvidia.package
       ];
     runScript = "/opt/occt/OCCT";
+
+    # On PRIME offload systems, force all rendering (including the UE5 gpu3d
+    # child process) onto the NVIDIA GPU. Without these vars the Vulkan loader
+    # picks the Intel ICD and UE5 crashes immediately.
+    profile = lib.optionalString (nvidiaEnabled && primeOffload) ''
+      export __NV_PRIME_RENDER_OFFLOAD=1
+      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+      export __GLX_VENDOR_LIBRARY_NAME=nvidia
+      export __VK_LAYER_NV_optimus=NVIDIA_only
+    '';
 
     # /opt/occt is a read-only nix store bind-mount inside bwrap; overlay a
     # tmpfs so OCCT can write crash logs and temp files there, then re-bind the
