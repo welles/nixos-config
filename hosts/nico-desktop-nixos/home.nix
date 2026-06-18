@@ -8,7 +8,7 @@
     ../../modules/home/npm.nix
     ../../modules/home/kde-theming.nix
     ../../modules/home/konsole.nix
-    ../../modules/home/bitwarden-autostart.nix
+    ../../modules/home/1password-ssh-agent.nix
     ../../modules/home/sops-env.nix
     ../../modules/home/xdg-user-dirs.nix
     ../../modules/home/lazygit.nix

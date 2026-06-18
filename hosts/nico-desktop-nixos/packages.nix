@@ -1,6 +1,10 @@
 {pkgs, ...}: {
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = ["nico"];
+  };
+
   environment.systemPackages = with pkgs; [
-    _1password-gui
     alejandra
     bitwarden-desktop
     deadnix
