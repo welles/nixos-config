@@ -72,11 +72,18 @@
     # On PRIME offload systems, force all rendering (including the UE5 gpu3d
     # child process) onto the NVIDIA GPU. Without these vars the Vulkan loader
     # picks the Intel ICD and UE5 crashes immediately.
+    #
+    # VK_ICD_FILENAMES is set explicitly to prevent ICD duplication: the loader
+    # would otherwise find the same nvidia_icd.json twice (once from the FHS
+    # env's /usr/share/vulkan/icd.d/ and again from the host's
+    # /run/opengl-driver via XDG_DATA_DIRS), causing UE5 to see duplicate
+    # Vulkan devices and crash during device initialisation.
     profile = lib.optionalString (nvidiaEnabled && primeOffload) ''
       export __NV_PRIME_RENDER_OFFLOAD=1
       export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
       export __GLX_VENDOR_LIBRARY_NAME=nvidia
       export __VK_LAYER_NV_optimus=NVIDIA_only
+      export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
     '';
 
     # /opt/occt is a read-only nix store bind-mount inside bwrap; overlay a
