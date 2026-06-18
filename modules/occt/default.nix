@@ -1,8 +1,10 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: let
+  nvidiaEnabled = lib.elem "nvidia" config.services.xserver.videoDrivers;
   pname = "occt";
 
   src = pkgs.fetchurl {
@@ -35,30 +37,34 @@
 
   occt = pkgs.buildFHSEnv {
     name = pname;
-    targetPkgs = _: [
-      occt-env
-      pkgs.icu
-      pkgs.openssl
-      pkgs.zlib
-      pkgs.libGL
-      pkgs.mesa
-      pkgs.fontconfig
-      pkgs.freetype
-      pkgs.dbus
-      pkgs.glib
-      pkgs.stdenv.cc.cc.lib
-      pkgs.libx11
-      pkgs.libxext
-      pkgs.libxrender
-      pkgs.libxi
-      pkgs.libxcursor
-      pkgs.libxrandr
-      pkgs.libxinerama
-      pkgs.libxfixes
-      pkgs.libxcomposite
-      pkgs.libice
-      pkgs.libsm
-    ];
+    targetPkgs = _:
+      [
+        occt-env
+        pkgs.icu
+        pkgs.openssl
+        pkgs.zlib
+        pkgs.libGL
+        pkgs.mesa
+        pkgs.fontconfig
+        pkgs.freetype
+        pkgs.dbus
+        pkgs.glib
+        pkgs.stdenv.cc.cc.lib
+        pkgs.libx11
+        pkgs.libxext
+        pkgs.libxrender
+        pkgs.libxi
+        pkgs.libxcursor
+        pkgs.libxrandr
+        pkgs.libxinerama
+        pkgs.libxfixes
+        pkgs.libxcomposite
+        pkgs.libice
+        pkgs.libsm
+      ]
+      ++ lib.optionals nvidiaEnabled [
+        config.hardware.nvidia.package
+      ];
     runScript = "/opt/occt/OCCT";
 
     # /opt/occt is a read-only nix store bind-mount inside bwrap; overlay a
