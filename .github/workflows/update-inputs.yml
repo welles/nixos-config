@@ -90,7 +90,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Seed nix store with flake inputs
-        run: nix flake show --no-write-lock-file
+        run: nix flake check
 
   evaluate:
     needs: [update-and-setup, warm-cache]
