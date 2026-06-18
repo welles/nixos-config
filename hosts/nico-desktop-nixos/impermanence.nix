@@ -21,6 +21,7 @@ _: {
       files = [
         ".claude.json"
         ".zsh_history"
+        ".config/mimeapps.list"
       ];
       directories = [
         ".ssh"
