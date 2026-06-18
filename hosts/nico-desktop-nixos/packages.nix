@@ -20,6 +20,7 @@
     statix
     usbutils
     vscode
+    nodejs
   ];
 
   fonts.packages = with pkgs; [
