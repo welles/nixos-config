@@ -65,6 +65,8 @@ jobs:
     needs: update-and-setup
     if: needs.update-and-setup.outputs.changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
