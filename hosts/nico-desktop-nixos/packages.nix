@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
+    _1password-gui
     alejandra
     bitwarden-desktop
     deadnix
