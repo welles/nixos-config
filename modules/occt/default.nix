@@ -70,32 +70,13 @@
       ];
     runScript = "/opt/occt/OCCT";
 
-    profile =
-      lib.optionalString (nvidiaEnabled && primeOffload) ''
-        # Force all rendering (including the UE5 gpu3d child process) onto the
-        # NVIDIA GPU. VK_ICD_FILENAMES is also set explicitly to prevent ICD
-        # duplication: without it the loader finds the same nvidia_icd.json
-        # twice (from the FHS env's /usr/share/ and from the host's
-        # /run/opengl-driver via XDG_DATA_DIRS), causing UE5 to enumerate
-        # duplicate Vulkan devices.
-        export __NV_PRIME_RENDER_OFFLOAD=1
-        export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-        export __GLX_VENDOR_LIBRARY_NAME=nvidia
-        export __VK_LAYER_NV_optimus=NVIDIA_only
-        export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
-      ''
-      + lib.optionalString nvidiaEnabled ''
-        # gpu3d-Linux-Shipping (UE5 5.4) segfaults on NVIDIA Blackwell (RTX
-        # 5060) when hardware ray tracing is active. Write the config on first
-        # launch; subsequent launches leave a user-modified file untouched.
-        _gpu3d_cfg="$HOME/.config/Epic/gpu3d/Saved/Config/Linux"
-        mkdir -p "$_gpu3d_cfg"
-        if [ ! -f "$_gpu3d_cfg/Engine.ini" ]; then
-          printf '[SystemSettings]\nr.RayTracing=0\nr.Lumen.HardwareRayTracing=0\n' \
-            > "$_gpu3d_cfg/Engine.ini"
-        fi
-        unset _gpu3d_cfg
-      '';
+    profile = lib.optionalString (nvidiaEnabled && primeOffload) ''
+      export __NV_PRIME_RENDER_OFFLOAD=1
+      export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+      export __GLX_VENDOR_LIBRARY_NAME=nvidia
+      export __VK_LAYER_NV_optimus=NVIDIA_only
+      export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
+    '';
 
     # /opt/occt is a read-only nix store bind-mount inside bwrap; overlay a
     # tmpfs so OCCT can write crash logs and temp files there, then re-bind the
