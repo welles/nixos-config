@@ -56,8 +56,27 @@
       pkgs.libxinerama
       pkgs.libxfixes
       pkgs.libxcomposite
+      pkgs.libice
+      pkgs.libsm
     ];
     runScript = "/opt/occt/OCCT";
+
+    # /opt/occt is a read-only nix store bind-mount inside bwrap; overlay a
+    # tmpfs so OCCT can write crash logs and temp files there, then re-bind the
+    # individual files it actually needs as read-only.
+    extraBwrapArgs = [
+      "--tmpfs"
+      "/opt/occt"
+      "--ro-bind"
+      "${occt-env}/opt/occt/OCCT"
+      "/opt/occt/OCCT"
+      "--ro-bind"
+      "${occt-env}/opt/occt/disable_update"
+      "/opt/occt/disable_update"
+      "--ro-bind"
+      "${occt-env}/opt/occt/app_folder_in_home"
+      "/opt/occt/app_folder_in_home"
+    ];
 
     extraInstallCommands = ''
       install -Dm644 ${desktopItem}/share/applications/${pname}.desktop \
