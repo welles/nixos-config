@@ -16,7 +16,8 @@
     }
   },
   "postCreateCommand": {
-    "nix-store": "nix-store --optimize"
+    "nix-store": "nix-store --optimize",
+    "git-rebase": "git config --global pull.rebase true"
     // "npm-globals": "npm config set prefix /home/vscode/.npm-global"
   },
   "containerEnv": {
