@@ -19,6 +19,7 @@
     ./users.nix
     ./home-manager.nix
     ./nixos-tools.nix
+    ../../modules/bluetooth.nix
   ];
 
   networking.hostName = hostname;
