@@ -28,6 +28,7 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-
+          save: false
 
       - name: Run deadnix
         run: |
@@ -44,8 +45,32 @@ jobs:
             exit $exit_code
           '
 
-  setup:
+  warm-cache:
     needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v30
+
+      - name: Warm and save nix cache
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-
+          purge-created: 0
+          purge-primary-key: never
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Seed nix store with flake inputs
+        run: nix flake show --no-write-lock-file
+
+  setup:
+    needs: warm-cache
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -61,6 +86,7 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-
+          save: false
 
       - name: Run nix flake check
         run: nix flake check
@@ -91,6 +117,7 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-
+          save: false
 
       - name: Evaluate configuration (${{ matrix.host }})
         run: |

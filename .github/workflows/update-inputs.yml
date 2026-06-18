@@ -61,8 +61,39 @@ jobs:
           path: flake.lock
           retention-days: 1
 
-  evaluate:
+  warm-cache:
     needs: update-and-setup
+    if: needs.update-and-setup.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v4
+        with:
+          name: flake-lock
+          path: .
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v30
+
+      - name: Warm and save nix cache
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-
+          purge-created: 0
+          purge-primary-key: never
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Seed nix store with flake inputs
+        run: nix flake show --no-write-lock-file
+
+  evaluate:
+    needs: [update-and-setup, warm-cache]
     if: needs.update-and-setup.outputs.changed == 'true'
     runs-on: ubuntu-latest
     strategy:
@@ -87,6 +118,7 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-
+          save: false
 
       - name: Evaluate NixOS Configuration (${{ matrix.host }})
         run: nix build --dry-run ".#nixosConfigurations.\"${{ matrix.host }}\".config.system.build.toplevel"
