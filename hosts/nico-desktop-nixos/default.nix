@@ -11,6 +11,7 @@
     ./services.nix
     ./nvidia-gpu.nix
     ../../modules/tmux.nix
+    ../../modules/occt
     ./locale.nix
     ./nix.nix
     ./boot.nix
