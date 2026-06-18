@@ -38,6 +38,7 @@
     targetPkgs = _: [
       occt-env
       pkgs.icu
+      pkgs.openssl
       pkgs.zlib
       pkgs.libGL
       pkgs.mesa
