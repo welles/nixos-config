@@ -92,7 +92,7 @@
       };
     };
     insurgency_sandstorm = {
-      enabled = true;
+      enabled = false;
       secrets = [];
       composeSecrets = ["insurgency_sandstorm"];
       proxies = {};
