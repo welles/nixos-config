@@ -1,0 +1,42 @@
+name: insurgency_sandstorm
+
+services:
+  insurgency_sandstorm:
+    container_name: insurgency_sandstorm
+    environment:
+      HOSTNAME: "Nico's Server"
+      PORT: 27102
+      QUERYPORT: 27131
+      LAUNCH_SERVER_ENV: "Ministry?Scenario=Scenario_Ministry_Checkpoint_Security?MaxPlayers=10?Password=${SANDSTORM_PASSWORD} -ModDownloadTravelTo=Ministry?Scenario=Scenario_Ministry_Checkpoint_Security -Mutators=MapIcons,ISMCGunfighter_Tac,ModernMovement,SuppliedObjectives -GameStatsToken=${SANDSTORM_GAMESTATS_TOKEN} -GSLTToken=${SANDSTORM_GSLT_TOKEN} -GameStats -Mods"
+      TZ: Europe/Berlin
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f InsurgencyServer > /dev/null || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 300s
+    image: andrewmhub/insurgency-sandstorm:latest
+    networks:
+      insurgency_sandstorm:
+        ipv4_address: 10.10.16.10
+    ports:
+      # Game port
+      - 50160:27102/udp
+      # Query port
+      - 50161:27131/udp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/insurgency_sandstorm/config/ini:/home/steam/steamcmd/sandstorm/Insurgency/Saved/Config/LinuxServer:rw
+      - /mnt/bucket/insurgency_sandstorm/config/txt:/home/steam/steamcmd/sandstorm/Insurgency/Config/Server:rw
+      - /mnt/bucket/insurgency_sandstorm/mods:/home/steam/steamcmd/sandstorm/Insurgency/Mods:rw
+
+networks:
+  insurgency_sandstorm:
+    name: insurgency_sandstorm
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.16.0/24

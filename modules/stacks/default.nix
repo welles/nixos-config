@@ -91,6 +91,16 @@
         paths = [];
       };
     };
+    insurgency_sandstorm = {
+      enabled = true;
+      secrets = [];
+      composeSecrets = ["insurgency_sandstorm"];
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     jellyfin = {
       enabled = true;
       secrets = [];
@@ -177,7 +187,10 @@
           description = "Docker Compose Stack - ${name}";
           restartTriggers = [./${name}/docker-compose.yaml];
           requires = ["docker.service"];
-          after = ["docker.service"] ++ (map (secret: "sops-nix-secret-${secret}.service") cfg.secrets);
+          after =
+            ["docker.service"]
+            ++ (map (secret: "sops-nix-secret-${secret}.service") cfg.secrets)
+            ++ (map (secret: "sops-nix-secret-${secret}.service") (cfg.composeSecrets or []));
           wantedBy = ["multi-user.target"];
 
           script = ''
@@ -188,10 +201,14 @@
             ${pkgs.docker}/bin/docker compose -f /etc/docker-compose/${name}/docker-compose.yaml down
           '';
 
-          serviceConfig = {
-            Restart = "always";
-            TimeoutStopSec = 120;
-          };
+          serviceConfig =
+            {
+              Restart = "always";
+              TimeoutStopSec = 120;
+            }
+            // lib.optionalAttrs ((cfg.composeSecrets or []) != []) {
+              EnvironmentFile = map (s: config.sops.secrets.${s}.path) (cfg.composeSecrets or []);
+            };
         };
       }
 
@@ -200,6 +217,15 @@
           owner = "root";
           group = "docker";
           mode = "0440";
+          restartUnits = ["docker-compose-${name}.service"];
+        });
+      })
+
+      (lib.mkIf ((cfg.composeSecrets or []) != []) {
+        sops.secrets = lib.genAttrs (cfg.composeSecrets or []) (_secretName: {
+          owner = "root";
+          group = "root";
+          mode = "0400";
           restartUnits = ["docker-compose-${name}.service"];
         });
       })

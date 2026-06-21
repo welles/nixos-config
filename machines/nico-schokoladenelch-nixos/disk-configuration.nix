@@ -245,6 +245,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "insurgency_sandstorm" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/insurgency_sandstorm";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
 
