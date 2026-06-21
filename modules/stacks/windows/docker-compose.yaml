@@ -15,7 +15,6 @@ services:
       DISK2_SIZE: 1024G
       RAM_SIZE: 16G
       CPU_CORES: 8
-      DISPLAY: none
       LANGUAGE: English
       REGION: de-DE
       KEYBOARD: de-DE
@@ -29,6 +28,7 @@ services:
     ports:
       - 50051:3389/tcp
       - 50051:3389/udp
+      - 50052:5900/tcp
     restart: unless-stopped
     stop_grace_period: 2m
     volumes:
