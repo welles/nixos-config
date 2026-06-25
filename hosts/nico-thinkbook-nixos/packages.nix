@@ -48,7 +48,6 @@
     wrtag
 
     # Office & productivity
-    bitwarden-desktop
     libreoffice
     naps2
 

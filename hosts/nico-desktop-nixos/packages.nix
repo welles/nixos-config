@@ -1,12 +1,6 @@
 {pkgs, ...}: {
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = ["nico"];
-  };
-
   environment.systemPackages = with pkgs; [
     alejandra
-    bitwarden-desktop
     deadnix
     delta
     discord

@@ -8,6 +8,7 @@
     ../../modules/tmux.nix
 
     # "configurations/nico"-style imports (no systemPackages)
+    ../../modules/1password.nix
     ../../modules/docker.nix
     ../../modules/kde-plasma.nix
     ../../modules/networkmanager.nix
