@@ -1,10 +1,12 @@
-# KDE Plasma 6 Desktop Configuration
+# KDE Plasma 6 Desktop Configuration — Laptop Profile
 #
 # Declarative Plasma settings managed by plasma-manager. Configures:
 # - Power management profiles (AC, battery, low battery) with hibernate
 # - Fonts (Noto Sans / Fira Code Nerd Font)
 # - Default Breeze Dark look and feel
 # - Left-aligned floating panel with Kickoff menu and system tray
+#
+# Shared by nico-thinkbook-nixos and nico-thinkpad-nixos.
 _: {
   programs.plasma = {
     enable = true;

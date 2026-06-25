@@ -6,22 +6,21 @@
 {
   config,
   pkgs,
-  user,
   ...
 }: let
-  mountPoint = "/home/${user}/Nextcloud";
+  mountPoint = "/home/nico/Nextcloud";
   nextcloudUsernameFile = config.sops.secrets."nextcloud-username".path;
   nextcloudPasswordFile = config.sops.secrets."nextcloud-password".path;
 in {
   sops.secrets."nextcloud-username" = {
-    sopsFile = ./secrets.yaml;
-    owner = user;
+    sopsFile = ./nico/secrets.yaml;
+    owner = "nico";
     mode = "0400";
   };
 
   sops.secrets."nextcloud-password" = {
-    sopsFile = ./secrets.yaml;
-    owner = user;
+    sopsFile = ./nico/secrets.yaml;
+    owner = "nico";
     mode = "0400";
   };
 
@@ -35,7 +34,7 @@ in {
 
     serviceConfig = {
       Type = "notify";
-      User = user;
+      User = "nico";
       Environment = "PATH=/run/wrappers/bin:${pkgs.rclone}/bin:${pkgs.coreutils}/bin";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
       ExecStart = "${pkgs.writeShellScript "rclone-nextcloud-start" ''

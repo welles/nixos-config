@@ -1,14 +1,12 @@
 # NixOS Flake Configuration
 #
-# Manages 6 NixOS systems across desktops, laptops, a VM, a home
-# server, and a WSL environment. Each system is assembled from shared
-# global settings, a user-specific configuration (configurations/<user>/),
-# and a machine-specific configuration (machines/<hostname>/).
+# Manages 7 NixOS systems across desktops, laptops, a home server, and
+# development environments. Each system is self-contained under hosts/<hostname>/.
 #
 # Systems:
-#   - nico-thinkpad-nixos:        ThinkPad laptop (KDE Plasma desktop)
+#   - nico-desktop-nixos:         Desktop workstation (KDE Plasma)
+#   - nico-thinkpad-nixos:        ThinkPad laptop (KDE Plasma)
 #   - nico-thinkbook-nixos:       ThinkBook laptop (KDE Plasma + NVIDIA)
-#   - nico-vm-nixos:              Development VM (Xfce + XRDP)
 #   - eltern-asus-nixos:          Parents' ASUS laptop (Cinnamon, auto-upgrade)
 #   - nico-schokoladenelch-nixos: Home server (ZFS, Docker, Caddy, impermanence)
 #   - nixos-wsl-nixos:            Windows WSL2 development environment
@@ -56,24 +54,6 @@
     home-manager-unstable,
     ...
   } @ inputs: let
-    stateVersion = "25.11";
-    mkSystem = pkgs: hm: hostname: user:
-      pkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs hostname user stateVersion;};
-        modules = [
-          inputs.disko.nixosModules.disko
-          inputs.impermanence.nixosModules.impermanence
-          inputs.sops-nix.nixosModules.sops
-          hm.nixosModules.home-manager
-          ./global.nix
-          ./configurations/${user}
-          ./machines/${hostname}
-        ];
-      };
-    mkStableSystem = mkSystem nixpkgs home-manager;
-    mkUnstableSystem = mkSystem nixpkgs-unstable home-manager-unstable;
-    # New-style builder: everything lives under hosts/<hostname>/
-    # The host owns its stateVersion and user — no global.nix, no configurations/ split.
     mkHostSystem = pkgs: hm: hostname:
       pkgs.lib.nixosSystem {
         specialArgs = {inherit inputs hostname;};
@@ -89,8 +69,8 @@
     mkStableHostSystem = mkHostSystem nixpkgs home-manager;
   in {
     nixosConfigurations = {
-      nico-thinkpad-nixos = mkUnstableSystem "nico-thinkpad-nixos" "nico";
-      nico-thinkbook-nixos = mkUnstableSystem "nico-thinkbook-nixos" "nico";
+      nico-thinkpad-nixos = mkUnstableHostSystem "nico-thinkpad-nixos";
+      nico-thinkbook-nixos = mkUnstableHostSystem "nico-thinkbook-nixos";
       eltern-asus-nixos = mkStableHostSystem "eltern-asus-nixos";
       nico-schokoladenelch-nixos = mkStableHostSystem "nico-schokoladenelch-nixos";
       nixos-wsl-nixos = mkUnstableHostSystem "nixos-wsl-nixos";

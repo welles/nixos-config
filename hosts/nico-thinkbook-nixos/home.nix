@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./plasma.nix
+    ../../modules/home/nico-laptop-plasma.nix
     ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix

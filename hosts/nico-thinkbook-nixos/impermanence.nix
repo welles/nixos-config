@@ -1,5 +1,4 @@
-# Impermanence Configuration
-{user, ...}: {
+_: {
   fileSystems."/persist".neededForBoot = true;
 
   environment.persistence."/persist" = {
@@ -17,7 +16,7 @@
       "/etc/adjtime"
       "/etc/machine-id"
     ];
-    users.${user} = {
+    users.nico = {
       files = [
         ".claude.json"
         ".zsh_history"
