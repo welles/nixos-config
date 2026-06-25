@@ -1,22 +1,27 @@
-# Eltern (Parents) Desktop Configuration
-#
-# Simplified desktop for non-technical users. Uses Cinnamon (easier
-# than Plasma) with auto-login, a quiet boot with Plymouth animation,
-# and Firefox set to autostart. Daily auto-upgrades keep the system
-# up to date without manual intervention.
 {
-  pkgs,
-  user,
   hostname,
+  pkgs,
   ...
 }: {
   imports = [
+    ./nixos-tools.nix # nixos-diff → last in merged systemPackages
+    ./packages.nix # firefox/jellyfin/chrome → before nixos-diff
+    ./hardware-configuration.nix
+    ./disk-configuration.nix
+    ../../modules/tmux.nix
     ../../modules/networkmanager.nix
     ../../modules/avahi.nix
+    ./locale.nix
+    ./nix.nix
+    ./home-manager.nix
   ];
 
+  networking.hostName = hostname;
+  system.stateVersion = "25.11";
+  programs.zsh.enable = true;
+  _module.args.user = "eltern";
+
   boot = {
-    #kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       timeout = 0;
       grub = {
@@ -47,6 +52,7 @@
 
   services = {
     printing.enable = true;
+    libinput.enable = true;
     xserver = {
       enable = true;
       displayManager.lightdm.enable = true;
@@ -54,15 +60,9 @@
     };
     displayManager.autoLogin = {
       enable = true;
-      inherit user;
+      user = "eltern";
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    firefox
-    jellyfin-desktop
-    google-chrome
-  ];
 
   environment.etc."xdg/autostart/firefox.desktop".text = ''
     [Desktop Entry]
@@ -71,7 +71,7 @@
     Exec=${pkgs.firefox}/bin/firefox
   '';
 
-  users.users.${user} = {
+  users.users.eltern = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Moni & Gerri";

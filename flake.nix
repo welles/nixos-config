@@ -91,7 +91,7 @@
     nixosConfigurations = {
       nico-thinkpad-nixos = mkUnstableSystem "nico-thinkpad-nixos" "nico";
       nico-thinkbook-nixos = mkUnstableSystem "nico-thinkbook-nixos" "nico";
-      eltern-asus-nixos = mkStableSystem "eltern-asus-nixos" "eltern";
+      eltern-asus-nixos = mkStableHostSystem "eltern-asus-nixos";
       nico-schokoladenelch-nixos = mkStableHostSystem "nico-schokoladenelch-nixos";
       nixos-wsl-nixos = mkUnstableSystem "nixos-wsl-nixos" "nixos";
       nixos-virtualbox-nixos = mkUnstableSystem "nixos-virtualbox-nixos" "nixos";
