@@ -1,15 +1,8 @@
-# NixOS User Configuration
-#
-# System configuration for the NixOS user profile, intended for use in
-# Windows WSL. Provides Docker for containerised development and
-# lazygit for a terminal-based Git workflow.
-{
-  pkgs,
-  user,
-  ...
-}: {
+# Shared development environment for the "nixos" user profile.
+# Used by nixos-wsl-nixos and nixos-virtualbox-nixos.
+{pkgs, ...}: {
   imports = [
-    ../../modules/docker.nix
+    ./docker.nix
   ];
 
   programs.nix-ld = {
@@ -74,13 +67,12 @@
 
     sessionVariables = {
       DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
-      DONT_PROMPT_WSL_INSTALL = "true"; # Hide warnign when running VS Code in WSL
+      DONT_PROMPT_WSL_INSTALL = "true";
     };
   };
 
-  users.users.${user} = {
+  users.users.nixos = {
     isNormalUser = true;
-    # hashedPassword (not initialPassword) so xrdp can always authenticate — initialPassword only applies on first account creation
     hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";
     description = "NixOS";
     extraGroups = ["wheel"];

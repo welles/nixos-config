@@ -1,20 +1,31 @@
-{lib, ...}: {
+{
+  hostname,
+  lib,
+  ...
+}: {
   imports = [
+    ./nixos-tools.nix
+    ../../modules/nixos-dev.nix
     ./hardware-configuration.nix
     ./disk-configuration.nix
     ./boot.nix
     ./desktop.nix
     ./persistence.nix
+    ../../modules/tmux.nix
+    ./locale.nix
+    ./nix.nix
+    ./home-manager.nix
   ];
 
-  # VirtualBox Guest Additions: shared clipboard, folder sharing,
-  # mouse integration, and automatic screen resize.
+  networking.hostName = hostname;
+  system.stateVersion = "25.11";
+  programs.zsh.enable = true;
+  _module.args.user = "nixos";
+
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.guest.dragAndDrop = true;
 
-  # Display driver order suited for VirtualBox virtual GPU.
   services.xserver.videoDrivers = ["virtualbox" "modesetting"];
 
-  # DHCP for VirtualBox NAT networking.
   networking.useDHCP = lib.mkDefault true;
 }

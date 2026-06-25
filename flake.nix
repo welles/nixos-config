@@ -93,8 +93,8 @@
       nico-thinkbook-nixos = mkUnstableSystem "nico-thinkbook-nixos" "nico";
       eltern-asus-nixos = mkStableHostSystem "eltern-asus-nixos";
       nico-schokoladenelch-nixos = mkStableHostSystem "nico-schokoladenelch-nixos";
-      nixos-wsl-nixos = mkUnstableSystem "nixos-wsl-nixos" "nixos";
-      nixos-virtualbox-nixos = mkUnstableSystem "nixos-virtualbox-nixos" "nixos";
+      nixos-wsl-nixos = mkUnstableHostSystem "nixos-wsl-nixos";
+      nixos-virtualbox-nixos = mkUnstableHostSystem "nixos-virtualbox-nixos";
       nico-desktop-nixos = mkUnstableHostSystem "nico-desktop-nixos";
     };
   };
