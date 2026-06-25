@@ -86,12 +86,13 @@
         ];
       };
     mkUnstableHostSystem = mkHostSystem nixpkgs-unstable home-manager-unstable;
+    mkStableHostSystem = mkHostSystem nixpkgs home-manager;
   in {
     nixosConfigurations = {
       nico-thinkpad-nixos = mkUnstableSystem "nico-thinkpad-nixos" "nico";
       nico-thinkbook-nixos = mkUnstableSystem "nico-thinkbook-nixos" "nico";
       eltern-asus-nixos = mkStableSystem "eltern-asus-nixos" "eltern";
-      nico-schokoladenelch-nixos = mkStableSystem "nico-schokoladenelch-nixos" "schokoladenelch";
+      nico-schokoladenelch-nixos = mkStableHostSystem "nico-schokoladenelch-nixos";
       nixos-wsl-nixos = mkUnstableSystem "nixos-wsl-nixos" "nixos";
       nixos-virtualbox-nixos = mkUnstableSystem "nixos-virtualbox-nixos" "nixos";
       nico-desktop-nixos = mkUnstableHostSystem "nico-desktop-nixos";
