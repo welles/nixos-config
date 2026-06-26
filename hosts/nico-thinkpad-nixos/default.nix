@@ -34,6 +34,7 @@
     ./impermanence.nix
     ./fritzbox-wireguard.nix
     ./mobile-network.nix
+    ../../modules/wifi-welles-starlink
 
     # last sp-import → 1st in reversed Phase 1
     ../../modules/scripts/check-persist
