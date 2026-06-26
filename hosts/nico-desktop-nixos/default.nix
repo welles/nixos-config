@@ -21,6 +21,7 @@
     ./nixos-tools.nix
     ../../modules/bluetooth.nix
     ../../modules/1password.nix
+    ../../modules/nix-ld.nix
   ];
 
   networking.hostName = hostname;
