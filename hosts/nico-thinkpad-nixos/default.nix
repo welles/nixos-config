@@ -15,18 +15,18 @@
     ../../modules/profile-icon
     ../../modules/wifi-welles-intern
     ../../modules/pipewire.nix
-    ./services.nix
+    ../../modules/services-laptop.nix
 
     # "configurations/nico"-style systemPackages imports (order matters for hash)
-    ./packages.nix # first sp-import → last in reversed Phase 1
-    ./rclone.nix # second sp-import → 2nd in reversed Phase 1
+    ../../modules/packages-nico.nix # first sp-import → last in reversed Phase 1
+    ../../modules/rclone # second sp-import → 2nd in reversed Phase 1
 
     # "configurations/nico"-style settings
-    ./users.nix
-    ./locale.nix
-    ./nix.nix
-    ./sops.nix
-    ./home-manager.nix
+    ../../modules/user-nico.nix
+    ../../modules/locale-de.nix
+    ../../modules/nix-settings.nix
+    ../../modules/sops-zfs-persist.nix
+    ../../modules/home-manager-nico.nix
 
     # "machines/thinkpad"-style imports (no systemPackages)
     ./hardware-configuration.nix

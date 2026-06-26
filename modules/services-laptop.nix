@@ -6,8 +6,8 @@
 # auto-mounting.
 {pkgs, ...}: {
   imports = [
-    ../../modules/avahi.nix
-    ../../modules/removable-media.nix
+    ./avahi.nix
+    ./removable-media.nix
   ];
 
   services = {
