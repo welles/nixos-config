@@ -39,6 +39,8 @@
     ../../modules/scripts/check-persist
 
     ../../modules/zfs-laptop-boot.nix
+
+    ../../modules/nix-ld.nix
   ];
 
   networking = {

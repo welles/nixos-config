@@ -42,6 +42,8 @@
     ../../modules/scripts/check-persist # last sp-import → 1st in reversed Phase 1
 
     ../../modules/zfs-laptop-boot.nix
+
+    ../../modules/nix-ld.nix
   ];
 
   networking.hostName = hostname;
