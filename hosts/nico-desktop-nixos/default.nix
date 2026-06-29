@@ -1,5 +1,6 @@
 {hostname, ...}: {
   imports = [
+    ../../modules/home/shell.nix
     ./hardware-configuration.nix
     ../../modules/profile-icon
     ./disk-configuration.nix

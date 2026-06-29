@@ -6,7 +6,6 @@
 # survives the ephemeral root rollback.
 {config, ...}: {
   imports = [
-    ../../modules/home/shell.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix
   ];

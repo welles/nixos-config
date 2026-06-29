@@ -4,7 +4,6 @@
   ...
 }: {
   imports = [
-    ./shell.nix
     ./cli-tools.nix
     ./git.nix
     ../scripts/npm-global-install

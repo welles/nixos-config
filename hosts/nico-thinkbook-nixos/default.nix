@@ -1,5 +1,6 @@
 {hostname, ...}: {
   imports = [
+    ../../modules/home/shell.nix
     # "global.nix"-style: tmux before the body
     ../../modules/tmux.nix
 
