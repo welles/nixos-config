@@ -11,8 +11,8 @@
     ../../modules/tmux.nix
     ../../modules/networkmanager.nix
     ../../modules/avahi.nix
-    ./locale.nix
-    ./nix.nix
+    ../../modules/locale-de.nix
+    ../../modules/nix-settings.nix
     ./home-manager.nix
   ];
 

@@ -12,9 +12,9 @@
     ./desktop.nix
     ./persistence.nix
     ../../modules/tmux.nix
-    ./locale.nix
-    ./nix.nix
-    ./home-manager.nix
+    ../../modules/locale-de.nix
+    ../../modules/nix-settings.nix
+    ../../modules/home-manager-nixos.nix
   ];
 
   networking.hostName = hostname;

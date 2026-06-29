@@ -21,8 +21,8 @@
     ./networking.nix
     ./services.nix
     ./persistence.nix
-    ./locale.nix
-    ./nix.nix
+    ../../modules/locale-de.nix
+    ../../modules/nix-settings.nix
     ./sops.nix
     ./users.nix
     ./home-manager.nix

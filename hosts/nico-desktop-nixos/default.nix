@@ -12,8 +12,8 @@
     ./nvidia-gpu.nix
     ../../modules/tmux.nix
     ../../modules/occt
-    ./locale.nix
-    ./nix.nix
+    ../../modules/locale-de.nix
+    ../../modules/nix-settings.nix
     ./boot.nix
     ./sops.nix
     ./users.nix

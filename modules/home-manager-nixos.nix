@@ -3,7 +3,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {inherit inputs;};
-    users.nixos = import ../../modules/home/nixos.nix;
+    users.nixos = import ./home/nixos.nix;
     backupFileExtension = "backup";
     sharedModules = [
       {
