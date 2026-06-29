@@ -13,18 +13,11 @@
     ../../modules/nix-settings.nix
     ../../modules/home-manager-user.nix
     inputs.nixos-wsl.nixosModules.default
+    ./wsl.nix
   ];
 
   networking.hostName = hostname;
   system.stateVersion = "25.11";
-  programs.zsh.enable = true;
   _module.args.user = "nixos";
   _module.args.homeFile = ../../modules/home/nixos.nix;
-
-  wsl = {
-    enable = true;
-    defaultUser = "nixos";
-    interop.includePath = false;
-    ssh-agent.enable = true;
-  };
 }

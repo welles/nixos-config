@@ -1,8 +1,4 @@
-{
-  hostname,
-  pkgs,
-  ...
-}: {
+{hostname, ...}: {
   imports = [
     # "global.nix"-style: tmux before the body
     ../../modules/tmux.nix
@@ -46,6 +42,10 @@
     ../../modules/nix-ld.nix
     ../../modules/logitech-wheel.nix
     ../../modules/nixos-tools.nix
+    ../../modules/bluetooth.nix
+    ./networking.nix
+    ./sunshine.nix
+    ./gaming.nix
   ];
 
   networking.hostName = hostname;
@@ -53,29 +53,4 @@
   system.stateVersion = "25.11";
   _module.args.user = "nico";
   _module.args.homeFile = ../../modules/home/nico-laptop.nix;
-
-  systemd.services.NetworkManager-wait-online.enable = false;
-
-  hardware.bluetooth.enable = true;
-
-  services = {
-    sunshine = {
-      enable = true;
-      autoStart = false;
-      capSysAdmin = true;
-      openFirewall = true;
-    };
-  };
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    openttd-jgrpp
-    prismlauncher
-    streamcontroller
-  ];
 }

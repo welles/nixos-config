@@ -1,8 +1,4 @@
-{
-  hostname,
-  pkgs,
-  ...
-}: {
+{hostname, ...}: {
   imports = [
     # "global.nix"-style: tmux before the body
     ../../modules/tmux.nix
@@ -43,27 +39,14 @@
 
     ../../modules/nix-ld.nix
     ../../modules/nixos-tools.nix
+    ../../modules/bluetooth.nix
+    ./networking.nix
+    ./tablet.nix
   ];
 
-  networking = {
-    hostName = hostname;
-    hostId = "0aea17fa";
-    firewall.enable = true;
-  };
+  networking.hostName = hostname;
+  networking.hostId = "0aea17fa";
   system.stateVersion = "25.11";
   _module.args.user = "nico";
   _module.args.homeFile = ../../modules/home/nico-laptop.nix;
-
-  systemd.services.NetworkManager-wait-online.enable = false;
-
-  hardware = {
-    bluetooth.enable = true;
-    sensor.iio.enable = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    libinput
-    iio-sensor-proxy
-    maliit-keyboard
-  ];
 }

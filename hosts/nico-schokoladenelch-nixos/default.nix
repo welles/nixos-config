@@ -31,6 +31,5 @@
   networking.hostName = hostname;
   networking.hostId = "c0ffee12";
   system.stateVersion = "25.11";
-  programs.zsh.enable = true;
   _module.args.user = "schokoladenelch";
 }
