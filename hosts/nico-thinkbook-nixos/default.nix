@@ -44,6 +44,7 @@
     ../../modules/zfs-laptop-boot.nix
 
     ../../modules/nix-ld.nix
+    ../../modules/logitech-wheel.nix
   ];
 
   networking.hostName = hostname;
@@ -53,20 +54,9 @@
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  hardware = {
-    bluetooth.enable = true;
-    new-lg4ff.enable = true;
-    usb-modeswitch.enable = true;
-  };
+  hardware.bluetooth.enable = true;
 
   services = {
-    udev = {
-      packages = [pkgs.oversteer];
-      extraRules = ''
-        ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c26d", RUN+="${pkgs.usb-modeswitch}/bin/usb_modeswitch -v 046d -p c26d -M 0f00010142 -C 0x03 -m 01 -r 01"
-      '';
-    };
-
     sunshine = {
       enable = true;
       autoStart = false;
@@ -84,7 +74,6 @@
   # Phase 2 systemPackages: matches old [machines-body ++ global-body] order
   environment.systemPackages = with pkgs; [
     openttd-jgrpp
-    oversteer
     prismlauncher
     streamcontroller
     (writeShellScriptBin "nixos-diff" ''

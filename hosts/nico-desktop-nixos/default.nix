@@ -22,6 +22,7 @@
     ../../modules/bluetooth.nix
     ../../modules/1password.nix
     ../../modules/nix-ld.nix
+    ../../modules/logitech-wheel.nix
   ];
 
   networking.hostName = hostname;
