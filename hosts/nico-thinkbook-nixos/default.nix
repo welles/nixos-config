@@ -26,7 +26,7 @@
     ../../modules/locale-de.nix
     ../../modules/nix-settings.nix
     ../../modules/sops-zfs-persist.nix
-    ../../modules/home-manager-nico.nix
+    ../../modules/home-manager-user.nix
 
     # "machines/thinkbook"-style imports (no systemPackages)
     ./hardware-configuration.nix
@@ -52,6 +52,7 @@
   networking.hostId = "54af8977";
   system.stateVersion = "25.11";
   _module.args.user = "nico";
+  _module.args.homeFile = ../../modules/home/nico-laptop.nix;
 
   systemd.services.NetworkManager-wait-online.enable = false;
 

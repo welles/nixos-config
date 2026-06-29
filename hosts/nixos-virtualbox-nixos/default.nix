@@ -14,13 +14,14 @@
     ../../modules/tmux.nix
     ../../modules/locale-de.nix
     ../../modules/nix-settings.nix
-    ../../modules/home-manager-nixos.nix
+    ../../modules/home-manager-user.nix
   ];
 
   networking.hostName = hostname;
   system.stateVersion = "25.11";
   programs.zsh.enable = true;
   _module.args.user = "nixos";
+  _module.args.homeFile = ../../modules/home/nixos.nix;
 
   virtualisation.virtualbox.guest.enable = true;
   virtualisation.virtualbox.guest.dragAndDrop = true;

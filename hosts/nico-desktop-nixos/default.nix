@@ -17,7 +17,7 @@
     ./boot.nix
     ./sops.nix
     ./users.nix
-    ./home-manager.nix
+    ../../modules/home-manager-user.nix
     ../../modules/nixos-tools.nix
     ../../modules/bluetooth.nix
     ../../modules/1password.nix
@@ -28,4 +28,6 @@
   networking.hostName = hostname;
   networking.hostId = "7e6301e4";
   system.stateVersion = "26.05";
+  _module.args.user = "nico";
+  _module.args.homeFile = ./home.nix;
 }
