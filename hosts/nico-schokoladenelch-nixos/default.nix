@@ -4,7 +4,7 @@
     # in reverse import order (last import = first in the merged list). This order
     # replicates the exact systemPackages ordering from the old
     # global.nix + configurations/schokoladenelch + machines/ layout.
-    ./nixos-tools.nix # nixos-diff → last in merged list
+    ../../modules/nixos-tools.nix # nixos-diff → last in merged list
     ./packages.nix # bottom/ctop/etc. → 2nd-to-last group
     ../../modules/scripts/check-mkv # → position 5
     ../../modules/scripts/create-zfs-dataset # → position 4

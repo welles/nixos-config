@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./nixos-tools.nix # nixos-diff → last in merged systemPackages
+    ../../modules/nixos-tools.nix # nixos-diff → last in merged systemPackages
     ./packages.nix # firefox/jellyfin/chrome → before nixos-diff
     ./hardware-configuration.nix
     ./disk-configuration.nix

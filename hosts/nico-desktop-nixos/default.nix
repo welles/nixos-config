@@ -18,7 +18,7 @@
     ./sops.nix
     ./users.nix
     ./home-manager.nix
-    ./nixos-tools.nix
+    ../../modules/nixos-tools.nix
     ../../modules/bluetooth.nix
     ../../modules/1password.nix
     ../../modules/nix-ld.nix

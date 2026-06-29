@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./nixos-tools.nix
+    ../../modules/nixos-tools.nix
     ../../modules/nixos-dev.nix
     ./hardware-configuration.nix
     ./desktop.nix
