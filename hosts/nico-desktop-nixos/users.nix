@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: {
+{config, ...}: {
   users.users.nico = {
     isNormalUser = true;
     home = "/home/nico";
