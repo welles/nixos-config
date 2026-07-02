@@ -1,6 +1,7 @@
 # Server Services
 #
 # Configures the core services that make this machine a home server:
+# - apcupsd: Clean shutdown on UPS power loss
 # - Caddy: HTTPS reverse proxy for Docker stacks
 # - Cloudflared: Cloudflare tunnel for remote access without port forwarding
 # - Fail2ban: Intrusion prevention by banning repeated auth failures
@@ -14,6 +15,17 @@
   ...
 }: {
   services = {
+    apcupsd = {
+      enable = true;
+      # Shut down when on battery for 5 minutes, or when charge drops below 50%
+      configText = ''
+        UPSTYPE usb
+        NISIP 127.0.0.1
+        BATTERYLEVEL 50
+        TIMEOUT 300
+      '';
+    };
+
     caddy = {
       enable = true;
       email = "admin@welles.email";
