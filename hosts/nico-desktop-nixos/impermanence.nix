@@ -28,7 +28,6 @@ _: {
         ".claude"
         ".gemini"
         ".sourcegit"
-        ".config/1Password"
         ".config/Bitwarden"
         ".config/Code"
         ".config/discord"
