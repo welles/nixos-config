@@ -1,10 +1,8 @@
-{user, ...}: {
-  imports = [../../modules/removable-media.nix];
-
-  services.displayManager.autoLogin = {
-    enable = true;
-    inherit user;
-  };
+{...}: {
+  imports = [
+    ../../modules/removable-media.nix
+    ../../modules/autologin.nix
+  ];
 
   programs.steam = {
     enable = true;
