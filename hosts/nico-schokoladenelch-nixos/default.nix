@@ -21,7 +21,7 @@
     ./boot.nix
     ./networking.nix
     ./services.nix
-    ./persistence.nix
+    ./impermanence.nix
     ../../modules/locale-de.nix
     ../../modules/nix-settings.nix
     ./sops.nix

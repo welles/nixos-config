@@ -7,7 +7,7 @@
     ./disk-configuration.nix
     ./boot.nix
     ./desktop.nix
-    ./persistence.nix
+    ./impermanence.nix
     ../../modules/tmux.nix
     ../../modules/locale-de.nix
     ../../modules/nix-settings.nix
