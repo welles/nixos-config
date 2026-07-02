@@ -1,8 +1,12 @@
-_: {
-  fileSystems."/mnt/bucket/persist".neededForBoot = true;
+{
+  persistRoot,
+  user,
+  ...
+}: {
+  fileSystems.${persistRoot}.neededForBoot = true;
   fileSystems."/mnt/bucket/apps".neededForBoot = true;
 
-  environment.persistence."/mnt/bucket/persist" = {
+  environment.persistence.${persistRoot} = {
     hideMounts = true;
     directories = [
       "/var/log"
@@ -22,12 +26,11 @@ _: {
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
-    users.schokoladenelch = {
+    users.${user} = {
       directories = [
         ".local/share/zsh"
       ];
-      files = [
-      ];
+      files = [];
     };
   };
 }

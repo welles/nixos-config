@@ -3,10 +3,14 @@
 # The ZFS root dataset is rolled back to a blank snapshot on every boot.
 # This module bind-mounts directories and files from /persist to their
 # expected locations, preserving state across reboots.
-{user, ...}: {
-  fileSystems."/persist".neededForBoot = true;
+{
+  persistRoot,
+  user,
+  ...
+}: {
+  fileSystems.${persistRoot}.neededForBoot = true;
 
-  environment.persistence."/persist" = {
+  environment.persistence.${persistRoot} = {
     hideMounts = true;
     directories = [
       "/var/log"

@@ -1,8 +1,11 @@
-# Impermanence Configuration
-_: {
-  fileSystems."/persist".neededForBoot = true;
+{
+  persistRoot,
+  user,
+  ...
+}: {
+  fileSystems.${persistRoot}.neededForBoot = true;
 
-  environment.persistence."/persist" = {
+  environment.persistence.${persistRoot} = {
     hideMounts = true;
     directories = [
       "/var/lib/bluetooth"
@@ -17,7 +20,7 @@ _: {
       "/etc/adjtime"
       "/etc/machine-id"
     ];
-    users.nico = {
+    users.${user} = {
       files = [
         ".claude.json"
         ".zsh_history"
