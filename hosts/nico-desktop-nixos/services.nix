@@ -2,11 +2,6 @@
   imports = [
     ../../modules/removable-media.nix
     ../../modules/autologin.nix
+    ../../modules/steam.nix
   ];
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
 }

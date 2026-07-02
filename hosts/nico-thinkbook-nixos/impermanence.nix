@@ -42,7 +42,6 @@
         ".local/share/dolphin"
         ".local/share/kwalletd"
         ".local/share/remmina"
-        ".local/share/Steam"
         ".local/share/bottles"
         ".local/share/PrismLauncher"
         ".local/state/wireplumber"

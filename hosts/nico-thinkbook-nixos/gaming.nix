@@ -1,9 +1,5 @@
 {pkgs, ...}: {
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-  };
+  imports = [../../modules/steam.nix];
 
   environment.systemPackages = with pkgs; [
     openttd-jgrpp
