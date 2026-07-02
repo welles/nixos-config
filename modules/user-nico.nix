@@ -1,5 +1,5 @@
-_: {
-  users.users.nico = {
+{user, ...}: {
+  users.users.${user} = {
     isNormalUser = true;
     initialPassword = "passwort";
     description = "Nico";

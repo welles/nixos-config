@@ -1,9 +1,9 @@
-{...}: {
+{user, ...}: {
   imports = [../../modules/removable-media.nix];
 
   services.displayManager.autoLogin = {
     enable = true;
-    user = "nico";
+    inherit user;
   };
 
   programs.steam = {

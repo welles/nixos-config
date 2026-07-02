@@ -1,15 +1,19 @@
-{inputs, ...}: {
+{
+  inputs,
+  user,
+  ...
+}: {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {inherit inputs;};
-    users.schokoladenelch = import ./home.nix;
+    users.${user} = import ./home.nix;
     backupFileExtension = "backup";
     sharedModules = [
       {
         home = {
-          username = "schokoladenelch";
-          homeDirectory = "/home/schokoladenelch";
+          username = user;
+          homeDirectory = "/home/${user}";
           stateVersion = "25.11";
         };
         programs.home-manager.enable = true;

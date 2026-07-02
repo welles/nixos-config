@@ -1,7 +1,7 @@
-_: {
+{user, ...}: {
   wsl = {
     enable = true;
-    defaultUser = "nixos";
+    defaultUser = user;
     interop.includePath = false;
     ssh-agent.enable = true;
   };

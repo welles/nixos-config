@@ -1,6 +1,10 @@
 # Shared development environment for the "nixos" user profile.
 # Used by nixos-wsl-nixos and nixos-virtualbox-nixos.
-{pkgs, ...}: {
+{
+  pkgs,
+  user,
+  ...
+}: {
   imports = [
     ./docker.nix
   ];
@@ -71,7 +75,7 @@
     };
   };
 
-  users.users.nixos = {
+  users.users.${user} = {
     isNormalUser = true;
     hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";
     description = "NixOS";
