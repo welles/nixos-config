@@ -54,6 +54,8 @@
 
     # Keep user processes alive after logout (for tmux sessions)
     logind.settings.Login.KillUserProcesses = false;
+    # Shut down on power button press (allows clean shutdown of unresponsive server)
+    logind.settings.Login.HandlePowerKey = "poweroff";
   };
 
   systemd.services.cloudflared-tunnel = {
