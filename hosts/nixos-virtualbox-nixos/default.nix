@@ -18,6 +18,9 @@
 
   networking.hostName = hostname;
   system.stateVersion = "25.11";
-  _module.args.user = "nixos";
-  _module.args.homeFile = ../../modules/home/nixos.nix;
+  _module.args = {
+    user = "nixos";
+    homeFile = ../../modules/home/nixos.nix;
+    persistRoot = "/persist";
+  };
 }

@@ -48,6 +48,9 @@
   networking.hostName = hostname;
   networking.hostId = "0aea17fa";
   system.stateVersion = "25.11";
-  _module.args.user = "nico";
-  _module.args.homeFile = ../../modules/home/nico-laptop.nix;
+  _module.args = {
+    user = "nico";
+    homeFile = ../../modules/home/nico-laptop.nix;
+    persistRoot = "/persist";
+  };
 }

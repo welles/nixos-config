@@ -29,6 +29,9 @@
   networking.hostName = hostname;
   networking.hostId = "7e6301e4";
   system.stateVersion = "26.05";
-  _module.args.user = "nico";
-  _module.args.homeFile = ./home.nix;
+  _module.args = {
+    user = "nico";
+    homeFile = ./home.nix;
+    persistRoot = "/persist";
+  };
 }

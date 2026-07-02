@@ -32,5 +32,8 @@
   networking.hostName = hostname;
   networking.hostId = "c0ffee12";
   system.stateVersion = "25.11";
-  _module.args.user = "schokoladenelch";
+  _module.args = {
+    user = "schokoladenelch";
+    persistRoot = "/mnt/bucket/persist";
+  };
 }
