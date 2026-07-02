@@ -1,8 +1,4 @@
-{
-  lib,
-  config,
-  ...
-}: {
+{config, ...}: {
   imports = [
     ./cli-tools.nix
     ./git.nix
@@ -21,6 +17,4 @@
       "${config.home.homeDirectory}/.dotnet/tools"
     ];
   };
-
-  programs.git.settings.user.email = lib.mkForce "welles@mentz.net";
 }

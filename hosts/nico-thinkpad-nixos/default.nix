@@ -52,5 +52,7 @@
     user = "nico";
     homeFile = ../../modules/home/nico-laptop.nix;
     persistRoot = "/persist";
+    userDescription = "Nico Welles";
+    userEmail = "nico@welles.email";
   };
 }

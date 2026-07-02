@@ -3,6 +3,7 @@
 {
   pkgs,
   user,
+  userDescription,
   ...
 }: {
   imports = [
@@ -78,7 +79,7 @@
   users.users.${user} = {
     isNormalUser = true;
     hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";
-    description = "NixOS";
+    description = userDescription;
     extraGroups = ["wheel"];
     linger = true;
   };

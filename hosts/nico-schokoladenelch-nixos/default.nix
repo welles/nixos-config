@@ -35,5 +35,7 @@
   _module.args = {
     user = "schokoladenelch";
     persistRoot = "/mnt/bucket/persist";
+    userDescription = "Schokoladenelch";
+    userEmail = "nico@welles.email";
   };
 }

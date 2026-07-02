@@ -1,12 +1,14 @@
 {
   inputs,
   user,
+  userDescription,
+  userEmail,
   ...
 }: {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {inherit inputs userDescription userEmail;};
     users.${user} = import ./home.nix;
     backupFileExtension = "backup";
     sharedModules = [

@@ -1,8 +1,12 @@
-{user, ...}: {
+{
+  user,
+  userDescription,
+  ...
+}: {
   users.users.${user} = {
     isNormalUser = true;
     initialPassword = "passwort";
-    description = "Nico";
+    description = userDescription;
     extraGroups = ["wheel" "libvirtd"];
   };
 }

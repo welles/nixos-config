@@ -33,5 +33,7 @@
     user = "nico";
     homeFile = ./home.nix;
     persistRoot = "/persist";
+    userDescription = "Nico Welles";
+    userEmail = "nico@welles.email";
   };
 }

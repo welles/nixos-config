@@ -22,5 +22,7 @@
     user = "nixos";
     homeFile = ../../modules/home/nixos.nix;
     persistRoot = "/persist";
+    userDescription = "NW";
+    userEmail = "welles@mentz.net";
   };
 }
