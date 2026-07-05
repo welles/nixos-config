@@ -19,6 +19,12 @@ _: {
       "msmtp-password" = {
         mode = "0444";
       };
+      "user-password" = {
+        neededForUsers = true;
+      };
+      "root-password" = {
+        neededForUsers = true;
+      };
     };
   };
 }
