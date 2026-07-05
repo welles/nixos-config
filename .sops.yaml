@@ -1,31 +1,7 @@
 keys:
   - &master_key age1tdxd69dj0zg8hexcat2vae7kpar4g0pcfcas7rt6smmanw5nwuaqesde0j
 creation_rules:
-  - path_regex: configurations/schokoladenelch/secrets.yaml$
-    key_groups:
-      - age:
-          - *master_key
-  - path_regex: configurations/nico/secrets.yaml$
-    key_groups:
-      - age:
-          - *master_key
-  - path_regex: machines/nico-thinkpad-nixos/secrets.yaml$
-    key_groups:
-      - age:
-          - *master_key
-  - path_regex: hosts/nico-desktop-nixos/secrets.yaml$
-    key_groups:
-      - age:
-          - *master_key
-  - path_regex: modules/wifi-welles-intern/secrets.yaml$
-    key_groups:
-      - age:
-          - *master_key
-  - path_regex: modules/wifi-welles-starlink/secrets.yaml$
-    key_groups:
-      - age:
-          - *master_key
-  - path_regex: modules/rclone/secrets.yaml$
+  - path_regex: secrets\.yaml$
     key_groups:
       - age:
           - *master_key
