@@ -16,6 +16,7 @@
     ./disk-configuration.nix
     ../../modules/tmux.nix
     ../../modules/docker.nix
+    ../../modules/libvirt.nix
     ../../modules/networkmanager.nix
     ../../modules/stacks/default.nix
     ./boot.nix

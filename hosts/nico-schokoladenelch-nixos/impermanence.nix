@@ -3,8 +3,12 @@
   user,
   ...
 }: {
-  fileSystems.${persistRoot}.neededForBoot = true;
-  fileSystems."/mnt/bucket/apps".neededForBoot = true;
+  fileSystems = {
+    ${persistRoot}.neededForBoot = true;
+    "/mnt/bucket/apps".neededForBoot = true;
+    "/mnt/bucket/libvirt".neededForBoot = true;
+    "/mnt/tank/libvirt".neededForBoot = true;
+  };
 
   environment.persistence.${persistRoot} = {
     hideMounts = true;
