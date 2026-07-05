@@ -7,6 +7,6 @@
     isNormalUser = true;
     initialPassword = "passwort";
     description = userDescription;
-    extraGroups = ["wheel" "libvirtd"];
+    extraGroups = ["wheel"];
   };
 }

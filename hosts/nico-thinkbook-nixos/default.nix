@@ -7,6 +7,7 @@
     # "configurations/nico"-style imports (no systemPackages)
     ../../modules/1password.nix
     ../../modules/docker.nix
+    ../../modules/virt-manager-client.nix
     ../../modules/kde-plasma.nix
     ../../modules/networkmanager.nix
     ../../modules/profile-icon
