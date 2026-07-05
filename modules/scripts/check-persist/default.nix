@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  persistRoot,
   ...
 }: let
   # Check if persistence is defined at all
@@ -51,7 +52,7 @@ in {
     environment.systemPackages = [
       (pkgs.writeShellScriptBin "check-persist" ''
         export PATH=${pkgs.lib.makeBinPath [pkgs.findutils pkgs.coreutils]}:$PATH
-        exec ${pkgs.bash}/bin/bash ${./check-persist.sh} "${pathsFile}" "$@"
+        exec ${pkgs.bash}/bin/bash ${./check-persist.sh} "${pathsFile}" "${persistRoot}" "$@"
       '')
     ];
   };

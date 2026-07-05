@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-if [ "$#" -lt 1 ]; then
-	echo "Usage: check-persist.sh <configured_paths_file>"
+if [ "$#" -lt 2 ]; then
+	echo "Usage: check-persist.sh <configured_paths_file> <persist_root>"
 	exit 1
 fi
 
 PATHS_FILE="$1"
+PERSIST_ROOT="$2"
 
-if [[ ! -d "/persist" ]]; then
-	echo "/persist directory does not exist."
+if [[ ! -d "$PERSIST_ROOT" ]]; then
+	echo "$PERSIST_ROOT directory does not exist."
 	exit 0
 fi
 
@@ -68,14 +69,14 @@ walk_dir() {
 	done
 }
 
-LEFTOVERS=$(walk_dir "/persist")
+LEFTOVERS=$(walk_dir "$PERSIST_ROOT")
 
 if [[ -n "$LEFTOVERS" ]]; then
-	echo "Found leftover files/directories in /persist:"
+	echo "Found leftover files/directories in $PERSIST_ROOT:"
 	# Sort the leftovers alphabetically
 	echo "$LEFTOVERS" | sort
 	exit 1
 else
-	echo "No leftover files found in /persist."
+	echo "No leftover files found in $PERSIST_ROOT."
 	exit 0
 fi
