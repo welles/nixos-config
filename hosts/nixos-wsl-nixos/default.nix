@@ -22,7 +22,7 @@
   _module.args = {
     user = "nixos";
     homeFile = ../../modules/home/nixos.nix;
-    userDescription = "NW";
+    userDescription = "Nico Welles";
     userEmail = "welles@mentz.net";
   };
 }
