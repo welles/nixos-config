@@ -68,6 +68,9 @@
       bruno
       openssl
       kubernetes-helm
+      jq
+      perl
+      python3
     ];
 
     sessionVariables = {
