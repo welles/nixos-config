@@ -8,6 +8,7 @@
   home = {
     file.".npmrc".text = ''
       prefix=${config.home.homeDirectory}/.npm-global
+      prefer-offline=true
       save-exact=true
       save-prefix=
     '';
