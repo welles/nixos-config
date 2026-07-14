@@ -10,7 +10,7 @@
 
   src = pkgs.fetchurl {
     url = "https://dl.ocbase.com/linux/per/stable/OCCT";
-    hash = "sha256-yvKg/ariuICx5obWzWynbKSl47AL0A/gXsmoPYaaiek=";
+    hash = "sha256-Mjp0kbkh2p5B8WQM6HEBwTCp/y0xQZV5y3H7Dxlx59A=";
     name = "OCCT";
   };
 
