@@ -9,6 +9,7 @@
     ../../modules/networkmanager.nix
     ../../modules/avahi.nix
     ../../modules/locale-de.nix
+    ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
     ./home-manager.nix
     ./boot.nix

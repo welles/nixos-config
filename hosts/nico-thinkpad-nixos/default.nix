@@ -22,6 +22,7 @@
     # "configurations/nico"-style settings
     ../../modules/user-nico.nix
     ../../modules/locale-de.nix
+    ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
     ../../modules/sops-zfs-persist.nix
     ../../modules/home-manager-user.nix

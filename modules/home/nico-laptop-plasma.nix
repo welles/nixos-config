@@ -120,10 +120,6 @@ _: {
       };
     };
 
-    input.keyboard = {
-      numlockOnStartup = "on";
-    };
-
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
     };

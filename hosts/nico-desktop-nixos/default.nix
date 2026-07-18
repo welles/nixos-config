@@ -14,6 +14,7 @@
     ../../modules/tmux.nix
     ../../modules/occt
     ../../modules/locale-de.nix
+    ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
     ./boot.nix
     ./sops.nix

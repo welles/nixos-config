@@ -10,6 +10,7 @@
     ./impermanence.nix
     ../../modules/tmux.nix
     ../../modules/locale-de.nix
+    ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
     ../../modules/home-manager-user.nix
     ./virtualbox.nix

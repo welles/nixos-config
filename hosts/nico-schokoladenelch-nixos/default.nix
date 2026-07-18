@@ -24,6 +24,7 @@
     ./services.nix
     ./impermanence.nix
     ../../modules/locale-de.nix
+    ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
     ./sops.nix
     ./users.nix

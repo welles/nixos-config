@@ -11,6 +11,7 @@
     ./desktop.nix
     ../../modules/tmux.nix
     ../../modules/locale-de.nix
+    ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
     ../../modules/home-manager-user.nix
     inputs.nixos-wsl.nixosModules.default
