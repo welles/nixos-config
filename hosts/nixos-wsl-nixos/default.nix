@@ -7,6 +7,7 @@
     ../../modules/home/shell.nix
     ../../modules/nixos-tools.nix
     ../../modules/nixos-dev.nix
+    ../../modules/nuke.nix
     ./hardware-configuration.nix
     ./desktop.nix
     ../../modules/tmux.nix
