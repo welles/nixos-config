@@ -13,6 +13,7 @@
     ./nvidia-gpu.nix
     ../../modules/tmux.nix
     ../../modules/occt
+    ../../modules/scripts/check-persist
     ../../modules/locale-de.nix
     ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
