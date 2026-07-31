@@ -20,9 +20,18 @@
       # Shut down when on battery for 5 minutes, or when charge drops below 50%
       configText = ''
         UPSTYPE usb
+        UPSCABLE usb
+        DEVICE
         NISIP 127.0.0.1
-        BATTERYLEVEL 50
-        TIMEOUT 300
+
+        # Deaktiviert den festen Zeit-Timer (0 = aus)
+        TIMEOUT 0
+
+        # Fährt herunter, wenn der Akku unter 25% fällt...
+        BATTERYLEVEL 25
+
+        # ...oder nur noch für 5 Minuten Restlaufzeit reicht
+        MINUTES 5
       '';
     };
 
