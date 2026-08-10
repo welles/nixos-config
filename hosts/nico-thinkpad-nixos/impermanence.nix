@@ -22,13 +22,10 @@
     ];
     users.${user} = {
       files = [
-        ".claude.json"
         ".zsh_history"
       ];
       directories = [
         ".ssh"
-        ".claude"
-        ".gemini"
         ".sourcegit"
         ".config/Bitwarden"
         ".config/Code"

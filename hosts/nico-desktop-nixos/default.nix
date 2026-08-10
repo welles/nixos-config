@@ -5,6 +5,7 @@
     ../../modules/profile-icon
     ./disk-configuration.nix
     ./impermanence.nix
+    ../../modules/ai-agents.nix
     ../../modules/kde-plasma.nix
     ../../modules/pipewire.nix
     ./networking.nix

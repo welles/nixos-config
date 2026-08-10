@@ -31,6 +31,7 @@
     ./hardware-configuration.nix
     ./disk-configuration.nix
     ./impermanence.nix
+    ../../modules/ai-agents.nix
     ./nvidia-gpu.nix
     ../../modules/wifi-welles-starlink
     ../../modules/xone-dongle.nix

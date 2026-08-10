@@ -31,6 +31,7 @@
     ./hardware-configuration.nix
     ./disk-configuration.nix
     ./impermanence.nix
+    ../../modules/ai-agents.nix
     ./fritzbox-wireguard.nix
     ./mobile-network.nix
     ../../modules/wifi-welles-starlink
