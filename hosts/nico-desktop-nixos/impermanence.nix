@@ -23,6 +23,7 @@
     users.${user} = {
       files = [
         ".zsh_history"
+        ".config/kwinoutputconfig.json"
         ".config/mimeapps.list"
       ];
       directories = [
@@ -38,6 +39,7 @@
         ".config/mozilla/firefox"
         ".local/share/applications"
         ".local/share/dolphin"
+        ".local/share/kscreen"
         ".local/share/kwalletd"
         ".local/share/remmina"
         ".local/state/wireplumber"
