@@ -6,9 +6,9 @@ _: {
       promptToReturnFromSubprocess: false
       showIcons: true
     git:
-      pagers:
+      diffRenderers:
         - colorArg: always
-          pager: delta --dark --paging=never
+          command: delta --dark --paging=never
       log:
         showGraph: always
   '';
