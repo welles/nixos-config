@@ -7,10 +7,16 @@
   nvidiaEnabled = lib.elem "nvidia" config.services.xserver.videoDrivers;
   primeOffload = config.hardware.nvidia.prime.offload.enable;
   pname = "occt";
+  # OCBase doesn't publish version-pinned Linux URLs anywhere; the endpoint
+  # below was found by trial (https://www.ocbase.com/download uses it under
+  # the hood). Unlike the "stable" rolling URL, this pins to a fixed release
+  # so the hash won't silently drift. Bump version + hash together when
+  # updating: check https://www.ocbase.com/download for the latest version.
+  version = "17.0.14";
 
   src = pkgs.fetchurl {
-    url = "https://dl.ocbase.com/linux/per/stable/OCCT";
-    hash = "sha256-88tDdGcpALNZrFA92uuEGiXkjpU3BiywZDbpe5Lx2tw=";
+    url = "https://www.ocbase.com/download-bin/edition:Personal/os:Linux/version:${version}";
+    hash = "sha256-qhXbaN/1S4uB0gE4HcGgbfnQAr/2nb7C5Ee2H6yigtQ=";
     name = "OCCT";
   };
 
