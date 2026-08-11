@@ -19,6 +19,7 @@
     ../../modules/libvirt.nix
     ../../modules/networkmanager.nix
     ../../modules/stacks/default.nix
+    ../../modules/server-status.nix
     ./boot.nix
     ./networking.nix
     ./services.nix
