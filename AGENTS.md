@@ -21,3 +21,9 @@ Ensure every modified `.nix` file is formatted and linted:
    ```
 
 3. If the build fails, fix the errors and rebuild until it succeeds.
+
+## Building new files
+
+Nix flakes backed by Git ignore untracked files. Before building a configuration
+that imports a new file, add the file to Git so Nix includes it in the flake
+source.
