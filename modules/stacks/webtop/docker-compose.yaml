@@ -27,7 +27,7 @@ services:
       - 50081:3001/tcp
     restart: unless-stopped
     shm_size: 1gb
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/webtop/ubuntu_xfce:/config:rw

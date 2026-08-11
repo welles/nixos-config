@@ -204,7 +204,7 @@
           serviceConfig =
             {
               Restart = "always";
-              TimeoutStopSec = 120;
+              TimeoutStopSec = 60;
             }
             // lib.optionalAttrs ((cfg.composeSecrets or []) != []) {
               EnvironmentFile = map (s: config.sops.secrets.${s}.path) (cfg.composeSecrets or []);

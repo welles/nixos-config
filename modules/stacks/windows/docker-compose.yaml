@@ -30,7 +30,7 @@ services:
       - 50051:3389/udp
       - 50052:5900/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/windows/storage:/storage:rw

@@ -23,7 +23,7 @@ services:
     ports:
       - 50030:4533/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/navidrome:/data

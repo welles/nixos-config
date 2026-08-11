@@ -25,7 +25,7 @@ services:
       # Query port
       - 50161:27131/udp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/insurgency_sandstorm/config/ini:/home/steam/steamcmd/sandstorm/Insurgency/Saved/Config/LinuxServer:rw

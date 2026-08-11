@@ -19,7 +19,7 @@ services:
       windmill:
         ipv4_address: 10.10.15.20
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/windmill/db:/var/lib/postgresql/data
@@ -48,7 +48,7 @@ services:
     ports:
       - 50150:8000/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/windmill/app:/persistent_volume
@@ -75,7 +75,7 @@ services:
       windmill:
         ipv4_address: 10.10.15.30
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
 

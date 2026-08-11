@@ -19,7 +19,7 @@ services:
       nextcloud:
         ipv4_address: 10.10.10.20
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/nextcloud/db:/var/lib/postgresql/data
@@ -38,7 +38,7 @@ services:
       nextcloud:
         ipv4_address: 10.10.10.30
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/nextcloud/redis:/data
@@ -76,7 +76,7 @@ services:
     ports:
       - 50100:80/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/nextcloud/app:/var/www/html

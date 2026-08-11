@@ -20,7 +20,7 @@ services:
     ports:
       - 50010:8096/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/jellyfin/config:/config:rw
@@ -42,7 +42,7 @@ services:
     ports:
       - 50011:8056/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/jellyfin/accounts:/data:rw
@@ -69,7 +69,7 @@ services:
     ports:
       - 50012:5055/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/jellyfin/jellyseerr:/app/config:rw

@@ -36,7 +36,7 @@ services:
       guacamole:
         ipv4_address: 10.10.11.10
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/guacamole/db:/var/lib/postgresql/data:rw
@@ -57,7 +57,7 @@ services:
       guacamole:
         ipv4_address: 10.10.11.20
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
 
@@ -90,7 +90,7 @@ services:
     ports:
       - 50110:8080/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
 

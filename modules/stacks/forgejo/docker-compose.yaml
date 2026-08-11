@@ -19,7 +19,7 @@ services:
       forgejo:
         ipv4_address: 10.10.14.20
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/forgejo/db:/var/lib/postgresql/data
@@ -69,7 +69,7 @@ services:
       - 50140:3000/tcp
       - 50141:2222/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/forgejo/app:/data

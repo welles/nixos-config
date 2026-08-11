@@ -31,7 +31,7 @@ services:
       # Steam's server-list port
       - 50063:27015/udp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/ark_server/app:/app

@@ -19,7 +19,7 @@ services:
     ports:
       - 50040:5001/tcp
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/stacks:/mnt/bucket/stacks

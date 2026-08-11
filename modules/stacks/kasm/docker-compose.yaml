@@ -23,7 +23,7 @@ services:
       - 50071:443/tcp
     privileged: true
     restart: unless-stopped
-    stop_grace_period: 2m
+    stop_grace_period: 60s
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/kasm/data:/opt:rw
