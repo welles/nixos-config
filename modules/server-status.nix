@@ -8,16 +8,21 @@
   ...
 }: let
   btopStatusConfig = pkgs.writeText "btop-status.conf" ''
-    # Use settings that render reliably on a Linux virtual terminal.
+    # Use Unicode block graphs, which Terminus renders correctly on the console.
     color_theme = "TTY"
     theme_background = false
     truecolor = false
-    force_tty = true
-    graph_symbol = "tty"
+    force_tty = false
+    graph_symbol = "block"
+    graph_symbol_cpu = "block"
 
     # Keep the layout readable on the 800x480 display.
     shown_boxes = "cpu mem net"
-    cpu_single_graph = true
+    cpu_graph_upper = "total"
+    cpu_graph_lower = "total"
+    cpu_single_graph = false
+    # Each selected ZFS mount reports its pool-wide capacity and free space.
+    disks_filter = "/boot / /mnt/tank/movies"
     update_ms = 1500
   '';
 in {
@@ -44,7 +49,7 @@ in {
     environment.TERM = "linux";
 
     serviceConfig = {
-      ExecStart = "${pkgs.btop}/bin/btop --config ${btopStatusConfig}";
+      ExecStart = "${pkgs.btop}/bin/btop --no-tty --force-utf --config ${btopStatusConfig}";
       Restart = "always";
       RestartSec = "2s";
       TTYPath = "/dev/tty1";
