@@ -5,12 +5,24 @@
   persistRoot ? null,
   ...
 }: {
-  environment.systemPackages = [pkgs.claude-code pkgs.codex pkgs.gemini-cli];
+  environment.systemPackages = [
+    pkgs.antigravity-ide
+    pkgs.claude-code
+    pkgs.codex
+    pkgs.gemini-cli
+  ];
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.users.${user} = {
       files = [".claude.json"];
-      directories = [".claude" ".codex" ".gemini"];
+      directories = [
+        ".antigravity"
+        ".antigravity-server"
+        ".claude"
+        ".codex"
+        ".config/Antigravity"
+        ".gemini"
+      ];
     };
   };
 }
