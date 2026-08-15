@@ -17,10 +17,12 @@
       files = [".claude.json"];
       directories = [
         ".antigravity"
+        ".antigravity-ide"
         ".antigravity-server"
         ".claude"
         ".codex"
         ".config/Antigravity"
+        ".config/Antigravity IDE"
         ".gemini"
       ];
     };
