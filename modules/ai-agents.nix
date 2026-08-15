@@ -10,7 +10,6 @@
     pkgs.antigravity-cli
     pkgs.claude-code
     pkgs.codex
-    pkgs.gemini-cli
   ];
 
   environment.persistence = lib.mkIf (persistRoot != null) {
@@ -24,7 +23,6 @@
         ".codex"
         ".config/Antigravity"
         ".config/Antigravity IDE"
-        ".gemini"
       ];
     };
   };
