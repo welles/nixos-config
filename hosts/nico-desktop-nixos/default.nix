@@ -15,6 +15,7 @@
     ../../modules/tmux.nix
     ../../modules/occt
     ../../modules/scripts/check-persist
+    ../../modules/scripts/toggle-screens
     ../../modules/locale-de.nix
     ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
