@@ -7,6 +7,7 @@
 }: {
   environment.systemPackages = [
     pkgs.antigravity-ide
+    pkgs.antigravity-cli
     pkgs.claude-code
     pkgs.codex
     pkgs.gemini-cli
