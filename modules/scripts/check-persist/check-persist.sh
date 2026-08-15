@@ -69,14 +69,33 @@ walk_dir() {
 	done
 }
 
-LEFTOVERS=$(walk_dir "$PERSIST_ROOT")
+mapfile -t LEFTOVERS < <(walk_dir "$PERSIST_ROOT" | sort)
 
-if [[ -n "$LEFTOVERS" ]]; then
-	echo "Found leftover files/directories in $PERSIST_ROOT:"
-	# Sort the leftovers alphabetically
-	echo "$LEFTOVERS" | sort
-	exit 1
-else
+if [[ ${#LEFTOVERS[@]} -eq 0 ]]; then
 	echo "No leftover files found in $PERSIST_ROOT."
 	exit 0
 fi
+
+echo "Found leftover files/directories in $PERSIST_ROOT:"
+for leftover in "${LEFTOVERS[@]}"; do
+	read -r -p "Delete $leftover? [y/N] " answer </dev/tty
+	if [[ "$answer" =~ ^[Yy]([Ee][Ss])?$ ]]; then
+		if rm -rf -- "$leftover"; then
+			echo "Deleted $leftover"
+		else
+			echo "Failed to delete $leftover" >&2
+		fi
+	else
+		echo "Kept $leftover"
+	fi
+done
+
+mapfile -t REMAINING < <(walk_dir "$PERSIST_ROOT" | sort)
+if [[ ${#REMAINING[@]} -gt 0 ]]; then
+	echo "Remaining leftover files/directories:"
+	printf '%s\n' "${REMAINING[@]}"
+	exit 1
+fi
+
+echo "No leftover files found in $PERSIST_ROOT."
+exit 0
