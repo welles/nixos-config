@@ -10,6 +10,7 @@
     google-chrome
     gparted
     lazygit
+    libreoffice
     mcp-nixos
     pciutils
     remmina
