@@ -8,6 +8,7 @@
     firefox-devedition
     fsearch
     google-chrome
+    gparted
     lazygit
     mcp-nixos
     pciutils
