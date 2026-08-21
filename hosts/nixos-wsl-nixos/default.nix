@@ -14,6 +14,7 @@
     ../../modules/locale-de.nix
     ../../modules/keyboard.nix
     ../../modules/nix-settings.nix
+    ../../modules/keeper.nix
     ../../modules/home-manager-user.nix
     inputs.nixos-wsl.nixosModules.default
     ./wsl.nix
