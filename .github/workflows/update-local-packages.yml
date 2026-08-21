@@ -1,0 +1,203 @@
+name: Update Local Packages
+
+concurrency:
+  group: nix-flake
+  cancel-in-progress: false
+
+on:
+  workflow_run:
+    workflows: ["Update Flake Inputs"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  update-and-setup:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      changed: ${{ steps.check-changes.outputs.changed }}
+      target_branch: ${{ steps.target-branch.outputs.name }}
+    steps:
+      - name: Select target branch
+        id: target-branch
+        env:
+          WORKFLOW_RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          DISPATCH_BRANCH: ${{ github.ref_name }}
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            echo "name=$WORKFLOW_RUN_BRANCH" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=$DISPATCH_BRANCH" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target-branch.outputs.name }}
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v30
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+
+      - name: Update local packages
+        run: bash .github/scripts/update-local-packages.sh
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          package_files=(
+            modules/eden.nix
+            modules/occt/default.nix
+            modules/keeper.nix
+            modules/nuke.nix
+          )
+          if git diff --quiet -- "${package_files[@]}"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Local packages are already up to date. Stopping early."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Local packages updated. Proceeding with checks."
+          fi
+
+      - name: Check shell formatting
+        if: steps.check-changes.outputs.changed == 'true'
+        run: nix run nixpkgs#shfmt -- -d .github/scripts/update-local-packages.sh
+
+      - name: Format and lint changed nix files
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          mapfile -t nix_files < <(git diff --name-only -- '*.nix')
+          nix run nixpkgs#alejandra -- "${nix_files[@]}"
+          nix run nixpkgs#deadnix -- --edit "${nix_files[@]}"
+          for file in "${nix_files[@]}"; do
+            nix run nixpkgs#statix -- fix "$file"
+            nix run nixpkgs#statix -- check "$file"
+          done
+
+      - name: Run nix flake check
+        if: steps.check-changes.outputs.changed == 'true'
+        run: nix flake check
+
+      - name: Generate host matrix
+        if: steps.check-changes.outputs.changed == 'true'
+        id: set-matrix
+        run: |
+          HOSTS=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json)
+          echo "matrix=$HOSTS" >> "$GITHUB_OUTPUT"
+
+      - name: Upload updated package files
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-package-updates
+          path: |
+            modules/eden.nix
+            modules/occt/default.nix
+            modules/keeper.nix
+            modules/nuke.nix
+          retention-days: 1
+
+  warm-cache:
+    needs: update-and-setup
+    if: needs.update-and-setup.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update-and-setup.outputs.target_branch }}
+
+      - name: Download updated package files
+        uses: actions/download-artifact@v4
+        with:
+          name: local-package-updates
+          path: .
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v30
+
+      - name: Warm and save nix cache
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-
+          purge-created: 0
+          purge-primary-key: never
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Seed nix store with flake inputs
+        run: nix flake check
+
+  evaluate:
+    needs: [update-and-setup, warm-cache]
+    if: needs.update-and-setup.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        host: ${{ fromJson(needs.update-and-setup.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update-and-setup.outputs.target_branch }}
+
+      - name: Download updated package files
+        uses: actions/download-artifact@v4
+        with:
+          name: local-package-updates
+          path: .
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v30
+
+      - name: Cache nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          save: false
+
+      - name: Evaluate NixOS Configuration (${{ matrix.host }})
+        run: nix build --dry-run ".#nixosConfigurations.\"${{ matrix.host }}\".config.system.build.toplevel"
+
+  commit-update:
+    needs: [update-and-setup, evaluate]
+    if: needs.update-and-setup.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update-and-setup.outputs.target_branch }}
+
+      - name: Download updated package files
+        uses: actions/download-artifact@v4
+        with:
+          name: local-package-updates
+          path: .
+
+      - name: Commit and push changes
+        uses: planetscale/ghcommit-action@v0.2.20
+        with:
+          commit_message: "Update local packages"
+          repo: ${{ github.repository }}
+          branch: ${{ needs.update-and-setup.outputs.target_branch }}
+          file_pattern: "modules/eden.nix modules/occt/default.nix modules/keeper.nix modules/nuke.nix"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
