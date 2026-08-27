@@ -33,7 +33,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: redis:8.10.0-alpine
+    image: redis:8.10.1-alpine
     networks:
       nextcloud:
         ipv4_address: 10.10.10.30
