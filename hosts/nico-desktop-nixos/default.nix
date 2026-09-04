@@ -26,6 +26,7 @@
     ../../modules/nixos-tools.nix
     ../../modules/bluetooth.nix
     ../../modules/1password.nix
+    ../../modules/bottles.nix
     ../../modules/virt-manager-client.nix
     ../../modules/nix-ld.nix
     ../../modules/logitech-wheel.nix
