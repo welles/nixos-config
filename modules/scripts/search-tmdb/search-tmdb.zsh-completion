@@ -1,0 +1,7 @@
+#compdef search-tmdb
+
+_arguments \
+  '(--movie --name -n --help -h)--show[Search TV shows]' \
+  '(--show --name -n --help -h)--movie[Search movies]' \
+  '(--help -h)'{--name,-n}'[Name to search for]:name:' \
+  '(- *)'{--help,-h}'[Show help]'
