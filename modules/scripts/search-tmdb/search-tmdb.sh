@@ -8,8 +8,8 @@ Usage: search-tmdb (--show|--movie) --name <name>
 Search TheMovieDB for a show or movie and print results formatted as:
   [tmdbid-<id>] <name> (<year>)
 
-The name links to the result's TheMovieDB page (a clickable hyperlink in
-terminals that support it; the plain URL is appended otherwise).
+The TheMovieDB URL for each result is appended, and the name is also
+wrapped as a clickable hyperlink in terminals that support it.
 
 Options:
   --show          Search TV shows
@@ -86,15 +86,13 @@ echo "$response" | jq -c '.results[]' | while IFS= read -r item; do
 
   if [[ -t 1 ]]; then
     display_name=$(printf '\e]8;;%s\e\\%s\e]8;;\e\\' "$url" "$escaped_name")
-    suffix=""
   else
     display_name="$escaped_name"
-    suffix=" - $url"
   fi
 
   if [[ -n "$year" ]]; then
-    echo "[tmdbid-$id] $display_name ($year)$suffix"
+    echo "[tmdbid-$id] $display_name ($year) - $url"
   else
-    echo "[tmdbid-$id] $display_name$suffix"
+    echo "[tmdbid-$id] $display_name - $url"
   fi
 done
