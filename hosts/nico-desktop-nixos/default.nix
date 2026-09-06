@@ -16,6 +16,7 @@
     ../../modules/occt
     ../../modules/scripts/check-persist
     ../../modules/scripts/toggle-screens
+    ../../modules/scripts/search-tmdb
     ../../modules/locale-de.nix
     ../../modules/keyboard.nix
     ../../modules/nix-settings.nix

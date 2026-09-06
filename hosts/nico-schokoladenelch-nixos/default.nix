@@ -7,6 +7,7 @@
     # global.nix + configurations/schokoladenelch + machines/ layout.
     ../../modules/nixos-tools.nix # nixos-diff → last in merged list
     ./packages.nix # bottom/ctop/etc. → 2nd-to-last group
+    ../../modules/scripts/search-tmdb
     ../../modules/scripts/check-mkv # → position 5
     ../../modules/scripts/create-zfs-dataset # → position 4
     ../../modules/scripts/zfs-manual-snapshot # → position 3
