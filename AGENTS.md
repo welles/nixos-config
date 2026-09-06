@@ -14,10 +14,12 @@ Ensure every modified `.nix` file is formatted and linted:
 1. Infer the hostname of the NixOS flake configuration being worked on. It may
    differ from the machine running Codex; check the `nixosConfigurations`
    attribute names in `flake.nix`.
-2. Build the configuration to check for errors without modifying the host:
+2. Dry-build the configuration to check for errors: this evaluates the config
+   and lists what would be built/fetched, without actually building or
+   modifying the host — much faster than a full build.
 
    ```sh
-   nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel --no-link
+   nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel --dry-run
    ```
 
 3. If the build fails, fix the errors and rebuild until it succeeds.
