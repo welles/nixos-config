@@ -9,6 +9,7 @@
     ../../modules/docker.nix
     ../../modules/virt-manager-client.nix
     ../../modules/kde-plasma.nix
+    ../../modules/fonts.nix
     ../../modules/networkmanager.nix
     ../../modules/profile-icon
     ../../modules/wifi-welles-intern

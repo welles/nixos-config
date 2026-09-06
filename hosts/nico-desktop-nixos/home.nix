@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./plasma.nix
+    ../../modules/home/fonts.nix
     ../../modules/home/cli-tools.nix
     ../../modules/home/git.nix
     ../../modules/home/git-signing.nix

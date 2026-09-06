@@ -2,7 +2,6 @@
 #
 # Declarative Plasma settings managed by plasma-manager. Configures:
 # - Power management profiles (AC, battery, low battery) with hibernate
-# - Fonts (Noto Sans / Fira Code Nerd Font)
 # - Default Breeze Dark look and feel
 # - Left-aligned floating panel with Kickoff menu and system tray
 #
@@ -93,17 +92,6 @@ _: {
 
     kscreenlocker = {
       autoLock = false;
-    };
-
-    fonts = {
-      general = {
-        family = "Noto Sans";
-        pointSize = 11;
-      };
-      fixedWidth = {
-        family = "FiraCode Nerd Font";
-        pointSize = 11;
-      };
     };
 
     configFile = {

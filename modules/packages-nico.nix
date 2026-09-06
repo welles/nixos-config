@@ -73,8 +73,4 @@
     # (pkgs.callPackage ./kwin-mousetiler.nix {})
     # (pkgs.callPackage ./kwin-rememberwindowpositions.nix {})
   ];
-
-  fonts.packages = with pkgs; [
-    nerd-fonts.fira-code
-  ];
 }

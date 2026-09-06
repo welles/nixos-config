@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./nico-laptop-plasma.nix
+    ./fonts.nix
     ./cli-tools.nix
     ./git.nix
     ./git-signing.nix

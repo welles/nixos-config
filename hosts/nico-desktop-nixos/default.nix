@@ -7,6 +7,7 @@
     ./impermanence.nix
     ../../modules/ai-agents.nix
     ../../modules/kde-plasma.nix
+    ../../modules/fonts.nix
     ../../modules/pipewire.nix
     ./networking.nix
     ./packages.nix
