@@ -3,7 +3,7 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: search-tmdb (--show|--movie) --name <name>
+Usage: search-tmdb (--show|-s|--movie|-m) [--name|-n <name>] [name...]
 
 Search TheMovieDB for a show or movie and print results formatted as:
   [tmdbid-<id>] <name> (<year>)
@@ -11,30 +11,40 @@ Search TheMovieDB for a show or movie and print results formatted as:
 The TheMovieDB URL for each result is appended, and the name is also
 wrapped as a clickable hyperlink in terminals that support it.
 
+The name to search for can be given with --name/-n, or as plain trailing
+words, e.g. `search-tmdb --show The Sopranos`.
+
 Options:
-  --show          Search TV shows
-  --movie         Search movies
-  --name, -n      Name to search for (required)
+  --show, -s      Search TV shows
+  --movie, -m     Search movies
+  --name, -n      Name to search for (may also be given as trailing words)
   --help, -h      Show this help
 EOF
 }
 
 media_type=""
 name=""
+positional=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --show)
+    --show|-s)
       [[ -n "$media_type" ]] && { echo "Error: --show and --movie are mutually exclusive." >&2; exit 1; }
       media_type="tv"; shift ;;
-    --movie)
+    --movie|-m)
       [[ -n "$media_type" ]] && { echo "Error: --show and --movie are mutually exclusive." >&2; exit 1; }
       media_type="movie"; shift ;;
     --name|-n) name="$2"; shift 2 ;;
     --help|-h) usage; exit 0 ;;
-    *) echo "Unknown argument: $1" >&2; usage; exit 1 ;;
+    --) shift; positional+=("$@"); break ;;
+    -*) echo "Unknown argument: $1" >&2; usage; exit 1 ;;
+    *) positional+=("$1"); shift ;;
   esac
 done
+
+if [[ -z "$name" && ${#positional[@]} -gt 0 ]]; then
+  name="${positional[*]}"
+fi
 
 if [[ -z "$media_type" ]]; then
   echo "Error: exactly one of --show or --movie is required." >&2
@@ -42,7 +52,7 @@ if [[ -z "$media_type" ]]; then
 fi
 
 if [[ -z "$name" ]]; then
-  echo "Error: --name is required." >&2
+  echo "Error: a name is required (via --name/-n or trailing words)." >&2
   exit 1
 fi
 
