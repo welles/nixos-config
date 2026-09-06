@@ -32,6 +32,7 @@
     ../../modules/virt-manager-client.nix
     ../../modules/nix-ld.nix
     ../../modules/logitech-wheel.nix
+    ../../modules/streamdeck.nix
   ];
 
   networking.hostName = hostname;
