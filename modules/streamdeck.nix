@@ -7,6 +7,6 @@
   programs.streamcontroller.enable = true;
 
   environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.users.${user}.directories = [".streamcontroller"];
+    ${persistRoot}.users.${user}.directories = [".var/app/com.core447.StreamController"];
   };
 }
