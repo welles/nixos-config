@@ -21,7 +21,7 @@
   };
 
   icon = pkgs.fetchurl {
-    url = "https://www.ocbase.com/images/new/logomark.occt.svg";
+    url = "https://www.ocbase.com/images/occt/logomark.occt.svg";
     hash = "sha256-GLivAu4/epbgXGRNc8lljhBQ8nIJob/2g5InXqZaUCA=";
     name = "${pname}.svg";
   };
