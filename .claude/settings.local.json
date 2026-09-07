@@ -1,0 +1,11 @@
+{
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "nixos"
+  ],
+  "permissions": {
+    "allow": [
+      "mcp__nixos__nix"
+    ]
+  }
+}
