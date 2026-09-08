@@ -1,6 +1,7 @@
 {hostname, ...}: {
   imports = [
     ../../modules/home/shell.nix
+    ../../modules/home/yazi.nix
     # Import order is intentional: NixOS concatenates environment.systemPackages
     # in reverse import order (last import = first in the merged list). This order
     # replicates the exact systemPackages ordering from the old
