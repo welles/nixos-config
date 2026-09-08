@@ -23,6 +23,7 @@ _: {
     panels = [
       {
         location = "left";
+        screen = "all";
         height = 50;
         floating = true;
 
