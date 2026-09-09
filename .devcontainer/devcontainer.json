@@ -25,7 +25,7 @@
     "NPM_CONFIG_PREFIX": "/home/vscode/.npm-global"
   },
   "remoteEnv": {
-    "PATH": "${containerEnv:PATH}:/home/vscode/.npm-global/bin"
+    "PATH": "${containerEnv:PATH}:/home/vscode/.npm-global/bin:/home/vscode/.nix-profile/bin"
   },
   "mounts": [
     "source=devcontainer-npm-global,target=/home/vscode/.npm-global,type=volume"
