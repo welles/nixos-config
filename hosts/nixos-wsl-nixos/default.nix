@@ -28,6 +28,7 @@
     user = "nixos";
     homeModules = [
       ../../modules/home/nixos.nix
+      ../../modules/home/kde-theming.nix
       ./plasma.nix
     ];
     userDescription = "Nico Welles";
