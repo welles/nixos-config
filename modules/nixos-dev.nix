@@ -71,6 +71,7 @@
       jq
       perl
       python3
+      solidtime-desktop
     ];
 
     sessionVariables = {
