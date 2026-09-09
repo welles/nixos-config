@@ -26,7 +26,10 @@
   system.stateVersion = "25.11";
   _module.args = {
     user = "nixos";
-    homeModules = [../../modules/home/nixos.nix];
+    homeModules = [
+      ../../modules/home/nixos.nix
+      ./plasma.nix
+    ];
     userDescription = "Nico Welles";
     userEmail = "welles@mentz.net";
   };
