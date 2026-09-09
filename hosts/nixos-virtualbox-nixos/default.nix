@@ -23,7 +23,7 @@
   system.stateVersion = "25.11";
   _module.args = {
     user = "nixos";
-    homeFile = ../../modules/home/nixos.nix;
+    homeModules = [../../modules/home/nixos.nix];
     persistRoot = "/persist";
     userDescription = "NW";
     userEmail = "welles@mentz.net";

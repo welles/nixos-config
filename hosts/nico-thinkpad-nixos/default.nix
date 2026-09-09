@@ -56,7 +56,20 @@
   system.stateVersion = "25.11";
   _module.args = {
     user = "nico";
-    homeFile = ../../modules/home/nico-laptop.nix;
+    homeModules = [
+      ../../modules/home/nico-laptop-plasma.nix
+      ../../modules/home/fonts.nix
+      ../../modules/home/cli-tools.nix
+      ../../modules/home/git.nix
+      ../../modules/home/git-signing.nix
+      ../../modules/home/npm.nix
+      ../../modules/home/kde-theming.nix
+      ../../modules/home/1password-ssh-agent.nix
+      ../../modules/home/1password-autostart.nix
+      ../../modules/home/sops-env.nix
+      ../../modules/home/xdg-user-dirs.nix
+      ../../modules/home/lazygit.nix
+    ];
     persistRoot = "/persist";
     userDescription = "Nico Welles";
     userEmail = "nico@welles.email";
