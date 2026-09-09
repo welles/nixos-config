@@ -7,7 +7,6 @@
     ../../modules/home/git-signing.nix
     ../../modules/home/npm.nix
     ../../modules/home/kde-theming.nix
-    ../../modules/home/konsole.nix
     ../../modules/home/1password-ssh-agent.nix
     ../../modules/home/1password-autostart.nix
     ../../modules/home/sops-env.nix

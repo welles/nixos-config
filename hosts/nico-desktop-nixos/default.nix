@@ -2,6 +2,7 @@
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/yazi.nix
+    ../../modules/home/konsole.nix
     ./hardware-configuration.nix
     ../../modules/profile-icon
     ./disk-configuration.nix

@@ -2,6 +2,7 @@
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/yazi.nix
+    ../../modules/home/konsole.nix
     ../../modules/nixos-tools.nix
     ../../modules/nixos-dev.nix
     ./hardware-configuration.nix

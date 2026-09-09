@@ -1,16 +1,23 @@
 _: {
-  home.sessionVariables.TERMINAL = "konsole";
+  home-manager.sharedModules = [
+    {
+      home.sessionVariables.TERMINAL = "konsole";
 
-  programs.konsole = {
-    enable = true;
-    profiles.default = {
-      name = "Default";
-      font = {
-        name = "FiraCode Nerd Font";
-        size = 11;
+      programs.konsole = {
+        enable = true;
+        profiles.default = {
+          name = "Default";
+          font = {
+            name = "FiraCode Nerd Font";
+            size = 11;
+          };
+          extraConfig = {
+            Appearance.EnableLigatures = true;
+            General.LocalTabTitleFormat = "%w";
+          };
+        };
+        defaultProfile = "default";
       };
-      extraConfig.Appearance.EnableLigatures = true;
-    };
-    defaultProfile = "default";
-  };
+    }
+  ];
 }

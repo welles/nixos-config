@@ -2,6 +2,7 @@
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/yazi.nix
+    ../../modules/home/konsole.nix
     # "global.nix"-style: tmux before the body
     ../../modules/tmux.nix
 
