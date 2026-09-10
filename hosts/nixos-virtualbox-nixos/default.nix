@@ -14,6 +14,7 @@
 
     # Home Manager
     ../../modules/konsole.nix
+    ../../modules/npm.nix
     ../../modules/shell.nix
     ../../modules/yazi.nix
 
@@ -72,7 +73,6 @@
     homeModules = [
       ../../modules/cli-tools.nix
       ../../modules/git.nix
-      ../../modules/npm.nix
       ../../modules/dotnet-tools-path.nix
     ];
     persistRoot = "/persist";

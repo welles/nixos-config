@@ -21,7 +21,6 @@
     users.${user} = {
       directories = [
         ".ssh"
-        ".npm-global"
       ];
     };
   };

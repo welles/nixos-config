@@ -29,6 +29,7 @@
 
     # Home Manager
     ../../modules/konsole.nix
+    ../../modules/npm.nix
     ../../modules/shell.nix
     ../../modules/yazi.nix
 
@@ -127,7 +128,6 @@
       ../../modules/cli-tools.nix
       ../../modules/git.nix
       ../../modules/git-signing.nix
-      ../../modules/npm.nix
       ../../modules/kde-theming.nix
       ../../modules/1password-ssh-agent.nix
       ../../modules/1password-autostart.nix

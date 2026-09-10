@@ -1,15 +1,28 @@
-{config, ...}: {
-  imports = [
-    ./scripts/npm-global-install
-  ];
+{
+  lib,
+  user,
+  persistRoot ? null,
+  ...
+}: {
+  environment.persistence = lib.mkIf (persistRoot != null) {
+    ${persistRoot}.users.${user}.directories = [".npm-global"];
+  };
 
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.npm-global/bin"
-  ];
+  home-manager.sharedModules = [
+    ({config, ...}: {
+      imports = [
+        ./scripts/npm-global-install
+      ];
 
-  home.file.".npmrc".text = ''
-    prefix=${config.home.homeDirectory}/.npm-global
-    save-exact=true
-    save-prefix=
-  '';
+      home.sessionPath = [
+        "${config.home.homeDirectory}/.npm-global/bin"
+      ];
+
+      home.file.".npmrc".text = ''
+        prefix=${config.home.homeDirectory}/.npm-global
+        save-exact=true
+        save-prefix=
+      '';
+    })
+  ];
 }
