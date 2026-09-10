@@ -21,7 +21,6 @@
     users.${user} = {
       directories = [
         ".ssh"
-        ".local/share/applications"
         ".npm-global"
         "Desktop"
         "Documents"
