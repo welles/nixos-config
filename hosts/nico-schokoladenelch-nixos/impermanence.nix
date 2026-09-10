@@ -1,6 +1,5 @@
 {
   persistRoot,
-  user,
   ...
 }: {
   fileSystems = {
@@ -23,6 +22,5 @@
       "/etc/machine-id"
       "/etc/adjtime"
     ];
-    users.${user}.directories = [".local/share/zsh"];
   };
 }

@@ -16,7 +16,10 @@
   users.users.${user}.shell = pkgs.zsh;
 
   environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.users.${user}.files = [".zsh_history"];
+    ${persistRoot}.users.${user} = {
+      files = [".zsh_history"];
+      directories = [".local/share/zsh"];
+    };
   };
 
   home-manager.sharedModules = [

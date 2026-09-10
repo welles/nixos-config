@@ -5,7 +5,6 @@
 # expected locations, preserving state across reboots.
 {
   persistRoot,
-  user,
   ...
 }: {
   fileSystems.${persistRoot}.neededForBoot = true;
@@ -26,10 +25,5 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
-    users.${user} = {
-      directories = [
-        ".local/share/zsh"
-      ];
-    };
   };
 }
