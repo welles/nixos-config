@@ -5,7 +5,7 @@
 }: {
   imports = [
     # Hardware & boot
-    ./boot.nix
+    ../../modules/zfs-grub-boot.nix
     ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix

@@ -1,11 +1,10 @@
-# ZFS Laptop Boot Configuration
+# ZFS GRUB Boot Configuration
 #
-# Full boot configuration for ZFS-with-impermanence laptops. Combines:
-# - GRUB bootloader with EFI and ZFS support
+# GRUB bootloader with EFI and ZFS support, plus:
+# - nvme kernel module preloaded early in initrd, before ZFS pool import
 # - exFAT filesystem support
 #
 # Import alongside zfs-rollback.nix for the actual rollback-on-boot service.
-# Shared by nico-thinkbook-nixos and nico-thinkpad-nixos.
 _: {
   boot = {
     loader = {

@@ -6,7 +6,7 @@
     ./impermanence.nix
     ../../modules/sops-zfs-persist.nix
     ./tablet.nix
-    ../../modules/zfs-laptop-boot.nix
+    ../../modules/zfs-grub-boot.nix
     ../../modules/zfs-rollback.nix
 
     # Networking

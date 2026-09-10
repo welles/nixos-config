@@ -8,7 +8,7 @@
     ./nvidia-gpu.nix
     ../../modules/sops-zfs-persist.nix
     ../../modules/xone-dongle.nix
-    ../../modules/zfs-laptop-boot.nix
+    ../../modules/zfs-grub-boot.nix
     ../../modules/zfs-rollback.nix
 
     # Networking
