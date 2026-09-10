@@ -29,5 +29,13 @@
   },
   "mounts": [
     "source=devcontainer-npm-global,target=/home/vscode/.npm-global,type=volume"
-  ]
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Anthropic.claude-code",
+        "jnoortheen.nix-ide"
+      ]
+    }
+  }
 }
