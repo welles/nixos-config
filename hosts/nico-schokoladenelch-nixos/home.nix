@@ -1,15 +1,10 @@
 # Schokoladenelch Home Manager Configuration
 #
 # Server user environment. Imports shared shell, CLI tools, and Git
-# modules. Extends Git with a safe directory for the stacks repo,
-# and stores Zsh history on the persistent ZFS dataset so it
-# survives the ephemeral root rollback.
-{config, ...}: {
+# modules. Extends Git with a safe directory for the stacks repo.
+_: {
   imports = [
     ../../modules/cli-tools.nix
     ../../modules/git.nix
   ];
-
-  # Store Zsh history on the persistent dataset
-  programs.zsh.history.path = "${config.home.homeDirectory}/.local/share/zsh/history";
 }

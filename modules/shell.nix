@@ -3,7 +3,8 @@
 # Enables ZSH system-wide, sets it as the login shell for the host user,
 # and configures it for all home-manager users: Oh-my-zsh with
 # autosuggestions, syntax highlighting, completion, and fastfetch
-# greeting on new shells.
+# greeting on new shells. Zsh history is stored under XDG state
+# (.local/share/zsh) so it survives an impermanent root.
 {
   lib,
   pkgs,
@@ -16,14 +17,11 @@
   users.users.${user}.shell = pkgs.zsh;
 
   environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.users.${user} = {
-      files = [".zsh_history"];
-      directories = [".local/share/zsh"];
-    };
+    ${persistRoot}.users.${user}.directories = [".local/share/zsh"];
   };
 
   home-manager.sharedModules = [
-    {
+    ({config, ...}: {
       programs.fastfetch.enable = true;
 
       programs.zsh = {
@@ -34,10 +32,12 @@
 
         initContent = "fastfetch";
 
+        history.path = "${config.home.homeDirectory}/.local/share/zsh/history";
+
         oh-my-zsh = {
           enable = true;
         };
       };
-    }
+    })
   ];
 }
