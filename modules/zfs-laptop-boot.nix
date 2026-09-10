@@ -2,13 +2,11 @@
 #
 # Full boot configuration for ZFS-with-impermanence laptops. Combines:
 # - GRUB bootloader with EFI and ZFS support
-# - ZFS rollback-on-boot (see zfs-rollback.nix)
 # - exFAT filesystem support
 #
+# Import alongside zfs-rollback.nix for the actual rollback-on-boot service.
 # Shared by nico-thinkbook-nixos and nico-thinkpad-nixos.
 _: {
-  imports = [./zfs-rollback.nix];
-
   boot = {
     loader = {
       systemd-boot.enable = false;

@@ -7,6 +7,7 @@
     ../../modules/sops-zfs-persist.nix
     ./tablet.nix
     ../../modules/zfs-laptop-boot.nix
+    ../../modules/zfs-rollback.nix
 
     # Networking
     ../../modules/avahi.nix
