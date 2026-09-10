@@ -32,6 +32,7 @@
 
     # Services & hardware
     ../../modules/docker.nix
+    ../../modules/openssh-host-keys.nix
     ./virtualbox.nix
 
     # Packages

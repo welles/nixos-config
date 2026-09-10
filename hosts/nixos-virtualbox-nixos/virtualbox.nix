@@ -3,4 +3,9 @@ _: {
   virtualisation.virtualbox.guest.dragAndDrop = true;
 
   services.xserver.videoDrivers = ["virtualbox" "modesetting"];
+
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+  };
 }
