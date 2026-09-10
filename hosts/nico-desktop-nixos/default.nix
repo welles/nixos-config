@@ -66,7 +66,7 @@
     ../../modules/packages/libreoffice.nix
     ../../modules/packages/mcp-nixos.nix
     ../../modules/packages/nodejs.nix
-    ../../modules/packages/occt
+    ../../modules/packages/occt.nix
     ../../modules/packages/pciutils.nix
     ../../modules/packages/remmina.nix
     ../../modules/packages/sops.nix

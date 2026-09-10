@@ -90,7 +90,7 @@
     ../../modules/packages/naps2.nix
     ../../modules/packages/nodejs.nix
     ../../modules/packages/obs-studio.nix
-    ../../modules/packages/occt
+    ../../modules/packages/occt.nix
     ../../modules/packages/pciutils.nix
     ../../modules/packages/picard.nix
     ../../modules/packages/pinta.nix
