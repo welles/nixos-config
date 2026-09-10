@@ -1,8 +1,10 @@
 {hostname, ...}: {
   imports = [
     ../../modules/home/shell.nix
-    ../../modules/nixos-tools.nix # nixos-diff → last in merged systemPackages
-    ./packages.nix # firefox/jellyfin/chrome → before nixos-diff
+    ../../modules/nixos-tools.nix
+    ../../modules/packages/firefox.nix
+    ../../modules/packages/jellyfin-desktop.nix
+    ../../modules/packages/google-chrome.nix
     ./hardware-configuration.nix
     ./disk-configuration.nix
     ../../modules/tmux.nix
@@ -14,11 +16,17 @@
     ./home-manager.nix
     ./boot.nix
     ./desktop.nix
-    ./users.nix
+    ../../modules/user-account.nix
     ./auto-upgrade.nix
   ];
 
   networking.hostName = hostname;
   system.stateVersion = "25.11";
-  _module.args.user = "eltern";
+  _module.args = {
+    user = "eltern";
+    userDescription = "Moni & Gerri";
+    persistRoot = null;
+    passwordConfig = {initialPassword = "passwort";};
+    extraGroups = ["wheel"];
+  };
 }

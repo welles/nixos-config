@@ -1,26 +1,28 @@
 # Rclone Nextcloud Mount
 #
-# Mounts the private Nextcloud folder from nextcloud.welles.app at ~/Nextcloud
-# using rclone's WebDAV backend with full VFS caching (virtual files).
-# Password is read at runtime from a sops-managed secret.
+# Mounts a private Nextcloud folder at ~/Nextcloud using rclone's WebDAV
+# backend with full VFS caching (virtual files). Password is read at
+# runtime from a sops-managed secret.
 {
   config,
   pkgs,
+  user,
+  nextcloudUrl,
   ...
 }: let
-  mountPoint = "/home/nico/Nextcloud";
+  mountPoint = "/home/${user}/Nextcloud";
   nextcloudUsernameFile = config.sops.secrets."nextcloud-username".path;
   nextcloudPasswordFile = config.sops.secrets."nextcloud-password".path;
 in {
   sops.secrets."nextcloud-username" = {
     sopsFile = ./secrets.yaml;
-    owner = "nico";
+    owner = user;
     mode = "0400";
   };
 
   sops.secrets."nextcloud-password" = {
     sopsFile = ./secrets.yaml;
-    owner = "nico";
+    owner = user;
     mode = "0400";
   };
 
@@ -34,14 +36,14 @@ in {
 
     serviceConfig = {
       Type = "notify";
-      User = "nico";
+      User = user;
       Environment = "PATH=/run/wrappers/bin:${pkgs.rclone}/bin:${pkgs.coreutils}/bin";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
       ExecStart = "${pkgs.writeShellScript "rclone-nextcloud-start" ''
         nc_user=$(cat ${nextcloudUsernameFile})
         obscured_pass=$(${pkgs.rclone}/bin/rclone obscure "$(cat ${nextcloudPasswordFile})")
         exec ${pkgs.rclone}/bin/rclone mount :webdav: ${mountPoint} \
-          --webdav-url "https://nextcloud.welles.app/remote.php/dav/files/$nc_user/" \
+          --webdav-url "${nextcloudUrl}/remote.php/dav/files/$nc_user/" \
           --webdav-vendor nextcloud \
           --webdav-user "$nc_user" \
           --webdav-pass "$obscured_pass" \

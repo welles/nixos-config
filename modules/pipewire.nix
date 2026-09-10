@@ -3,7 +3,12 @@
 # Enables PipeWire as the audio server with ALSA and PulseAudio
 # compatibility layers, including 32-bit support for gaming.
 # Enables rtkit for real-time audio scheduling priority.
-_: {
+{
+  lib,
+  user,
+  persistRoot ? null,
+  ...
+}: {
   services.pulseaudio.enable = false;
 
   services.pipewire = {
@@ -19,4 +24,8 @@ _: {
   };
 
   security.rtkit.enable = true;
+
+  environment.persistence = lib.mkIf (persistRoot != null) {
+    ${persistRoot}.users.${user}.directories = [".local/state/wireplumber"];
+  };
 }

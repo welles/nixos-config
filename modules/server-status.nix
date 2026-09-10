@@ -5,6 +5,7 @@
 {
   lib,
   pkgs,
+  extraDiskMounts,
   ...
 }: let
   btopStatusConfig = pkgs.writeText "btop-status.conf" ''
@@ -21,8 +22,8 @@
     cpu_graph_upper = "total"
     cpu_graph_lower = "total"
     cpu_single_graph = false
-    # Each selected ZFS mount reports its pool-wide capacity and free space.
-    disks_filter = "/boot / /mnt/tank/movies"
+    # Each selected mount reports its pool-wide capacity and free space.
+    disks_filter = "${lib.concatStringsSep " " (["/boot" "/"] ++ extraDiskMounts)}"
     update_ms = 1500
   '';
 in {

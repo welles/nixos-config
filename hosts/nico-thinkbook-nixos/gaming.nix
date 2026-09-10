@@ -1,9 +1,8 @@
-{pkgs, ...}: {
-  imports = [../../modules/steam.nix];
-
-  environment.systemPackages = with pkgs; [
-    openttd-jgrpp
-    prismlauncher
-    streamcontroller
+_: {
+  imports = [
+    ../../modules/packages/steam.nix
+    ../../modules/packages/openttd-jgrpp.nix
+    ../../modules/packages/prismlauncher.nix
+    ../../modules/packages/streamdeck.nix
   ];
 }

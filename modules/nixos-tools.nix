@@ -2,7 +2,9 @@
   pkgs,
   hostname,
   ...
-}: {
+}: let
+  flakeUri = "github:welles/nixos-config";
+in {
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "nixos-diff" ''
       TMPDIR=$(mktemp -d)
@@ -11,7 +13,7 @@
 
       echo "Building new configuration..."
       (cd "$TMPDIR" && nixos-rebuild build \
-        --flake github:welles/nixos-config#${hostname} \
+        --flake ${flakeUri}#${hostname} \
         --refresh) || exit 1
 
       echo ""
@@ -25,7 +27,7 @@
   ];
 
   environment.shellAliases = {
-    nixos-switch = "sudo nixos-rebuild switch --flake github:welles/nixos-config#${hostname} --refresh";
-    nixos-boot = "sudo nixos-rebuild boot --flake github:welles/nixos-config#${hostname} --refresh";
+    nixos-switch = "sudo nixos-rebuild switch --flake ${flakeUri}#${hostname} --refresh";
+    nixos-boot = "sudo nixos-rebuild boot --flake ${flakeUri}#${hostname} --refresh";
   };
 }

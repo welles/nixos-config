@@ -1,4 +1,8 @@
-{hostname, ...}: {
+{
+  hostname,
+  config,
+  ...
+}: {
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/yazi.nix
@@ -7,16 +11,39 @@
     ../../modules/profile-icon
     ./disk-configuration.nix
     ./impermanence.nix
-    ../../modules/ai-agents.nix
+    ../../modules/packages/claude-code.nix
+    ../../modules/packages/codex.nix
+    ../../modules/packages/antigravity.nix
     ../../modules/kde-plasma.nix
-    ../../modules/fonts.nix
+    ../../modules/packages/fira-code-nerd-font.nix
+    ../../modules/packages/fira-sans.nix
     ../../modules/pipewire.nix
     ./networking.nix
-    ./packages.nix
+    ../../modules/packages/alejandra.nix
+    ../../modules/packages/deadnix.nix
+    ../../modules/packages/delta.nix
+    ../../modules/packages/discord.nix
+    ../../modules/packages/easyeffects.nix
+    ../../modules/packages/firefox-devedition.nix
+    ../../modules/packages/fsearch.nix
+    ../../modules/packages/google-chrome.nix
+    ../../modules/packages/gparted.nix
+    ../../modules/packages/lazygit.nix
+    ../../modules/packages/libreoffice.nix
+    ../../modules/packages/mcp-nixos.nix
+    ../../modules/packages/pciutils.nix
+    ../../modules/packages/remmina.nix
+    ../../modules/packages/sops.nix
+    ../../modules/packages/sourcegit.nix
+    ../../modules/packages/ssh-to-age.nix
+    ../../modules/packages/statix.nix
+    ../../modules/packages/usbutils.nix
+    ../../modules/packages/vscode.nix
+    ../../modules/packages/nodejs.nix
     ./services.nix
     ./nvidia-gpu.nix
     ../../modules/tmux.nix
-    ../../modules/occt
+    ../../modules/packages/occt
     ../../modules/scripts/check-persist
     ../../modules/scripts/toggle-screens
     ../../modules/scripts/search-tmdb
@@ -25,16 +52,16 @@
     ../../modules/nix-settings.nix
     ./boot.nix
     ./sops.nix
-    ./users.nix
+    ../../modules/user-account.nix
     ../../modules/home-manager-user.nix
     ../../modules/nixos-tools.nix
     ../../modules/bluetooth.nix
-    ../../modules/1password.nix
-    ../../modules/bottles.nix
+    ../../modules/packages/1password.nix
+    ../../modules/packages/bottles.nix
     ../../modules/virt-manager-client.nix
     ../../modules/nix-ld.nix
     ../../modules/logitech-wheel.nix
-    ../../modules/streamdeck.nix
+    ../../modules/packages/streamdeck.nix
   ];
 
   networking.hostName = hostname;
@@ -59,5 +86,11 @@
     persistRoot = "/persist";
     userDescription = "Nico Welles";
     userEmail = "nico@welles.email";
+    sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
+    onePasswordVaults = ["Persönlich" "Schokoladenelch"];
+    passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
+    extraGroups = ["wheel"];
+    remoteHost = "nico-schokoladenelch-nixos";
+    remoteUser = "schokoladenelch";
   };
 }

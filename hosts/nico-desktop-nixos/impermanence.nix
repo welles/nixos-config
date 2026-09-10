@@ -8,8 +8,6 @@
   environment.persistence.${persistRoot} = {
     hideMounts = true;
     directories = [
-      "/var/lib/bluetooth"
-      "/var/lib/NetworkManager"
       "/var/lib/nixos"
       "/var/lib/sops-nix"
       "/var/lib/systemd/coredump"
@@ -21,30 +19,11 @@
       "/etc/machine-id"
     ];
     users.${user} = {
-      files = [
-        ".zsh_history"
-        ".config/kwinoutputconfig.json"
-        ".config/mimeapps.list"
-      ];
       directories = [
         ".ssh"
-        ".sourcegit"
         ".config/Bitwarden"
-        ".config/Code"
-        ".config/discord"
-        ".config/easyeffects"
-        ".config/fsearch"
-        ".config/google-chrome"
-        ".config/kde.org"
-        ".config/mozilla/firefox"
         ".local/share/applications"
-        ".local/share/dolphin"
-        ".local/share/kscreen"
-        ".local/share/kwalletd"
-        ".local/share/remmina"
-        ".local/state/wireplumber"
         ".npm-global"
-        ".vscode"
         "Desktop"
         "Documents"
         "Downloads"

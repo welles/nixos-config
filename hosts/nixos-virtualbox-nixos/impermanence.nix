@@ -17,7 +17,6 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
-      "/var/lib/docker"
     ];
     files = [
       "/etc/machine-id"

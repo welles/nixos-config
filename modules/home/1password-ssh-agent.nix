@@ -1,4 +1,8 @@
-_: {
+{
+  lib,
+  onePasswordVaults,
+  ...
+}: {
   home.sessionVariables = {
     SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
   };
@@ -8,11 +12,10 @@ _: {
       IdentityAgent ~/.1password/agent.sock
   '';
 
-  home.file.".config/1Password/ssh/agent.toml".text = ''
-    [[ssh-keys]]
-    vault = "Persönlich"
-
-    [[ssh-keys]]
-    vault = "Schokoladenelch"
-  '';
+  home.file.".config/1Password/ssh/agent.toml".text =
+    lib.concatMapStringsSep "\n" (vault: ''
+      [[ssh-keys]]
+      vault = "${vault}"
+    '')
+    onePasswordVaults;
 }

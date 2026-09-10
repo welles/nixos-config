@@ -1,19 +1,28 @@
-{hostname, ...}: {
+{
+  hostname,
+  config,
+  ...
+}: {
   imports = [
     ../../modules/home/shell.nix
     ../../modules/home/yazi.nix
-    # Import order is intentional: NixOS concatenates environment.systemPackages
-    # in reverse import order (last import = first in the merged list). This order
-    # replicates the exact systemPackages ordering from the old
-    # global.nix + configurations/schokoladenelch + machines/ layout.
-    ../../modules/nixos-tools.nix # nixos-diff → last in merged list
-    ./packages.nix # bottom/ctop/etc. → 2nd-to-last group
+    ../../modules/nixos-tools.nix
+    ../../modules/packages/bottom.nix
+    ../../modules/packages/ctop.nix
+    ../../modules/packages/httm.nix
+    ../../modules/packages/iotop.nix
+    ../../modules/packages/lazydocker.nix
+    ../../modules/packages/lazygit.nix
+    ../../modules/packages/smartmontools.nix
+    ../../modules/packages/sops.nix
+    ../../modules/packages/ssh-to-age.nix
+    ../../modules/packages/systemctl-tui.nix
     ../../modules/scripts/search-tmdb
-    ../../modules/scripts/check-mkv # → position 5
-    ../../modules/scripts/create-zfs-dataset # → position 4
-    ../../modules/scripts/zfs-manual-snapshot # → position 3
-    ../../modules/scripts/zfs-snapshot-diff # → position 2
-    ../../modules/scripts/check-persist # → position 1 (first in merged list)
+    ../../modules/scripts/check-mkv
+    ../../modules/scripts/create-zfs-dataset
+    ../../modules/scripts/zfs-manual-snapshot
+    ../../modules/scripts/zfs-snapshot-diff
+    ../../modules/scripts/check-persist
     ./hardware-configuration.nix
     ./disk-configuration.nix
     ../../modules/tmux.nix
@@ -31,6 +40,7 @@
     ../../modules/nix-settings.nix
     ./sops.nix
     ./users.nix
+    ../../modules/user-account.nix
     ./home-manager.nix
   ];
 
@@ -42,5 +52,8 @@
     persistRoot = "/mnt/bucket/persist";
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";
+    extraDiskMounts = ["/mnt/tank/movies"];
+    passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
+    extraGroups = ["wheel"];
   };
 }

@@ -5,13 +5,19 @@
 # autosuggestions, syntax highlighting, completion, and fastfetch
 # greeting on new shells.
 {
+  lib,
   pkgs,
   user ? (builtins.throw "shell.nix: set `_module.args.user` to the shell username"),
+  persistRoot ? null,
   ...
 }: {
   programs.zsh.enable = true;
 
   users.users.${user}.shell = pkgs.zsh;
+
+  environment.persistence = lib.mkIf (persistRoot != null) {
+    ${persistRoot}.users.${user}.files = [".zsh_history"];
+  };
 
   home-manager.sharedModules = [
     {
