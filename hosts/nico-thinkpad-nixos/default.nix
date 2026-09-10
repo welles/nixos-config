@@ -128,7 +128,6 @@
       ../../modules/1password-ssh-agent.nix
       ../../modules/1password-autostart.nix
       ../../modules/sops-env.nix
-      ../../modules/lazygit.nix
     ];
     persistRoot = "/persist";
     userDescription = "Nico Welles";
