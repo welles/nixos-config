@@ -18,7 +18,7 @@
           ripgrep
         ];
 
-        keymap.manager.prepend_keymap = [
+        keymap.mgr.prepend_keymap = [
           {
             on = "<Enter>";
             run = "plugin smart-enter";
