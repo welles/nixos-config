@@ -22,12 +22,6 @@
       directories = [
         ".ssh"
         ".npm-global"
-        "Desktop"
-        "Documents"
-        "Downloads"
-        "Music"
-        "Pictures"
-        "Videos"
       ];
     };
   };

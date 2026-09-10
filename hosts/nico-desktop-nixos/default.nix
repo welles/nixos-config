@@ -19,6 +19,7 @@
     # Desktop environment
     ../../modules/bluetooth.nix
     ../../modules/kde-plasma.nix
+    ../../modules/user-dirs.nix
     ../../modules/pipewire.nix
     ../../modules/profile-icon
 
@@ -97,7 +98,6 @@
       ../../modules/home/1password-ssh-agent.nix
       ../../modules/home/1password-autostart.nix
       ../../modules/home/sops-env.nix
-      ../../modules/home/xdg-user-dirs.nix
       ../../modules/home/lazygit.nix
     ];
     persistRoot = "/persist";
