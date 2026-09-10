@@ -4,52 +4,65 @@
   ...
 }: {
   imports = [
+    # Hardware & boot
+    ./hardware-configuration.nix
+
+    # Desktop environment
+    ./desktop.nix
+
+    # Home Manager
+    ../../modules/home/konsole.nix
     ../../modules/home/shell.nix
     ../../modules/home/yazi.nix
-    ../../modules/home/konsole.nix
-    ../../modules/nixos-tools.nix
-    ../../modules/docker.nix
-    ../../modules/nix-ld-dev-libraries.nix
+
+    # User & identity
+    ../../modules/home-manager-user.nix
+    ../../modules/user-account.nix
+
+    # System
     ../../modules/dotnet-sdk-env.nix
-    ../../modules/packages/headlamp.nix
-    ../../modules/packages/hoppscotch.nix
-    ../../modules/packages/lazygit.nix
-    ../../modules/packages/lazydocker.nix
-    ../../modules/packages/k9s.nix
-    ../../modules/packages/k0sctl.nix
-    ../../modules/packages/kdePackages-dolphin.nix
-    ../../modules/packages/kind.nix
-    ../../modules/packages/kubectl.nix
-    ../../modules/packages/kubeseal.nix
-    ../../modules/packages/kubelogin-oidc.nix
-    ../../modules/packages/jetbrains-rider.nix
+    ../../modules/keyboard.nix
+    ../../modules/locale-de.nix
+    ../../modules/nix-ld-dev-libraries.nix
+    ../../modules/nix-settings.nix
+    ../../modules/nixos-tools.nix
+    ../../modules/tmux.nix
+
+    # Services & hardware
+    ../../modules/docker.nix
+    inputs.nixos-wsl.nixosModules.default
+    ./wsl.nix
+
+    # Packages
+    ../../modules/packages/bruno.nix
     ../../modules/packages/dotnet-sdk_10.nix
-    ../../modules/packages/mercurial.nix
-    ../../modules/packages/nodejs.nix
-    ../../modules/packages/vscode.nix
     ../../modules/packages/firefox-devedition.nix
     ../../modules/packages/google-chrome.nix
-    ../../modules/packages/microsoft-edge.nix
-    ../../modules/packages/sourcegit.nix
-    ../../modules/packages/bruno.nix
-    ../../modules/packages/openssl.nix
-    ../../modules/packages/kubernetes-helm.nix
+    ../../modules/packages/headlamp.nix
+    ../../modules/packages/hoppscotch.nix
+    ../../modules/packages/jetbrains-rider.nix
     ../../modules/packages/jq.nix
+    ../../modules/packages/k0sctl.nix
+    ../../modules/packages/k9s.nix
+    ../../modules/packages/kdePackages-dolphin.nix
+    ../../modules/packages/keeper.nix
+    ../../modules/packages/kind.nix
+    ../../modules/packages/kubectl.nix
+    ../../modules/packages/kubelogin-oidc.nix
+    ../../modules/packages/kubernetes-helm.nix
+    ../../modules/packages/kubeseal.nix
+    ../../modules/packages/lazydocker.nix
+    ../../modules/packages/lazygit.nix
+    ../../modules/packages/mercurial.nix
+    ../../modules/packages/microsoft-edge.nix
+    ../../modules/packages/nodejs.nix
+    ../../modules/packages/nuke.nix
+    ../../modules/packages/openssl.nix
     ../../modules/packages/perl.nix
     ../../modules/packages/python3.nix
     ../../modules/packages/solidtime-desktop.nix
-    ../../modules/user-account.nix
-    ../../modules/packages/nuke.nix
-    ./hardware-configuration.nix
-    ./desktop.nix
-    ../../modules/tmux.nix
-    ../../modules/locale-de.nix
-    ../../modules/keyboard.nix
-    ../../modules/nix-settings.nix
-    ../../modules/packages/keeper.nix
-    ../../modules/home-manager-user.nix
-    inputs.nixos-wsl.nixosModules.default
-    ./wsl.nix
+    ../../modules/packages/sourcegit.nix
+    ../../modules/packages/vscode.nix
   ];
 
   networking.hostName = hostname;

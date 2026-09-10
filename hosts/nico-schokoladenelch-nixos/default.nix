@@ -4,9 +4,41 @@
   ...
 }: {
   imports = [
+    # Hardware & boot
+    ./boot.nix
+    ./disk-configuration.nix
+    ./hardware-configuration.nix
+    ./impermanence.nix
+    ./sops.nix
+    ./users.nix
+
+    # Networking
+    ./networking.nix
+    ../../modules/networkmanager.nix
+
+    # Home Manager
     ../../modules/home/shell.nix
     ../../modules/home/yazi.nix
+
+    # User & identity
+    ./home-manager.nix
+    ../../modules/user-account.nix
+
+    # System
+    ../../modules/keyboard.nix
+    ../../modules/locale-de.nix
+    ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
+    ../../modules/tmux.nix
+
+    # Services & hardware
+    ../../modules/docker.nix
+    ../../modules/libvirt.nix
+    ../../modules/server-status.nix
+    ./services.nix
+    ../../modules/stacks/default.nix
+
+    # Packages
     ../../modules/packages/bottom.nix
     ../../modules/packages/ctop.nix
     ../../modules/packages/httm.nix
@@ -17,31 +49,14 @@
     ../../modules/packages/sops.nix
     ../../modules/packages/ssh-to-age.nix
     ../../modules/packages/systemctl-tui.nix
-    ../../modules/scripts/search-tmdb
+
+    # Scripts
     ../../modules/scripts/check-mkv
+    ../../modules/scripts/check-persist
     ../../modules/scripts/create-zfs-dataset
+    ../../modules/scripts/search-tmdb
     ../../modules/scripts/zfs-manual-snapshot
     ../../modules/scripts/zfs-snapshot-diff
-    ../../modules/scripts/check-persist
-    ./hardware-configuration.nix
-    ./disk-configuration.nix
-    ../../modules/tmux.nix
-    ../../modules/docker.nix
-    ../../modules/libvirt.nix
-    ../../modules/networkmanager.nix
-    ../../modules/stacks/default.nix
-    ../../modules/server-status.nix
-    ./boot.nix
-    ./networking.nix
-    ./services.nix
-    ./impermanence.nix
-    ../../modules/locale-de.nix
-    ../../modules/keyboard.nix
-    ../../modules/nix-settings.nix
-    ./sops.nix
-    ./users.nix
-    ../../modules/user-account.nix
-    ./home-manager.nix
   ];
 
   networking.hostName = hostname;
