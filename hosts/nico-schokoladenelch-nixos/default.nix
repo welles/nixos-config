@@ -6,6 +6,7 @@
   imports = [
     # Hardware & boot
     ./boot.nix
+    ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ./impermanence.nix
@@ -66,6 +67,7 @@
   _module.args = {
     user = "schokoladenelch";
     persistRoot = "/mnt/bucket/persist";
+    pool = "bucket";
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";
     extraDiskMounts = ["/mnt/tank/movies"];

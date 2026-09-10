@@ -2,6 +2,7 @@
   imports = [
     # Hardware & boot
     ./boot.nix
+    ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ./impermanence.nix
@@ -75,6 +76,7 @@
       ../../modules/dotnet-tools-path.nix
     ];
     persistRoot = "/persist";
+    pool = "zroot";
     userDescription = "NW";
     userEmail = "welles@mentz.net";
     passwordConfig = {hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";};

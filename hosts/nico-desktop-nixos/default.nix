@@ -6,6 +6,7 @@
   imports = [
     # Hardware & boot
     ./boot.nix
+    ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ./impermanence.nix
@@ -99,6 +100,7 @@
       ../../modules/sops-env.nix
     ];
     persistRoot = "/persist";
+    pool = "main";
     userDescription = "Nico Welles";
     userEmail = "nico@welles.email";
     sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
