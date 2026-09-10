@@ -36,6 +36,7 @@ _: {
           {
             name = "org.kde.plasma.icontasks";
             config.General.launchers = [];
+            config.General.showOnlyCurrentScreen = true;
           }
 
           "org.kde.plasma.marginsseparator"
