@@ -16,7 +16,7 @@
           name = "Default";
           font = {
             name = "FiraCode Nerd Font";
-            size = 11;
+            size = 10;
           };
           extraConfig = {
             Appearance.EnableLigatures = true;
