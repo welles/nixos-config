@@ -1,6 +1,6 @@
 {config, ...}: {
   imports = [
-    ../scripts/npm-global-install
+    ./scripts/npm-global-install
   ];
 
   home.sessionPath = [

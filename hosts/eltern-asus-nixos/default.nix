@@ -13,7 +13,7 @@
     ./desktop.nix
 
     # Home Manager
-    ../../modules/home/shell.nix
+    ../../modules/shell.nix
 
     # User & identity
     ./home-manager.nix

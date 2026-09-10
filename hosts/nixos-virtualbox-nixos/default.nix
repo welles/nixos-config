@@ -13,9 +13,9 @@
     ./desktop.nix
 
     # Home Manager
-    ../../modules/home/konsole.nix
-    ../../modules/home/shell.nix
-    ../../modules/home/yazi.nix
+    ../../modules/konsole.nix
+    ../../modules/shell.nix
+    ../../modules/yazi.nix
 
     # User & identity
     ../../modules/home-manager-user.nix
@@ -69,10 +69,10 @@
   _module.args = {
     user = "nixos";
     homeModules = [
-      ../../modules/home/cli-tools.nix
-      ../../modules/home/git.nix
-      ../../modules/home/npm.nix
-      ../../modules/home/dotnet-tools-path.nix
+      ../../modules/cli-tools.nix
+      ../../modules/git.nix
+      ../../modules/npm.nix
+      ../../modules/dotnet-tools-path.nix
     ];
     persistRoot = "/persist";
     userDescription = "NW";

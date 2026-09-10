@@ -24,9 +24,9 @@
     ../../modules/profile-icon
 
     # Home Manager
-    ../../modules/home/konsole.nix
-    ../../modules/home/shell.nix
-    ../../modules/home/yazi.nix
+    ../../modules/konsole.nix
+    ../../modules/shell.nix
+    ../../modules/yazi.nix
 
     # User & identity
     ../../modules/home-manager-user.nix
@@ -89,16 +89,16 @@
     user = "nico";
     homeModules = [
       ./plasma.nix
-      ../../modules/home/fonts.nix
-      ../../modules/home/cli-tools.nix
-      ../../modules/home/git.nix
-      ../../modules/home/git-signing.nix
-      ../../modules/home/npm.nix
-      ../../modules/home/kde-theming.nix
-      ../../modules/home/1password-ssh-agent.nix
-      ../../modules/home/1password-autostart.nix
-      ../../modules/home/sops-env.nix
-      ../../modules/home/lazygit.nix
+      ../../modules/fonts.nix
+      ../../modules/cli-tools.nix
+      ../../modules/git.nix
+      ../../modules/git-signing.nix
+      ../../modules/npm.nix
+      ../../modules/kde-theming.nix
+      ../../modules/1password-ssh-agent.nix
+      ../../modules/1password-autostart.nix
+      ../../modules/sops-env.nix
+      ../../modules/lazygit.nix
     ];
     persistRoot = "/persist";
     userDescription = "Nico Welles";

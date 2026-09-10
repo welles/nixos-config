@@ -17,8 +17,8 @@
     ../../modules/networkmanager.nix
 
     # Home Manager
-    ../../modules/home/shell.nix
-    ../../modules/home/yazi.nix
+    ../../modules/shell.nix
+    ../../modules/yazi.nix
 
     # User & identity
     ./home-manager.nix

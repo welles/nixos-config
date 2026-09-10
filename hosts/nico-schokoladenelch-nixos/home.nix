@@ -6,8 +6,8 @@
 # survives the ephemeral root rollback.
 {config, ...}: {
   imports = [
-    ../../modules/home/cli-tools.nix
-    ../../modules/home/git.nix
+    ../../modules/cli-tools.nix
+    ../../modules/git.nix
   ];
 
   # Store Zsh history on the persistent dataset
