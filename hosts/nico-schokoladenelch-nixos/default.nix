@@ -18,7 +18,7 @@
 
     # Home Manager
     ../../modules/shell.nix
-    ../../modules/yazi.nix
+    ../../modules/packages/yazi.nix
 
     # User & identity
     ./home-manager.nix
@@ -29,7 +29,7 @@
     ../../modules/locale-de.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
-    ../../modules/tmux.nix
+    ../../modules/packages/tmux.nix
 
     # Services & hardware
     ../../modules/docker.nix

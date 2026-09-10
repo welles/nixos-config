@@ -5,6 +5,6 @@
 _: {
   imports = [
     ../../modules/cli-tools.nix
-    ../../modules/git.nix
+    ../../modules/packages/git.nix
   ];
 }

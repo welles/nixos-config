@@ -28,10 +28,10 @@
     ../../modules/removable-media.nix
 
     # Home Manager
-    ../../modules/konsole.nix
+    ../../modules/packages/konsole.nix
     ../../modules/npm.nix
     ../../modules/shell.nix
-    ../../modules/yazi.nix
+    ../../modules/packages/yazi.nix
 
     # User & identity
     ../../modules/home-manager-user.nix
@@ -43,12 +43,12 @@
     ../../modules/nix-ld.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
-    ../../modules/tmux.nix
+    ../../modules/packages/tmux.nix
 
     # Services & hardware
     ../../modules/docker.nix
     ../../modules/rclone
-    ../../modules/virt-manager-client.nix
+    ../../modules/packages/virt-manager-client.nix
 
     # Packages
     ../../modules/packages/1password.nix
@@ -122,7 +122,7 @@
       ../../modules/laptop-plasma.nix
       ../../modules/fonts.nix
       ../../modules/cli-tools.nix
-      ../../modules/git.nix
+      ../../modules/packages/git.nix
       ../../modules/git-signing.nix
       ../../modules/kde-theming.nix
       ../../modules/1password-ssh-agent.nix

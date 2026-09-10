@@ -11,10 +11,10 @@
     ./desktop.nix
 
     # Home Manager
-    ../../modules/konsole.nix
+    ../../modules/packages/konsole.nix
     ../../modules/npm.nix
     ../../modules/shell.nix
-    ../../modules/yazi.nix
+    ../../modules/packages/yazi.nix
 
     # User & identity
     ../../modules/home-manager-user.nix
@@ -27,7 +27,7 @@
     ../../modules/nix-ld-dev-libraries.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
-    ../../modules/tmux.nix
+    ../../modules/packages/tmux.nix
 
     # Services & hardware
     ../../modules/docker.nix
@@ -73,7 +73,7 @@
     user = "nixos";
     homeModules = [
       ../../modules/cli-tools.nix
-      ../../modules/git.nix
+      ../../modules/packages/git.nix
       ../../modules/dotnet-tools-path.nix
       ../../modules/kde-theming.nix
       ./plasma.nix

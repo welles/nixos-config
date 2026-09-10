@@ -25,7 +25,7 @@
     ../../modules/locale-de.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
-    ../../modules/tmux.nix
+    ../../modules/packages/tmux.nix
 
     # Packages
     ../../modules/packages/firefox.nix
