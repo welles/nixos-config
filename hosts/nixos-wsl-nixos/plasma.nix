@@ -35,7 +35,7 @@ _: {
           "org.kde.plasma.systemtray"
           {
             name = "org.kde.plasma.digitalclock";
-            config.Appearance.showDate = "false";
+            config.Appearance.showDate = "true";
           }
         ];
       }
