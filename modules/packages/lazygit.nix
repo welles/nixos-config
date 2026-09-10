@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  environment.systemPackages = [pkgs.lazygit];
+  environment.systemPackages = [pkgs.lazygit pkgs.delta];
 
   home-manager.sharedModules = [
     {

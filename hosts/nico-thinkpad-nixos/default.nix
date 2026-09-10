@@ -59,7 +59,6 @@
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/deadnix.nix
-    ../../modules/packages/delta.nix
     ../../modules/packages/discord.nix
     ../../modules/packages/dotnet-sdk_10.nix
     ../../modules/packages/drawing.nix

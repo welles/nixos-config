@@ -53,7 +53,6 @@
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/deadnix.nix
-    ../../modules/packages/delta.nix
     ../../modules/packages/discord.nix
     ../../modules/packages/easyeffects.nix
     ../../modules/packages/fira-code-nerd-font.nix
