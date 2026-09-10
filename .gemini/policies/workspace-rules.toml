@@ -1,6 +1,0 @@
-[[rule]]
-toolName = "run_shell_command"
-commandPrefix = ["alejandra", "deadnix", "statix", "nix", "nixos-rebuild"]
-decision = "allow"
-priority = 100
-allowRedirection = true
