@@ -21,7 +21,6 @@
     users.${user} = {
       directories = [
         ".ssh"
-        ".config/Bitwarden"
         ".local/share/applications"
         ".npm-global"
         "Desktop"
