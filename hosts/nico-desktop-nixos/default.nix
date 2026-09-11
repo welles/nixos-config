@@ -79,6 +79,7 @@
 
     # Scripts
     ../../modules/scripts/check-persist
+    ../../modules/scripts/persist-audit
     ../../modules/scripts/search-tmdb
     ../../modules/scripts/toggle-screens
   ];

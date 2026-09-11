@@ -55,6 +55,7 @@
     # Scripts
     ../../modules/scripts/check-mkv
     ../../modules/scripts/check-persist
+    ../../modules/scripts/persist-audit
     ../../modules/scripts/create-zfs-dataset
     ../../modules/scripts/search-tmdb
     ../../modules/scripts/zfs-manual-snapshot

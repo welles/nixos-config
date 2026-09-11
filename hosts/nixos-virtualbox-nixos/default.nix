@@ -6,6 +6,8 @@
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ./impermanence.nix
+    ../../modules/scripts/check-persist
+    ../../modules/scripts/persist-audit
 
     # Networking
     ./networking.nix

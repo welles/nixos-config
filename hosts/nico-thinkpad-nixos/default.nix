@@ -111,6 +111,7 @@
 
     # Scripts
     ../../modules/scripts/check-persist
+    ../../modules/scripts/persist-audit
   ];
 
   networking.hostName = hostname;
