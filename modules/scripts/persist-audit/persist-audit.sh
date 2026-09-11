@@ -13,11 +13,11 @@ shift 3
 CLEAN=0
 for arg in "$@"; do
 	case "$arg" in
-		--clean) CLEAN=1 ;;
-		*)
-			echo "Unknown option: $arg" >&2
-			exit 1
-			;;
+	--clean) CLEAN=1 ;;
+	*)
+		echo "Unknown option: $arg" >&2
+		exit 1
+		;;
 	esac
 done
 

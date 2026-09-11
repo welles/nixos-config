@@ -1,7 +1,4 @@
-{
-  persistRoot,
-  ...
-}: {
+{persistRoot, ...}: {
   fileSystems = {
     ${persistRoot}.neededForBoot = true;
     "/mnt/bucket/apps".neededForBoot = true;
