@@ -55,7 +55,6 @@
     ../../modules/packages/kubeseal.nix
     ../../modules/packages/lazydocker.nix
     ../../modules/packages/lazygit.nix
-    ../../modules/packages/mercurial.nix
     ../../modules/packages/microsoft-edge.nix
     ../../modules/packages/nodejs.nix
     ../../modules/packages/openssl.nix
@@ -73,6 +72,7 @@
     homeModules = [
       ../../modules/cli-tools.nix
       ../../modules/packages/git.nix
+      ../../modules/packages/hg.nix
       ../../modules/dotnet-tools-path.nix
     ];
     persistRoot = "/persist";
