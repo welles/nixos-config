@@ -27,6 +27,7 @@ jobs:
         with:
           primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
           restore-prefixes-first-match: nix-${{ runner.os }}-
+          save: false
 
       - name: Update flake inputs
         run: nix flake update
