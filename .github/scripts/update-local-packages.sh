@@ -2,10 +2,10 @@
 
 set -euo pipefail
 
-readonly EDEN_FILE="modules/eden.nix"
-readonly OCCT_FILE="modules/occt/default.nix"
-readonly KEEPER_FILE="modules/keeper.nix"
-readonly NUKE_FILE="modules/nuke.nix"
+readonly EDEN_FILE="modules/packages/eden.nix"
+readonly OCCT_FILE="modules/packages/occt.nix"
+readonly KEEPER_FILE="modules/packages/keeper.nix"
+readonly NUKE_FILE="modules/packages/nuke.nix"
 
 fail() {
 	echo "error: $*" >&2

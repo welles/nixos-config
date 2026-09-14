@@ -55,10 +55,10 @@ jobs:
         id: check-changes
         run: |
           package_files=(
-            modules/eden.nix
-            modules/occt/default.nix
-            modules/keeper.nix
-            modules/nuke.nix
+            modules/packages/eden.nix
+            modules/packages/occt.nix
+            modules/packages/keeper.nix
+            modules/packages/nuke.nix
           )
           if git diff --quiet -- "${package_files[@]}"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -100,10 +100,10 @@ jobs:
         with:
           name: local-package-updates
           path: |
-            modules/eden.nix
-            modules/occt/default.nix
-            modules/keeper.nix
-            modules/nuke.nix
+            modules/packages/eden.nix
+            modules/packages/occt.nix
+            modules/packages/keeper.nix
+            modules/packages/nuke.nix
           retention-days: 1
 
   evaluate:
@@ -162,6 +162,6 @@ jobs:
           commit_message: "Update local packages"
           repo: ${{ github.repository }}
           branch: ${{ needs.update-and-setup.outputs.target_branch }}
-          file_pattern: "modules/eden.nix modules/occt/default.nix modules/keeper.nix modules/nuke.nix"
+          file_pattern: "modules/packages/eden.nix modules/packages/occt.nix modules/packages/keeper.nix modules/packages/nuke.nix"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
