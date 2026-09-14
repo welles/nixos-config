@@ -23,11 +23,11 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v30
 
-      - name: Cache nix store
-        uses: nix-community/cache-nix-action@v7
+      - name: Set up Cachix
+        uses: cachix/cachix-action@v17
         with:
-          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}-
+          name: welles-nixos-config
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Format nix files with alejandra
         run: |
