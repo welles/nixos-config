@@ -43,18 +43,18 @@ jobs:
           fi
 
       - name: Run nix flake check
-        if: steps.check-changes.outputs.changed == 'true'
+        if: steps.check-changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         run: nix flake check
 
       - name: Generate host matrix
-        if: steps.check-changes.outputs.changed == 'true'
+        if: steps.check-changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         id: set-matrix
         run: |
           HOSTS=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json)
           echo "matrix=$HOSTS" >> $GITHUB_OUTPUT
 
       - name: Upload updated flake.lock
-        if: steps.check-changes.outputs.changed == 'true'
+        if: steps.check-changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7
         with:
           name: flake-lock
@@ -63,7 +63,7 @@ jobs:
 
   evaluate:
     needs: update-and-setup
-    if: needs.update-and-setup.outputs.changed == 'true'
+    if: needs.update-and-setup.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
