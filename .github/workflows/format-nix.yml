@@ -18,10 +18,10 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
 
       - name: Set up Cachix
         uses: cachix/cachix-action@v17
@@ -45,7 +45,7 @@ jobs:
           | xargs -0 nix run nixpkgs#shfmt -- -w
 
       - name: Commit and push changes
-        uses: planetscale/ghcommit-action@v0.2.20
+        uses: planetscale/ghcommit-action@v0.2.22
         with:
           commit_message: "Format nix and shell files"
           repo: ${{ github.repository }}

@@ -35,12 +35,12 @@ jobs:
           fi
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ steps.target-branch.outputs.name }}
 
       - name: Install nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
 
       - name: Set up Cachix
         uses: cachix/cachix-action@v17
@@ -96,7 +96,7 @@ jobs:
 
       - name: Upload updated package files
         if: steps.check-changes.outputs.changed == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: local-package-updates
           path: |
@@ -116,18 +116,18 @@ jobs:
         host: ${{ fromJson(needs.update-and-setup.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ needs.update-and-setup.outputs.target_branch }}
 
       - name: Download updated package files
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: local-package-updates
           path: .
 
       - name: Install nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
 
       - name: Set up Cachix
         uses: cachix/cachix-action@v17
@@ -146,18 +146,18 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ needs.update-and-setup.outputs.target_branch }}
 
       - name: Download updated package files
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: local-package-updates
           path: .
 
       - name: Commit and push changes
-        uses: planetscale/ghcommit-action@v0.2.20
+        uses: planetscale/ghcommit-action@v0.2.22
         with:
           commit_message: "Update local packages"
           repo: ${{ github.repository }}
