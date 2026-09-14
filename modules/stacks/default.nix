@@ -5,6 +5,8 @@
 #   - enabled: whether the stack should be deployed
 #   - secrets: sops-nix secret names required by the stack
 #   - proxies: domain-to-port mappings for Caddy reverse proxy
+#   - redirects (optional): old-domain-to-new-domain mappings; Caddy serves a
+#     permanent redirect and Cloudflare DDNS still keeps the old domain resolving
 #   - backup.enable: whether to back up this stack with restic
 #   - backup.paths: host paths to include in the backup
 #
@@ -106,8 +108,12 @@
       secrets = [];
       proxies = {
         "jellyfin.welles.app" = 50010;
-        "jellyfin-accounts.welles.app" = 50011;
-        "jellyfin-requests.welles.app" = 50012;
+        "accounts.jellyfin.welles.app" = 50011;
+        "requests.jellyfin.welles.app" = 50012;
+      };
+      redirects = {
+        "jellyfin-accounts.welles.app" = "accounts.jellyfin.welles.app";
+        "jellyfin-requests.welles.app" = "requests.jellyfin.welles.app";
       };
       backup = {
         enable = false;
@@ -311,23 +317,30 @@
         };
       })
 
-      (lib.mkIf (cfg.proxies != {}) {
+      (lib.mkIf (cfg.proxies != {} || (cfg.redirects or {}) != {}) {
         services = {
           caddy = {
             enable = true;
-            virtualHosts =
-              lib.mapAttrs (_domain: port: {
-                extraConfig = ''
-                  header Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
-                  reverse_proxy 127.0.0.1:${toString port}
-                '';
-              })
-              cfg.proxies;
+            virtualHosts = lib.mkMerge [
+              (lib.mapAttrs (_domain: port: {
+                  extraConfig = ''
+                    header Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
+                    reverse_proxy 127.0.0.1:${toString port}
+                  '';
+                })
+                cfg.proxies)
+              (lib.mapAttrs (_domain: target: {
+                  extraConfig = ''
+                    redir https://${target}{uri} permanent
+                  '';
+                })
+                (cfg.redirects or {}))
+            ];
           };
           cloudflare-dyndns = {
             enable = true;
             apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
-            domains = lib.attrNames cfg.proxies;
+            domains = lib.attrNames cfg.proxies ++ lib.attrNames (cfg.redirects or {});
           };
         };
 
