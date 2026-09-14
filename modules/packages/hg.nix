@@ -12,9 +12,14 @@
     userName = userDescription;
     inherit userEmail;
     extraConfig.extensions = {
+      absorb = "";
       evolve = "";
       histedit = "";
+      mq = "";
+      purge = "";
       rebase = "";
+      shelve = "";
+      strip = "";
       topic = "";
     };
   };
