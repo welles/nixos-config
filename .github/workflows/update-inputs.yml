@@ -88,8 +88,8 @@ jobs:
           name: welles-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Evaluate NixOS Configuration (${{ matrix.host }})
-        run: nix build --dry-run ".#nixosConfigurations.\"${{ matrix.host }}\".config.system.build.toplevel"
+      - name: Build NixOS Configuration (${{ matrix.host }})
+        run: nix build ".#nixosConfigurations.\"${{ matrix.host }}\".config.system.build.toplevel"
 
   commit-update:
     needs: [update-and-setup, evaluate]
