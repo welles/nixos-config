@@ -62,7 +62,7 @@
     ../../modules/packages/openssl.nix
     ../../modules/packages/perl.nix
     ../../modules/packages/python3.nix
-    ../../modules/packages/solidtime-desktop.nix
+    #../../modules/packages/solidtime-desktop.nix
     ../../modules/packages/sourcegit.nix
     ../../modules/packages/vscode.nix
   ];
