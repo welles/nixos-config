@@ -31,6 +31,7 @@
 
     # Services & hardware
     ../../modules/docker.nix
+    ../../modules/podman.nix
     inputs.nixos-wsl.nixosModules.default
     ./wsl.nix
 
@@ -59,6 +60,7 @@
     ../../modules/packages/nuke.nix
     ../../modules/packages/openssl.nix
     ../../modules/packages/perl.nix
+    ../../modules/packages/podman-desktop.nix
     ../../modules/packages/python3.nix
     #../../modules/packages/solidtime-desktop.nix
     ../../modules/packages/sourcegit.nix
