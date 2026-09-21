@@ -64,6 +64,7 @@
     ../../modules/packages/python3.nix
     #../../modules/packages/solidtime-desktop.nix
     ../../modules/packages/sourcegit.nix
+    ../../modules/packages/kdiff3.nix
     ../../modules/packages/vscode.nix
   ];
 

@@ -96,6 +96,7 @@
     ../../modules/packages/solaar.nix
     ../../modules/packages/sops.nix
     ../../modules/packages/sourcegit.nix
+    ../../modules/packages/kdiff3.nix
     ../../modules/packages/ssh-to-age.nix
     ../../modules/packages/statix.nix
     ../../modules/packages/systemctl-tui.nix
