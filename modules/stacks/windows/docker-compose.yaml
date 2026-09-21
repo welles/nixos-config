@@ -12,7 +12,6 @@ services:
     environment:
       VERSION: 2025
       DISK_SIZE: 128G
-      DISK2_SIZE: 1024G
       RAM_SIZE: 16G
       CPU_CORES: 8
       LANGUAGE: English
@@ -34,7 +33,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /mnt/bucket/apps/windows/storage:/storage:rw
-      - /mnt/tank/windows/storage2:/storage2:rw
       - /mnt/tank:/shared:rw
 
 networks:

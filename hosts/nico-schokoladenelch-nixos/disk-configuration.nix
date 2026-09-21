@@ -9,7 +9,7 @@
 #
 # "tank" pool (HDD RAIDZ1 / ~48TB raw, ~32TB usable):
 #   - 4x Toshiba MG08 16TB enterprise drives
-#   - Datasets: movies, shows, music, ark_server_backups, windows
+#   - Datasets: movies, shows, music, ark_server_backups
 {
   disko.devices = {
     disk = {
@@ -320,15 +320,6 @@
           "ark_server_backups" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/ark_server_backups";
-            options = {
-              mountpoint = "legacy";
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
-
-          "windows" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/tank/windows";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
