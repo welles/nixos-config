@@ -26,7 +26,7 @@
           }
           {
             on = "<C-s>";
-            run = "shell --block --interactive";
+            run = "shell '$SHELL' --block";
             desc = "Open shell here";
           }
         ];
