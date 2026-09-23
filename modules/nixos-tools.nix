@@ -6,6 +6,7 @@
   flakeUri = "github:welles/nixos-config";
 in {
   environment.systemPackages = [
+    pkgs.nix-output-monitor
     (pkgs.writeShellScriptBin "nixos-diff" ''
       TMPDIR=$(mktemp -d)
       trap 'rm -rf "$TMPDIR"' EXIT
@@ -27,7 +28,7 @@ in {
   ];
 
   environment.shellAliases = {
-    nixos-switch = "sudo nixos-rebuild switch --flake ${flakeUri}#${hostname} --refresh";
-    nixos-boot = "sudo nixos-rebuild boot --flake ${flakeUri}#${hostname} --refresh";
+    nixos-switch = "sudo nixos-rebuild switch --flake ${flakeUri}#${hostname} --refresh |& nom";
+    nixos-boot = "sudo nixos-rebuild boot --flake ${flakeUri}#${hostname} --refresh |& nom";
   };
 }
