@@ -28,7 +28,7 @@ in {
   ];
 
   environment.shellAliases = {
-    nixos-switch = "sudo nixos-rebuild switch --flake ${flakeUri}#${hostname} --refresh |& nom";
-    nixos-boot = "sudo nixos-rebuild boot --flake ${flakeUri}#${hostname} --refresh |& nom";
+    nixos-switch = "sudo -v && sudo nixos-rebuild switch --flake ${flakeUri}#${hostname} --refresh |& nom";
+    nixos-boot = "sudo -v && sudo nixos-rebuild boot --flake ${flakeUri}#${hostname} --refresh |& nom";
   };
 }
