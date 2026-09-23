@@ -7,6 +7,7 @@
 in {
   environment.systemPackages = [
     pkgs.nix-output-monitor
+    pkgs.nh
     (pkgs.writeShellScriptBin "nixos-diff" ''
       TMPDIR=$(mktemp -d)
       trap 'rm -rf "$TMPDIR"' EXIT
@@ -30,5 +31,7 @@ in {
   environment.shellAliases = {
     nixos-switch = "sudo -v && sudo nixos-rebuild switch --flake ${flakeUri}#${hostname} --refresh |& nom";
     nixos-boot = "sudo -v && sudo nixos-rebuild boot --flake ${flakeUri}#${hostname} --refresh |& nom";
+    nh-switch = "nh os switch ${flakeUri}#${hostname} -- --refresh";
+    nh-boot = "nh os boot ${flakeUri}#${hostname} -- --refresh";
   };
 }
