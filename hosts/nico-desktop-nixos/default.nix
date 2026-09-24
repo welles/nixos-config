@@ -60,6 +60,7 @@
     ../../modules/packages/fira-sans.nix
     ../../modules/packages/firefox-devedition.nix
     ../../modules/packages/fsearch.nix
+    ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
     ../../modules/packages/gparted.nix
     ../../modules/packages/lazygit.nix

@@ -72,6 +72,7 @@
     ../../modules/packages/firefox-devedition.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gimp.nix
+    ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
     ../../modules/packages/gparted.nix
     ../../modules/packages/jdk25.nix
