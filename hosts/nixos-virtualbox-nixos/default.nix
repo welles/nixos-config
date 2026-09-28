@@ -32,6 +32,7 @@
     ../../modules/nix-ld-dev-libraries.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
+    ../../modules/sudo.nix
     ../../modules/packages/tmux.nix
 
     # Services & hardware

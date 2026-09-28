@@ -25,6 +25,7 @@
     ../../modules/locale-de.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
+    ../../modules/sudo.nix
     ../../modules/packages/tmux.nix
 
     # Packages

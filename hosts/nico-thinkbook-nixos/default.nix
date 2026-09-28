@@ -44,6 +44,7 @@
     ../../modules/nix-ld.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
+    ../../modules/sudo.nix
     ../../modules/packages/tmux.nix
 
     # Services & hardware
