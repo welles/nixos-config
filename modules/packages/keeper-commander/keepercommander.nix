@@ -1,0 +1,93 @@
+{
+  lib,
+  buildPythonApplication,
+  callPackage,
+  fetchPypi,
+  setuptools,
+  setuptools-scm,
+  asciitree,
+  bcrypt,
+  colorama,
+  cryptography,
+  fido2,
+  flask,
+  flask-limiter,
+  fpdf2,
+  googleapis-common-protos,
+  keyring,
+  packaging,
+  platformdirs,
+  prompt-toolkit,
+  protobuf,
+  psutil,
+  pycryptodomex,
+  pydantic,
+  pyngrok,
+  pyperclip,
+  python-dotenv,
+  requests,
+  tabulate,
+  textual,
+  tzlocal,
+  websockets,
+  zxcvbn,
+}:
+buildPythonApplication (finalAttrs: {
+  pname = "keepercommander";
+  version = "18.1.6";
+  pyproject = true;
+
+  src = fetchPypi {
+    inherit (finalAttrs) pname version;
+    hash = "sha256-BMjCWT7pEFrpb0S9HLwF/3XbBgA8M9zCmeWYDUrQ6jc=";
+  };
+
+  build-system = [
+    setuptools
+    setuptools-scm
+  ];
+
+  dependencies = [
+    asciitree
+    bcrypt
+    colorama
+    cryptography
+    fido2
+    flask
+    flask-limiter
+    fpdf2
+    googleapis-common-protos
+    keyring
+    packaging
+    platformdirs
+    prompt-toolkit
+    protobuf
+    psutil
+    pycryptodomex
+    pydantic
+    pyngrok
+    pyperclip
+    python-dotenv
+    requests
+    tabulate
+    textual
+    tzlocal
+    websockets
+    zxcvbn
+    (callPackage ./keeper-mlkem.nix {})
+    (callPackage ./keeper-pam-webrtc-rs.nix {})
+    (callPackage ./keeper-secrets-manager-core.nix {})
+  ];
+
+  pythonRelaxDeps = ["protobuf"];
+
+  pythonImportsCheck = ["keepercommander"];
+
+  meta = {
+    description = "Command-line and SDK interface to Keeper Password Manager";
+    homepage = "https://github.com/Keeper-Security/Commander";
+    license = lib.licenses.mit;
+    mainProgram = "keeper";
+    platforms = ["x86_64-linux"];
+  };
+})

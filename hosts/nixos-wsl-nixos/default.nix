@@ -49,6 +49,7 @@
     ../../modules/packages/k9s.nix
     ../../modules/packages/kdePackages-dolphin.nix
     ../../modules/packages/keeper.nix
+    ../../modules/packages/keeper-commander
     ../../modules/packages/kind.nix
     ../../modules/packages/kubectl.nix
     ../../modules/packages/kubelogin-oidc.nix
