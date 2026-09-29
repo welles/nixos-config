@@ -132,7 +132,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: local-package-updates
-          path: .
+          path: modules/packages
 
       - name: Install nix
         uses: cachix/install-nix-action@v31
@@ -162,7 +162,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: local-package-updates
-          path: .
+          path: modules/packages
 
       - name: Commit and push changes
         uses: planetscale/ghcommit-action@v0.2.22
