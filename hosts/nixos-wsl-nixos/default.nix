@@ -80,6 +80,13 @@
       ../../modules/cli-tools.nix
       ../../modules/packages/git.nix
       ../../modules/packages/hg.nix
+      {
+        programs.mercurial.extraConfig.auth = {
+          "mentz.prefix" = "https://source.mentz.net/repo/";
+          "mentz.username" = "welles";
+          "mentz.schemes" = "https";
+        };
+      }
       ../../modules/dotnet-tools-path.nix
       ../../modules/kde-theming.nix
       ./plasma.nix
