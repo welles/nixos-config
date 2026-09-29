@@ -7,6 +7,14 @@ readonly OCCT_FILE="modules/packages/occt.nix"
 readonly KEEPER_FILE="modules/packages/keeper.nix"
 readonly NUKE_FILE="modules/packages/nuke.nix"
 
+# name|file|PyPI project|distribution filename (@VERSION@ is substituted)
+readonly PYPI_PACKAGES=(
+	"Keeper Commander|modules/packages/keeper-commander/keepercommander.nix|keepercommander|keepercommander-@VERSION@.tar.gz"
+	"Keeper KSM Core|modules/packages/keeper-commander/keeper-secrets-manager-core.nix|keeper-secrets-manager-core|keeper_secrets_manager_core-@VERSION@.tar.gz"
+	"Keeper ML-KEM|modules/packages/keeper-commander/keeper-mlkem.nix|keeper-mlkem|keeper_mlkem-@VERSION@.tar.gz"
+	"Keeper WebRTC|modules/packages/keeper-commander/keeper-pam-webrtc-rs.nix|keeper-pam-webrtc-rs|keeper_pam_webrtc_rs-@VERSION@-cp38-abi3-manylinux_2_28_x86_64.whl"
+)
+
 fail() {
 	echo "error: $*" >&2
 	exit 1
@@ -69,7 +77,19 @@ replace_once() {
 	mv -- "$output" "$file"
 }
 
-for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE"; do
+pypi_names=()
+pypi_files=()
+pypi_projects=()
+pypi_filenames=()
+for entry in "${PYPI_PACKAGES[@]}"; do
+	IFS='|' read -r name file project filename <<<"$entry"
+	pypi_names+=("$name")
+	pypi_files+=("$file")
+	pypi_projects+=("$project")
+	pypi_filenames+=("$filename")
+done
+
+for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE" "${pypi_files[@]}"; do
 	[[ -f $file ]] || fail "run this script from the repository root (${file} not found)"
 done
 
@@ -81,6 +101,13 @@ keeper_current_version=$(read_single_value "$KEEPER_FILE" version)
 keeper_current_hash=$(read_first_hash "$KEEPER_FILE")
 nuke_current_version=$(read_single_value "$NUKE_FILE" version)
 nuke_current_hash=$(read_single_value "$NUKE_FILE" nugetHash)
+
+pypi_current_versions=()
+pypi_current_hashes=()
+for i in "${!pypi_files[@]}"; do
+	pypi_current_versions+=("$(read_single_value "${pypi_files[i]}" version)")
+	pypi_current_hashes+=("$(read_first_hash "${pypi_files[i]}")")
+done
 
 echo "Discovering current stable releases"
 
@@ -151,10 +178,26 @@ nuke_version=$(
 )
 nuke_url="https://www.nuget.org/api/v2/package/nuke.globaltool/${nuke_version}"
 
+pypi_versions=()
+pypi_urls=()
+for i in "${!pypi_projects[@]}"; do
+	pypi_metadata=$(curl -fsSL "https://pypi.org/pypi/${pypi_projects[i]}/json")
+	pypi_version=$(jq -er '.info.version' <<<"$pypi_metadata")
+	pypi_filename=${pypi_filenames[i]//@VERSION@/$pypi_version}
+	pypi_url=$(
+		jq -er --arg filename "$pypi_filename" \
+			'[.urls[] | select(.filename == $filename) | .url] | if length == 1 then .[0] else error("expected one matching distribution") end' \
+			<<<"$pypi_metadata"
+	) || fail "could not find ${pypi_filename} on PyPI"
+	pypi_versions+=("$pypi_version")
+	pypi_urls+=("$pypi_url")
+done
+
 eden_hash=$eden_current_hash
 occt_hash=$occt_current_hash
 keeper_hash=$keeper_current_hash
 nuke_hash=$nuke_current_hash
+pypi_hashes=("${pypi_current_hashes[@]}")
 changed=false
 
 if [[ $eden_version != "$eden_current_version" ]]; then
@@ -173,11 +216,20 @@ if [[ $nuke_version != "$nuke_current_version" ]]; then
 	nuke_hash=$(prefetch_hash "$nuke_url")
 	changed=true
 fi
+for i in "${!pypi_files[@]}"; do
+	if [[ ${pypi_versions[i]} != "${pypi_current_versions[i]}" ]]; then
+		pypi_hashes[i]=$(prefetch_hash "${pypi_urls[i]}")
+		changed=true
+	fi
+done
 
 printf 'Eden:  %s -> %s\n' "$eden_current_version" "$eden_version"
 printf 'OCCT:   %s -> %s\n' "$occt_current_version" "$occt_version"
 printf 'Keeper: %s -> %s\n' "$keeper_current_version" "$keeper_version"
 printf 'NUKE:   %s -> %s\n' "$nuke_current_version" "$nuke_version"
+for i in "${!pypi_names[@]}"; do
+	printf '%s: %s -> %s\n' "${pypi_names[i]}" "${pypi_current_versions[i]}" "${pypi_versions[i]}"
+done
 
 if [[ $changed == false ]]; then
 	echo 'All local packages are up to date.'
@@ -191,6 +243,9 @@ cp -p -- "$EDEN_FILE" "$temporary_directory/eden.nix"
 cp -p -- "$OCCT_FILE" "$temporary_directory/occt.nix"
 cp -p -- "$KEEPER_FILE" "$temporary_directory/keeper.nix"
 cp -p -- "$NUKE_FILE" "$temporary_directory/nuke.nix"
+for i in "${!pypi_files[@]}"; do
+	cp -p -- "${pypi_files[i]}" "$temporary_directory/pypi-${i}.nix"
+done
 
 if [[ $eden_version != "$eden_current_version" ]]; then
 	replace_once "$temporary_directory/eden.nix" \
@@ -216,10 +271,21 @@ if [[ $nuke_version != "$nuke_current_version" ]]; then
 	replace_once "$temporary_directory/nuke.nix" \
 		"nugetHash = \"${nuke_current_hash}\";" "nugetHash = \"${nuke_hash}\";"
 fi
+for i in "${!pypi_files[@]}"; do
+	if [[ ${pypi_versions[i]} != "${pypi_current_versions[i]}" ]]; then
+		replace_once "$temporary_directory/pypi-${i}.nix" \
+			"version = \"${pypi_current_versions[i]}\";" "version = \"${pypi_versions[i]}\";"
+		replace_once "$temporary_directory/pypi-${i}.nix" \
+			"hash = \"${pypi_current_hashes[i]}\";" "hash = \"${pypi_hashes[i]}\";"
+	fi
+done
 
 cp -- "$temporary_directory/eden.nix" "$EDEN_FILE"
 cp -- "$temporary_directory/occt.nix" "$OCCT_FILE"
 cp -- "$temporary_directory/keeper.nix" "$KEEPER_FILE"
 cp -- "$temporary_directory/nuke.nix" "$NUKE_FILE"
+for i in "${!pypi_files[@]}"; do
+	cp -- "$temporary_directory/pypi-${i}.nix" "${pypi_files[i]}"
+done
 
 echo 'Local package versions and hashes updated.'
