@@ -119,7 +119,7 @@ jobs:
     if: needs.update-and-setup.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         host: ${{ fromJson(needs.update-and-setup.outputs.matrix) }}
     steps:
@@ -144,7 +144,26 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build NixOS Configuration (${{ matrix.host }})
-        run: nix build ".#nixosConfigurations.\"${{ matrix.host }}\".config.system.build.toplevel"
+        env:
+          HOST: ${{ matrix.host }}
+        run: |
+          set -o pipefail
+          if ! nix build ".#nixosConfigurations.\"$HOST\".config.system.build.toplevel" 2>&1 | tee build.log; then
+            # The Cachix post step floods the log, so surface the error as an
+            # annotation and in the job summary.
+            {
+              echo "### Build of \`$HOST\` failed"
+              echo '```'
+              tail -n 80 build.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            msg=$(tail -n 30 build.log)
+            msg=${msg//'%'/'%25'}
+            msg=${msg//$'\r'/'%0D'}
+            msg=${msg//$'\n'/'%0A'}
+            echo "::error title=Build of $HOST failed::$msg"
+            exit 1
+          fi
 
   commit-update:
     needs: [update-and-setup, evaluate]
