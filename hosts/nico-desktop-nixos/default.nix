@@ -51,6 +51,7 @@
     ../../modules/packages/1password.nix
     ../../modules/packages/alejandra.nix
     ../../modules/packages/antigravity.nix
+    ../../modules/packages/azure-cli.nix
     ../../modules/packages/bottles.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix

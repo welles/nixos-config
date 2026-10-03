@@ -59,6 +59,7 @@
     ../../modules/packages/_7zz.nix
     ../../modules/packages/alejandra.nix
     ../../modules/packages/antigravity.nix
+    ../../modules/packages/azure-cli.nix
     ../../modules/packages/calibre.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
