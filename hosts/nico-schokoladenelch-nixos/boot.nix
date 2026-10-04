@@ -30,6 +30,12 @@ _: {
       };
     };
 
+    # Since kernel 6.18.54 the xe driver claims the Raptor Lake iGPU (a780)
+    # but refuses to probe it without force_probe, which keeps i915 from
+    # binding and leaves no /dev/dri/renderD128 for Jellyfin transcoding.
+    blacklistedKernelModules = ["xe"];
+    kernelModules = ["i915"];
+
     supportedFilesystems = ["zfs"];
     zfs = {
       forceImportRoot = false;
