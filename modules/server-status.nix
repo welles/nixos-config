@@ -9,22 +9,11 @@
   ...
 }: let
   btopStatusConfig = pkgs.writeText "btop-status.conf" ''
-    # Use Unicode block graphs, which Terminus renders correctly on the console.
-    color_theme = "TTY"
-    theme_background = false
-    truecolor = false
-    force_tty = false
+    # Keep btop's defaults, except for graphs: the console font has no
+    # braille glyphs, so use Unicode block graphs instead.
     graph_symbol = "block"
-    graph_symbol_cpu = "block"
-
-    # Keep the layout readable on the 800x480 display.
-    shown_boxes = "cpu mem net"
-    cpu_graph_upper = "total"
-    cpu_graph_lower = "total"
-    cpu_single_graph = false
     # Each selected mount reports its pool-wide capacity and free space.
     disks_filter = "${lib.concatStringsSep " " (["/boot" "/"] ++ extraDiskMounts)}"
-    update_ms = 1500
   '';
 in {
   environment.systemPackages = [pkgs.btop];
@@ -50,7 +39,7 @@ in {
     environment.TERM = "linux";
 
     serviceConfig = {
-      ExecStart = "${pkgs.btop}/bin/btop --no-tty --force-utf --config ${btopStatusConfig}";
+      ExecStart = "${pkgs.btop}/bin/btop --force-utf --config ${btopStatusConfig}";
       Restart = "always";
       RestartSec = "2s";
       TTYPath = "/dev/tty1";
