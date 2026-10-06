@@ -10,10 +10,10 @@
   ...
 }: let
   pname = "eden";
-  version = "0.2.0-rc2";
+  version = "0.2.1";
   src = pkgs.fetchurl {
     url = "https://git.eden-emu.dev/eden-emu/eden/releases/download/v${version}/Eden-Linux-v${version}-amd64-gcc-standard.AppImage";
-    hash = "sha256-1Pp6VInWYfr8f8ANuT1ZBxe61xCWcTq/mNH8T6JZJJc=";
+    hash = "sha256-L65lg5fa8TwRgIKj62XWGmUZlnteIuZmd1a67PYADFo=";
   };
 
   appimageContents =
