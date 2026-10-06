@@ -261,10 +261,10 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
-          # Home of the isolated Claude Code container (claude-container.nix)
-          "claude" = {
+          # State of the isolated development container (devbox.nix)
+          "devbox" = {
             type = "zfs_fs";
-            mountpoint = "/mnt/bucket/claude";
+            mountpoint = "/mnt/bucket/devbox";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
