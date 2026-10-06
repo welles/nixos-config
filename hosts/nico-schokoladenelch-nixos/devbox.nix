@@ -19,6 +19,8 @@
 #   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
 #     named `devbox` makes the container reachable from vscode.dev or a
 #     local VS Code ("Remote - Tunnels") after signing in with GitHub.
+#   - Home Manager for `dev` with the same git module as the other
+#     development hosts (author, pull.rebase, rebase.autoStash, LFS).
 #
 # Host shortcuts (via `devbox`):
 #   devbox          login shell as user dev
@@ -40,9 +42,12 @@
   inputs,
   pkgs,
   user,
+  userEmail,
   ...
 }: let
   name = "devbox";
+  # Git author; the host's own userDescription is the server account name
+  devUserDescription = "Nico Welles";
   uid = 1500;
   stateDir = "/mnt/bucket/devbox";
   sshPort = 2222;
@@ -124,7 +129,23 @@ in {
     };
 
     config = _: {
+      imports = [inputs.home-manager.nixosModules.home-manager];
+
       system.stateVersion = "25.11";
+
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        backupFileExtension = "backup";
+        extraSpecialArgs = {
+          inherit userEmail;
+          userDescription = devUserDescription;
+        };
+        users.dev = {
+          imports = [../../modules/packages/git.nix];
+          home.stateVersion = "25.11";
+        };
+      };
 
       # The host's LAN resolver is unreachable from the container
       networking = {
