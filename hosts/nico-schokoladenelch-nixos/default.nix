@@ -39,6 +39,7 @@
     ../../modules/openssh-host-keys.nix
     ../../modules/server-status.nix
     ./services.nix
+    ./claude-container.nix
     ../../modules/stacks/default.nix
 
     # Packages
