@@ -19,8 +19,9 @@
 #   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
 #     named `devbox` makes the container reachable from vscode.dev or a
 #     local VS Code ("Remote - Tunnels") after signing in with GitHub.
-#   - Home Manager for `dev` with the same git module as the other
-#     development hosts (author, pull.rebase, rebase.autoStash, LFS).
+#   - Home Manager for `dev` with the same modules as the other development
+#     hosts: git (author, pull.rebase, rebase.autoStash, LFS), zsh with
+#     oh-my-zsh (shell.nix) and the CLI tools (starship, eza, fzf, btop).
 #
 # Host shortcuts (via `devbox`):
 #   devbox          login shell as user dev
@@ -129,7 +130,18 @@ in {
     };
 
     config = _: {
-      imports = [inputs.home-manager.nixosModules.home-manager];
+      # The impermanence module only provides the option shell.nix refers to;
+      # with persistRoot = null nothing is persisted through it.
+      imports = [
+        inputs.home-manager.nixosModules.home-manager
+        inputs.impermanence.nixosModules.impermanence
+        ../../modules/shell.nix
+      ];
+
+      _module.args = {
+        user = "dev";
+        persistRoot = null;
+      };
 
       system.stateVersion = "25.11";
 
@@ -142,7 +154,10 @@ in {
           userDescription = devUserDescription;
         };
         users.dev = {
-          imports = [../../modules/packages/git.nix];
+          imports = [
+            ../../modules/cli-tools.nix
+            ../../modules/packages/git.nix
+          ];
           home.stateVersion = "25.11";
         };
       };
