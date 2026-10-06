@@ -13,7 +13,12 @@ on:
 
 jobs:
   update-and-setup:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    # Also run when the flake input update failed (e.g. because a single host
+    # does not build), so local packages are not held back by it.
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || github.event.workflow_run.conclusion == 'success'
+      || github.event.workflow_run.conclusion == 'failure'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -87,10 +92,6 @@ jobs:
             nix run nixpkgs#statix -- check "$file"
           done
 
-      - name: Run nix flake check
-        if: steps.check-changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
-        run: nix flake check
-
       - name: Generate host matrix
         if: steps.check-changes.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
         id: set-matrix
@@ -113,6 +114,30 @@ jobs:
             modules/packages/keeper-commander/keeper-mlkem.nix
             modules/packages/keeper-commander/keeper-pam-webrtc-rs.nix
           retention-days: 1
+
+  # Runs in parallel to the host builds and does not gate the commit, so a
+  # broken host only fails the run (and triggers a notification).
+  flake-check:
+    needs: update-and-setup
+    if: needs.update-and-setup.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.update-and-setup.outputs.target_branch }}
+
+      - name: Download updated package files
+        uses: actions/download-artifact@v8
+        with:
+          name: local-package-updates
+          path: modules/packages
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Run nix flake check
+        run: nix flake check
 
   evaluate:
     needs: update-and-setup
@@ -165,9 +190,15 @@ jobs:
             exit 1
           fi
 
+  # Commit even if some hosts failed to build: a single broken host must not
+  # hold back the update for all others. Failed host builds still mark the
+  # run as failed, so GitHub sends a notification.
   commit-update:
     needs: [update-and-setup, evaluate]
-    if: needs.update-and-setup.outputs.changed == 'true'
+    if: >-
+      !cancelled()
+      && needs.update-and-setup.result == 'success'
+      && needs.update-and-setup.outputs.changed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
