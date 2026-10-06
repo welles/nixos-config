@@ -6,7 +6,10 @@ concurrency:
 
 on:
   schedule:
-    - cron: "0 4 * * *"
+    # Cron is UTC (01:17 UTC = 02:17 CET / 03:17 CEST). Runs at the top of
+    # the hour get delayed by hours on GitHub's shared scheduler, so use an
+    # off-peak minute.
+    - cron: "17 1 * * *"
   workflow_dispatch:
 
 jobs:
