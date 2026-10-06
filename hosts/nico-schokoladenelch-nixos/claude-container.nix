@@ -12,12 +12,14 @@
 #   - Claude Code comes from nixpkgs-unstable; the built-in auto-updater is
 #     disabled, updates arrive via `nix flake update`.
 #
-# The session runs inside tmux, so it can be inspected or restarted manually:
-#   sudo nixos-container root-login claude
-#   su - claude -c 'tmux attach -t rc'
+# Shortcuts on the host (via `claude-shell`):
+#   claude-shell          login shell as user claude inside the container
+#   claude-shell rc       attach to the tmux session running remote-control
+#   claude-shell root     root shell inside the container
 #
 # One-time setup after the first deploy (as user claude inside the
-# container): run `claude` and `/login`, `gh auth login`, `az login`, then
+# container, `claude-shell`): run `claude` and `/login`, `gh auth login`,
+# `az login`, then
 # `sudo systemctl restart container@claude` on the host.
 {
   inputs,
@@ -53,7 +55,24 @@
       unzip
       wget
     ]);
+
+  claudeShell = pkgs.writeShellScriptBin "claude-shell" ''
+    set -euo pipefail
+    [ "$(id -u)" -eq 0 ] || exec sudo "$0" "$@"
+    machinectl=${pkgs.systemd}/bin/machinectl
+    case "''${1:-}" in
+      "") exec "$machinectl" shell claude@claude ;;
+      rc) exec "$machinectl" shell claude@claude /run/current-system/sw/bin/tmux attach -t rc ;;
+      root) exec "$machinectl" shell root@claude ;;
+      *)
+        echo "Usage: claude-shell [rc|root]" >&2
+        exit 1
+        ;;
+    esac
+  '';
 in {
+  environment.systemPackages = [claudeShell];
+
   containers.claude = {
     autoStart = true;
     ephemeral = true;
