@@ -19,6 +19,10 @@ _: {
       "msmtp-password" = {
         mode = "0444";
       };
+      # Private SSH key the devbox container uses for GitHub (devbox.nix)
+      "devbox-github-ssh-key" = {
+        restartUnits = ["devbox-secrets.service"];
+      };
       "user-password" = {
         neededForUsers = true;
       };

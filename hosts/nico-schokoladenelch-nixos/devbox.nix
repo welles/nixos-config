@@ -22,6 +22,9 @@
 #   - Home Manager for `dev` with the same modules as the other development
 #     hosts: git (author, pull.rebase, rebase.autoStash, LFS), zsh with
 #     oh-my-zsh (shell.nix) and the CLI tools (starship, eza, fzf, btop).
+#   - SSH key for GitHub from sops (`devbox-github-ssh-key` in secrets.yaml):
+#     the host copies it to the tmpfs /run/devbox-secrets, which is mounted
+#     read-only into the container; ~/.ssh/config uses it for github.com.
 #
 # Host shortcuts (via `devbox`):
 #   devbox          login shell as user dev
@@ -54,6 +57,7 @@
   sshPort = 2222;
   lanSubnet = "10.0.0.0/24";
   vethInterface = "ve-${name}";
+  secretsDir = "/run/devbox-secrets";
 
   pkgsUnstable = import inputs.nixpkgs-unstable {
     inherit (pkgs.stdenv.hostPlatform) system;
@@ -127,6 +131,10 @@ in {
         hostPath = "${stateDir}/ssh";
         isReadOnly = false;
       };
+      "/run/host-secrets" = {
+        hostPath = secretsDir;
+        isReadOnly = true;
+      };
     };
 
     config = _: {
@@ -159,6 +167,15 @@ in {
             ../../modules/packages/git.nix
           ];
           home.stateVersion = "25.11";
+
+          programs.ssh = {
+            enable = true;
+            enableDefaultConfig = false;
+            settings."github.com" = {
+              IdentityFile = "/run/host-secrets/github_ed25519";
+              IdentitiesOnly = true;
+            };
+          };
         };
       };
 
@@ -169,6 +186,11 @@ in {
       };
 
       time.timeZone = "Europe/Berlin";
+
+      programs.ssh.knownHosts.github = {
+        hostNames = ["github.com"];
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+      };
 
       users.users.dev = {
         inherit uid;
@@ -245,6 +267,23 @@ in {
 
     services = {
       "container@${name}".unitConfig.RequiresMountsFor = [stateDir];
+
+      # sops secrets are symlinks into /run/secrets.d, which the container
+      # can't see; copy the GitHub key into a tmpfs directory owned by dev.
+      devbox-secrets = {
+        description = "Provide secrets to the devbox container";
+        requiredBy = ["container@${name}.service"];
+        before = ["container@${name}.service"];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+        script = ''
+          install -d -m 0750 -o root -g 100 ${secretsDir}
+          install -m 0400 -o ${toString uid} -g 100 \
+            ${config.sops.secrets."devbox-github-ssh-key".path} ${secretsDir}/github_ed25519
+        '';
+      };
 
       # Docker sets the iptables FORWARD policy to DROP, which would also
       # block the container's traffic. DOCKER-USER is Docker's hook for
