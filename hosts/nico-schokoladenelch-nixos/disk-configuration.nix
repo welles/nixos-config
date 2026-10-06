@@ -261,6 +261,15 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          # Home of the isolated Claude Code container (claude-container.nix)
+          "claude" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/claude";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
         };
       };
 
