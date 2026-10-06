@@ -16,6 +16,9 @@
 #     binaries such as the VS Code server.
 #   - A permanent `claude remote-control` session runs in the tmux session
 #     `claude`, working in ~/workspace.
+#   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
+#     named `devbox` makes the container reachable from vscode.dev or a
+#     local VS Code ("Remote - Tunnels") after signing in with GitHub.
 #
 # Host shortcuts (via `devbox`):
 #   devbox          login shell as user dev
@@ -29,8 +32,9 @@
 #     User dev
 #
 # One-time setup after the first deploy (`devbox`): run `claude` and
-# `/login`, `gh auth login`, `az login`, then `devbox root` and
-# `systemctl restart claude-remote-control`.
+# `/login`, `gh auth login`, `az login`, `code tunnel user login --provider
+# github`, then `devbox root` and
+# `systemctl restart claude-remote-control vscode-tunnel`.
 {
   config,
   inputs,
@@ -71,6 +75,10 @@
       unzip
       wget
     ]);
+
+  # Official VS Code CLI; `code tunnel` downloads the matching VS Code server
+  # into ~/.vscode, which runs via nix-ld.
+  inherit (pkgs) vscode;
 
   devboxCli = pkgs.writeShellScriptBin "devbox" ''
     set -euo pipefail
@@ -149,28 +157,45 @@ in {
         };
       };
 
-      environment.systemPackages = devTools;
+      environment.systemPackages = devTools ++ [vscode];
 
       # Allow prebuilt binaries (VS Code server, npm packages) to run
       programs.nix-ld.enable = true;
 
-      systemd.tmpfiles.rules = ["d /home/dev/workspace 0755 dev users -"];
+      systemd = {
+        tmpfiles.rules = ["d /home/dev/workspace 0755 dev users -"];
 
-      systemd.services.claude-remote-control = {
-        description = "Claude Code Remote Control session";
-        wantedBy = ["multi-user.target"];
-        wants = ["network-online.target"];
-        after = ["network-online.target"];
-        path = devTools;
-        environment.DISABLE_AUTOUPDATER = "1";
-        serviceConfig = {
-          User = "dev";
-          WorkingDirectory = "/home/dev/workspace";
-          Type = "forking";
-          ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s claude claude remote-control";
-          ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t claude";
-          Restart = "always";
-          RestartSec = "30s";
+        services.claude-remote-control = {
+          description = "Claude Code Remote Control session";
+          wantedBy = ["multi-user.target"];
+          wants = ["network-online.target"];
+          after = ["network-online.target"];
+          path = devTools;
+          environment.DISABLE_AUTOUPDATER = "1";
+          serviceConfig = {
+            User = "dev";
+            WorkingDirectory = "/home/dev/workspace";
+            Type = "forking";
+            ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s claude claude remote-control";
+            ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t claude";
+            Restart = "always";
+            RestartSec = "30s";
+          };
+        };
+
+        services.vscode-tunnel = {
+          description = "VS Code Remote Tunnel";
+          wantedBy = ["multi-user.target"];
+          wants = ["network-online.target"];
+          after = ["network-online.target"];
+          path = devTools;
+          serviceConfig = {
+            User = "dev";
+            WorkingDirectory = "/home/dev/workspace";
+            ExecStart = "${vscode}/bin/code tunnel --accept-server-license-terms --name ${name}";
+            Restart = "always";
+            RestartSec = "30s";
+          };
         };
       };
     };
