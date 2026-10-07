@@ -14,6 +14,10 @@
 #   - Dev tooling: Claude Code (nixpkgs-unstable, auto-updater disabled),
 #     gh, azure-cli, nodejs, pnpm, bun, just, sqlcmd, python3, git; nix-ld
 #     for prebuilt binaries such as the VS Code server.
+#   - Nix (with flakes) works through the host's nix-daemon, whose socket
+#     the container module mounts; `dev` is an untrusted client. Builds run
+#     on the host, so fixed-output fetches bypass the network isolation
+#     below.
 #   - Browser tests: nix-ld provides the libraries and fonts Chromium needs,
 #     so the browsers Playwright downloads (`playwright install chromium`)
 #     run unchanged, whatever Playwright version a project pins.
@@ -80,6 +84,7 @@
       gnused
       jq
       just
+      nix
       nodejs
       openssh
       pnpm
@@ -221,6 +226,9 @@ in {
       };
 
       time.timeZone = "Europe/Berlin";
+
+      # Client-side settings; the host's daemon does the building
+      nix.settings.experimental-features = ["nix-command" "flakes"];
 
       programs.ssh.knownHosts.github = {
         hostNames = ["github.com"];
