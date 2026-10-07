@@ -85,6 +85,7 @@
     userEmail = "welles@mentz.net";
     passwordConfig = {hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";};
     extraGroups = ["wheel"];
+    sopsAgeKeyFile = null;
     sshSigningKey = null;
     onePasswordVaults = null;
   };
