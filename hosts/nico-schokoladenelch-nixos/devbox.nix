@@ -12,8 +12,13 @@
 #     nothing in private ranges (LAN, Docker networks). From the LAN, only
 #     SSH via host port 2222 reaches the container.
 #   - Dev tooling: Claude Code (nixpkgs-unstable, auto-updater disabled),
-#     gh, azure-cli, nodejs, pnpm, python3, git; nix-ld for prebuilt
-#     binaries such as the VS Code server.
+#     gh, azure-cli, nodejs, pnpm, bun, just, sqlcmd, python3, git; nix-ld
+#     for prebuilt binaries such as the VS Code server.
+#   - SQL Server for the database tests of website-astro: a Docker container
+#     on the host (same image as the repo's CI), published on the host's
+#     loopback only and proxied to 192.168.200.1:1433, which only the
+#     devbox can reach. TEST_SQL_SERVER/TEST_SQL_PASSWORD point the tests at
+#     it. It holds throwaway test databases only, no state is kept.
 #   - A permanent `claude remote-control` session runs in the tmux session
 #     `claude`, working in ~/workspace.
 #   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
@@ -57,6 +62,18 @@
   sshPort = 2222;
   lanSubnet = "10.0.0.0/24";
   vethInterface = "ve-${name}";
+  hostAddress = "192.168.200.1";
+
+  # Test-only SQL Server (website-astro: api/test/fixtures/database.ts). The
+  # password is the one of the repo's CI; the server is only reachable from
+  # the devbox and holds no data worth protecting.
+  testSqlPassword = "Test_Passw0rd!";
+  testSqlLocalPort = 14330;
+  # For login shells and the services Claude and VS Code run in
+  testSqlEnv = {
+    TEST_SQL_SERVER = hostAddress;
+    TEST_SQL_PASSWORD = testSqlPassword;
+  };
   secretsDir = "/run/devbox-secrets";
 
   pkgsUnstable = import inputs.nixpkgs-unstable {
@@ -65,7 +82,7 @@
   };
 
   devTools =
-    [pkgsUnstable.claude-code]
+    (with pkgsUnstable; [bun claude-code])
     ++ (with pkgs; [
       azure-cli
       bashInteractive
@@ -76,11 +93,13 @@
       gnugrep
       gnused
       jq
+      just
       nodejs
       openssh
       pnpm
       python3
       ripgrep
+      sqlcmd
       tmux
       unzip
       wget
@@ -111,7 +130,7 @@ in {
     autoStart = true;
     ephemeral = true;
     privateNetwork = true;
-    hostAddress = "192.168.200.1";
+    inherit hostAddress;
     localAddress = "192.168.200.2";
 
     forwardPorts = [
@@ -215,7 +234,10 @@ in {
         };
       };
 
-      environment.systemPackages = devTools ++ [vscode];
+      environment = {
+        systemPackages = devTools ++ [vscode];
+        variables = testSqlEnv;
+      };
 
       # Allow prebuilt binaries (VS Code server, npm packages) to run
       programs.nix-ld.enable = true;
@@ -229,7 +251,7 @@ in {
           wants = ["network-online.target"];
           after = ["network-online.target"];
           path = devTools;
-          environment.DISABLE_AUTOUPDATER = "1";
+          environment = testSqlEnv // {DISABLE_AUTOUPDATER = "1";};
           serviceConfig = {
             User = "dev";
             WorkingDirectory = "/home/dev/workspace";
@@ -247,6 +269,7 @@ in {
           wants = ["network-online.target"];
           after = ["network-online.target"];
           path = devTools;
+          environment = testSqlEnv;
           serviceConfig = {
             User = "dev";
             WorkingDirectory = "/home/dev/workspace";
@@ -259,7 +282,29 @@ in {
     };
   };
 
+  virtualisation.oci-containers = {
+    backend = "docker";
+    containers.devbox-mssql = {
+      image = "mcr.microsoft.com/mssql/server:2022-latest";
+      ports = ["127.0.0.1:${toString testSqlLocalPort}:1433"];
+      environment = {
+        ACCEPT_EULA = "Y";
+        MSSQL_PID = "Developer";
+        MSSQL_SA_PASSWORD = testSqlPassword;
+        MSSQL_MEMORY_LIMIT_MB = "2048";
+      };
+    };
+  };
+
   systemd = {
+    # FreeBind: the host address only exists while the devbox is running
+    sockets.devbox-mssql-proxy = {
+      description = "SQL Server for the devbox";
+      wantedBy = ["sockets.target"];
+      listenStreams = ["${hostAddress}:1433"];
+      socketConfig.FreeBind = true;
+    };
+
     tmpfiles.rules = [
       "d ${stateDir}/home 0700 ${toString uid} 100 -"
       "d ${stateDir}/ssh 0700 root root -"
@@ -267,6 +312,13 @@ in {
 
     services = {
       "container@${name}".unitConfig.RequiresMountsFor = [stateDir];
+
+      devbox-mssql-proxy = {
+        description = "Forward the devbox's SQL Server port to the test container";
+        requires = ["docker-devbox-mssql.service"];
+        after = ["docker-devbox-mssql.service"];
+        serviceConfig.ExecStart = "${pkgs.systemd}/lib/systemd/systemd-socket-proxyd 127.0.0.1:${toString testSqlLocalPort}";
+      };
 
       # sops secrets are symlinks into /run/secrets.d, which the container
       # can't see; copy the GitHub key into a tmpfs directory owned by dev.
@@ -320,6 +372,11 @@ in {
     };
 
     networkmanager.unmanaged = ["interface-name:ve-*"];
+
+    # The test SQL Server is the only host port the devbox may use
+    firewall.extraInputRules = ''
+      iifname "${vethInterface}" tcp dport 1433 accept
+    '';
 
     # - Replies to connections opened from the LAN (SSH) may pass.
     # - The container must not open connections to private ranges (LAN
