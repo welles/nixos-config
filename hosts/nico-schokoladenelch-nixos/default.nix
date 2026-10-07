@@ -60,6 +60,7 @@
     ../../modules/scripts/persist-audit
     ../../modules/scripts/create-zfs-dataset
     ../../modules/scripts/search-tmdb
+    ../../modules/scripts/sops-edit
     ../../modules/scripts/zfs-manual-snapshot
     ../../modules/scripts/zfs-snapshot-diff
   ];
@@ -70,6 +71,7 @@
   _module.args = {
     user = "schokoladenelch";
     persistRoot = "/mnt/bucket/persist";
+    sopsAgeKeyFile = "/mnt/bucket/persist/var/lib/sops-nix/key.txt";
     pool = "bucket";
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";

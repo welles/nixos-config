@@ -8,6 +8,7 @@
   userEmail ? (builtins.throw "home-manager-user.nix: set `_module.args.userEmail` to the user email"),
   sshSigningKey ? null,
   onePasswordVaults ? null,
+  sopsAgeKeyFile ? null,
   ...
 }: {
   home-manager = {
@@ -16,7 +17,8 @@
     extraSpecialArgs =
       {inherit inputs userDescription userEmail;}
       // lib.optionalAttrs (sshSigningKey != null) {inherit sshSigningKey;}
-      // lib.optionalAttrs (onePasswordVaults != null) {inherit onePasswordVaults;};
+      // lib.optionalAttrs (onePasswordVaults != null) {inherit onePasswordVaults;}
+      // lib.optionalAttrs (sopsAgeKeyFile != null) {inherit sopsAgeKeyFile;};
     users.${user}.imports = homeModules;
     backupFileExtension = "backup";
     sharedModules = [

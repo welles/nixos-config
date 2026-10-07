@@ -120,6 +120,7 @@
     # Scripts
     ../../modules/scripts/check-persist
     ../../modules/scripts/persist-audit
+    ../../modules/scripts/sops-edit
   ];
 
   networking.hostName = hostname;
@@ -139,6 +140,7 @@
       ../../modules/sops-env.nix
     ];
     persistRoot = "/persist";
+    sopsAgeKeyFile = "/persist/var/lib/sops-nix/key.txt";
     pool = "main";
     userDescription = "Nico Welles";
     userEmail = "nico@welles.email";

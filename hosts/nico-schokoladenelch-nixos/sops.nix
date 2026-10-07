@@ -1,9 +1,9 @@
-_: {
+{sopsAgeKeyFile, ...}: {
   sops = {
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
     age = {
-      keyFile = "/mnt/bucket/persist/var/lib/sops-nix/key.txt";
+      keyFile = sopsAgeKeyFile;
       sshKeyPaths = [];
     };
     validateSopsFiles = true;
