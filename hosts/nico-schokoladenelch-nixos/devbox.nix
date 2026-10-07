@@ -21,6 +21,8 @@
 #   - Browser tests: nix-ld provides the libraries and fonts Chromium needs,
 #     so the browsers Playwright downloads (`playwright install chromium`)
 #     run unchanged, whatever Playwright version a project pins.
+#   - Playwright MCP for Claude Code, with a Nix-built headless Chromium;
+#     registered in ~/.claude.json on every container start.
 #   - A permanent `claude remote-control` session runs in the tmux session
 #     `claude`, working in ~/workspace.
 #   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
@@ -69,6 +71,15 @@
   pkgsUnstable = import inputs.nixpkgs-unstable {
     inherit (pkgs.stdenv.hostPlatform) system;
     config.allowUnfree = true;
+  };
+
+  # MCP servers for Claude Code (user scope). Playwright MCP from nixpkgs
+  # brings its own Nix-built Chromium, independent of nix-ld and of the
+  # browsers a project downloads.
+  mcpServers.playwright = {
+    type = "stdio";
+    command = pkgs.lib.getExe pkgsUnstable.playwright-mcp;
+    args = ["--headless"];
   };
 
   devTools =
@@ -276,36 +287,58 @@ in {
       systemd = {
         tmpfiles.rules = ["d /home/dev/workspace 0755 dev users -"];
 
-        services.claude-remote-control = {
-          description = "Claude Code Remote Control session";
-          wantedBy = ["multi-user.target"];
-          wants = ["network-online.target"];
-          after = ["network-online.target"];
-          path = devTools;
-          environment.DISABLE_AUTOUPDATER = "1";
-          serviceConfig = {
-            User = "dev";
-            WorkingDirectory = "/home/dev/workspace";
-            Type = "forking";
-            ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s claude claude remote-control";
-            ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t claude";
-            Restart = "always";
-            RestartSec = "30s";
+        services = {
+          # ~/.claude.json is mutable state, so the servers are (re)registered
+          # through the CLI on every start instead of linking a file.
+          claude-mcp-servers = {
+            description = "Register MCP servers for Claude Code";
+            wantedBy = ["multi-user.target"];
+            before = ["claude-remote-control.service" "vscode-tunnel.service"];
+            path = devTools;
+            environment.DISABLE_AUTOUPDATER = "1";
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              User = "dev";
+            };
+            script = pkgs.lib.concatLines (pkgs.lib.mapAttrsToList (name: server: ''
+                claude mcp remove --scope user ${name} >/dev/null 2>&1 || true
+                claude mcp add-json --scope user ${name} ${pkgs.lib.escapeShellArg (builtins.toJSON server)}
+              '')
+              mcpServers);
           };
-        };
 
-        services.vscode-tunnel = {
-          description = "VS Code Remote Tunnel";
-          wantedBy = ["multi-user.target"];
-          wants = ["network-online.target"];
-          after = ["network-online.target"];
-          path = devTools;
-          serviceConfig = {
-            User = "dev";
-            WorkingDirectory = "/home/dev/workspace";
-            ExecStart = "${vscode}/bin/code tunnel --accept-server-license-terms --name ${name}";
-            Restart = "always";
-            RestartSec = "30s";
+          claude-remote-control = {
+            description = "Claude Code Remote Control session";
+            wantedBy = ["multi-user.target"];
+            wants = ["network-online.target"];
+            after = ["network-online.target"];
+            path = devTools;
+            environment.DISABLE_AUTOUPDATER = "1";
+            serviceConfig = {
+              User = "dev";
+              WorkingDirectory = "/home/dev/workspace";
+              Type = "forking";
+              ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s claude claude remote-control";
+              ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t claude";
+              Restart = "always";
+              RestartSec = "30s";
+            };
+          };
+
+          vscode-tunnel = {
+            description = "VS Code Remote Tunnel";
+            wantedBy = ["multi-user.target"];
+            wants = ["network-online.target"];
+            after = ["network-online.target"];
+            path = devTools;
+            serviceConfig = {
+              User = "dev";
+              WorkingDirectory = "/home/dev/workspace";
+              ExecStart = "${vscode}/bin/code tunnel --accept-server-license-terms --name ${name}";
+              Restart = "always";
+              RestartSec = "30s";
+            };
           };
         };
       };
