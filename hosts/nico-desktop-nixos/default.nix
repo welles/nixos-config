@@ -38,6 +38,7 @@
     ../../modules/keyboard.nix
     ../../modules/locale-de.nix
     ../../modules/nix-ld.nix
+    ../../modules/minecraft-modding.nix
     ../../modules/nix-settings.nix
     ../../modules/nixos-tools.nix
     ../../modules/sudo.nix
@@ -65,6 +66,8 @@
     ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
     ../../modules/packages/gparted.nix
+    ../../modules/packages/jdk25.nix
+    ../../modules/packages/jetbrains-idea.nix
     ../../modules/packages/lazygit.nix
     ../../modules/packages/libreoffice.nix
     ../../modules/packages/mcp-nixos.nix
