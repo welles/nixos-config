@@ -66,6 +66,7 @@
     ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
     ../../modules/packages/gparted.nix
+    ../../modules/packages/jdk21.nix
     ../../modules/packages/jdk25.nix
     ../../modules/packages/jetbrains-idea.nix
     ../../modules/packages/lazygit.nix

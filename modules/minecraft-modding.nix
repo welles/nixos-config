@@ -3,6 +3,9 @@
 # graphics, input and audio libraries at FHS paths. Provide them via nix-ld
 # (same set Prism Launcher wraps its game instances with) and persist the
 # Gradle cache so dependencies are not re-downloaded after every boot.
+# Gradle toolchains cannot discover JDKs in the Nix store on their own, so
+# register the installed JDKs explicitly (Minecraft 1.21.x needs Java 21,
+# 26.x needs Java 25).
 {
   lib,
   pkgs,
@@ -32,6 +35,14 @@
       flite
     ];
   };
+
+  home-manager.sharedModules = [
+    {
+      home.file.".gradle/gradle.properties".text = ''
+        org.gradle.java.installations.paths=${pkgs.jdk21.home},${pkgs.jdk25.home}
+      '';
+    }
+  ];
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.users.${user}.directories = [".gradle"];
