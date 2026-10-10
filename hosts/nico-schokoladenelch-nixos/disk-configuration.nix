@@ -262,6 +262,16 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          # Disk images of the devbox VM (Nix store overlay, Nix database,
+          # Docker); no snapshots, as the images change constantly
+          "devbox-store" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/devbox-store";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "false";
+            };
+          };
         };
       };
 
