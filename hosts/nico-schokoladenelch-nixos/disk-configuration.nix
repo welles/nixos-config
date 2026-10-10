@@ -253,21 +253,23 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
-          "libvirt" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/bucket/libvirt";
-            options = {
-              mountpoint = "legacy";
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
-          # State of the isolated development container (devbox.nix)
+          # State of the isolated development VM (devbox.nix)
           "devbox" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/devbox";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
+            };
+          };
+          # Disk images of the devbox VM (Nix store overlay, Nix database,
+          # Docker); no snapshots, as the images change constantly
+          "devbox-store" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/devbox-store";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "false";
             };
           };
         };
@@ -355,14 +357,6 @@
           "forgejo_lfs" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/forgejo_lfs";
-            options = {
-              mountpoint = "legacy";
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
-          "libvirt" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/tank/libvirt";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";

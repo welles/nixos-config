@@ -52,7 +52,6 @@
     ./gaming.nix
     ../../modules/rclone
     ./sunshine.nix
-    ../../modules/packages/virt-manager-client.nix
 
     # Packages
     ../../modules/packages/1password.nix
@@ -148,8 +147,6 @@
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
     passwordConfig = {initialPassword = "passwort";};
     extraGroups = ["wheel"];
-    remoteHost = "nico-schokoladenelch-nixos";
-    remoteUser = "schokoladenelch";
     nextcloudUrl = "https://nextcloud.welles.app";
   };
 }
