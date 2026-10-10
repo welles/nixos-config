@@ -19,7 +19,9 @@
 #     files off the server, not about security, so the VM reaches the
 #     internet, the LAN, the Docker networks and the host itself. From the
 #     LAN, SSH reaches the VM via host port 2222; Guacamole reaches RDP
-#     (3389) directly at 192.168.200.2.
+#     (3389) directly at 192.168.200.2. DNS goes through a dnsmasq on the
+#     host that forwards to whatever resolvers NetworkManager configured
+#     there, so LAN names resolve like on the host.
 #   - Desktop: XFCE through xrdp, used via Guacamole (RDP connection to
 #     192.168.200.2:3389, user `dev`, password from sops).
 #   - Dev tooling: Claude Code (nixpkgs-unstable, auto-updater disabled),
@@ -287,8 +289,8 @@ in {
 
     networking = {
       hostName = name;
-      # Public resolvers; the host runs no resolver of its own
-      nameservers = ["1.1.1.1" "9.9.9.9"];
+      # dnsmasq on the host, which forwards to the host's own resolvers
+      nameservers = [hostAddress];
       firewall.allowedTCPPorts = [22 rdpPort];
     };
 
@@ -502,6 +504,19 @@ in {
           done
         '';
       };
+    };
+  };
+
+  # DNS forwarder for the VM only: listens on the host's end of the tap
+  # interface (bind-dynamic, as the interface only exists while the VM runs)
+  # and forwards to the upstream servers in the host's /etc/resolv.conf.
+  services.dnsmasq = {
+    enable = true;
+    resolveLocalQueries = false;
+    settings = {
+      listen-address = hostAddress;
+      bind-dynamic = true;
+      no-dhcp-interface = tapInterface;
     };
   };
 
