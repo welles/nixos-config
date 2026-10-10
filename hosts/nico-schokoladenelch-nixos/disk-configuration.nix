@@ -261,7 +261,7 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
-          # State of the isolated development container (devbox.nix)
+          # State of the isolated development VM (devbox.nix)
           "devbox" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/devbox";
