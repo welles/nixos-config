@@ -2,9 +2,10 @@
 #
 # General-purpose development environment with an XFCE desktop, running as a
 # declarative NixOS MicroVM (microvm.nix, QEMU/KVM) on the server:
-#   - Own kernel and hardware virtualisation; the unprivileged user `dev` has
-#     no wheel access. The root filesystem is a tmpfs, so the VM starts from
-#     a clean system on every boot.
+#   - Own kernel and hardware virtualisation. `dev` has passwordless sudo
+#     inside the VM (not on the host); the root filesystem is a tmpfs, so
+#     everything outside /home/dev, /nix and /var/lib/docker starts clean on
+#     every boot.
 #   - State lives on the ZFS dataset bucket/devbox (/mnt/bucket/devbox) and
 #     reaches the VM through virtiofs shares:
 #       home/  -> /home/dev (repositories, logins for Claude/gh/az, dotfiles,
@@ -12,9 +13,14 @@
 #       ssh/   -> SSH host keys, so the host key survives VM restarts
 #       cli/   -> (host only) key pair the `devbox` command logs in with
 #   - Nix (with flakes) runs on the VM's own nix-daemon: the host's
-#     /nix/store is shared read-only, builds land in a writable overlay
-#     (a disk image under /var/lib/microvms/devbox that is recreated on
-#     every VM start), so nothing the VM builds ends up on the host.
+#     /nix/store is shared read-only, everything the VM builds or downloads
+#     lands in a persistent writable overlay, so nothing ends up on the host
+#     and `nix profile` or Home Manager installs survive restarts. Disk images
+#     on the ZFS dataset bucket/devbox-store (no snapshots):
+#       nix-rw-store.img  -> /nix/.rw-store (overlay upper layer)
+#       nix-db.img        -> /nix/var/nix (Nix database, profiles, gcroots)
+#       docker.img        -> /var/lib/docker
+#   - Docker inside the VM (`dev` is in the docker group).
 #   - Own network (tap + NAT): the isolation is about keeping development
 #     files off the server, not about security, so the VM reaches the
 #     internet, the LAN, the Docker networks and the host itself. From the
@@ -22,8 +28,8 @@
 #     (3389) directly at 192.168.200.2. DNS goes through a dnsmasq on the
 #     host that forwards to whatever resolvers NetworkManager configured
 #     there, so LAN names resolve like on the host.
-#   - Desktop: XFCE through xrdp, used via Guacamole (RDP connection to
-#     192.168.200.2:3389, user `dev`, password from sops).
+#   - Desktop: XFCE through xrdp with sound (PulseAudio), used via Guacamole
+#     (RDP connection to 192.168.200.2:3389, user `dev`, password from sops).
 #   - Dev tooling: Claude Code (nixpkgs-unstable, auto-updater disabled),
 #     gh, azure-cli, nodejs, pnpm, bun, just, sqlcmd, python3, git, VS Code,
 #     Firefox; nix-ld for prebuilt binaries such as the VS Code server.
@@ -79,6 +85,9 @@
   devUserDescription = "Nico Welles";
   uid = 1500;
   stateDir = "/mnt/bucket/devbox";
+  # Disk images of the VM; a separate dataset without snapshots, as the
+  # images change constantly
+  imageDir = "/mnt/bucket/devbox-store";
   cliDir = "${stateDir}/cli";
   sshPort = 2222;
   rdpPort = 3389;
@@ -247,18 +256,57 @@ in {
         }
       ];
 
-      # The Nix database lives on the tmpfs root and forgets everything built
-      # into the overlay on reboot, so the overlay starts empty every time
-      # (microvm-run runs in /var/lib/microvms/devbox and recreates it).
+      # The overlay and the Nix database persist together, so the store
+      # behaves like on a normal machine. The system closure (in the shared
+      # lower layer) is registered again on every boot.
       writableStoreOverlay = "/nix/.rw-store";
       volumes = [
         {
-          image = "nix-store-overlay.img";
+          image = "${imageDir}/nix-rw-store.img";
+          label = "nix-rw-store";
           mountPoint = "/nix/.rw-store";
-          size = 32768;
+          size = 131072;
+        }
+        {
+          image = "${imageDir}/nix-db.img";
+          label = "nix-db";
+          mountPoint = "/nix/var/nix";
+          size = 2048;
+        }
+        {
+          image = "${imageDir}/docker.img";
+          label = "docker";
+          mountPoint = "/var/lib/docker";
+          size = 131072;
         }
       ];
-      preStart = "rm -f nix-store-overlay.img";
+    };
+
+    # Needed before stage 2, where the system closure is registered
+    fileSystems."/nix/var/nix".neededForBoot = true;
+
+    # When the VM's garbage collector deletes a path of the shared lower
+    # layer, overlayfs records a whiteout in the upper layer that would hide
+    # the path for good, even if a later system needs it again. Drop the
+    # whiteouts before mounting the store; such paths simply reappear as
+    # unregistered (and get registered again once they are part of the
+    # system closure).
+    boot.initrd.systemd.services.nix-store-whiteouts = {
+      description = "Remove whiteouts of shared store paths from the overlay";
+      requiredBy = ["sysroot-nix-store.mount"];
+      before = ["sysroot-nix-store.mount"];
+      unitConfig = {
+        DefaultDependencies = false;
+        RequiresMountsFor = "/sysroot/nix/.rw-store";
+      };
+      serviceConfig.Type = "oneshot";
+      script = ''
+        for entry in /sysroot/nix/.rw-store/store/*; do
+          if [ -c "$entry" ]; then
+            rm -f "$entry"
+          fi
+        done
+      '';
     };
 
     home-manager = {
@@ -302,6 +350,12 @@ in {
 
     time.timeZone = "Europe/Berlin";
 
+    # Root inside the VM only; the isolation exists to keep development files
+    # off the server, not for security
+    security.sudo.wheelNeedsPassword = false;
+
+    virtualisation.docker.enable = true;
+
     nix.settings.experimental-features = ["nix-command" "flakes"];
 
     programs.ssh.knownHosts.github = {
@@ -312,6 +366,7 @@ in {
     users.users.dev = {
       inherit uid;
       isNormalUser = true;
+      extraGroups = ["wheel" "docker"];
       home = "/home/dev";
       openssh.authorizedKeys.keys = config.users.users.${user}.openssh.authorizedKeys.keys;
     };
@@ -342,7 +397,12 @@ in {
         enable = true;
         port = rdpPort;
         defaultWindowManager = "${pkgs.xfce4-session}/bin/xfce4-session";
+        # Sound over RDP; the xrdp module only works with PulseAudio
+        audio.enable = true;
       };
+
+      pulseaudio.enable = true;
+      pipewire.enable = false;
     };
 
     environment.systemPackages = devTools ++ [vscode pkgs.firefox];
@@ -378,6 +438,23 @@ in {
           };
           script = ''
             usermod --password "$(cat /run/host-secrets/dev-password)" dev
+          '';
+        };
+
+        # The host may garbage-collect paths of the shared lower layer that
+        # the VM's database still lists (e.g. libraries a `nix profile`
+        # package uses from an older system). Fetch such paths again from the
+        # binary cache into the overlay; paths without referrers are dropped
+        # from the database.
+        nix-store-repair = {
+          description = "Repair Nix store paths the host removed";
+          wantedBy = ["multi-user.target"];
+          wants = ["network-online.target"];
+          after = ["network-online.target"];
+          path = [pkgs.nix];
+          serviceConfig.Type = "oneshot";
+          script = ''
+            nix-store --verify --repair || echo "Some store paths could not be repaired" >&2
           '';
         };
 
@@ -442,10 +519,11 @@ in {
       "d ${stateDir}/home 0700 ${toString uid} 100 -"
       "d ${stateDir}/ssh 0700 root root -"
       "d ${cliDir} 0700 root root -"
+      "d ${imageDir} 0750 microvm kvm -"
     ];
 
     services = {
-      "microvm@${name}".unitConfig.RequiresMountsFor = [stateDir];
+      "microvm@${name}".unitConfig.RequiresMountsFor = [stateDir imageDir];
       "microvm-virtiofsd@${name}".unitConfig.RequiresMountsFor = [stateDir];
 
       # The tap interface is (re)created before every VM start; give the
