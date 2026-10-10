@@ -14,11 +14,12 @@
 #   - Nix (with flakes) runs on the VM's own nix-daemon: the host's
 #     /nix/store is shared read-only, builds land in a writable overlay
 #     (a disk image under /var/lib/microvms/devbox that is recreated on
-#     every VM start). Builds therefore stay inside the network isolation.
-#   - Private network (tap + NAT): the VM reaches the internet but nothing in
-#     private ranges (LAN, Docker networks) and opens no connections to the
-#     host. From the LAN, only SSH via host port 2222 reaches the VM; RDP
-#     (3389) is reachable only from the Guacamole Docker network.
+#     every VM start), so nothing the VM builds ends up on the host.
+#   - Own network (tap + NAT): the isolation is about keeping development
+#     files off the server, not about security, so the VM reaches the
+#     internet, the LAN, the Docker networks and the host itself. From the
+#     LAN, SSH reaches the VM via host port 2222; Guacamole reaches RDP
+#     (3389) directly at 192.168.200.2.
 #   - Desktop: XFCE through xrdp, used via Guacamole (RDP connection to
 #     192.168.200.2:3389, user `dev`, password from sops).
 #   - Dev tooling: Claude Code (nixpkgs-unstable, auto-updater disabled),
@@ -80,8 +81,6 @@
   sshPort = 2222;
   rdpPort = 3389;
   lanSubnet = "10.0.0.0/24";
-  # Network of the Guacamole stack (modules/stacks/guacamole)
-  guacamoleSubnet = "10.10.11.0/24";
   tapInterface = "vm-${name}";
   hostAddress = "192.168.200.1";
   vmAddress = "192.168.200.2";
@@ -288,7 +287,7 @@ in {
 
     networking = {
       hostName = name;
-      # The host's LAN resolver is unreachable from the VM
+      # Public resolvers; the host runs no resolver of its own
       nameservers = ["1.1.1.1" "9.9.9.9"];
       firewall.allowedTCPPorts = [22 rdpPort];
     };
@@ -480,7 +479,7 @@ in {
 
       # Docker sets the iptables FORWARD policy to DROP, which would also
       # block the VM's traffic. DOCKER-USER is Docker's hook for custom
-      # rules; the filtering in devbox-isolation still applies first.
+      # rules.
       devbox-docker-forward = {
         description = "Allow forwarding for the devbox VM past Docker's FORWARD policy";
         wantedBy = ["docker.service"];
@@ -514,34 +513,16 @@ in {
 
     networkmanager.unmanaged = ["interface-name:vm-*"];
 
-    # - Replies to connections opened towards the VM may pass.
-    # - The VM must not open connections to private ranges (LAN
-    #   10.0.0.0/24, Docker networks 10.10.0.0/16, other RFC1918 nets) or to
-    #   the host itself.
-    # - New connections into the VM: SSH from the LAN (DNAT of host port
-    #   2222) and RDP from the Guacamole network.
-    # A drop verdict in any filter base chain is final.
-    nftables.tables.devbox-isolation = {
+    # Lets the VM reach all services of the host (Docker stacks, Caddy, SSH)
+    firewall.trustedInterfaces = [tapInterface];
+
+    # SSH from the LAN to the VM through host port 2222
+    nftables.tables.devbox-ssh-forward = {
       family = "inet";
       content = ''
         chain prerouting {
           type nat hook prerouting priority dstnat; policy accept;
           ip saddr ${lanSubnet} fib daddr type local tcp dport ${toString sshPort} dnat ip to ${vmAddress}:22
-        }
-
-        chain input {
-          type filter hook input priority filter - 10; policy accept;
-          iifname "${tapInterface}" ct state established,related accept
-          iifname "${tapInterface}" drop
-        }
-
-        chain forward {
-          type filter hook forward priority filter - 10; policy accept;
-          ct state established,related accept
-          iifname "${tapInterface}" ip daddr { 10.0.0.0/8, 100.64.0.0/10, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16 } drop
-          oifname "${tapInterface}" ip saddr ${lanSubnet} tcp dport 22 accept
-          oifname "${tapInterface}" ip saddr ${guacamoleSubnet} tcp dport ${toString rdpPort} accept
-          oifname "${tapInterface}" drop
         }
       '';
     };
