@@ -253,14 +253,6 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
-          "libvirt" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/bucket/libvirt";
-            options = {
-              mountpoint = "legacy";
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
           # State of the isolated development VM (devbox.nix)
           "devbox" = {
             type = "zfs_fs";
@@ -355,14 +347,6 @@
           "forgejo_lfs" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/forgejo_lfs";
-            options = {
-              mountpoint = "legacy";
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
-          "libvirt" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/tank/libvirt";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";

@@ -46,7 +46,6 @@
 
     # Services & hardware
     ./services.nix
-    ../../modules/packages/virt-manager-client.nix
 
     # Packages
     ../../modules/packages/1password.nix
@@ -119,7 +118,5 @@
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
     passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
     extraGroups = ["wheel"];
-    remoteHost = "nico-schokoladenelch-nixos";
-    remoteUser = "schokoladenelch";
   };
 }

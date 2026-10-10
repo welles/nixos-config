@@ -55,7 +55,7 @@ Then add to `hosts/nico-schokoladenelch-nixos/disk-configuration.nix` under `zpo
 "loki" = { ... mountpoint = "/mnt/bucket/loki"; ... };
 ```
 
-In `hosts/nico-schokoladenelch-nixos/impermanence.nix`, add to the `fileSystems` block (mirroring the existing `/mnt/bucket/apps` / `/mnt/bucket/libvirt` entries):
+In `hosts/nico-schokoladenelch-nixos/impermanence.nix`, add to the `fileSystems` block (mirroring the existing `/mnt/bucket/apps` entry):
 ```nix
 "/mnt/bucket/prometheus".neededForBoot = true;
 "/mnt/bucket/grafana".neededForBoot = true;

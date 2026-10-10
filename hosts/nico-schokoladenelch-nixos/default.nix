@@ -35,7 +35,6 @@
 
     # Services & hardware
     ../../modules/docker.nix
-    ../../modules/libvirt.nix
     ../../modules/openssh-host-keys.nix
     ../../modules/server-status.nix
     ./services.nix
