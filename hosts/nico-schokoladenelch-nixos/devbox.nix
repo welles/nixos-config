@@ -49,7 +49,7 @@
 #   - Secrets from sops, copied by the host into the tmpfs
 #     /run/devbox-secrets and shared read-only into the VM:
 #       devbox-github-ssh-key  SSH key for github.com (~/.ssh/config)
-#       devbox-user-password   password hash of `dev` (RDP login)
+#       devbox-user-password   password of `dev` in plain text (RDP login)
 #
 # Host shortcuts (via `devbox`):
 #   devbox          login shell as user dev
@@ -65,7 +65,7 @@
 #
 # Guacamole connection (Settings -> Connections -> New connection):
 #   Protocol RDP, hostname 192.168.200.2, port 3389, username dev,
-#   password = the one hashed in devbox-user-password, security mode "Any",
+#   password = the one in devbox-user-password, security mode "Any",
 #   "Ignore server certificate" on, keyboard layout German (Qwertz).
 #
 # One-time setup after the first deploy (`devbox`): run `claude` and
@@ -437,7 +437,7 @@ in {
             RemainAfterExit = true;
           };
           script = ''
-            usermod --password "$(cat /run/host-secrets/dev-password)" dev
+            printf 'dev:%s\n' "$(cat /run/host-secrets/dev-password)" | chpasswd
           '';
         };
 

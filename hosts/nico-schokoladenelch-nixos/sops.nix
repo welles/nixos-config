@@ -23,7 +23,7 @@
       "devbox-github-ssh-key" = {
         restartUnits = ["devbox-secrets.service"];
       };
-      # Password hash of the devbox user `dev`, for the RDP login (devbox.nix)
+      # Password of the devbox user `dev` in plain text, for the RDP login (devbox.nix)
       "devbox-user-password" = {
         restartUnits = ["devbox-secrets.service"];
       };
