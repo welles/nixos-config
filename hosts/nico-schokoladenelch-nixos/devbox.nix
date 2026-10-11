@@ -47,6 +47,9 @@
 #     starts automatically with the XFCE session. ~/workspace/CLAUDE.md
 #     tells them how to attach the repositories in ~/workspace (add_repo),
 #     and managed settings (/etc/claude-code) allow that without asking.
+#     It also has every session work in its own Git worktree
+#     (~/workspace/.worktrees), so parallel sessions in the same repository
+#     don't get in each other's way.
 #   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
 #     named `devbox` makes the VM reachable from vscode.dev or a local
 #     VS Code ("Remote - Tunnels") after signing in with GitHub.
@@ -148,6 +151,33 @@
     2. Do not clone it again: the existing directory here is the clone. Call
        `register_repo_root` with its absolute path (e.g.
        `/home/dev/workspace/website-astro`).
+
+    ## Several sessions at once: one worktree per session
+
+    Several sessions may work in the same repository at the same time, and
+    they all share these clones. So reading is fine anywhere, but before
+    changing files, switching branches or running anything that writes to
+    the working tree, create your own Git worktree and work only there:
+
+    ```sh
+    git -C <repo> fetch origin
+    git -C <repo> worktree add -b <branch> ~/workspace/.worktrees/<repo>/<branch> origin/main
+    # existing branch: git -C <repo> worktree add ~/workspace/.worktrees/<repo>/<branch> <branch>
+    ```
+
+    - Never switch the branch of, or commit in, the clone itself
+      (`~/workspace/<repo>`); other sessions rely on it. `git fetch` is fine.
+    - If Git refuses because the branch is checked out in another worktree,
+      another session is working on it: ask instead of forcing it.
+    - A worktree has no dependencies yet: install them there (e.g.
+      `bun install`).
+    - Dev servers, test databases and containers of other sessions may be
+      running: use a free port and names of your own instead of stopping
+      theirs.
+    - When the work is merged or abandoned (and pushed), remove your own
+      worktree: `git -C <repo> worktree remove <path>`, then delete the local
+      branch. Never remove another session's worktree.
+    - For `register_repo_root` (see above), still pass the clone itself.
 
     This file is managed by nixos-config (hosts/nico-schokoladenelch-nixos/devbox.nix);
     change it there, not here.
