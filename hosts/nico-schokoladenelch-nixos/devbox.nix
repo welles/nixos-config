@@ -24,12 +24,13 @@
 #   - Own network (tap + NAT): the isolation is about keeping development
 #     files off the server, not about security, so the VM reaches the
 #     internet, the LAN, the Docker networks and the host itself. From the
-#     LAN, SSH reaches the VM via host port 2222; Guacamole reaches RDP
-#     (3389) directly at 192.168.200.2. DNS goes through a dnsmasq on the
-#     host that forwards to whatever resolvers NetworkManager configured
-#     there, so LAN names resolve like on the host.
+#     LAN, SSH reaches the VM via host port 2222 and RDP via host port 3389;
+#     Guacamole reaches RDP directly at 192.168.200.2:3389. DNS goes through
+#     a dnsmasq on the host that forwards to whatever resolvers
+#     NetworkManager configured there, so LAN names resolve like on the host.
 #   - Desktop: XFCE through xrdp with sound (PulseAudio), used via Guacamole
-#     (RDP connection to 192.168.200.2:3389, user `dev`, password from sops).
+#     (RDP connection to 192.168.200.2:3389) or any RDP client in the LAN
+#     (<schokoladenelch LAN address>:3389); user `dev`, password from sops.
 #   - Dev tooling: Claude Code (nixpkgs-unstable, auto-updater disabled),
 #     gh, azure-cli, nodejs, pnpm, bun, just, sqlcmd, python3, git, VS Code,
 #     Firefox; nix-ld for prebuilt binaries such as the VS Code server.
@@ -609,13 +610,14 @@ in {
     # Lets the VM reach all services of the host (Docker stacks, Caddy, SSH)
     firewall.trustedInterfaces = [tapInterface];
 
-    # SSH from the LAN to the VM through host port 2222
-    nftables.tables.devbox-ssh-forward = {
+    # SSH and RDP from the LAN to the VM through host ports 2222 and 3389
+    nftables.tables.devbox-forward = {
       family = "inet";
       content = ''
         chain prerouting {
           type nat hook prerouting priority dstnat; policy accept;
           ip saddr ${lanSubnet} fib daddr type local tcp dport ${toString sshPort} dnat ip to ${vmAddress}:22
+          ip saddr ${lanSubnet} fib daddr type local tcp dport ${toString rdpPort} dnat ip to ${vmAddress}:${toString rdpPort}
         }
       '';
     };
