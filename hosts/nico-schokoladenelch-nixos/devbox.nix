@@ -44,7 +44,9 @@
 #     `claude`, working in ~/workspace. Its sessions have Claude in Chrome
 #     enabled and use any browser whose Claude extension is signed in to
 #     the same claude.ai account, e.g. Chrome on the devbox desktop, which
-#     starts automatically with the XFCE session.
+#     starts automatically with the XFCE session. ~/workspace/CLAUDE.md
+#     tells them how to attach the repositories in ~/workspace (add_repo),
+#     and managed settings (/etc/claude-code) allow that without asking.
 #   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
 #     named `devbox` makes the VM reachable from vscode.dev or a local
 #     VS Code ("Remote - Tunnels") after signing in with GitHub.
@@ -118,6 +120,38 @@
     command = pkgs.lib.getExe pkgsUnstable.playwright-mcp;
     args = ["--headless"];
   };
+
+  # Managed settings of Claude Code: merged with ~/.claude/settings.json
+  # (which stays mutable), so the remote sessions can attach a repository of
+  # ~/workspace to their GitHub scope without asking.
+  claudeManagedSettings.permissions.allow = [
+    "mcp__claude-code-remote__add_repo"
+    "mcp__claude-code-remote__register_repo_root"
+  ];
+
+  # Instructions for the remote-control sessions, which start in ~/workspace
+  # while the work happens in one of the repositories below it.
+  workspaceInstructions = ''
+    # Workspace
+
+    Claude Code remote sessions start in this directory. It holds several Git
+    repositories as subdirectories (e.g. `website-astro` →
+    stamm-phoenix/website-astro, `nixos-config` → welles/nixos-config); the work
+    usually happens in one of them. `git` and `gh` work in all of them as is.
+
+    The session's own GitHub tools (subscribing to PR activity, PR events) only
+    work for repositories attached to the session. Before using them for a
+    repository here:
+
+    1. Call `add_repo` with its owner and name (`access: "push"` to push or open
+       PRs) — the owner/name come from `git remote get-url origin`.
+    2. Do not clone it again: the existing directory here is the clone. Call
+       `register_repo_root` with its absolute path (e.g.
+       `/home/dev/workspace/website-astro`).
+
+    This file is managed by nixos-config (hosts/nico-schokoladenelch-nixos/devbox.nix);
+    change it there, not here.
+  '';
 
   devTools =
     (with pkgsUnstable; [bun claude-code])
@@ -329,7 +363,10 @@ in {
           ../../modules/cli-tools.nix
           ../../modules/packages/git.nix
         ];
-        home.stateVersion = "25.11";
+        home = {
+          stateVersion = "25.11";
+          file."workspace/CLAUDE.md".text = workspaceInstructions;
+        };
 
         programs.ssh = {
           enable = true;
@@ -416,7 +453,10 @@ in {
       systemPackages = devTools ++ [vscode pkgs.firefox pkgs.google-chrome];
       # Chrome starts with the XFCE session, so the Claude extension is
       # available to Claude in Chrome as soon as someone is logged in via RDP
-      etc."xdg/autostart/google-chrome.desktop".source = "${pkgs.google-chrome}/share/applications/google-chrome.desktop";
+      etc = {
+        "xdg/autostart/google-chrome.desktop".source = "${pkgs.google-chrome}/share/applications/google-chrome.desktop";
+        "claude-code/managed-settings.json".text = builtins.toJSON claudeManagedSettings;
+      };
     };
 
     # Allow prebuilt binaries (VS Code server, npm packages, Playwright's
