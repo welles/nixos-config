@@ -33,14 +33,18 @@
 #     (<schokoladenelch LAN address>:3389); user `dev`, password from sops.
 #   - Dev tooling: Claude Code (nixpkgs-unstable, auto-updater disabled),
 #     gh, azure-cli, nodejs, pnpm, bun, just, sqlcmd, python3, git, VS Code,
-#     Firefox; nix-ld for prebuilt binaries such as the VS Code server.
+#     Firefox, Google Chrome; nix-ld for prebuilt binaries such as the
+#     VS Code server.
 #   - Browser tests: nix-ld provides the libraries and fonts Chromium needs,
 #     so the browsers Playwright downloads (`playwright install chromium`)
 #     run unchanged, whatever Playwright version a project pins.
 #   - Playwright MCP for Claude Code, with a Nix-built headless Chromium;
 #     registered in ~/.claude.json on every VM start.
 #   - A permanent `claude remote-control` session runs in the tmux session
-#     `claude`, working in ~/workspace.
+#     `claude`, working in ~/workspace. Its sessions have Claude in Chrome
+#     enabled and use any browser whose Claude extension is signed in to
+#     the same claude.ai account, e.g. Chrome on the devbox desktop, which
+#     starts automatically with the XFCE session.
 #   - A permanent VS Code tunnel (`code tunnel`, official Microsoft relay)
 #     named `devbox` makes the VM reachable from vscode.dev or a local
 #     VS Code ("Remote - Tunnels") after signing in with GitHub.
@@ -72,7 +76,9 @@
 # One-time setup after the first deploy (`devbox`): run `claude` and
 # `/login`, `gh auth login`, `az login`, `code tunnel user login --provider
 # github`, then `devbox root` and
-# `systemctl restart claude-remote-control vscode-tunnel`.
+# `systemctl restart claude-remote-control vscode-tunnel`. For Claude in
+# Chrome on the devbox itself, open Google Chrome over RDP, install the
+# Claude extension and sign in to the account Claude Code uses.
 {
   config,
   inputs,
@@ -406,7 +412,12 @@ in {
       pipewire.enable = false;
     };
 
-    environment.systemPackages = devTools ++ [vscode pkgs.firefox];
+    environment = {
+      systemPackages = devTools ++ [vscode pkgs.firefox pkgs.google-chrome];
+      # Chrome starts with the XFCE session, so the Claude extension is
+      # available to Claude in Chrome as soon as someone is logged in via RDP
+      etc."xdg/autostart/google-chrome.desktop".source = "${pkgs.google-chrome}/share/applications/google-chrome.desktop";
+    };
 
     # Allow prebuilt binaries (VS Code server, npm packages, Playwright's
     # browsers) to run
@@ -490,7 +501,7 @@ in {
             User = "dev";
             WorkingDirectory = "/home/dev/workspace";
             Type = "forking";
-            ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s claude claude remote-control";
+            ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s claude claude remote-control --chrome";
             ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t claude";
             Restart = "always";
             RestartSec = "30s";
