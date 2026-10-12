@@ -6,16 +6,18 @@
 # everything inside - Nix store, home directory, Docker - lives on that disk
 # and is deployed on its own like any other host in this flake.
 #
-#   - Desktop over RDP (xrdp + Cinnamon), from the LAN through the server's
-#     port 3390 or via Guacamole at 192.168.201.10:3389
-#   - SSH from the LAN through the server's port 2223; from the VM the
-#     server is reachable like any other machine in the LAN
+#   - Bridged into the LAN: gets its address via DHCP from the Fritzbox
+#     (MAC 52:54:00:c9:00:0a, fix the address there) and is reachable as
+#     nico-devbox-nixos like any other machine, the server too
+#   - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
+#     Guacamole; SSH on port 22
 #   - Impermanence: the ZFS root dataset is rolled back on every boot, only
 #     /persist survives
 #
 # Installation (once):
-#   1. Deploy nico-schokoladenelch-nixos: creates the zvol, the libvirt
-#      network and the domain (which starts with an empty disk).
+#   1. Deploy nico-schokoladenelch-nixos (with `nixos-rebuild boot` and a
+#      reboot, as it moves the server's address to the bridge br0): creates
+#      the zvol and the domain (which starts with an empty disk).
 #   2. On the server, put a NixOS minimal ISO where the domain expects it
 #      and restart the VM, so it boots the installer:
 #        sudo mkdir -p /var/lib/libvirt/images
@@ -25,12 +27,14 @@
 #   3. In the installer's console (virt-manager via
 #      qemu+ssh://schokoladenelch@<server>/system), set a password for the
 #      user `nixos` with `passwd`.
-#   4. From a machine in the LAN with this repository and the sops age key:
+#   4. Look up the installer's address in the Fritzbox (MAC
+#      52:54:00:c9:00:0a). From a machine in the LAN with this repository
+#      and the sops age key:
 #        mkdir -p /tmp/devbox-extra/persist/var/lib/sops-nix
 #        sudo cp /persist/var/lib/sops-nix/key.txt /tmp/devbox-extra/persist/var/lib/sops-nix/
 #        nix run github:nix-community/nixos-anywhere -- \
 #          --flake .#nico-devbox-nixos --extra-files /tmp/devbox-extra \
-#          --ssh-port 2223 nixos@<server>
+#          nixos@<VM address>
 #      disko partitions the disk (including the @blank snapshot of
 #      devbox/root), the system is built on that machine, not on the server.
 #   5. Delete the ISO again (the disk boots first anyway); log in over RDP,

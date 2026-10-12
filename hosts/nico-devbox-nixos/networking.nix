@@ -1,7 +1,7 @@
 # Networking
 #
-# NetworkManager with DHCP; libvirt's network on the server always hands
-# out 192.168.201.10 (fixed lease by MAC address). SSH for administration
+# NetworkManager with DHCP from the Fritzbox (the VM is bridged into the
+# LAN on the server, see nico-devbox-vm.nix there). SSH for administration
 # and deployments (`nixos-rebuild --target-host`), key only.
 {user, ...}: {
   systemd.services.NetworkManager-wait-online.enable = false;
