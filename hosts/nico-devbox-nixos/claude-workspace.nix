@@ -13,8 +13,6 @@
 #     are not signed, as the signing key lives in 1Password.
 #   - Existing clones are never touched (no pull, no reset); a repository
 #     removed from the list keeps its clone, only its session goes away.
-#   - Playwright MCP (user scope, headless Chromium from Nix) for every
-#     session, registered in ~/.claude.json by claude-workspace-clone.
 #   - Each session runs in a tmux server of its own, with its socket at
 #     /run/claude-remote-control/<repo>/tmux:
 #       claude-attach <repo>
@@ -43,15 +41,6 @@
   trustFilters =
     lib.concatMapStrings (repo: " | .projects[\"${workspace}/${repoName repo}\"].hasTrustDialogAccepted = true")
     repos;
-
-  # MCP servers for Claude Code (user scope). Playwright MCP from nixpkgs
-  # brings its own Nix-built Chromium, independent of nix-ld and of the
-  # browsers a project downloads.
-  mcpServers.playwright = {
-    type = "stdio";
-    command = lib.getExe pkgs.playwright-mcp;
-    args = ["--headless"];
-  };
 
   # Everything the sessions may need: system and Home Manager packages
   sessionPath = [
@@ -99,7 +88,9 @@ in {
         description = "Clone the repositories of the Claude Remote Control sessions";
         wantedBy = ["multi-user.target"];
         wants = ["network-online.target"];
-        after = ["network-online.target" "sops-install-secrets.service"];
+        # After the MCP servers are registered (modules/playwright-mcp.nix), as
+        # both edit ~/.claude.json
+        after = ["network-online.target" "sops-install-secrets.service" "claude-mcp-playwright.service"];
         path = [pkgs.git pkgs.openssh pkgs.jq];
         environment.GIT_SSH_COMMAND = sshCommand;
         serviceConfig = {
@@ -122,13 +113,11 @@ in {
           repos
           + ''
             # remote-control has no terminal to ask on: trust the folders and
-            # accept its one-time "Enable Remote Control?" dialog. Also
-            # registers the MCP servers (replacing earlier versions of them).
+            # accept its one-time "Enable Remote Control?" dialog.
             # ~/.claude.json is mutable state, so it is edited in place (it is
             # a link into /persist, so it can't be replaced by mv)
             if [ -f ${home}/.claude.json ]; then
-              json=$(jq --argjson mcp ${lib.escapeShellArg (builtins.toJSON mcpServers)} \
-                '.remoteDialogSeen = true | .mcpServers += $mcp${trustFilters}' ${home}/.claude.json)
+              json=$(jq '.remoteDialogSeen = true${trustFilters}' ${home}/.claude.json)
               printf '%s\n' "$json" > ${home}/.claude.json
             fi
           '';
