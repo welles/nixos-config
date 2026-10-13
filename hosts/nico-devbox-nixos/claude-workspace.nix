@@ -29,6 +29,7 @@
   repos = [
     "welles/nixos-config"
     "stamm-phoenix/website-astro"
+    "stamm-phoenix/playwright-api"
   ];
 
   home = "/home/${user}";
