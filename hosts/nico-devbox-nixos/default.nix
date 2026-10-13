@@ -150,12 +150,11 @@
   networking.hostName = hostname;
   # No local login screen: the desktop is only used over RDP, and SDDM's
   # greeter kept rendering on the SPICE console nobody looks at. Without it,
-  # NixOS would fall back to LightDM, so no display manager starts at all; the
-  # SPICE console has a text login.
-  services = {
-    displayManager.sddm.enable = false;
-    xserver.autorun = false;
-  };
+  # NixOS falls back to LightDM, and graphical.target wants the display
+  # manager whatever services.xserver.autorun says, so its unit goes away;
+  # the SPICE console has a text login.
+  services.displayManager.sddm.enable = false;
+  systemd.services.display-manager.enable = false;
   networking.hostId = "75163031";
   system.stateVersion = "26.05";
   _module.args = {
