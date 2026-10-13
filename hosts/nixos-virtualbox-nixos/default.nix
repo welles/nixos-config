@@ -1,7 +1,7 @@
 {hostname, ...}: {
   imports = [
     # Hardware & boot
-    ./boot.nix
+    ../../modules/zfs-systemd-boot.nix
     ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
@@ -70,6 +70,8 @@
   ];
 
   networking.hostName = hostname;
+  # ZFS requires a unique hostId per machine
+  networking.hostId = "1a2b3c4d";
   system.stateVersion = "25.11";
   _module.args = {
     user = "nixos";

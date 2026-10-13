@@ -1,14 +1,14 @@
 # Claude Code Remote Control, one session per repository
 #
-# The repositories below are cloned into ~/workspace (persisted, see
-# impermanence.nix), and each of them gets its own permanent
-# `claude remote-control` session working in the clone, so the session
-# knows its repository from the start. Sessions are only started from
+# The repositories of `claudeWorkspaceRepos` ("owner/repo") are cloned into
+# ~/workspace (persisted on impermanence hosts), and each of them gets its
+# own permanent `claude remote-control` session working in the clone, so the
+# session knows its repository from the start. Sessions are only started from
 # claude.ai/code (--no-create-session-in-dir), each in a Git worktree of its
 # own (--spawn worktree).
 #
 #   - GitHub access without 1Password: the SSH key github-ssh-key from sops
-#     (the same key as the microvm devbox's devbox-github-ssh-key), used for
+#     (the host sets its sopsFile, unless it is in the default one), used for
 #     every repository in ~/workspace through core.sshCommand. Commits there
 #     are not signed, as the signing key lives in 1Password.
 #   - Existing clones are never touched (no pull, no reset); a repository
@@ -24,13 +24,11 @@
   lib,
   pkgs,
   user,
+  persistRoot ? null,
+  claudeWorkspaceRepos ? (builtins.throw "claude-workspace.nix: set `_module.args.claudeWorkspaceRepos` to the repositories (\"owner/repo\")"),
   ...
 }: let
-  repos = [
-    "welles/nixos-config"
-    "stamm-phoenix/website-astro"
-    "stamm-phoenix/playwright-api"
-  ];
+  repos = claudeWorkspaceRepos;
 
   home = "/home/${user}";
   workspace = "${home}/workspace";
@@ -50,9 +48,12 @@
   ];
 in {
   sops.secrets."github-ssh-key" = {
-    sopsFile = ./secrets.yaml;
     owner = user;
     mode = "0400";
+  };
+
+  environment.persistence = lib.mkIf (persistRoot != null) {
+    ${persistRoot}.users.${user}.directories = ["workspace"];
   };
 
   programs.ssh.knownHosts.github = {

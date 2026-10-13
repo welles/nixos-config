@@ -17,8 +17,6 @@
       "/var/lib/sops-nix"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
-      # TLS certificate of xrdp (desktop.nix), so RDP clients keep trusting it
-      "/var/lib/xrdp"
       "/var/log"
     ];
     files = [
@@ -26,12 +24,7 @@
       "/etc/machine-id"
     ];
     users.${user} = {
-      directories = [
-        ".ssh"
-        # Logins of VS Code, Chrome, gh etc. stored in the GNOME keyring
-        ".local/share/keyrings"
-        "workspace"
-      ];
+      directories = [".ssh"];
     };
   };
 }
