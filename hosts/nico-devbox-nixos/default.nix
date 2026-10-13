@@ -70,9 +70,9 @@
     ../../modules/openssh.nix
 
     # Desktop environment: Plasma on X11 over RDP (xrdp only starts X11
-    # sessions; Plasma 6.8 is going to drop them). SDDM only serves the local
-    # SPICE console (virt-manager). No GPU in the VM: remote-plasma.nix turns
-    # off compositing and animations.
+    # sessions; Plasma 6.8 is going to drop them). No display manager, see
+    # below. No GPU in the VM: remote-plasma.nix turns off compositing and
+    # animations.
     ../../modules/kde-plasma.nix
     ../../modules/xrdp.nix
     ../../modules/user-dirs.nix
@@ -148,6 +148,14 @@
   ];
 
   networking.hostName = hostname;
+  # No local login screen: the desktop is only used over RDP, and SDDM's
+  # greeter kept rendering on the SPICE console nobody looks at. Without it,
+  # NixOS would fall back to LightDM, so no display manager starts at all; the
+  # SPICE console has a text login.
+  services = {
+    displayManager.sddm.enable = false;
+    xserver.autorun = false;
+  };
   networking.hostId = "75163031";
   system.stateVersion = "26.05";
   _module.args = {

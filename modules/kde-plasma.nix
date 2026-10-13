@@ -9,7 +9,8 @@
 
   services = {
     xserver.enable = true;
-    displayManager.sddm.enable = true;
+    # Hosts only used remotely (xrdp.nix) may turn it off
+    displayManager.sddm.enable = lib.mkDefault true;
     desktopManager.plasma6.enable = true;
     power-profiles-daemon.enable = true;
   };
