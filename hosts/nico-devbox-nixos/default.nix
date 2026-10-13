@@ -13,6 +13,8 @@
 #     Guacamole; SSH on port 22
 #   - A Claude Code Remote Control session per repository in ~/workspace
 #     (claude-workspace.nix)
+#   - Playwright MCP for Claude Code (claude-workspace.nix), a VS Code
+#     tunnel named nico-devbox-nixos (vscode-tunnel.nix)
 #   - Impermanence: the ZFS root dataset is rolled back on every boot, only
 #     /persist survives
 #
@@ -88,11 +90,13 @@
     # Services
     ../../modules/docker.nix
     ./claude-workspace.nix
+    ./vscode-tunnel.nix
 
     # Packages
     ../../modules/packages/1password.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/fira-code-nerd-font.nix
+    ../../modules/packages/firefox.nix
     ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
     ../../modules/packages/vscode.nix

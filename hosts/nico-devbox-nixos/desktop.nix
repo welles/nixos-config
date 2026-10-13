@@ -27,6 +27,4 @@
     pulseaudio.enable = true;
     pipewire.enable = false;
   };
-
-  environment.systemPackages = [pkgs.firefox];
 }
