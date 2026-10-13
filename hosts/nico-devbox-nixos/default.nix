@@ -92,10 +92,41 @@
     # Packages
     ../../modules/packages/1password.nix
     ../../modules/packages/claude-code.nix
+    ../../modules/packages/fira-code-nerd-font.nix
     ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
-    ../../modules/packages/nodejs.nix
     ../../modules/packages/vscode.nix
+
+    # Development: languages and runtimes
+    ../../modules/packages/bun.nix
+    ../../modules/packages/dotnet-sdk_10.nix
+    ../../modules/packages/jdk25.nix
+    ../../modules/packages/nodejs.nix
+    ../../modules/packages/pnpm.nix
+    ../../modules/packages/powershell.nix
+    ../../modules/packages/python3.nix
+
+    # Development: tools
+    ../../modules/nix-ld-dev-libraries.nix
+    ../../modules/packages/azure-cli.nix
+    ../../modules/packages/jetbrains-idea.nix
+    ../../modules/packages/jetbrains-rider.nix
+    ../../modules/packages/jq.nix
+    ../../modules/packages/just.nix
+    ../../modules/packages/lazydocker.nix
+    ../../modules/packages/lazygit.nix
+    ../../modules/packages/ripgrep.nix
+    ../../modules/packages/sqlcmd.nix
+    ../../modules/packages/unzip.nix
+    ../../modules/packages/wget.nix
+
+    # Development: Nix
+    ../../modules/packages/alejandra.nix
+    ../../modules/packages/deadnix.nix
+    ../../modules/packages/mcp-nixos.nix
+    ../../modules/packages/sops.nix
+    ../../modules/packages/ssh-to-age.nix
+    ../../modules/packages/statix.nix
 
     # Scripts
     ../../modules/scripts/check-persist
