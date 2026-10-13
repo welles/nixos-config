@@ -124,6 +124,19 @@ in {
       name = repoName repo;
       dir = "${workspace}/${name}";
       tmux = "${pkgs.tmux}/bin/tmux -S /run/${runtimeDir name}/tmux";
+      # Stop with Ctrl+C, so remote-control can sign off from claude.ai: after
+      # killing it, starts failed for ~3 minutes with "This folder is already
+      # served by a terminal `claude remote-control` on this device"
+      stop = pkgs.writeShellScript "claude-remote-control-${name}-stop" ''
+        for _ in 1 2; do
+          ${tmux} send-keys -t claude C-c 2>/dev/null || exit 0
+          for _ in $(seq 10); do
+            ${tmux} has-session -t claude 2>/dev/null || exit 0
+            sleep 0.5
+          done
+        done
+        ${tmux} kill-server 2>/dev/null || true
+      '';
     in
       lib.nameValuePair "claude-remote-control-${name}" {
         description = "Claude Code Remote Control session for ${repo}";
@@ -142,7 +155,7 @@ in {
           RuntimeDirectory = runtimeDir name;
           Type = "forking";
           ExecStart = "${tmux} new-session -d -s claude claude remote-control --name ${name} --spawn worktree --no-create-session-in-dir --chrome";
-          ExecStop = "${tmux} kill-server";
+          ExecStop = stop;
           Restart = "always";
           RestartSec = "30s";
         };
