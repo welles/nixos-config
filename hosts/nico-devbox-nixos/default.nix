@@ -12,7 +12,7 @@
 #   - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
 #     Guacamole; SSH on port 22
 #   - A Claude Code Remote Control session per repository in ~/workspace
-#     (claude-workspace.nix)
+#     (modules/claude-workspace.nix, repositories in claudeWorkspaceRepos)
 #   - Playwright MCP for Claude Code, a VS Code tunnel named
 #     nico-devbox-nixos
 #   - Impermanence: the ZFS root dataset is rolled back on every boot, only
@@ -49,11 +49,13 @@
 {
   config,
   hostname,
+  pkgs,
   ...
 }: {
   imports = [
     # Hardware & boot
     ./boot.nix
+    ../../modules/zfs-systemd-boot.nix
     ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
@@ -61,13 +63,17 @@
     ../../modules/sops-zfs-persist.nix
     ./sops.nix
 
-    # Networking
-    ./networking.nix
+    # Networking: DHCP from the Fritzbox. Unlike on the desktops,
+    # NetworkManager-wait-online stays enabled, as the Claude services need a
+    # working network, including DNS, once network-online.target is reached.
     ../../modules/networkmanager.nix
-    ../../modules/openssh-host-keys.nix
+    ../../modules/openssh.nix
 
-    # Desktop environment
-    ./desktop.nix
+    # Desktop environment: Cinnamon over RDP. LightDM only serves the local
+    # SPICE console (virt-manager); software-rendering Cinnamon over RDP, as
+    # there is no GPU in the VM and xrdp's X server has no OpenGL anyway
+    ../../modules/cinnamon.nix
+    ../../modules/xrdp.nix
     ../../modules/user-dirs.nix
 
     # Home Manager
@@ -89,7 +95,7 @@
 
     # Services
     ../../modules/docker.nix
-    ./claude-workspace.nix
+    ../../modules/claude-workspace.nix
     ../../modules/playwright-mcp.nix
     ../../modules/vscode-tunnel.nix
 
@@ -155,9 +161,19 @@
     pool = "devbox";
     userDescription = "Nico Welles";
     userEmail = "nico@welles.email";
+    xrdpSession = "${pkgs.cinnamon}/bin/cinnamon-session-cinnamon2d";
+    claudeWorkspaceRepos = [
+      "welles/nixos-config"
+      "stamm-phoenix/website-astro"
+      "stamm-phoenix/playwright-api"
+    ];
     sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
     passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
+    # Same key as for the server (1Password SSH agent)
+    sshAuthorizedKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
+    ];
     extraGroups = ["wheel"];
   };
 }

@@ -54,21 +54,15 @@
       extraArgs = ["--webserver" "--disable-check-update"];
     };
 
-    openssh = {
-      enable = true;
-      openFirewall = true;
-      settings = {
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
-        PermitRootLogin = "no";
-        Macs = [
-          "hmac-sha2-512-etm@openssh.com"
-          "hmac-sha2-256-etm@openssh.com"
-          "umac-128-etm@openssh.com"
-          "hmac-sha2-512" # Cloudflare required
-          "hmac-sha2-256" # Cloudflare required
-        ];
-      };
+    # On top of modules/openssh.nix
+    openssh.settings = {
+      Macs = [
+        "hmac-sha2-512-etm@openssh.com"
+        "hmac-sha2-256-etm@openssh.com"
+        "umac-128-etm@openssh.com"
+        "hmac-sha2-512" # Cloudflare required
+        "hmac-sha2-256" # Cloudflare required
+      ];
     };
 
     # ZFS maintenance: periodic scrubs, TRIM for SSDs, and automatic snapshots

@@ -35,7 +35,7 @@
 
     # Services & hardware
     ../../modules/docker.nix
-    ../../modules/openssh-host-keys.nix
+    ../../modules/openssh.nix
     ../../modules/server-status.nix
     ./services.nix
     ./devbox.nix
@@ -77,6 +77,10 @@
     userEmail = "nico@welles.email";
     extraDiskMounts = ["/mnt/tank/movies"];
     passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
+    # 1Password SSH agent
+    sshAuthorizedKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
+    ];
     extraGroups = ["wheel"];
   };
 }
