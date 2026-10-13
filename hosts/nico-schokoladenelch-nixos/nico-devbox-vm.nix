@@ -120,8 +120,16 @@ in {
   # virsh and virt-manager (qemu+ssh://) without root
   users.users.${user}.extraGroups = ["libvirtd"];
 
-  # NVRAM (EFI variables) of the guest and libvirt's own state
-  environment.persistence.${persistRoot}.directories = ["/var/lib/libvirt"];
+  environment.persistence.${persistRoot} = {
+    # NVRAM (EFI variables) of the guest and libvirt's own state
+    directories = ["/var/lib/libvirt"];
+    # systemd's host key for encrypted credentials: libvirtd loads its
+    # secrets-encryption-key (in /var/lib/libvirt/secrets) with
+    # LoadCredentialEncrypted, which fails once the key it was encrypted
+    # with is gone. Must exist on the persist dataset before it is first
+    # bound here, impermanence links missing files only.
+    files = ["/var/lib/systemd/credential.secret"];
+  };
 
   systemd.services = {
     nico-devbox-vm = {
