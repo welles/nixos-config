@@ -11,6 +11,8 @@
 #     nico-devbox-nixos like any other machine, the server too
 #   - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
 #     Guacamole; SSH on port 22
+#   - A Claude Code Remote Control session per repository in ~/workspace
+#     (claude-workspace.nix)
 #   - Impermanence: the ZFS root dataset is rolled back on every boot, only
 #     /persist survives
 #
@@ -85,6 +87,7 @@
 
     # Services
     ../../modules/docker.nix
+    ./claude-workspace.nix
 
     # Packages
     ../../modules/packages/1password.nix
