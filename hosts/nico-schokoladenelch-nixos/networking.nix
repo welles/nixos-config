@@ -4,9 +4,39 @@
 # the Caddy reverse proxy, allows all traffic from the local
 # 10.0.0.0/24 subnet, and enables TCP BBR congestion control for
 # improved throughput. NetworkManager is enabled globally in global.nix.
+#
+# The LAN port enp6s0 is a port of the bridge br0, which holds the server's
+# address (DHCP from the Fritzbox) and connects bridged VMs such as
+# nico-devbox-nixos (nico-devbox-vm.nix) directly to the LAN. br0 uses the
+# MAC address of enp6s0, so the Fritzbox keeps assigning the same address
+# and port forwards to the server keep working.
 _: {
   networking = {
     nftables.enable = true;
+
+    networkmanager.ensureProfiles.profiles = {
+      br0 = {
+        connection = {
+          id = "br0";
+          type = "bridge";
+          interface-name = "br0";
+          autoconnect-slaves = 1;
+        };
+        ethernet.cloned-mac-address = "10:7c:61:b4:90:e4";
+        bridge.stp = false;
+        ipv4.method = "auto";
+        ipv6.method = "auto";
+      };
+      br0-enp6s0 = {
+        connection = {
+          id = "br0-enp6s0";
+          type = "ethernet";
+          interface-name = "enp6s0";
+          master = "br0";
+          slave-type = "bridge";
+        };
+      };
+    };
 
     firewall = {
       allowedTCPPorts = [

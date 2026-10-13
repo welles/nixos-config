@@ -1,6 +1,6 @@
 # NixOS Flake Configuration
 #
-# Manages 7 NixOS systems across desktops, laptops, a home server, and
+# Manages 8 NixOS systems across desktops, laptops, a home server, and
 # development environments. Each system is self-contained under hosts/<hostname>/.
 #
 # Systems:
@@ -11,6 +11,7 @@
 #   - nico-schokoladenelch-nixos: Home server (ZFS, Docker, Caddy, impermanence)
 #   - nixos-wsl-nixos:            Windows WSL2 development environment
 #   - nixos-virtualbox-nixos:     VirtualBox VM development environment
+#   - nico-devbox-nixos:          Development desktop VM on the home server (Cinnamon over RDP)
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
@@ -80,6 +81,7 @@
       nixos-wsl-nixos = mkUnstableHostSystem "nixos-wsl-nixos";
       nixos-virtualbox-nixos = mkUnstableHostSystem "nixos-virtualbox-nixos";
       nico-desktop-nixos = mkUnstableHostSystem "nico-desktop-nixos";
+      nico-devbox-nixos = mkUnstableHostSystem "nico-devbox-nixos";
     };
   };
 }

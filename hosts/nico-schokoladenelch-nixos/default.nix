@@ -39,6 +39,7 @@
     ../../modules/server-status.nix
     ./services.nix
     ./devbox.nix
+    ./nico-devbox-vm.nix
     ../../modules/stacks/default.nix
 
     # Packages

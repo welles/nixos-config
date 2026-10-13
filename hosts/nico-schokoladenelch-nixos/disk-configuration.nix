@@ -262,6 +262,21 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          # Disks of libvirt VMs (nico-devbox-vm.nix); the zvol is created
+          # sparse by nico-devbox-vm.service on an existing system
+          "vms" = {
+            type = "zfs_fs";
+            options.mountpoint = "none";
+          };
+          "vms/nico-devbox-nixos" = {
+            type = "zfs_volume";
+            size = "256G";
+            extraArgs = ["-s"];
+            options = {
+              volmode = "dev";
+              "com.sun:auto-snapshot" = "false";
+            };
+          };
           # Disk images of the devbox VM (Nix store overlay, Nix database,
           # Docker); no snapshots, as the images change constantly
           "devbox-store" = {
