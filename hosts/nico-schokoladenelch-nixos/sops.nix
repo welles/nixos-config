@@ -19,14 +19,6 @@
       "msmtp-password" = {
         mode = "0444";
       };
-      # Private SSH key the devbox VM uses for GitHub (devbox.nix)
-      "devbox-github-ssh-key" = {
-        restartUnits = ["devbox-secrets.service"];
-      };
-      # Password of the devbox user `dev` in plain text, for the RDP login (devbox.nix)
-      "devbox-user-password" = {
-        restartUnits = ["devbox-secrets.service"];
-      };
       "user-password" = {
         neededForUsers = true;
       };

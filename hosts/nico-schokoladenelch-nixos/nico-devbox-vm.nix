@@ -1,9 +1,9 @@
 # Development Desktop VM (libvirt) for nico-devbox-nixos
 #
 # Runs the NixOS host nico-devbox-nixos (hosts/nico-devbox-nixos) as a
-# libvirt/KVM guest, in parallel to the microvm devbox (devbox.nix). The
-# server only provides the virtual hardware; the guest's system, Nix store
-# and data live on its own disk and are deployed separately.
+# libvirt/KVM guest. The server only provides the virtual hardware; the
+# guest's system, Nix store and data live on its own disk and are deployed
+# separately.
 #
 #   - Disk: sparse zvol bucket/vms/nico-devbox-nixos (volmode=dev, so the
 #     server never scans the guest's partitions or ZFS pool), handed to the

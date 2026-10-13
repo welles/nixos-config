@@ -253,15 +253,6 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
-          # State of the isolated development VM (devbox.nix)
-          "devbox" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/bucket/devbox";
-            options = {
-              mountpoint = "legacy";
-              "com.sun:auto-snapshot" = "true";
-            };
-          };
           # Disks of libvirt VMs (nico-devbox-vm.nix); the zvol is created
           # sparse by nico-devbox-vm.service on an existing system
           "vms" = {
@@ -274,16 +265,6 @@
             extraArgs = ["-s"];
             options = {
               volmode = "dev";
-              "com.sun:auto-snapshot" = "false";
-            };
-          };
-          # Disk images of the devbox VM (Nix store overlay, Nix database,
-          # Docker); no snapshots, as the images change constantly
-          "devbox-store" = {
-            type = "zfs_fs";
-            mountpoint = "/mnt/bucket/devbox-store";
-            options = {
-              mountpoint = "legacy";
               "com.sun:auto-snapshot" = "false";
             };
           };
