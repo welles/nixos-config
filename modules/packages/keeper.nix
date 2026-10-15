@@ -6,11 +6,11 @@
 }: let
   keeper = pkgs.stdenv.mkDerivation (finalAttrs: {
     pname = "keeper-password-manager";
-    version = "18.6.4";
+    version = "18.6.5";
 
     src = pkgs.fetchurl {
       url = "https://download.keepersecurity.com/desktop_electron/Linux/repo/deb/keeperpasswordmanager_${finalAttrs.version}_amd64.deb";
-      hash = "sha256-3h6pGkB3UpxnhEiEK51428SBXGaI+6M2PV15qYnKsFI=";
+      hash = "sha256-42fSuEmi0nDNj+glSwSvYydfaK6WF3d8D84t2puSZwk=";
     };
 
     nativeBuildInputs = with pkgs; [
