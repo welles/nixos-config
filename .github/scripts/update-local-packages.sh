@@ -6,6 +6,7 @@ readonly EDEN_FILE="modules/packages/eden.nix"
 readonly OCCT_FILE="modules/packages/occt.nix"
 readonly KEEPER_FILE="modules/packages/keeper.nix"
 readonly NUKE_FILE="modules/packages/nuke.nix"
+readonly CHEATENGINE_FILE="modules/packages/cheat-engine.nix"
 
 # name|file|PyPI project|distribution filename (@VERSION@ is substituted)
 readonly PYPI_PACKAGES=(
@@ -89,7 +90,7 @@ for entry in "${PYPI_PACKAGES[@]}"; do
 	pypi_filenames+=("$filename")
 done
 
-for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE" "${pypi_files[@]}"; do
+for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE" "$CHEATENGINE_FILE" "${pypi_files[@]}"; do
 	[[ -f $file ]] || fail "run this script from the repository root (${file} not found)"
 done
 
@@ -101,6 +102,8 @@ keeper_current_version=$(read_single_value "$KEEPER_FILE" version)
 keeper_current_hash=$(read_first_hash "$KEEPER_FILE")
 nuke_current_version=$(read_single_value "$NUKE_FILE" version)
 nuke_current_hash=$(read_single_value "$NUKE_FILE" nugetHash)
+cheatengine_current_version=$(read_single_value "$CHEATENGINE_FILE" version)
+cheatengine_current_hash=$(read_first_hash "$CHEATENGINE_FILE")
 
 pypi_current_versions=()
 pypi_current_hashes=()
@@ -178,6 +181,22 @@ nuke_version=$(
 )
 nuke_url="https://www.nuget.org/api/v2/package/nuke.globaltool/${nuke_version}"
 
+# The download page links the Linux zip with the version digits concatenated
+# (7.7.1 -> CheatEngineLinux771.zip), so read the dotted version from the link
+# text and cross-check it against the file name.
+cheatengine_html=$(curl -fsSL 'https://www.cheatengine.org/downloads.php')
+readonly CHEATENGINE_LINK_PATTERN='https://cheatengine\.org/download/CheatEngineLinux([0-9]+)\.zip'
+readonly CHEATENGINE_TEXT_PATTERN='Download Cheat Engine ([0-9]+(\.[0-9]+)+) For Linux'
+[[ $cheatengine_html =~ $CHEATENGINE_LINK_PATTERN ]] ||
+	fail 'Cheat Engine Linux download link was not found'
+cheatengine_url_version=${BASH_REMATCH[1]}
+[[ $cheatengine_html =~ $CHEATENGINE_TEXT_PATTERN ]] ||
+	fail 'Cheat Engine Linux version was not found'
+cheatengine_version=${BASH_REMATCH[1]}
+[[ ${cheatengine_version//./} == "$cheatengine_url_version" ]] ||
+	fail "Cheat Engine version ${cheatengine_version} does not match download CheatEngineLinux${cheatengine_url_version}.zip"
+cheatengine_url="https://cheatengine.org/download/CheatEngineLinux${cheatengine_url_version}.zip"
+
 pypi_versions=()
 pypi_urls=()
 for i in "${!pypi_projects[@]}"; do
@@ -197,6 +216,7 @@ eden_hash=$eden_current_hash
 occt_hash=$occt_current_hash
 keeper_hash=$keeper_current_hash
 nuke_hash=$nuke_current_hash
+cheatengine_hash=$cheatengine_current_hash
 pypi_hashes=("${pypi_current_hashes[@]}")
 changed=false
 
@@ -216,6 +236,10 @@ if [[ $nuke_version != "$nuke_current_version" ]]; then
 	nuke_hash=$(prefetch_hash "$nuke_url")
 	changed=true
 fi
+if [[ $cheatengine_version != "$cheatengine_current_version" ]]; then
+	cheatengine_hash=$(prefetch_hash "$cheatengine_url")
+	changed=true
+fi
 for i in "${!pypi_files[@]}"; do
 	if [[ ${pypi_versions[i]} != "${pypi_current_versions[i]}" ]]; then
 		pypi_hashes[i]=$(prefetch_hash "${pypi_urls[i]}")
@@ -227,6 +251,7 @@ printf 'Eden:  %s -> %s\n' "$eden_current_version" "$eden_version"
 printf 'OCCT:   %s -> %s\n' "$occt_current_version" "$occt_version"
 printf 'Keeper: %s -> %s\n' "$keeper_current_version" "$keeper_version"
 printf 'NUKE:   %s -> %s\n' "$nuke_current_version" "$nuke_version"
+printf 'Cheat Engine: %s -> %s\n' "$cheatengine_current_version" "$cheatengine_version"
 for i in "${!pypi_names[@]}"; do
 	printf '%s: %s -> %s\n' "${pypi_names[i]}" "${pypi_current_versions[i]}" "${pypi_versions[i]}"
 done
@@ -243,6 +268,7 @@ cp -p -- "$EDEN_FILE" "$temporary_directory/eden.nix"
 cp -p -- "$OCCT_FILE" "$temporary_directory/occt.nix"
 cp -p -- "$KEEPER_FILE" "$temporary_directory/keeper.nix"
 cp -p -- "$NUKE_FILE" "$temporary_directory/nuke.nix"
+cp -p -- "$CHEATENGINE_FILE" "$temporary_directory/cheat-engine.nix"
 for i in "${!pypi_files[@]}"; do
 	cp -p -- "${pypi_files[i]}" "$temporary_directory/pypi-${i}.nix"
 done
@@ -271,6 +297,12 @@ if [[ $nuke_version != "$nuke_current_version" ]]; then
 	replace_once "$temporary_directory/nuke.nix" \
 		"nugetHash = \"${nuke_current_hash}\";" "nugetHash = \"${nuke_hash}\";"
 fi
+if [[ $cheatengine_version != "$cheatengine_current_version" ]]; then
+	replace_once "$temporary_directory/cheat-engine.nix" \
+		"version = \"${cheatengine_current_version}\";" "version = \"${cheatengine_version}\";"
+	replace_once "$temporary_directory/cheat-engine.nix" \
+		"hash = \"${cheatengine_current_hash}\";" "hash = \"${cheatengine_hash}\";"
+fi
 for i in "${!pypi_files[@]}"; do
 	if [[ ${pypi_versions[i]} != "${pypi_current_versions[i]}" ]]; then
 		replace_once "$temporary_directory/pypi-${i}.nix" \
@@ -284,6 +316,7 @@ cp -- "$temporary_directory/eden.nix" "$EDEN_FILE"
 cp -- "$temporary_directory/occt.nix" "$OCCT_FILE"
 cp -- "$temporary_directory/keeper.nix" "$KEEPER_FILE"
 cp -- "$temporary_directory/nuke.nix" "$NUKE_FILE"
+cp -- "$temporary_directory/cheat-engine.nix" "$CHEATENGINE_FILE"
 for i in "${!pypi_files[@]}"; do
 	cp -- "$temporary_directory/pypi-${i}.nix" "${pypi_files[i]}"
 done
