@@ -53,6 +53,7 @@
     ../../modules/packages/antigravity.nix
     ../../modules/packages/azure-cli.nix
     ../../modules/packages/bottles.nix
+    ../../modules/packages/cheat-engine.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/deadnix.nix
