@@ -6,10 +6,11 @@
 # autoPatchelfHook and wrapped with the Qt6 hooks. Settings are stored in
 # $XDG_CONFIG_HOME, so the read-only install directory is fine.
 #
-# Reading other processes' memory needs ptrace access. Yama blocks that for
-# unprivileged processes by default (ptrace_scope=1), so the module relaxes it
-# to 0 (the setting Cheat Engine's readme-linux.txt recommends) instead of
-# requiring Cheat Engine to run as root.
+# Reading other processes' memory needs ptrace access, which Yama
+# (ptrace_scope=1) denies to unprivileged processes, and global hotkeys need
+# access to /dev/input. Instead of relaxing ptrace_scope system-wide, the
+# `cheatengine` launcher runs Cheat Engine as root via pkexec. The polkit
+# action keeps DISPLAY/XAUTHORITY, so the GUI connects through X11/XWayland.
 {
   pkgs,
   lib,
@@ -80,12 +81,12 @@
     installPhase = ''
       runHook preInstall
 
-      mkdir -p $out/opt/cheatengine $out/bin
+      mkdir -p $out/opt/cheatengine
       cp -r . $out/opt/cheatengine
 
       # Keep the real binary in its directory: Cheat Engine locates its Lua
       # scripts, headers and helper libraries next to its executable.
-      makeQtWrapper $out/opt/cheatengine/cheatengine-x86_64 $out/bin/${pname}
+      makeQtWrapper $out/opt/cheatengine/cheatengine-x86_64 $out/libexec/${pname}
 
       install -Dm644 ${desktopItem}/share/applications/${pname}.desktop \
         $out/share/applications/${pname}.desktop
@@ -101,11 +102,41 @@
       license = licenses.unfree;
       platforms = ["x86_64-linux"];
       sourceProvenance = [sourceTypes.binaryNativeCode];
-      mainProgram = pname;
     };
   };
-in {
-  environment.systemPackages = [cheat-engine];
 
-  boot.kernel.sysctl."kernel.yama.ptrace_scope" = 0;
+  # pkexec only accepts the exact path named in the policy's exec.path.
+  rootProgram = "${cheat-engine}/libexec/${pname}";
+
+  polkitPolicy = pkgs.writeTextDir "share/polkit-1/actions/org.cheatengine.cheatengine.policy" ''
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE policyconfig PUBLIC
+      "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+      "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+    <policyconfig>
+      <action id="org.cheatengine.cheatengine">
+        <description>Run Cheat Engine</description>
+        <message>Authentication is required to run Cheat Engine as root</message>
+        <icon_name>${pname}</icon_name>
+        <defaults>
+          <allow_any>auth_admin</allow_any>
+          <allow_inactive>auth_admin</allow_inactive>
+          <allow_active>auth_admin</allow_active>
+        </defaults>
+        <annotate key="org.freedesktop.policykit.exec.path">${rootProgram}</annotate>
+        <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+      </action>
+    </policyconfig>
+  '';
+
+  launcher = pkgs.writeShellScriptBin pname ''
+    if [ "$(id -u)" -eq 0 ]; then
+      exec ${rootProgram} "$@"
+    fi
+    exec /run/wrappers/bin/pkexec ${rootProgram} "$@"
+  '';
+in {
+  environment.systemPackages = [cheat-engine polkitPolicy launcher];
+
+  security.polkit.enable = true;
 }
