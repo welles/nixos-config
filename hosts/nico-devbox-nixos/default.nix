@@ -102,6 +102,7 @@
 
     # Packages
     ../../modules/packages/1password.nix
+    ../../modules/packages/bottles.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/fira-code-nerd-font.nix
     ../../modules/packages/fira-sans.nix
