@@ -139,4 +139,7 @@ in {
   environment.systemPackages = [cheat-engine polkitPolicy launcher];
 
   security.polkit.enable = true;
+  # nixpkgs no longer installs the setuid pkexec wrapper by default; the
+  # launcher needs /run/wrappers/bin/pkexec.
+  security.polkit.enablePkexecWrapper = true;
 }
