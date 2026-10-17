@@ -18,8 +18,12 @@
 #     from the Fritzbox (fix it there by the MAC address below), registers
 #     its hostname there and reaches the server like any other machine.
 #   - The domain is defined from the XML below on every start of
-#     nico-devbox-vm.service (and whenever it changes); changes to the
-#     domain take effect on the next restart of the VM.
+#     nico-devbox-vm.service (and whenever it changes), which then starts
+#     the VM itself. libvirt's autostart flag stays off: it would start the
+#     VM with the previously persisted definition before this service runs,
+#     so a server reboot would not pick up changes to the domain. Changes to
+#     the domain take effect on the next start of the VM; while it is
+#     running, a `virsh shutdown` and `virsh start` are needed.
 #   - Consoles: `virsh console nico-devbox-nixos` (serial) or virt-manager
 #     with the connection qemu+ssh://schokoladenelch@<server>/system (SPICE,
 #     only listening on localhost, tunnelled through SSH)
@@ -134,8 +138,9 @@ in {
       # virtiofsd for the <filesystem> devices of the domain
       vhostUserPackages = [pkgs.virtiofsd];
     };
-    # Guests are started through their autostart flag only, and shut down
-    # (instead of suspended to disk) when the server goes down
+    # Guests are started by their own service (see below), not by
+    # libvirt-guests, and shut down (instead of suspended to disk) when the
+    # server goes down
     onBoot = "ignore";
     onShutdown = "shutdown";
   };
@@ -172,7 +177,7 @@ in {
         fi
 
         ${virsh} define ${domainXml}
-        ${virsh} autostart ${name}
+        ${virsh} autostart --disable ${name}
         if ! ${virsh} list --name | grep -qx ${name}; then
           ${virsh} start ${name}
         fi
