@@ -17,6 +17,8 @@
 #     nico-devbox-nixos
 #   - Impermanence: the ZFS root dataset is rolled back on every boot, only
 #     /persist survives
+#   - The server's media datasets (tank-shares.nix) are mounted under
+#     /mnt/tank over virtiofs (tank-mounts.nix)
 #
 # Installation (once):
 #   1. Deploy nico-schokoladenelch-nixos (with `nixos-rebuild boot` and a
@@ -60,6 +62,7 @@
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ./impermanence.nix
+    ./tank-mounts.nix
     ../../modules/sops-zfs-persist.nix
     ./sops.nix
 

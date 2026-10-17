@@ -8,6 +8,11 @@
 #   - Disk: sparse zvol bucket/vms/nico-devbox-nixos (volmode=dev, so the
 #     server never scans the guest's partitions or ZFS pool), handed to the
 #     guest as virtio disk with serial "nico-devbox-nixos"
+#   - Storage: the tank datasets listed in
+#     hosts/nico-devbox-nixos/tank-shares.nix are passed through over
+#     virtiofs (tag tank-<name>, permissions 1:1); the guest mounts them in
+#     hosts/nico-devbox-nixos/tank-mounts.nix. virtiofs needs the guest's
+#     memory to be shareable (memoryBacking below).
 #   - Network: bridged into the LAN through br0 (networking.nix), so the
 #     guest is a normal device for the router: it gets its address via DHCP
 #     from the Fritzbox (fix it there by the MAC address below), registers
@@ -23,6 +28,7 @@
 #     empty; see hosts/nico-devbox-nixos/default.nix.
 {
   config,
+  lib,
   pkgs,
   persistRoot,
   user,
@@ -36,6 +42,7 @@
   bridge = "br0";
   vmMac = "52:54:00:c9:00:0a";
   installerIso = "/var/lib/libvirt/images/nixos-installer.iso";
+  tankShares = import ../nico-devbox-nixos/tank-shares.nix;
   virsh = "${config.virtualisation.libvirtd.package}/bin/virsh";
 
   domainXml = pkgs.writeText "${name}.xml" ''
@@ -43,6 +50,10 @@
       <name>${name}</name>
       <uuid>dfbb1886-3174-4fc4-9eb9-2c2a41061745</uuid>
       <memory unit='GiB'>16</memory>
+      <memoryBacking>
+        <source type='memfd'/>
+        <access mode='shared'/>
+      </memoryBacking>
       <vcpu>6</vcpu>
       <os firmware='efi'>
         <type arch='x86_64' machine='q35'>hvm</type>
@@ -76,6 +87,14 @@
           <readonly/>
           <boot order='2'/>
         </disk>
+        ${lib.concatMapStrings (share: ''
+        <filesystem type='mount' accessmode='passthrough'>
+          <driver type='virtiofs'/>
+          <source dir='/mnt/tank/${share}'/>
+          <target dir='tank-${share}'/>
+        </filesystem>
+      '')
+      tankShares}
         <interface type='bridge'>
           <source bridge='${bridge}'/>
           <mac address='${vmMac}'/>
@@ -110,7 +129,11 @@
 in {
   virtualisation.libvirtd = {
     enable = true;
-    qemu.runAsRoot = false;
+    qemu = {
+      runAsRoot = false;
+      # virtiofsd for the <filesystem> devices of the domain
+      vhostUserPackages = [pkgs.virtiofsd];
+    };
     # Guests are started through their autostart flag only, and shut down
     # (instead of suspended to disk) when the server goes down
     onBoot = "ignore";
