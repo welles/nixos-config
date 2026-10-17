@@ -36,6 +36,7 @@
     ${persistRoot}.users.${user} = {
       directories = [
         ".config/kde.org"
+        ".local/share/applications"
         ".local/share/dolphin"
         ".local/share/kscreen"
         ".local/share/kwalletd"
