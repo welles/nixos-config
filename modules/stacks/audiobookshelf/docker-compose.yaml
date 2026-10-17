@@ -1,0 +1,36 @@
+name: audiobookshelf
+
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    environment:
+      TZ: Europe/Berlin
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider --proxy off localhost:80/healthcheck || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: ghcr.io/advplyr/audiobookshelf:2.37.1
+    networks:
+      audiobookshelf:
+        ipv4_address: 10.10.17.10
+    ports:
+      - 50170:80/tcp
+    restart: unless-stopped
+    stop_grace_period: 60s
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/audiobookshelf/config:/config:rw
+      - /mnt/bucket/audiobookshelf/metadata:/metadata:rw
+      - /mnt/tank/audiobooks:/audiobooks:rw
+      - /mnt/tank/podcasts:/podcasts:rw
+
+networks:
+  audiobookshelf:
+    name: audiobookshelf
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.17.0/24

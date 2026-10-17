@@ -253,6 +253,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "audiobookshelf" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/audiobookshelf";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
           # Disks of libvirt VMs (nico-devbox-vm.nix); the zvol is created
           # sparse by nico-devbox-vm.service on an existing system
           "vms" = {
@@ -353,6 +361,22 @@
           "forgejo_lfs" = {
             type = "zfs_fs";
             mountpoint = "/mnt/tank/forgejo_lfs";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
+          "audiobooks" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/tank/audiobooks";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
+          "podcasts" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/tank/podcasts";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";

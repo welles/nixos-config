@@ -25,6 +25,17 @@
   ...
 }: let
   stacks = {
+    audiobookshelf = {
+      enabled = true;
+      secrets = [];
+      proxies = {
+        "audiobookshelf.welles.app" = 50170;
+      };
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     ark_server = {
       enabled = false;
       secrets = ["ark_server"];
