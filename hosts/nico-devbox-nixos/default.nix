@@ -1,6 +1,6 @@
 # Development Desktop VM ("nico-devbox-nixos")
 #
-# Full NixOS desktop (KDE Plasma) running as a libvirt/KVM guest on
+# Full NixOS desktop (Cinnamon) running as a libvirt/KVM guest on
 # nico-schokoladenelch-nixos (see hosts/nico-schokoladenelch-nixos/nico-devbox-vm.nix).
 # The server only provides the VM and its disk (zvol bucket/vms/nico-devbox-nixos);
 # everything inside - Nix store, home directory, Docker - lives on that disk
@@ -9,7 +9,7 @@
 #   - Bridged into the LAN: gets its address via DHCP from the Fritzbox
 #     (MAC 52:54:00:c9:00:0a, fix the address there) and is reachable as
 #     nico-devbox-nixos like any other machine, the server too
-#   - Desktop over RDP (xrdp + Plasma on X11, port 3389), directly or via
+#   - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
 #     Guacamole; SSH on port 22
 #   - A Claude Code Remote Control session per repository in ~/workspace
 #     (modules/claude-workspace.nix, repositories in claudeWorkspaceRepos)
@@ -51,7 +51,6 @@
 {
   config,
   hostname,
-  pkgs,
   ...
 }: {
   imports = [
@@ -72,11 +71,9 @@
     ../../modules/networkmanager.nix
     ../../modules/openssh.nix
 
-    # Desktop environment: Plasma on X11 over RDP (xrdp only starts X11
-    # sessions; Plasma 6.8 is going to drop them). No display manager, see
-    # below. No GPU in the VM: remote-plasma.nix turns off compositing and
-    # animations.
-    ../../modules/kde-plasma.nix
+    # Desktop environment: Cinnamon over RDP (Plasma 6.8 dropped the X11
+    # sessions xrdp needs). No display manager, see below.
+    ../../modules/cinnamon.nix
     ../../modules/xrdp.nix
     ../../modules/user-dirs.nix
 
@@ -152,13 +149,12 @@
   ];
 
   networking.hostName = hostname;
-  # No local login screen: the desktop is only used over RDP, and SDDM's
-  # greeter kept rendering on the SPICE console nobody looks at. Without it,
-  # NixOS falls back to LightDM, and graphical.target wants the display
-  # manager whatever services.xserver.autorun says, so its unit goes away;
-  # the SPICE console gets the text login on tty1 that NixOS reserves for
-  # the display manager otherwise.
-  services.displayManager.sddm.enable = false;
+  # No local login screen: the desktop is only used over RDP, and a greeter
+  # would only render on the SPICE console nobody looks at. NixOS would fall
+  # back to LightDM, and graphical.target wants the display manager whatever
+  # services.xserver.autorun says, so its unit goes away; the SPICE console
+  # gets the text login on tty1 that NixOS reserves for the display manager
+  # otherwise.
   systemd = {
     services.display-manager.enable = false;
     targets.getty.wants = ["autovt@tty1.service"];
@@ -173,16 +169,12 @@
       ../../modules/git-signing.nix
       ../../modules/1password-ssh-agent.nix
       ../../modules/1password-autostart.nix
-      ../../modules/remote-plasma.nix
-      ../../modules/fonts.nix
-      ../../modules/kde-theming.nix
     ];
     persistRoot = "/persist";
     sopsAgeKeyFile = "/persist/var/lib/sops-nix/key.txt";
     pool = "devbox";
     userDescription = "Nico Welles";
     userEmail = "nico@welles.email";
-    xrdpSession = "${pkgs.kdePackages.plasma-workspace}/bin/startplasma-x11";
     claudeWorkspaceRepos = [
       "welles/nixos-config"
       "stamm-phoenix/website-astro"

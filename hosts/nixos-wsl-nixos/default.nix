@@ -89,7 +89,6 @@
       }
       ../../modules/dotnet-tools-path.nix
       ../../modules/kde-theming.nix
-      ./plasma.nix
     ];
     userDescription = "Nico Welles";
     userEmail = "welles@mentz.net";
