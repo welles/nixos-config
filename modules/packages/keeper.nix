@@ -14,6 +14,7 @@
     };
 
     nativeBuildInputs = with pkgs; [
+      asar
       autoPatchelfHook
       dpkg
       makeWrapper
@@ -53,6 +54,28 @@
       runHook preUnpack
       dpkg-deb --fsys-tarfile "$src" | tar --extract --no-same-permissions
       runHook postUnpack
+    '';
+
+    # Keeper turns its tray icon off on Linux, and without it closing the main
+    # window quits the app. With it, the app keeps running in the tray: a
+    # click opens the Keeper applet, the right-click menu has "Exit". The app
+    # is repacked, as Electron checks each file against the archive's hashes.
+    # Keeper doesn't support this on Linux, so the replaced code may change
+    # with updates; --replace-fail then fails the build.
+    postPatch = ''
+      resources=usr/lib/keeperpasswordmanager/resources
+      asar extract "$resources/app.asar" app
+      substituteInPlace app/app.js --replace-fail \
+        'const w="linux"!==process.platform?require("./tray"):null' \
+        'const w=require("./tray")'
+      # Desktop autofill (KeeperFill for other applications) has no Linux
+      # implementation and throws, which skipped the rest of the tray setup
+      substituteInPlace app/tray/index.js --replace-fail \
+        'auto_fill_1.default.initialize(),' \
+        '(()=>{try{auto_fill_1.default.initialize()}catch{}})(),'
+      rm -r "$resources/app.asar" "$resources/app.asar.unpacked"
+      asar pack app "$resources/app.asar" --unpack "*.node"
+      rm -r app
     '';
 
     installPhase = ''
