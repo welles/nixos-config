@@ -20,6 +20,7 @@
     # Desktop environment
     ../../modules/bluetooth.nix
     ../../modules/kde-plasma.nix
+    ../../modules/packages/wallpaper-engine.nix
     ../../modules/user-dirs.nix
     ../../modules/pipewire.nix
     ../../modules/profile-icon
