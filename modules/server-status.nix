@@ -2,10 +2,12 @@
 #
 # Reserves tty1 for btop so a directly attached display shows the server's
 # resource usage after boot. A normal login remains available on tty2.
+# The user's own btop lists the same disks.
 {
   config,
   lib,
   pkgs,
+  user,
   ...
 }: let
   # Every mounted ZFS dataset plus /boot. The explicit list keeps out ZFS
@@ -13,16 +15,19 @@
   zfsMounts = map (fs: fs.mountPoint) (
     lib.filter (fs: fs.fsType == "zfs") (lib.attrValues config.fileSystems)
   );
+  disksFilter = lib.concatStringsSep " " (["/boot"] ++ zfsMounts);
 
   btopStatusConfig = pkgs.writeText "btop-status.conf" ''
     # Keep btop's defaults, except for graphs: the console font has no
     # braille glyphs, so use Unicode block graphs instead.
     graph_symbol = "block"
     # Each dataset shows its own usage against the free space of its pool.
-    disks_filter = "${lib.concatStringsSep " " (["/boot"] ++ zfsMounts)}"
+    disks_filter = "${disksFilter}"
   '';
 in {
   environment.systemPackages = [pkgs.btop];
+
+  home-manager.users.${user}.programs.btop.settings.disks_filter = disksFilter;
 
   console = {
     font = "ter-v14n";
