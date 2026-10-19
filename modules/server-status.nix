@@ -4,24 +4,22 @@
 # resource usage after boot. A normal login remains available on tty2.
 # The user's own btop lists the same disks.
 {
-  config,
   lib,
   pkgs,
   user,
+  extraDiskMounts,
   ...
 }: let
-  # Every mounted ZFS dataset plus /boot. The explicit list keeps out ZFS
-  # mounts created at runtime, e.g. by Docker's zfs storage driver.
-  zfsMounts = map (fs: fs.mountPoint) (
-    lib.filter (fs: fs.fsType == "zfs") (lib.attrValues config.fileSystems)
-  );
-  disksFilter = lib.concatStringsSep " " (["/boot"] ++ zfsMounts);
+  # btop only lists mounted filesystems, so the drives themselves never
+  # appear. Instead, show the ESP on each boot drive and one dataset per ZFS
+  # pool: "/" for the boot pool plus extraDiskMounts for the others. Each
+  # dataset reports the free space of its whole pool.
+  disksFilter = lib.concatStringsSep " " (["/boot" "/boot-fallback" "/"] ++ extraDiskMounts);
 
   btopStatusConfig = pkgs.writeText "btop-status.conf" ''
     # Keep btop's defaults, except for graphs: the console font has no
     # braille glyphs, so use Unicode block graphs instead.
     graph_symbol = "block"
-    # Each dataset shows its own usage against the free space of its pool.
     disks_filter = "${disksFilter}"
   '';
 in {

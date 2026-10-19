@@ -74,6 +74,8 @@
     pool = "bucket";
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";
+    # One dataset of the tank pool for the btop disks box (server-status.nix)
+    extraDiskMounts = ["/mnt/tank/movies"];
     passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
     # 1Password SSH agent
     sshAuthorizedKeys = [
