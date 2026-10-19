@@ -8,8 +8,9 @@
 # again before Cinnamon starts.
 #
 # Look: dark mode with the Mint-Y theme in orange, and a panel whose window
-# list shows each window with its title, ungrouped. Set in dconf by Home
-# Manager on every activation (changes in Cinnamon's settings don't last).
+# list shows each window with its title, ungrouped. No screen locking or
+# blanking. Set in dconf by Home Manager on every activation (changes in
+# Cinnamon's settings don't last).
 #
 # Cinnamon keeps logins (VS Code, Chrome, gh etc.) in the GNOME keyring,
 # persisted on impermanence hosts.
@@ -35,7 +36,7 @@
   # Cinnamon panel and menus, icons, and the preference the portal reports to
   # applications (GTK 4, Electron, browsers)
   home-manager.sharedModules = [
-    {
+    ({lib, ...}: {
       dconf.settings = {
         "org/cinnamon/desktop/interface" = {
           gtk-theme = "Mint-Y-Dark-Orange";
@@ -65,8 +66,18 @@
           "right:10:calendar@cinnamon.org"
           "right:11:cornerbar@cinnamon.org"
         ];
+
+        # No screen locking or blanking: the session is only reachable over
+        # RDP, which already asks for the password, and isn't left at a
+        # screen anyone else could use
+        "org/cinnamon/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 0;
+        "org/cinnamon/desktop/screensaver" = {
+          idle-activation-enabled = false;
+          lock-enabled = false;
+        };
+        "org/cinnamon/settings-daemon/plugins/power".sleep-display-ac = 0;
       };
-    }
+    })
   ];
 
   environment.persistence = lib.mkIf (persistRoot != null) {
