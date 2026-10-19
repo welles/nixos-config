@@ -7,10 +7,10 @@
 # instead of services.xserver.xkb (keyboard.nix), so the session sets it
 # again before Cinnamon starts.
 #
-# Look: dark mode with the Mint-Y theme in orange, and a panel whose window
-# list shows each window with its title, ungrouped. No screen locking or
-# blanking. Set in dconf by Home Manager on every activation (changes in
-# Cinnamon's settings don't last).
+# Look: dark mode with the Mint-Y theme in orange, and a panel with the NixOS
+# snowflake as menu icon and a window list that shows each window with its
+# title, ungrouped. No screen locking or blanking. Set in dconf by Home
+# Manager on every activation (changes in Cinnamon's settings don't last).
 #
 # Cinnamon keeps logins (VS Code, Chrome, gh etc.) in the GNOME keyring,
 # persisted on impermanence hosts.
@@ -66,6 +66,10 @@
           "right:10:calendar@cinnamon.org"
           "right:11:cornerbar@cinnamon.org"
         ];
+
+        # NixOS snowflake (from nixos-icons, installed on graphical desktops)
+        # instead of the Cinnamon logo as the icon of the menu applet
+        "org/cinnamon".app-menu-icon-name = "nix-snowflake";
 
         # No screen locking or blanking: the session is only reachable over
         # RDP, which already asks for the password, and isn't left at a
