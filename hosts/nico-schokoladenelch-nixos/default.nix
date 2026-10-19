@@ -74,7 +74,6 @@
     pool = "bucket";
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";
-    extraDiskMounts = ["/mnt/tank/movies"];
     passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
     # 1Password SSH agent
     sshAuthorizedKeys = [

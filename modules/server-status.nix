@@ -3,17 +3,23 @@
 # Reserves tty1 for btop so a directly attached display shows the server's
 # resource usage after boot. A normal login remains available on tty2.
 {
+  config,
   lib,
   pkgs,
-  extraDiskMounts,
   ...
 }: let
+  # Every mounted ZFS dataset plus /boot. The explicit list keeps out ZFS
+  # mounts created at runtime, e.g. by Docker's zfs storage driver.
+  zfsMounts = map (fs: fs.mountPoint) (
+    lib.filter (fs: fs.fsType == "zfs") (lib.attrValues config.fileSystems)
+  );
+
   btopStatusConfig = pkgs.writeText "btop-status.conf" ''
     # Keep btop's defaults, except for graphs: the console font has no
     # braille glyphs, so use Unicode block graphs instead.
     graph_symbol = "block"
-    # Each selected mount reports its pool-wide capacity and free space.
-    disks_filter = "${lib.concatStringsSep " " (["/boot" "/"] ++ extraDiskMounts)}"
+    # Each dataset shows its own usage against the free space of its pool.
+    disks_filter = "${lib.concatStringsSep " " (["/boot"] ++ zfsMounts)}"
   '';
 in {
   environment.systemPackages = [pkgs.btop];
