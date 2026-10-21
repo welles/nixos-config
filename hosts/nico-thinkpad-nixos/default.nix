@@ -5,10 +5,13 @@
     ../../bundles/containers.nix
     ../../bundles/desktop-kde.nix
     ../../bundles/dev-tools.nix
+    ../../bundles/dotnet-dev.nix
     ../../bundles/git-gui.nix
     ../../bundles/impermanence-zfs.nix
+    ../../bundles/java-dev.nix
     ../../bundles/nix-dev.nix
     ../../bundles/onepassword.nix
+    ../../bundles/sops-admin.nix
 
     # Hardware & boot
     ./disk-configuration.nix
@@ -32,7 +35,6 @@
 
     # Home Manager
     ../../modules/laptop-plasma.nix
-    ../../modules/sops-env.nix
     ../../modules/packages/yazi.nix
 
     # System
@@ -49,20 +51,15 @@
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/discord.nix
-    ../../modules/packages/dotnet-sdk_10.nix
     ../../modules/packages/drawing.nix
     ../../modules/packages/easyeffects.nix
     ../../modules/packages/evtest.nix
     ../../modules/packages/exfatprogs.nix
     ../../modules/packages/fastfetch.nix
-    ../../modules/packages/firefox-devedition.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gimp.nix
     ../../modules/packages/gh.nix
-    ../../modules/packages/google-chrome.nix
     ../../modules/packages/gparted.nix
-    ../../modules/packages/jdk25.nix
-    ../../modules/packages/jetbrains-rider.nix
     ../../modules/packages/kdePackages-partitionmanager.nix
     ../../modules/packages/libreoffice.nix
     ../../modules/packages/losslesscut-bin.nix
@@ -73,12 +70,9 @@
     ../../modules/packages/pciutils.nix
     ../../modules/packages/picard.nix
     ../../modules/packages/pinta.nix
-    ../../modules/packages/pnpm.nix
     ../../modules/packages/powershell.nix
     ../../modules/packages/remmina.nix
     ../../modules/packages/solaar.nix
-    ../../modules/packages/sops.nix
-    ../../modules/packages/ssh-to-age.nix
     ../../modules/packages/systemctl-tui.nix
     ../../modules/packages/teamspeak6-client.nix
     ../../modules/packages/unrar.nix
@@ -88,9 +82,6 @@
     ../../modules/packages/vlc.nix
     ../../modules/packages/wrtag.nix
     ../../modules/packages/xfsprogs.nix
-
-    # Scripts
-    ../../modules/scripts/sops-edit
   ];
 
   networking.hostName = hostname;

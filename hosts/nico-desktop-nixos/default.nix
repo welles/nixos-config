@@ -10,8 +10,10 @@
     ../../bundles/dev-tools.nix
     ../../bundles/git-gui.nix
     ../../bundles/impermanence-zfs.nix
+    ../../bundles/java-dev.nix
     ../../bundles/nix-dev.nix
     ../../bundles/onepassword.nix
+    ../../bundles/sops-admin.nix
 
     # Hardware & boot
     ../../modules/zfs-grub-boot.nix
@@ -28,7 +30,6 @@
     ./plasma.nix
 
     # Home Manager
-    ../../modules/sops-env.nix
     ../../modules/packages/yazi.nix
 
     # System
@@ -47,26 +48,19 @@
     ../../modules/packages/codex.nix
     ../../modules/packages/discord.nix
     ../../modules/packages/easyeffects.nix
-    ../../modules/packages/firefox-devedition.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gh.nix
-    ../../modules/packages/google-chrome.nix
     ../../modules/packages/gparted.nix
     ../../modules/packages/jdk21.nix
-    ../../modules/packages/jdk25.nix
-    ../../modules/packages/jetbrains-idea.nix
     ../../modules/packages/libreoffice.nix
     ../../modules/packages/obs-studio.nix
     ../../modules/packages/occt.nix
     ../../modules/packages/pciutils.nix
     ../../modules/packages/remmina.nix
-    ../../modules/packages/sops.nix
-    ../../modules/packages/ssh-to-age.nix
     ../../modules/packages/streamdeck.nix
     ../../modules/packages/usbutils.nix
 
     # Scripts
-    ../../modules/scripts/sops-edit
     ../../modules/scripts/search-tmdb
     ../../modules/scripts/toggle-screens
   ];
