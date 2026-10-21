@@ -1,3 +1,10 @@
+# Silent Boot with Plymouth
+#
+# Boots straight into a Plymouth splash ("rings" theme) without the GRUB menu
+# (timeout 0) and without kernel, systemd or udev messages, for hosts used by
+# people who shouldn't see any of that.
+#
+# Uses GRUB on EFI; hold Shift (or press Esc) during boot for the menu.
 {pkgs, ...}: {
   boot = {
     loader = {
