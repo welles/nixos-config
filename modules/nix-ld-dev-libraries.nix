@@ -1,11 +1,11 @@
 # Extra nix-ld libraries needed by JetBrains IDEs, Kubernetes tooling, and
 # similar dev-VM tooling, on top of the minimal set in nix-ld.nix.
 {pkgs, ...}: {
+  imports = [./nix-ld.nix];
+
   programs.nix-ld = {
-    enable = true;
     libraries = with pkgs; [
       stdenv.cc.cc.lib
-      zlib
       fuse3
       icu
       nss
