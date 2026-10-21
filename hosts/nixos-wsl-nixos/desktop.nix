@@ -13,4 +13,16 @@
   # WSL manages the network; Cinnamon would turn these on
   networking.networkmanager.enable = false;
   hardware.bluetooth.enable = false;
+
+  # Opens Keeper (modules/packages/keeper.nix) when the desktop session starts.
+  # xrdp keeps the session running across disconnects, so this happens on the
+  # first RDP login after WSL starts.
+  environment.etc."xdg/autostart/keeperpasswordmanager.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Keeper Password Manager
+    Exec=keeperpasswordmanager
+    StartupNotify=false
+    Terminal=false
+  '';
 }
