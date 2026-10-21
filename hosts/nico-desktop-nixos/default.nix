@@ -43,6 +43,7 @@
 
     # Services & hardware
     ../../modules/autologin.nix
+    ../../modules/easyeffects-voice-mic.nix
     ../../modules/removable-media.nix
 
     # Packages
@@ -53,7 +54,6 @@
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/discord.nix
-    ../../modules/packages/easyeffects.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gh.nix
     ../../modules/packages/gparted.nix
