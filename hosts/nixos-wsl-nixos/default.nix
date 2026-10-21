@@ -4,6 +4,9 @@
   ...
 }: {
   imports = [
+    # Bundles
+    ../../bundles/dev-tools.nix
+
     # Hardware & boot
     ./hardware-configuration.nix
 
@@ -19,7 +22,6 @@
     ../../modules/packages/hg.nix
     ../../modules/dotnet-tools-path.nix
     ./mercurial.nix
-    ../../modules/npm.nix
     ../../modules/shell.nix
     ../../modules/packages/yazi.nix
 
@@ -62,9 +64,7 @@
     ../../modules/packages/kubernetes-helm.nix
     ../../modules/packages/kubeseal.nix
     ../../modules/packages/lazydocker.nix
-    ../../modules/packages/lazygit.nix
     ../../modules/packages/microsoft-edge.nix
-    ../../modules/packages/nodejs.nix
     ../../modules/packages/nuke.nix
     ../../modules/packages/openssl.nix
     ../../modules/packages/perl.nix
@@ -75,7 +75,6 @@
     ../../modules/packages/sourcegit.nix
     ../../modules/packages/kdiff3.nix
     ../../modules/packages/tortoisehg.nix
-    ../../modules/packages/vscode.nix
     ../../modules/scripts/sops-edit
   ];
 
