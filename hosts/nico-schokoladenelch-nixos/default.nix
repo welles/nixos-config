@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    # Bundles
     ../../bundles/impermanence-zfs.nix
 
     # Hardware & boot

@@ -4,6 +4,9 @@
   ...
 }: {
   imports = [
+    # Bundles
+    ../../bundles/desktop-kde.nix
+    ../../bundles/dev-tools.nix
     ../../bundles/impermanence-zfs.nix
 
     # Hardware & boot
@@ -18,24 +21,15 @@
     ./networking.nix
 
     # Desktop environment
-    ../../modules/bluetooth.nix
-    ../../modules/kde-plasma.nix
-    ../../modules/user-dirs.nix
-    ../../modules/pipewire.nix
-    ../../modules/profile-icon
+    ./plasma.nix
 
     # Home Manager
-    ./plasma.nix
-    ../../modules/fonts.nix
     ../../modules/cli-tools.nix
     ../../modules/packages/git.nix
     ../../modules/git-signing.nix
-    ../../modules/kde-theming.nix
     ../../modules/1password-ssh-agent.nix
     ../../modules/1password-autostart.nix
     ../../modules/sops-env.nix
-    ../../modules/packages/konsole.nix
-    ../../modules/npm.nix
     ../../modules/shell.nix
     ../../modules/packages/yazi.nix
 
@@ -68,8 +62,6 @@
     ../../modules/packages/deadnix.nix
     ../../modules/packages/discord.nix
     ../../modules/packages/easyeffects.nix
-    ../../modules/packages/fira-code-nerd-font.nix
-    ../../modules/packages/fira-sans.nix
     ../../modules/packages/firefox-devedition.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gh.nix
@@ -78,10 +70,8 @@
     ../../modules/packages/jdk21.nix
     ../../modules/packages/jdk25.nix
     ../../modules/packages/jetbrains-idea.nix
-    ../../modules/packages/lazygit.nix
     ../../modules/packages/libreoffice.nix
     ../../modules/packages/mcp-nixos.nix
-    ../../modules/packages/nodejs.nix
     ../../modules/packages/obs-studio.nix
     ../../modules/packages/occt.nix
     ../../modules/packages/pciutils.nix
@@ -93,7 +83,6 @@
     ../../modules/packages/statix.nix
     ../../modules/packages/streamdeck.nix
     ../../modules/packages/usbutils.nix
-    ../../modules/packages/vscode.nix
 
     # Scripts
     ../../modules/scripts/sops-edit

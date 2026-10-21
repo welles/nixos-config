@@ -54,6 +54,8 @@
   ...
 }: {
   imports = [
+    # Bundles
+    ../../bundles/dev-tools.nix
     ../../bundles/impermanence-zfs.nix
 
     # Hardware & boot
@@ -82,7 +84,6 @@
     ../../modules/git-signing.nix
     ../../modules/1password-ssh-agent.nix
     ../../modules/1password-autostart.nix
-    ../../modules/npm.nix
     ../../modules/shell.nix
 
     # User & identity
@@ -113,13 +114,11 @@
     ../../modules/packages/firefox.nix
     ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
-    ../../modules/packages/vscode.nix
 
     # Development: languages and runtimes
     ../../modules/packages/bun.nix
     ../../modules/packages/dotnet-sdk_10.nix
     ../../modules/packages/jdk25.nix
-    ../../modules/packages/nodejs.nix
     ../../modules/packages/pnpm.nix
     ../../modules/packages/powershell.nix
     ../../modules/packages/python3.nix
@@ -132,7 +131,6 @@
     ../../modules/packages/jq.nix
     ../../modules/packages/just.nix
     ../../modules/packages/lazydocker.nix
-    ../../modules/packages/lazygit.nix
     ../../modules/packages/ripgrep.nix
     ../../modules/packages/sqlcmd.nix
     ../../modules/packages/unzip.nix

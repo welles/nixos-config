@@ -1,5 +1,8 @@
 {hostname, ...}: {
   imports = [
+    # Bundles
+    ../../bundles/desktop-kde.nix
+    ../../bundles/dev-tools.nix
     ../../bundles/impermanence-zfs.nix
 
     # Hardware & boot
@@ -18,27 +21,18 @@
     ../../modules/wifi-welles-starlink
 
     # Desktop environment
-    ../../modules/bluetooth.nix
     ../../modules/flatpak.nix
-    ../../modules/kde-plasma.nix
-    ../../modules/user-dirs.nix
-    ../../modules/pipewire.nix
     ../../modules/printing.nix
-    ../../modules/profile-icon
     ../../modules/removable-media.nix
 
     # Home Manager
     ../../modules/laptop-plasma.nix
-    ../../modules/fonts.nix
     ../../modules/cli-tools.nix
     ../../modules/packages/git.nix
     ../../modules/git-signing.nix
-    ../../modules/kde-theming.nix
     ../../modules/1password-ssh-agent.nix
     ../../modules/1password-autostart.nix
     ../../modules/sops-env.nix
-    ../../modules/packages/konsole.nix
-    ../../modules/npm.nix
     ../../modules/shell.nix
     ../../modules/packages/yazi.nix
 
@@ -76,8 +70,6 @@
     ../../modules/packages/evtest.nix
     ../../modules/packages/exfatprogs.nix
     ../../modules/packages/fastfetch.nix
-    ../../modules/packages/fira-code-nerd-font.nix
-    ../../modules/packages/fira-sans.nix
     ../../modules/packages/firefox-devedition.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gimp.nix
@@ -88,14 +80,12 @@
     ../../modules/packages/jetbrains-rider.nix
     ../../modules/packages/kdePackages-partitionmanager.nix
     ../../modules/packages/lazydocker.nix
-    ../../modules/packages/lazygit.nix
     ../../modules/packages/libreoffice.nix
     ../../modules/packages/losslesscut-bin.nix
     ../../modules/packages/mcp-nixos.nix
     ../../modules/packages/mission-center.nix
     ../../modules/packages/mumble.nix
     ../../modules/packages/naps2.nix
-    ../../modules/packages/nodejs.nix
     ../../modules/packages/obs-studio.nix
     ../../modules/packages/pciutils.nix
     ../../modules/packages/picard.nix
@@ -116,7 +106,6 @@
     ../../modules/packages/video-compare.nix
     ../../modules/packages/video2x.nix
     ../../modules/packages/vlc.nix
-    ../../modules/packages/vscode.nix
     ../../modules/packages/wrtag.nix
     ../../modules/packages/xfsprogs.nix
 
