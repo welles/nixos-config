@@ -109,7 +109,6 @@
     ../../modules/packages/firefox.nix
     ../../modules/packages/gh.nix
     ../../modules/packages/google-chrome.nix
-    ../../modules/packages/konsole.nix
     ../../modules/packages/vscode.nix
 
     # Development: languages and runtimes
