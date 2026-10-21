@@ -5,9 +5,13 @@
 }: {
   imports = [
     # Bundles
+    ../../bundles/base.nix
     ../../bundles/desktop-kde.nix
     ../../bundles/dev-tools.nix
+    ../../bundles/git-gui.nix
     ../../bundles/impermanence-zfs.nix
+    ../../bundles/nix-dev.nix
+    ../../bundles/onepassword.nix
 
     # Hardware & boot
     ../../modules/zfs-grub-boot.nix
@@ -24,42 +28,23 @@
     ./plasma.nix
 
     # Home Manager
-    ../../modules/cli-tools.nix
-    ../../modules/packages/git.nix
-    ../../modules/git-signing.nix
-    ../../modules/1password-ssh-agent.nix
-    ../../modules/1password-autostart.nix
     ../../modules/sops-env.nix
-    ../../modules/shell.nix
     ../../modules/packages/yazi.nix
 
-    # User & identity
-    ../../modules/home-manager-user.nix
-    ../../modules/user-account.nix
-
     # System
-    ../../modules/keyboard.nix
-    ../../modules/locale-de.nix
     ../../modules/nix-ld.nix
     ../../modules/minecraft-modding.nix
-    ../../modules/nix-settings.nix
-    ../../modules/nixos-tools.nix
-    ../../modules/sudo.nix
-    ../../modules/packages/tmux.nix
 
     # Services & hardware
     ./services.nix
 
     # Packages
-    ../../modules/packages/1password.nix
-    ../../modules/packages/alejandra.nix
     ../../modules/packages/antigravity.nix
     ../../modules/packages/azure-cli.nix
     ../../modules/packages/bottles.nix
     ../../modules/packages/cheat-engine.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
-    ../../modules/packages/deadnix.nix
     ../../modules/packages/discord.nix
     ../../modules/packages/easyeffects.nix
     ../../modules/packages/firefox-devedition.nix
@@ -71,16 +56,12 @@
     ../../modules/packages/jdk25.nix
     ../../modules/packages/jetbrains-idea.nix
     ../../modules/packages/libreoffice.nix
-    ../../modules/packages/mcp-nixos.nix
     ../../modules/packages/obs-studio.nix
     ../../modules/packages/occt.nix
     ../../modules/packages/pciutils.nix
     ../../modules/packages/remmina.nix
     ../../modules/packages/sops.nix
-    ../../modules/packages/sourcegit.nix
-    ../../modules/packages/kdiff3.nix
     ../../modules/packages/ssh-to-age.nix
-    ../../modules/packages/statix.nix
     ../../modules/packages/streamdeck.nix
     ../../modules/packages/usbutils.nix
 

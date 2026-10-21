@@ -55,8 +55,12 @@
 }: {
   imports = [
     # Bundles
+    ../../bundles/base.nix
+    ../../bundles/containers.nix
     ../../bundles/dev-tools.nix
     ../../bundles/impermanence-zfs.nix
+    ../../bundles/nix-dev.nix
+    ../../bundles/onepassword.nix
 
     # Hardware & boot
     ./boot.nix
@@ -78,35 +82,15 @@
     ../../modules/xrdp.nix
     ../../modules/user-dirs.nix
 
-    # Home Manager
-    ../../modules/cli-tools.nix
-    ../../modules/packages/git.nix
-    ../../modules/git-signing.nix
-    ../../modules/1password-ssh-agent.nix
-    ../../modules/1password-autostart.nix
-    ../../modules/shell.nix
-
-    # User & identity
-    ../../modules/home-manager-user.nix
-    ../../modules/user-account.nix
-
     # System
-    ../../modules/keyboard.nix
-    ../../modules/locale-de.nix
     ../../modules/nix-ld.nix
-    ../../modules/nix-settings.nix
-    ../../modules/nixos-tools.nix
-    ../../modules/sudo.nix
-    ../../modules/packages/tmux.nix
 
     # Services
-    ../../modules/docker.nix
     ../../modules/claude-workspace.nix
     ../../modules/playwright-mcp.nix
     ../../modules/vscode-tunnel.nix
 
     # Packages
-    ../../modules/packages/1password.nix
     ../../modules/packages/bottles.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/fira-code-nerd-font.nix
@@ -130,19 +114,14 @@
     ../../modules/packages/jetbrains-rider.nix
     ../../modules/packages/jq.nix
     ../../modules/packages/just.nix
-    ../../modules/packages/lazydocker.nix
     ../../modules/packages/ripgrep.nix
     ../../modules/packages/sqlcmd.nix
     ../../modules/packages/unzip.nix
     ../../modules/packages/wget.nix
 
     # Development: Nix
-    ../../modules/packages/alejandra.nix
-    ../../modules/packages/deadnix.nix
-    ../../modules/packages/mcp-nixos.nix
     ../../modules/packages/sops.nix
     ../../modules/packages/ssh-to-age.nix
-    ../../modules/packages/statix.nix
   ];
 
   networking.hostName = hostname;
