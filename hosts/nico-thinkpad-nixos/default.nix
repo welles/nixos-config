@@ -50,7 +50,6 @@
     ../../modules/packages/calibre.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
-    ../../modules/packages/discord.nix
     ../../modules/packages/drawing.nix
     ../../modules/packages/easyeffects.nix
     ../../modules/packages/evtest.nix
@@ -77,6 +76,7 @@
     ../../modules/packages/teamspeak6-client.nix
     ../../modules/packages/unrar.nix
     ../../modules/packages/usbutils.nix
+    ../../modules/packages/vesktop.nix
     ../../modules/packages/video-compare.nix
     ../../modules/packages/video2x.nix
     ../../modules/packages/vlc.nix

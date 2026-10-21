@@ -53,7 +53,6 @@
     ../../modules/packages/cheat-engine.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
-    ../../modules/packages/discord.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gh.nix
     ../../modules/packages/gparted.nix
@@ -67,6 +66,7 @@
     ../../modules/packages/steam.nix
     ../../modules/packages/streamcontroller.nix
     ../../modules/packages/usbutils.nix
+    ../../modules/packages/vesktop.nix
 
     # Scripts
     ../../modules/scripts/search-tmdb
