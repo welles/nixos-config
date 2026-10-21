@@ -10,6 +10,9 @@
     # Desktop environment
     ./desktop.nix
 
+    # Secrets
+    ./sops.nix
+
     # Home Manager
     ../../modules/packages/konsole.nix
     ../../modules/npm.nix
@@ -65,10 +68,12 @@
     ../../modules/packages/podman-desktop.nix
     ../../modules/packages/python3.nix
     #../../modules/packages/solidtime-desktop.nix
+    ../../modules/packages/sops.nix
     ../../modules/packages/sourcegit.nix
     ../../modules/packages/kdiff3.nix
     ../../modules/packages/tortoisehg.nix
     ../../modules/packages/vscode.nix
+    ../../modules/scripts/sops-edit
   ];
 
   networking.hostName = hostname;
@@ -95,7 +100,7 @@
     passwordConfig = {hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";};
     extraGroups = ["wheel"];
     persistRoot = null;
-    sopsAgeKeyFile = null;
+    sopsAgeKeyFile = "/var/lib/sops-nix/key.txt";
     sshSigningKey = null;
     onePasswordVaults = null;
   };
