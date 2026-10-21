@@ -41,6 +41,10 @@ logic, services, packages, or persistence entries, that is a sign the
 configuration should be extracted into a module, parameterised through module
 arguments where needed.
 
+All imports of a host are listed in its `default.nix`. Other files in the host
+directory never import modules, so the host's feature set is visible in one
+place.
+
 Before adding anything to a host, check whether an existing module already
 covers it or whether a second host could plausibly want the same thing. If so,
 write or extend a module instead.
@@ -88,20 +92,43 @@ arguments.
 - A module does not depend on being imported together with specific other
   modules unless it imports them itself.
 - A module carries everything it needs: packages, services, firewall rules,
-  user groups, Home Manager configuration, its own `secrets.yaml` (see
-  `modules/rclone`), and persistence entries.
+  users and groups, Home Manager configuration, secrets, and persistence
+  entries.
+- Secrets: a secret with the same value on every host lives in the module's
+  own `secrets.yaml` (see `modules/rclone`). A secret whose value differs per
+  host is declared by the module without `sopsFile` (owner, mode, …), and the
+  host provides its value in its own `secrets.yaml`, its
+  `sops.defaultSopsFile` (see `modules/cloudflared.nix`).
 - A module never hard-codes host-specific values (usernames, paths, pool
   names, emails, keys). Those come from module arguments.
 - Name modules after the feature they provide (`bluetooth.nix`,
   `zfs-rollback.nix`), not after the host that first needed them.
 
+Think of `modules/` as a vending machine: hosts pick the features they need,
+and not every module has to be in use. A module no host imports right now is
+fine and stays, as long as it follows the rules and patterns described here,
+so it works as soon as a host picks it.
+
 ### Package modules (`modules/packages/`)
 
 Package modules are a special kind of module that revolve around a single
 `nixpkgs` attribute and the configuration it needs to work. The file name
-matches the attribute (`firefox.nix` → `pkgs.firefox`,
-`kdePackages-dolphin.nix` → `pkgs.kdePackages.dolphin`; a leading `_` is used
-when the attribute starts with a digit, e.g. `_7zz.nix`).
+matches the attribute, also when the module uses a `programs.<name>` option:
+
+- `firefox.nix` → `pkgs.firefox`, `mercurial.nix` → `programs.mercurial`
+- nested attributes join with `-`: `kdePackages-dolphin.nix` →
+  `pkgs.kdePackages.dolphin`, `nerd-fonts-fira-code.nix` →
+  `pkgs.nerd-fonts.fira-code`
+- the attribute's own leading `_` is kept (`_1password-gui.nix`), and a
+  leading `_` is added when the attribute starts with a digit (`_7zz.nix`)
+- programs that are not in `nixpkgs` are packaged in the module itself (or a
+  directory with `default.nix`, e.g. `keeper-commander/`) and named after
+  the program (`cheat-engine.nix`, `occt.nix`)
+
+Modules that need a package another package module provides import that
+module instead of installing the package again (e.g. `kdiff3.nix` imports
+`fira-sans.nix` and `nerd-fonts-fira-code.nix` for the fonts it is set up
+with).
 
 A package module may bundle a small cluster of packages only when they must
 always ship together (e.g. `keeper-commander/` with its locally packaged
@@ -156,20 +183,30 @@ an impermanent host without the host adding anything:
 When a module needs a value that differs per host, it receives it as a module
 argument that the host sets in `_module.args`. Common arguments:
 
-| Argument            | Meaning                                                    |
-| ------------------- | ---------------------------------------------------------- |
-| `hostname`          | Set by `flake.nix` via `specialArgs`.                      |
-| `user`              | Login name of the primary user.                            |
-| `userDescription`   | Display name of the primary user.                          |
-| `userEmail`         | Email of the primary user.                                 |
-| `persistRoot`       | Impermanence persist root, or `null` without impermanence. |
-| `pool`              | ZFS pool name.                                             |
-| `sopsAgeKeyFile`    | Path to the sops age key.                                  |
-| `passwordConfig`    | Password attributes for the primary user's `users.users`.  |
-| `extraGroups`       | Extra groups of the primary user.                          |
-| `sshSigningKey`     | Public SSH key Git signs commits with.                     |
-| `onePasswordVaults` | 1Password vaults the SSH agent offers keys from.           |
-| `sshAuthorizedKeys` | Public keys allowed to log in over SSH.                    |
+| Argument               | Meaning                                                    |
+| ---------------------- | ---------------------------------------------------------- |
+| `hostname`             | Set by `flake.nix` via `specialArgs`.                      |
+| `user`                 | Login name of the primary user.                            |
+| `userDescription`      | Display name of the primary user.                          |
+| `userEmail`            | Email of the primary user.                                 |
+| `persistRoot`          | Impermanence persist root, or `null` without impermanence. |
+| `pool`                 | ZFS pool name.                                             |
+| `sopsAgeKeyFile`       | Path to the sops age key.                                  |
+| `passwordConfig`       | Password attributes for the primary user's `users.users`.  |
+| `extraGroups`          | Extra groups of the primary user.                          |
+| `sshSigningKey`        | Public SSH key Git signs commits with.                     |
+| `onePasswordVaults`    | 1Password vaults the SSH agent offers keys from.           |
+| `sshAuthorizedKeys`    | Public keys allowed to log in over SSH.                    |
+| `acmeEmail`            | Contact email for Caddy's ACME certificates.               |
+| `msmtpAccount`         | SMTP account (`host`, `user`, `from`) of the mail relay.   |
+| `nextcloudUrl`         | Nextcloud base URL the rclone mount uses.                  |
+| `extraDiskMounts`      | Additional mount points the server status shows.           |
+| `claudeWorkspaceRepos` | Repositories (`owner/repo`) of the Claude workspace.       |
+| `xrdpSession`          | Session command xrdp starts; set by `cinnamon.nix` itself. |
+
+`xrdpSession` is the one argument a module sets (`cinnamon.nix` provides the
+command that starts its own session). A module may provide an argument for
+the modules that build on it this way; hosts never set it.
 
 Rules:
 
