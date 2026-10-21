@@ -9,7 +9,8 @@
 #
 # Look: dark mode with the Mint-Y theme in orange, and a 48px panel with the
 # white NixOS snowflake as menu icon and a window list that shows each window
-# with its title, ungrouped. No screen locking or blanking. Set in dconf by
+# with its title, ungrouped. The background changes every hour to a random dark
+# KDE wallpaper. No screen locking or blanking. Set in dconf by
 # Home Manager on every activation (changes in Cinnamon's settings don't
 # last).
 #
@@ -22,7 +23,19 @@
   user,
   persistRoot ? null,
   ...
-}: {
+}: let
+  # Flat directory for the background slideshow (it doesn't look into
+  # subdirectories), with the dark variant of every KDE wallpaper that has one,
+  # in the largest 16:9 size (Patak has no 5120x2880)
+  darkWallpapers = pkgs.runCommand "cinnamon-dark-wallpapers" {} ''
+    mkdir $out
+    for dir in ${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/*/contents/images_dark; do
+      name=$(basename "$(dirname "$(dirname "$dir")")")
+      image=$(ls "$dir"/5120x2880.* "$dir"/3840x2160.* 2>/dev/null | head -n 1)
+      ln -s "$image" "$out/$name.''${image##*.}"
+    done
+  '';
+in {
   services.xserver = {
     enable = true;
     desktopManager.cinnamon.enable = true;
@@ -92,6 +105,14 @@
             right = 16;
           }
         ];
+
+        # Slideshow of the dark KDE wallpapers, a random one every hour
+        "org/cinnamon/desktop/background/slideshow" = {
+          slideshow-enabled = true;
+          image-source = "directory://${darkWallpapers}";
+          random-order = true;
+          delay = 60;
+        };
 
         # No screen locking or blanking: the session is only reachable over
         # RDP, which already asks for the password, and isn't left at a
