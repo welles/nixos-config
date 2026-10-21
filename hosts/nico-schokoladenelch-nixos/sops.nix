@@ -1,11 +1,8 @@
-{sopsAgeKeyFile, ...}: {
+_: {
   sops = {
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
-    age = {
-      keyFile = sopsAgeKeyFile;
-      sshKeyPaths = [];
-    };
+    age.sshKeyPaths = [];
     validateSopsFiles = true;
     secrets = {
       "cloudflare-ddns-token" = {

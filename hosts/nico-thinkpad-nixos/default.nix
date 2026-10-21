@@ -1,13 +1,12 @@
 {hostname, ...}: {
   imports = [
+    ../../bundles/impermanence-zfs.nix
+
     # Hardware & boot
     ./disk-configuration.nix
     ./hardware-configuration.nix
-    ./impermanence.nix
-    ../../modules/sops-zfs-persist.nix
     ./tablet.nix
     ../../modules/zfs-grub-boot.nix
-    ../../modules/zfs-rollback.nix
 
     # Networking
     ../../modules/avahi.nix
@@ -122,8 +121,6 @@
     ../../modules/packages/xfsprogs.nix
 
     # Scripts
-    ../../modules/scripts/check-persist
-    ../../modules/scripts/persist-audit
     ../../modules/scripts/sops-edit
   ];
 
