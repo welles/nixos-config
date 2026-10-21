@@ -7,10 +7,11 @@
 # instead of services.xserver.xkb (keyboard.nix), so the session sets it
 # again before Cinnamon starts.
 #
-# Look: dark mode with the Mint-Y theme in orange, and a panel with the NixOS
-# snowflake as menu icon and a window list that shows each window with its
-# title, ungrouped. No screen locking or blanking. Set in dconf by Home
-# Manager on every activation (changes in Cinnamon's settings don't last).
+# Look: dark mode with the Mint-Y theme in orange, and a 48px panel with the
+# white NixOS snowflake as menu icon and a window list that shows each window
+# with its title, ungrouped. No screen locking or blanking. Set in dconf by
+# Home Manager on every activation (changes in Cinnamon's settings don't
+# last).
 #
 # Cinnamon keeps logins (VS Code, Chrome, gh etc.) in the GNOME keyring,
 # persisted on impermanence hosts.
@@ -67,9 +68,30 @@
           "right:11:cornerbar@cinnamon.org"
         ];
 
-        # NixOS snowflake (from nixos-icons, installed on graphical desktops)
-        # instead of the Cinnamon logo as the icon of the menu applet
-        "org/cinnamon".app-menu-icon-name = "nix-snowflake";
+        # White NixOS snowflake (from nixos-icons, installed on graphical
+        # desktops) instead of the Cinnamon logo as the icon of the menu applet
+        "org/cinnamon".app-menu-icon-name = "nix-snowflake-white";
+
+        # Panel 48px high, with 32px icons on the left and in the center and
+        # 16px icons on the right (systray, status icons). Both for coloured
+        # and symbolic icons; the sizes are JSON strings per panel.
+        "org/cinnamon".panels-height = ["1:48"];
+        "org/cinnamon".panel-zone-icon-sizes = builtins.toJSON [
+          {
+            panelId = 1;
+            left = 32;
+            center = 32;
+            right = 16;
+          }
+        ];
+        "org/cinnamon".panel-zone-symbolic-icon-sizes = builtins.toJSON [
+          {
+            panelId = 1;
+            left = 32;
+            center = 32;
+            right = 16;
+          }
+        ];
 
         # No screen locking or blanking: the session is only reachable over
         # RDP, which already asks for the password, and isn't left at a
