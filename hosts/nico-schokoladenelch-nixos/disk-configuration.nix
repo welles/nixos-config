@@ -386,4 +386,7 @@
       };
     };
   };
+
+  # Mounted in the initrd, like the persist dataset.
+  fileSystems."/mnt/bucket/apps".neededForBoot = true;
 }

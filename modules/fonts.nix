@@ -1,4 +1,10 @@
+# Plasma UI and fixed-width fonts (Fira Sans, FiraCode Nerd Font).
 _: {
+  imports = [
+    ./packages/fira-sans.nix
+    ./packages/nerd-fonts-fira-code.nix
+  ];
+
   home-manager.sharedModules = [
     {
       programs.plasma.fonts = {

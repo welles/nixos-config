@@ -4,6 +4,6 @@
     ../modules/1password-autostart.nix
     ../modules/1password-ssh-agent.nix
     ../modules/git-signing.nix
-    ../modules/packages/1password.nix
+    ../modules/packages/_1password-gui.nix
   ];
 }

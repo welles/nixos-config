@@ -20,16 +20,21 @@
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ../../modules/logitech-wheel.nix
+    ../../modules/nvidia-base.nix
     ./nvidia-gpu.nix
     ./sops.nix
 
     # Networking
     ./networking.nix
+    ../../modules/networkmanager.nix
+    ../../modules/networkmanager-skip-wait-online.nix
+    ../../modules/wifi-welles-intern
+    ../../modules/wifi-welles-starlink
 
     # Desktop environment
     ./plasma.nix
 
-    # Home Manager
+    # Shell & user environment
     ../../modules/packages/yazi.nix
 
     # System
@@ -37,7 +42,8 @@
     ../../modules/minecraft-modding.nix
 
     # Services & hardware
-    ./services.nix
+    ../../modules/autologin.nix
+    ../../modules/removable-media.nix
 
     # Packages
     ../../modules/packages/antigravity.nix
@@ -56,8 +62,10 @@
     ../../modules/packages/obs-studio.nix
     ../../modules/packages/occt.nix
     ../../modules/packages/pciutils.nix
+    ../../modules/packages/prismlauncher.nix
     ../../modules/packages/remmina.nix
-    ../../modules/packages/streamdeck.nix
+    ../../modules/packages/steam.nix
+    ../../modules/packages/streamcontroller.nix
     ../../modules/packages/usbutils.nix
 
     # Scripts
