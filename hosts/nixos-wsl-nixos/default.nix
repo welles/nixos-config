@@ -8,7 +8,9 @@
     ../../bundles/base.nix
     ../../bundles/containers.nix
     ../../bundles/dev-tools.nix
+    ../../bundles/dotnet-dev.nix
     ../../bundles/git-gui.nix
+    ../../bundles/sops-admin.nix
 
     # Hardware & boot
     ./hardware-configuration.nix
@@ -21,12 +23,11 @@
 
     # Home Manager
     ../../modules/packages/hg.nix
-    ../../modules/dotnet-tools-path.nix
     ./mercurial.nix
     ../../modules/packages/yazi.nix
 
     # System
-    ../../modules/dotnet-sdk-env.nix
+    ./ld-library-path.nix
     ../../modules/nix-ld-dev-libraries.nix
 
     # Services & hardware
@@ -36,12 +37,8 @@
 
     # Packages
     ../../modules/packages/bruno.nix
-    ../../modules/packages/dotnet-sdk_10.nix
-    ../../modules/packages/firefox-devedition.nix
-    ../../modules/packages/google-chrome.nix
     ../../modules/packages/headlamp.nix
     ../../modules/packages/hoppscotch.nix
-    ../../modules/packages/jetbrains-rider.nix
     ../../modules/packages/jq.nix
     ../../modules/packages/k0sctl.nix
     ../../modules/packages/k9s.nix
@@ -59,9 +56,7 @@
     ../../modules/packages/podman-desktop.nix
     ../../modules/packages/python3.nix
     #../../modules/packages/solidtime-desktop.nix
-    ../../modules/packages/sops.nix
     ../../modules/packages/tortoisehg.nix
-    ../../modules/scripts/sops-edit
   ];
 
   networking.hostName = hostname;

@@ -58,9 +58,12 @@
     ../../bundles/base.nix
     ../../bundles/containers.nix
     ../../bundles/dev-tools.nix
+    ../../bundles/dotnet-dev.nix
     ../../bundles/impermanence-zfs.nix
+    ../../bundles/java-dev.nix
     ../../bundles/nix-dev.nix
     ../../bundles/onepassword.nix
+    ../../bundles/sops-admin.nix
 
     # Hardware & boot
     ./boot.nix
@@ -82,9 +85,6 @@
     ../../modules/xrdp.nix
     ../../modules/user-dirs.nix
 
-    # System
-    ../../modules/nix-ld.nix
-
     # Services
     ../../modules/claude-workspace.nix
     ../../modules/playwright-mcp.nix
@@ -95,33 +95,22 @@
     ../../modules/packages/claude-code.nix
     ../../modules/packages/fira-code-nerd-font.nix
     ../../modules/packages/fira-sans.nix
-    ../../modules/packages/firefox.nix
     ../../modules/packages/gh.nix
-    ../../modules/packages/google-chrome.nix
 
     # Development: languages and runtimes
     ../../modules/packages/bun.nix
-    ../../modules/packages/dotnet-sdk_10.nix
-    ../../modules/packages/jdk25.nix
-    ../../modules/packages/pnpm.nix
     ../../modules/packages/powershell.nix
     ../../modules/packages/python3.nix
 
     # Development: tools
     ../../modules/nix-ld-dev-libraries.nix
     ../../modules/packages/azure-cli.nix
-    ../../modules/packages/jetbrains-idea.nix
-    ../../modules/packages/jetbrains-rider.nix
     ../../modules/packages/jq.nix
     ../../modules/packages/just.nix
     ../../modules/packages/ripgrep.nix
     ../../modules/packages/sqlcmd.nix
     ../../modules/packages/unzip.nix
     ../../modules/packages/wget.nix
-
-    # Development: Nix
-    ../../modules/packages/sops.nix
-    ../../modules/packages/ssh-to-age.nix
   ];
 
   networking.hostName = hostname;

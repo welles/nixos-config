@@ -8,6 +8,7 @@
     ../../bundles/base.nix
     ../../bundles/containers.nix
     ../../bundles/impermanence-zfs.nix
+    ../../bundles/sops-admin.nix
 
     # Hardware & boot
     ./boot.nix
@@ -38,15 +39,12 @@
     ../../modules/packages/iotop.nix
     ../../modules/packages/lazygit.nix
     ../../modules/packages/smartmontools.nix
-    ../../modules/packages/sops.nix
-    ../../modules/packages/ssh-to-age.nix
     ../../modules/packages/systemctl-tui.nix
 
     # Scripts
     ../../modules/scripts/check-mkv
     ../../modules/scripts/create-zfs-dataset
     ../../modules/scripts/search-tmdb
-    ../../modules/scripts/sops-edit
     ../../modules/scripts/zfs-manual-snapshot
     ../../modules/scripts/zfs-snapshot-diff
   ];
