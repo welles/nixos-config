@@ -141,6 +141,10 @@ an impermanent host without the host adding anything:
 - Persist the narrowest paths possible (a config directory, not all of
   `.config`), and prefer `directories` over `files` unless the application
   replaces the file atomically in a way that breaks bind mounts.
+- Impermanence rejects a path persisted twice. When several modules share
+  state (e.g. all JetBrains IDEs), move the persistence into a small module
+  they all import (see `modules/jetbrains-state.nix`); the module system
+  loads it only once.
 - When adding a package, find out where it stores state (config, cache that
   is expensive to rebuild, databases, login tokens) and persist it in the
   same module. `modules/scripts/persist-audit` and
