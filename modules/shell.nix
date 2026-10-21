@@ -8,8 +8,8 @@
 {
   lib,
   pkgs,
-  user ? (builtins.throw "shell.nix: set `_module.args.user` to the shell username"),
-  persistRoot ? null,
+  user,
+  persistRoot,
   ...
 }: {
   programs.zsh.enable = true;

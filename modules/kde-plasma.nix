@@ -2,7 +2,7 @@
   pkgs,
   lib,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   programs.dconf.enable = true;

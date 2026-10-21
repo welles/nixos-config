@@ -1,7 +1,7 @@
 {
   lib,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   programs.steam = {

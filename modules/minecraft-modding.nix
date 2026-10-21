@@ -10,7 +10,7 @@
   lib,
   pkgs,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   programs.nix-ld = {

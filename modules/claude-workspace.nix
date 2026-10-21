@@ -24,8 +24,8 @@
   lib,
   pkgs,
   user,
-  persistRoot ? null,
-  claudeWorkspaceRepos ? (builtins.throw "claude-workspace.nix: set `_module.args.claudeWorkspaceRepos` to the repositories (\"owner/repo\")"),
+  persistRoot,
+  claudeWorkspaceRepos,
   ...
 }: let
   repos = claudeWorkspaceRepos;

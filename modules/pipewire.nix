@@ -6,7 +6,7 @@
 {
   lib,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   services.pulseaudio.enable = false;

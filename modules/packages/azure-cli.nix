@@ -2,7 +2,7 @@
   lib,
   pkgs,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   # fabric (imported by `az webapp`) is marked broken with invoke >= 3

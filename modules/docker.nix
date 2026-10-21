@@ -5,7 +5,7 @@
 {
   lib,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   virtualisation.docker.enable = true;
