@@ -1,9 +1,14 @@
 {hostname, ...}: {
   imports = [
     # Bundles
+    ../../bundles/base.nix
+    ../../bundles/containers.nix
     ../../bundles/desktop-kde.nix
     ../../bundles/dev-tools.nix
+    ../../bundles/git-gui.nix
     ../../bundles/impermanence-zfs.nix
+    ../../bundles/nix-dev.nix
+    ../../bundles/onepassword.nix
 
     # Hardware & boot
     ./disk-configuration.nix
@@ -27,42 +32,22 @@
 
     # Home Manager
     ../../modules/laptop-plasma.nix
-    ../../modules/cli-tools.nix
-    ../../modules/packages/git.nix
-    ../../modules/git-signing.nix
-    ../../modules/1password-ssh-agent.nix
-    ../../modules/1password-autostart.nix
     ../../modules/sops-env.nix
-    ../../modules/shell.nix
     ../../modules/packages/yazi.nix
 
-    # User & identity
-    ../../modules/home-manager-user.nix
-    ../../modules/user-account.nix
-
     # System
-    ../../modules/keyboard.nix
-    ../../modules/locale-de.nix
     ../../modules/nix-ld.nix
-    ../../modules/nix-settings.nix
-    ../../modules/nixos-tools.nix
-    ../../modules/sudo.nix
-    ../../modules/packages/tmux.nix
 
     # Services & hardware
-    ../../modules/docker.nix
     ../../modules/rclone
 
     # Packages
-    ../../modules/packages/1password.nix
     ../../modules/packages/_7zz.nix
-    ../../modules/packages/alejandra.nix
     ../../modules/packages/antigravity.nix
     ../../modules/packages/azure-cli.nix
     ../../modules/packages/calibre.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
-    ../../modules/packages/deadnix.nix
     ../../modules/packages/discord.nix
     ../../modules/packages/dotnet-sdk_10.nix
     ../../modules/packages/drawing.nix
@@ -79,10 +64,8 @@
     ../../modules/packages/jdk25.nix
     ../../modules/packages/jetbrains-rider.nix
     ../../modules/packages/kdePackages-partitionmanager.nix
-    ../../modules/packages/lazydocker.nix
     ../../modules/packages/libreoffice.nix
     ../../modules/packages/losslesscut-bin.nix
-    ../../modules/packages/mcp-nixos.nix
     ../../modules/packages/mission-center.nix
     ../../modules/packages/mumble.nix
     ../../modules/packages/naps2.nix
@@ -95,10 +78,7 @@
     ../../modules/packages/remmina.nix
     ../../modules/packages/solaar.nix
     ../../modules/packages/sops.nix
-    ../../modules/packages/sourcegit.nix
-    ../../modules/packages/kdiff3.nix
     ../../modules/packages/ssh-to-age.nix
-    ../../modules/packages/statix.nix
     ../../modules/packages/systemctl-tui.nix
     ../../modules/packages/teamspeak6-client.nix
     ../../modules/packages/unrar.nix

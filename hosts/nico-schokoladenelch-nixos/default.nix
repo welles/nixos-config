@@ -5,6 +5,8 @@
 }: {
   imports = [
     # Bundles
+    ../../bundles/base.nix
+    ../../bundles/containers.nix
     ../../bundles/impermanence-zfs.nix
 
     # Hardware & boot
@@ -20,25 +22,9 @@
     ../../modules/networkmanager.nix
 
     # Home Manager
-    ../../modules/cli-tools.nix
-    ../../modules/packages/git.nix
-    ../../modules/shell.nix
     ../../modules/packages/yazi.nix
 
-    # User & identity
-    ../../modules/home-manager-user.nix
-    ../../modules/user-account.nix
-
-    # System
-    ../../modules/keyboard.nix
-    ../../modules/locale-de.nix
-    ../../modules/nix-settings.nix
-    ../../modules/nixos-tools.nix
-    ../../modules/sudo.nix
-    ../../modules/packages/tmux.nix
-
     # Services & hardware
-    ../../modules/docker.nix
     ../../modules/openssh.nix
     ../../modules/server-status.nix
     ./services.nix
@@ -50,7 +36,6 @@
     ../../modules/packages/ctop.nix
     ../../modules/packages/httm.nix
     ../../modules/packages/iotop.nix
-    ../../modules/packages/lazydocker.nix
     ../../modules/packages/lazygit.nix
     ../../modules/packages/smartmontools.nix
     ../../modules/packages/sops.nix

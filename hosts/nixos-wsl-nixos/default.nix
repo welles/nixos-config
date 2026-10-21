@@ -5,7 +5,10 @@
 }: {
   imports = [
     # Bundles
+    ../../bundles/base.nix
+    ../../bundles/containers.nix
     ../../bundles/dev-tools.nix
+    ../../bundles/git-gui.nix
 
     # Hardware & boot
     ./hardware-configuration.nix
@@ -17,30 +20,16 @@
     ./sops.nix
 
     # Home Manager
-    ../../modules/cli-tools.nix
-    ../../modules/packages/git.nix
     ../../modules/packages/hg.nix
     ../../modules/dotnet-tools-path.nix
     ./mercurial.nix
-    ../../modules/shell.nix
     ../../modules/packages/yazi.nix
-
-    # User & identity
-    ../../modules/home-manager-user.nix
-    ../../modules/user-account.nix
 
     # System
     ../../modules/dotnet-sdk-env.nix
-    ../../modules/keyboard.nix
-    ../../modules/locale-de.nix
     ../../modules/nix-ld-dev-libraries.nix
-    ../../modules/nix-settings.nix
-    ../../modules/nixos-tools.nix
-    ../../modules/sudo.nix
-    ../../modules/packages/tmux.nix
 
     # Services & hardware
-    ../../modules/docker.nix
     ../../modules/podman.nix
     inputs.nixos-wsl.nixosModules.default
     ./wsl.nix
@@ -63,7 +52,6 @@
     ../../modules/packages/kubelogin-oidc.nix
     ../../modules/packages/kubernetes-helm.nix
     ../../modules/packages/kubeseal.nix
-    ../../modules/packages/lazydocker.nix
     ../../modules/packages/microsoft-edge.nix
     ../../modules/packages/nuke.nix
     ../../modules/packages/openssl.nix
@@ -72,8 +60,6 @@
     ../../modules/packages/python3.nix
     #../../modules/packages/solidtime-desktop.nix
     ../../modules/packages/sops.nix
-    ../../modules/packages/sourcegit.nix
-    ../../modules/packages/kdiff3.nix
     ../../modules/packages/tortoisehg.nix
     ../../modules/scripts/sops-edit
   ];
