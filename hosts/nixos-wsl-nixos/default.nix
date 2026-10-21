@@ -14,6 +14,11 @@
     ./sops.nix
 
     # Home Manager
+    ../../modules/cli-tools.nix
+    ../../modules/packages/git.nix
+    ../../modules/packages/hg.nix
+    ../../modules/dotnet-tools-path.nix
+    ./mercurial.nix
     ../../modules/npm.nix
     ../../modules/shell.nix
     ../../modules/packages/yazi.nix
@@ -79,26 +84,11 @@
   users.users.nixos.linger = true;
   _module.args = {
     user = "nixos";
-    homeModules = [
-      ../../modules/cli-tools.nix
-      ../../modules/packages/git.nix
-      ../../modules/packages/hg.nix
-      {
-        programs.mercurial.extraConfig.auth = {
-          "mentz.prefix" = "https://source.mentz.net/repo/";
-          "mentz.username" = "welles";
-          "mentz.schemes" = "https";
-        };
-      }
-      ../../modules/dotnet-tools-path.nix
-    ];
     userDescription = "Nico Welles";
     userEmail = "welles@mentz.net";
     passwordConfig = {hashedPassword = "$6$3BGVF3pHFaYKQrs1$Ac6nlm55Mi.80KdRhvlr9wk4V80X/CE2cof8YRba5Mz6Kqgzl8uzq.Bd78qKh8Tsq4FGQuRsmhedOVlH.Zuvx1";};
     extraGroups = ["wheel"];
     persistRoot = null;
     sopsAgeKeyFile = "/var/lib/sops-nix/key.txt";
-    sshSigningKey = null;
-    onePasswordVaults = null;
   };
 }

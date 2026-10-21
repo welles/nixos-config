@@ -78,6 +78,11 @@
     ../../modules/user-dirs.nix
 
     # Home Manager
+    ../../modules/cli-tools.nix
+    ../../modules/packages/git.nix
+    ../../modules/git-signing.nix
+    ../../modules/1password-ssh-agent.nix
+    ../../modules/1password-autostart.nix
     ../../modules/npm.nix
     ../../modules/shell.nix
 
@@ -162,13 +167,6 @@
   system.stateVersion = "26.05";
   _module.args = {
     user = "nico";
-    homeModules = [
-      ../../modules/cli-tools.nix
-      ../../modules/packages/git.nix
-      ../../modules/git-signing.nix
-      ../../modules/1password-ssh-agent.nix
-      ../../modules/1password-autostart.nix
-    ];
     persistRoot = "/persist";
     sopsAgeKeyFile = "/persist/var/lib/sops-nix/key.txt";
     pool = "devbox";

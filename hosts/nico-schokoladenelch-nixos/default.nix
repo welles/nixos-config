@@ -18,11 +18,13 @@
     ../../modules/networkmanager.nix
 
     # Home Manager
+    ../../modules/cli-tools.nix
+    ../../modules/packages/git.nix
     ../../modules/shell.nix
     ../../modules/packages/yazi.nix
 
     # User & identity
-    ./home-manager.nix
+    ../../modules/home-manager-user.nix
     ../../modules/user-account.nix
 
     # System
