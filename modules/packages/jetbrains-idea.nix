@@ -1,17 +1,5 @@
-{
-  lib,
-  pkgs,
-  user,
-  persistRoot,
-  ...
-}: {
-  environment.systemPackages = [pkgs.jetbrains.idea];
+{pkgs, ...}: {
+  imports = [../jetbrains-state.nix];
 
-  environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.users.${user}.directories = [
-      ".config/JetBrains"
-      ".local/share/JetBrains"
-      ".java"
-    ];
-  };
+  environment.systemPackages = [pkgs.jetbrains.idea];
 }
