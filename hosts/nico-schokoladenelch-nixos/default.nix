@@ -4,9 +4,10 @@
   ...
 }: {
   imports = [
+    ../../bundles/impermanence-zfs.nix
+
     # Hardware & boot
     ./boot.nix
-    ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ./impermanence.nix
@@ -57,8 +58,6 @@
 
     # Scripts
     ../../modules/scripts/check-mkv
-    ../../modules/scripts/check-persist
-    ../../modules/scripts/persist-audit
     ../../modules/scripts/create-zfs-dataset
     ../../modules/scripts/search-tmdb
     ../../modules/scripts/sops-edit

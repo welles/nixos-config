@@ -54,15 +54,14 @@
   ...
 }: {
   imports = [
+    ../../bundles/impermanence-zfs.nix
+
     # Hardware & boot
     ./boot.nix
     ../../modules/zfs-systemd-boot.nix
-    ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
-    ./impermanence.nix
     ./tank-mounts.nix
-    ../../modules/sops-zfs-persist.nix
     ./sops.nix
 
     # Networking: DHCP from the Fritzbox. Unlike on the desktops,
@@ -146,10 +145,6 @@
     ../../modules/packages/sops.nix
     ../../modules/packages/ssh-to-age.nix
     ../../modules/packages/statix.nix
-
-    # Scripts
-    ../../modules/scripts/check-persist
-    ../../modules/scripts/persist-audit
   ];
 
   networking.hostName = hostname;

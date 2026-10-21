@@ -4,12 +4,12 @@
   ...
 }: {
   imports = [
+    ../../bundles/impermanence-zfs.nix
+
     # Hardware & boot
     ../../modules/zfs-grub-boot.nix
-    ../../modules/zfs-rollback.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
-    ./impermanence.nix
     ../../modules/logitech-wheel.nix
     ./nvidia-gpu.nix
     ./sops.nix
@@ -96,8 +96,6 @@
     ../../modules/packages/vscode.nix
 
     # Scripts
-    ../../modules/scripts/check-persist
-    ../../modules/scripts/persist-audit
     ../../modules/scripts/sops-edit
     ../../modules/scripts/search-tmdb
     ../../modules/scripts/toggle-screens

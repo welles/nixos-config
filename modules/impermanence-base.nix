@@ -1,13 +1,8 @@
-# Impermanence Configuration
+# Impermanence Base
 #
-# The ZFS root dataset (devbox/root) is rolled back to its blank snapshot
-# on every boot; only what is listed here (and in the imported modules)
-# survives on /persist.
-{
-  persistRoot,
-  user,
-  ...
-}: {
+# State NixOS itself needs to survive the root rollback on an impermanent
+# host. Feature modules persist their own state on top of this.
+{persistRoot, ...}: {
   fileSystems.${persistRoot}.neededForBoot = true;
 
   environment.persistence.${persistRoot} = {
@@ -23,8 +18,5 @@
       "/etc/adjtime"
       "/etc/machine-id"
     ];
-    users.${user} = {
-      directories = [".ssh"];
-    };
   };
 }

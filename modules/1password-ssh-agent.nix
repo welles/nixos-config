@@ -1,8 +1,15 @@
 {
   lib,
+  user,
+  persistRoot,
   onePasswordVaults,
   ...
 }: {
+  # known_hosts and keys outside 1Password live in ~/.ssh.
+  environment.persistence = lib.mkIf (persistRoot != null) {
+    ${persistRoot}.users.${user}.directories = [".ssh"];
+  };
+
   home-manager.sharedModules = [
     {
       home.sessionVariables = {
