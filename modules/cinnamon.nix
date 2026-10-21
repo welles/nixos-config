@@ -10,7 +10,9 @@
 # Look: dark mode with the Mint-Y theme in orange, and a 48px panel with the
 # white NixOS snowflake as menu icon and a window list that shows each window
 # with its title, ungrouped. The background changes every hour to a random dark
-# KDE wallpaper. No screen locking or blanking. Set in dconf by
+# KDE wallpaper. GNOME Terminal (Cinnamon's terminal) uses FiraCode Nerd
+# Font, Qt applications follow the GTK theme. No screen locking or blanking.
+# Set in dconf by
 # Home Manager on every activation (changes in Cinnamon's settings don't
 # last).
 #
@@ -41,6 +43,8 @@ in {
     desktopManager.cinnamon.enable = true;
   };
 
+  fonts.packages = [pkgs.nerd-fonts.fira-code];
+
   _module.args.xrdpSession = "${pkgs.writeShellScript "xrdp-cinnamon-session" ''
     ${lib.getExe pkgs.setxkbmap} ${config.services.xserver.xkb.layout}
     exec ${pkgs.cinnamon}/bin/cinnamon-session-cinnamon2d
@@ -51,7 +55,22 @@ in {
   # applications (GTK 4, Electron, browsers)
   home-manager.sharedModules = [
     ({lib, ...}: {
+      # Qt applications (kdiff3, TortoiseHg) take colours and dialogs from
+      # the GTK theme instead of the light Fusion default
+      qt = {
+        enable = true;
+        platformTheme.name = "gtk3";
+      };
+
       dconf.settings = {
+        # GNOME Terminal's default profile (the uuid is fixed by GNOME
+        # Terminal) with FiraCode Nerd Font
+        "org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9" = {
+          visible-name = "Default";
+          use-system-font = false;
+          font = "FiraCode Nerd Font 10";
+        };
+
         "org/cinnamon/desktop/interface" = {
           gtk-theme = "Mint-Y-Dark-Orange";
           icon-theme = "Mint-Y-Orange";

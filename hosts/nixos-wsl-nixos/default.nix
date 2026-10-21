@@ -14,7 +14,6 @@
     ./sops.nix
 
     # Home Manager
-    ../../modules/packages/konsole.nix
     ../../modules/npm.nix
     ../../modules/shell.nix
     ../../modules/packages/yazi.nix
@@ -50,7 +49,6 @@
     ../../modules/packages/jq.nix
     ../../modules/packages/k0sctl.nix
     ../../modules/packages/k9s.nix
-    ../../modules/packages/kdePackages-dolphin.nix
     ../../modules/packages/keeper.nix
     ../../modules/packages/keeper-commander
     ../../modules/packages/kind.nix
@@ -93,7 +91,6 @@
         };
       }
       ../../modules/dotnet-tools-path.nix
-      ../../modules/kde-theming.nix
     ];
     userDescription = "Nico Welles";
     userEmail = "welles@mentz.net";

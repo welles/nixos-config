@@ -88,7 +88,7 @@
       makeWrapper "$out/lib/keeperpasswordmanager/keeperpasswordmanager" \
         "$out/bin/keeperpasswordmanager" \
         --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [pkgs.libglvnd]} \
-        --prefix PATH : ${lib.makeBinPath [pkgs.kdePackages.kde-cli-tools pkgs.xdg-utils]}
+        --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]}
 
       runHook postInstall
     '';
