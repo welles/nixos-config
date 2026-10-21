@@ -2,7 +2,7 @@
   lib,
   pkgs,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   programs.streamcontroller.enable = true;

@@ -1,6 +1,6 @@
 {
   lib,
-  sopsAgeKeyFile ? (builtins.throw "sops-zfs-persist.nix: set `_module.args.sopsAgeKeyFile` to the sops age key file"),
+  sopsAgeKeyFile,
   ...
 }: {
   # The age key lives on the persist dataset so it survives reboots.

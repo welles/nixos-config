@@ -10,8 +10,8 @@
 {
   lib,
   user,
-  persistRoot ? null,
-  sshAuthorizedKeys ? (builtins.throw "openssh.nix: set `_module.args.sshAuthorizedKeys` to the public keys allowed to log in"),
+  persistRoot,
+  sshAuthorizedKeys,
   ...
 }: {
   services.openssh = {

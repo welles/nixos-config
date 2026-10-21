@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  persistRoot ? (builtins.throw "check-persist: set `_module.args.persistRoot` to the persist dataset root"),
+  persistRoot,
   ...
 }: let
   # Check if persistence is defined at all

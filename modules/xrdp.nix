@@ -9,8 +9,8 @@
 # persisted on impermanence hosts, so RDP clients keep trusting it.
 {
   lib,
-  persistRoot ? null,
-  xrdpSession ? (builtins.throw "xrdp.nix: set `_module.args.xrdpSession` to the session command xrdp starts"),
+  persistRoot,
+  xrdpSession,
   ...
 }: {
   services = {

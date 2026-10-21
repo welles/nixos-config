@@ -2,13 +2,13 @@
   inputs,
   config,
   lib,
-  user ? (builtins.throw "home-manager-user.nix: set `_module.args.user` to the home username"),
-  homeModules ? (builtins.throw "home-manager-user.nix: set `_module.args.homeModules` to the list of home-manager module paths"),
-  userDescription ? (builtins.throw "home-manager-user.nix: set `_module.args.userDescription` to the user display name"),
-  userEmail ? (builtins.throw "home-manager-user.nix: set `_module.args.userEmail` to the user email"),
-  sshSigningKey ? null,
-  onePasswordVaults ? null,
-  sopsAgeKeyFile ? null,
+  user,
+  homeModules,
+  userDescription,
+  userEmail,
+  sshSigningKey,
+  onePasswordVaults,
+  sopsAgeKeyFile,
   ...
 }: {
   home-manager = {

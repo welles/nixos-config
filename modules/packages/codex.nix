@@ -2,7 +2,7 @@
   lib,
   pkgs,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   environment.systemPackages = [pkgs.codex];

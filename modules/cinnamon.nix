@@ -23,7 +23,7 @@
   lib,
   pkgs,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: let
   # Flat directory for the background slideshow (it doesn't look into

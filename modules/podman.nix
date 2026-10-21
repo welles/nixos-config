@@ -6,7 +6,7 @@
 {
   lib,
   user,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   virtualisation.podman.enable = true;

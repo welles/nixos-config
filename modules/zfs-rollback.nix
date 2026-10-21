@@ -7,7 +7,7 @@
 # install time: `zfs snapshot <pool>/root@blank`).
 {
   pkgs,
-  pool ? (builtins.throw "zfs-rollback.nix: set `_module.args.pool` to the ZFS pool name"),
+  pool,
   ...
 }: {
   boot.initrd.systemd.services.rollback-root = {

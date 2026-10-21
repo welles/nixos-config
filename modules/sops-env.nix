@@ -1,4 +1,4 @@
-{sopsAgeKeyFile ? (builtins.throw "sops-env.nix: set `_module.args.sopsAgeKeyFile` to the sops age key file"), ...}: {
+{sopsAgeKeyFile, ...}: {
   home.sessionVariables = {
     EDITOR = "code";
     SOPS_EDITOR = "nano";

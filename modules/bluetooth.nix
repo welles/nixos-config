@@ -1,6 +1,6 @@
 {
   lib,
-  persistRoot ? null,
+  persistRoot,
   ...
 }: {
   hardware.bluetooth.enable = true;

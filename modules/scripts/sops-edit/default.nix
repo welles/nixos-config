@@ -1,6 +1,6 @@
 {
   pkgs,
-  sopsAgeKeyFile ? (builtins.throw "sops-edit: set `_module.args.sopsAgeKeyFile` to the sops age key file"),
+  sopsAgeKeyFile,
   ...
 }: {
   environment.systemPackages = [
