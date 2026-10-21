@@ -1,16 +1,13 @@
 # NixOS Flake Configuration
 #
-# Manages 8 NixOS systems across desktops, laptops, a home server, and
+# Manages 5 NixOS systems across desktops, laptops, a home server, and
 # development environments. Each system is self-contained under hosts/<hostname>/.
 #
 # Systems:
 #   - nico-desktop-nixos:         Desktop workstation (KDE Plasma)
 #   - nico-thinkpad-nixos:        ThinkPad laptop (KDE Plasma)
-#   - nico-thinkbook-nixos:       ThinkBook laptop (KDE Plasma + NVIDIA)
-#   - eltern-asus-nixos:          Parents' ASUS laptop (Cinnamon, auto-upgrade)
 #   - nico-schokoladenelch-nixos: Home server (ZFS, Docker, Caddy, impermanence)
 #   - nixos-wsl-nixos:            Windows WSL2 development environment
-#   - nixos-virtualbox-nixos:     VirtualBox VM development environment
 #   - nico-devbox-nixos:          Development desktop VM on the home server (Cinnamon over RDP)
 {
   inputs = {
@@ -71,11 +68,8 @@
   in {
     nixosConfigurations = {
       nico-thinkpad-nixos = mkUnstableHostSystem "nico-thinkpad-nixos";
-      nico-thinkbook-nixos = mkUnstableHostSystem "nico-thinkbook-nixos";
-      eltern-asus-nixos = mkStableHostSystem "eltern-asus-nixos";
       nico-schokoladenelch-nixos = mkStableHostSystem "nico-schokoladenelch-nixos";
       nixos-wsl-nixos = mkUnstableHostSystem "nixos-wsl-nixos";
-      nixos-virtualbox-nixos = mkUnstableHostSystem "nixos-virtualbox-nixos";
       nico-desktop-nixos = mkUnstableHostSystem "nico-desktop-nixos";
       nico-devbox-nixos = mkUnstableHostSystem "nico-devbox-nixos";
     };
