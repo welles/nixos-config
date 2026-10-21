@@ -1,20 +1,24 @@
 # Shared CLI Tools (Home Manager)
 _: {
-  programs = {
-    starship.enable = true;
+  home-manager.sharedModules = [
+    {
+      programs = {
+        starship.enable = true;
 
-    eza = {
-      enable = true;
-      enableZshIntegration = true;
-      icons = "auto";
-      git = true;
-    };
+        eza = {
+          enable = true;
+          enableZshIntegration = true;
+          icons = "auto";
+          git = true;
+        };
 
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+        fzf = {
+          enable = true;
+          enableZshIntegration = true;
+        };
 
-    btop.enable = true;
-  };
+        btop.enable = true;
+      };
+    }
+  ];
 }

@@ -1,25 +1,16 @@
 {
   inputs,
   config,
-  lib,
   user,
-  homeModules,
-  userDescription,
-  userEmail,
-  sshSigningKey,
-  onePasswordVaults,
-  sopsAgeKeyFile,
   ...
 }: {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs =
-      {inherit inputs userDescription userEmail;}
-      // lib.optionalAttrs (sshSigningKey != null) {inherit sshSigningKey;}
-      // lib.optionalAttrs (onePasswordVaults != null) {inherit onePasswordVaults;}
-      // lib.optionalAttrs (sopsAgeKeyFile != null) {inherit sopsAgeKeyFile;};
-    users.${user}.imports = homeModules;
+    extraSpecialArgs = {inherit inputs;};
+    # Feature modules inject their Home Manager configuration through
+    # `home-manager.sharedModules`; this only declares the user.
+    users.${user} = {};
     backupFileExtension = "backup";
     sharedModules = [
       inputs.plasma-manager-unstable.homeModules.plasma-manager

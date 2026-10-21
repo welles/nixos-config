@@ -25,6 +25,15 @@
     ../../modules/profile-icon
 
     # Home Manager
+    ./plasma.nix
+    ../../modules/fonts.nix
+    ../../modules/cli-tools.nix
+    ../../modules/packages/git.nix
+    ../../modules/git-signing.nix
+    ../../modules/kde-theming.nix
+    ../../modules/1password-ssh-agent.nix
+    ../../modules/1password-autostart.nix
+    ../../modules/sops-env.nix
     ../../modules/packages/konsole.nix
     ../../modules/npm.nix
     ../../modules/shell.nix
@@ -99,17 +108,6 @@
   system.stateVersion = "26.05";
   _module.args = {
     user = "nico";
-    homeModules = [
-      ./plasma.nix
-      ../../modules/fonts.nix
-      ../../modules/cli-tools.nix
-      ../../modules/packages/git.nix
-      ../../modules/git-signing.nix
-      ../../modules/kde-theming.nix
-      ../../modules/1password-ssh-agent.nix
-      ../../modules/1password-autostart.nix
-      ../../modules/sops-env.nix
-    ];
     persistRoot = "/persist";
     sopsAgeKeyFile = "/persist/var/lib/sops-nix/key.txt";
     pool = "main";

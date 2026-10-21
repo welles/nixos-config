@@ -1,54 +1,58 @@
 _: {
-  programs.plasma = {
-    enable = true;
-    overrideConfig = true;
+  home-manager.sharedModules = [
+    {
+      programs.plasma = {
+        enable = true;
+        overrideConfig = true;
 
-    powerdevil.AC = {
-      turnOffDisplay = {
-        idleTimeout = 28800;
-        idleTimeoutWhenLocked = 60;
-      };
-      dimDisplay.enable = false;
-      autoSuspend.action = "nothing";
-      powerButtonAction = "hibernate";
-      powerProfile = "performance";
-    };
+        powerdevil.AC = {
+          turnOffDisplay = {
+            idleTimeout = 28800;
+            idleTimeoutWhenLocked = 60;
+          };
+          dimDisplay.enable = false;
+          autoSuspend.action = "nothing";
+          powerButtonAction = "hibernate";
+          powerProfile = "performance";
+        };
 
-    kscreenlocker.autoLock = false;
+        kscreenlocker.autoLock = false;
 
-    workspace = {
-      lookAndFeel = "org.kde.breezedark.desktop";
-    };
+        workspace = {
+          lookAndFeel = "org.kde.breezedark.desktop";
+        };
 
-    panels = [
-      {
-        location = "left";
-        screen = "all";
-        height = 50;
-        floating = true;
-
-        widgets = [
+        panels = [
           {
-            name = "org.kde.plasma.kickoff";
-            config.General.icon = "nix-snowflake-white";
-          }
+            location = "left";
+            screen = "all";
+            height = 50;
+            floating = true;
 
-          {
-            name = "org.kde.plasma.icontasks";
-            config.General.launchers = [];
-            config.General.showOnlyCurrentScreen = true;
-          }
+            widgets = [
+              {
+                name = "org.kde.plasma.kickoff";
+                config.General.icon = "nix-snowflake-white";
+              }
 
-          "org.kde.plasma.marginsseparator"
+              {
+                name = "org.kde.plasma.icontasks";
+                config.General.launchers = [];
+                config.General.showOnlyCurrentScreen = true;
+              }
 
-          "org.kde.plasma.systemtray"
+              "org.kde.plasma.marginsseparator"
 
-          {
-            name = "org.kde.plasma.digitalclock";
-            config.Appearance.showDate = "false";
+              "org.kde.plasma.systemtray"
+
+              {
+                name = "org.kde.plasma.digitalclock";
+                config.Appearance.showDate = "false";
+              }
+            ];
           }
         ];
-      }
-    ];
-  };
+      };
+    }
+  ];
 }
