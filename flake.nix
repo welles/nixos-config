@@ -1,7 +1,8 @@
 # NixOS Flake Configuration
 #
 # Manages 5 NixOS systems across desktops, laptops, a home server, and
-# development environments. Each system is self-contained under hosts/<hostname>/.
+# development environments. hosts/<hostname>/ composes each system from
+# bundles/ and host-independent modules/ (see AGENTS.md).
 #
 # Systems:
 #   - nico-desktop-nixos:         Desktop workstation (KDE Plasma)
