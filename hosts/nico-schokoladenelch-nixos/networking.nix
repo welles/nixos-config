@@ -3,7 +3,7 @@
 # Uses nftables with the NixOS firewall. Opens HTTP/HTTPS ports for
 # the Caddy reverse proxy, allows all traffic from the local
 # 10.0.0.0/24 subnet, and enables TCP BBR congestion control for
-# improved throughput. NetworkManager is enabled globally in global.nix.
+# improved throughput. NetworkManager comes from modules/networkmanager.nix.
 #
 # The LAN port enp6s0 is a port of the bridge br0, which holds the server's
 # address (DHCP from the Fritzbox) and connects bridged VMs such as

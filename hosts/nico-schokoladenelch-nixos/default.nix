@@ -27,7 +27,14 @@
     # Services & hardware
     ../../modules/openssh.nix
     ../../modules/server-status.nix
-    ./services.nix
+    ../../modules/apcupsd.nix
+    ../../modules/caddy.nix
+    ../../modules/cloudflared.nix
+    ../../modules/fail2ban.nix
+    ../../modules/glances.nix
+    ../../modules/msmtp.nix
+    ../../modules/server-logind.nix
+    ../../modules/zfs-maintenance.nix
     ./nico-devbox-vm.nix
     ../../modules/stacks/default.nix
 
@@ -58,6 +65,12 @@
     pool = "bucket";
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";
+    acmeEmail = "admin@welles.email";
+    msmtpAccount = {
+      host = "smtp.ionos.de";
+      user = "noreply@welles.email";
+      from = "noreply@welles.email";
+    };
     extraDiskMounts = ["/mnt/tank/movies"];
     passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
     # 1Password SSH agent

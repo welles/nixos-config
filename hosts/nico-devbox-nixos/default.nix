@@ -80,9 +80,10 @@
     ../../modules/openssh.nix
 
     # Desktop environment: Cinnamon over RDP (Plasma 6.8 dropped the X11
-    # sessions xrdp needs). No display manager, see below.
+    # sessions xrdp needs), no local login screen.
     ../../modules/cinnamon.nix
-    ../../modules/xrdp.nix
+    ../../modules/rdp-only-desktop.nix
+    ../../modules/xrdp-audio.nix
     ../../modules/user-dirs.nix
 
     # Services
@@ -114,16 +115,6 @@
   ];
 
   networking.hostName = hostname;
-  # No local login screen: the desktop is only used over RDP, and a greeter
-  # would only render on the SPICE console nobody looks at. NixOS would fall
-  # back to LightDM, and graphical.target wants the display manager whatever
-  # services.xserver.autorun says, so its unit goes away; the SPICE console
-  # gets the text login on tty1 that NixOS reserves for the display manager
-  # otherwise.
-  systemd = {
-    services.display-manager.enable = false;
-    targets.getty.wants = ["autovt@tty1.service"];
-  };
   networking.hostId = "75163031";
   system.stateVersion = "26.05";
   _module.args = {
