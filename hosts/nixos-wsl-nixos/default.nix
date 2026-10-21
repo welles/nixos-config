@@ -1,6 +1,5 @@
 {
   hostname,
-  inputs,
   ...
 }: {
   imports = [
@@ -15,8 +14,11 @@
     # Hardware & boot
     ./hardware-configuration.nix
 
-    # Desktop environment
-    ./desktop.nix
+    # Desktop environment: Cinnamon over RDP (port 3390, see wsl.nix);
+    # without xrdp-audio.nix, as WSLg brings its own PulseAudio server
+    ../../modules/cinnamon.nix
+    ../../modules/xrdp.nix
+    ../../modules/keeper-autostart.nix
 
     # Secrets
     ./sops.nix
@@ -32,8 +34,7 @@
 
     # Services & hardware
     ../../modules/podman.nix
-    inputs.nixos-wsl.nixosModules.default
-    ./wsl.nix
+    ../../modules/wsl.nix
 
     # Packages
     ../../modules/packages/bruno.nix
@@ -61,7 +62,6 @@
 
   networking.hostName = hostname;
   system.stateVersion = "25.11";
-  users.users.nixos.linger = true;
   _module.args = {
     user = "nixos";
     userDescription = "Nico Welles";

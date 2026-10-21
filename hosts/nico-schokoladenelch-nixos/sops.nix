@@ -8,14 +8,6 @@ _: {
       "cloudflare-ddns-token" = {
         mode = "0444";
       };
-      "cloudflare-tunnel-token" = {
-        owner = "cloudflared";
-        group = "cloudflared";
-        mode = "0440";
-      };
-      "msmtp-password" = {
-        mode = "0444";
-      };
       "user-password" = {
         neededForUsers = true;
       };
