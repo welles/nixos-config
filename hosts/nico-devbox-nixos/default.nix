@@ -93,7 +93,7 @@
     # Packages
     ../../modules/packages/bottles.nix
     ../../modules/packages/claude-code.nix
-    ../../modules/packages/fira-code-nerd-font.nix
+    ../../modules/packages/nerd-fonts-fira-code.nix
     ../../modules/packages/fira-sans.nix
     ../../modules/packages/gh.nix
 

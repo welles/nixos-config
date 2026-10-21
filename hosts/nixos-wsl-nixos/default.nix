@@ -21,8 +21,8 @@
     # Secrets
     ./sops.nix
 
-    # Home Manager
-    ../../modules/packages/hg.nix
+    # Shell & user environment
+    ../../modules/packages/mercurial.nix
     ./mercurial.nix
     ../../modules/packages/yazi.nix
 

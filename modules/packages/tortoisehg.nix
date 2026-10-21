@@ -2,10 +2,10 @@
   environment.systemPackages = [
     # tortoisehg shells out to `hg` for most operations, and pulls in its own
     # plain Mercurial dependency rather than the hg-evolve/topic-enabled one
-    # from hg.nix. Without this, the `hg` it spawns can't load the
+    # from mercurial.nix. Without this, the `hg` it spawns can't load the
     # `evolve`/`topic`/`mercurial_keyring` extensions enabled in hgrc.
     #
-    # `mercurial.withExtensions` (used in hg.nix) can't be used here: it
+    # `mercurial.withExtensions` (used in mercurial.nix) can't be used here: it
     # produces a plain bin/ symlink forest rather than a proper importable
     # Python package, which breaks tortoisehg's own build (it needs to
     # `import mercurial` while compiling its i18n files). Instead, add
@@ -47,10 +47,10 @@
       }))
   ];
 
-  # Match this repo's standard fixed-width font (see fira-code-nerd-font.nix)
+  # Match this repo's standard fixed-width font (see nerd-fonts-fira-code.nix)
   # so it's available even on hosts that don't otherwise install it, since
   # the hgrc settings below reference it by name.
-  fonts.packages = [pkgs.nerd-fonts.fira-code];
+  imports = [./nerd-fonts-fira-code.nix];
 
   home-manager.sharedModules = [
     {
@@ -61,7 +61,7 @@
       # `[thg-color]`, which only TortoiseHg reads, so `hg`'s own terminal
       # colors stay untouched. The foreground color must come before the
       # `_background` one, since TortoiseHg takes the first color it finds as
-      # the text color. This only takes effect where hg.nix enables
+      # the text color. This only takes effect where mercurial.nix enables
       # `programs.mercurial`.
       programs.mercurial.extraConfig = {
         tortoisehg = {

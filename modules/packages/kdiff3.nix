@@ -6,9 +6,12 @@
   environment.systemPackages = [pkgs.kdiff3];
 
   # Match this repo's standard UI/fixed-width fonts (see fira-sans.nix,
-  # fira-code-nerd-font.nix) so they're available even on hosts that don't
+  # nerd-fonts-fira-code.nix) so they're available even on hosts that don't
   # otherwise install them, since kdiff3rc below references them by name.
-  fonts.packages = [pkgs.fira-sans pkgs.nerd-fonts.fira-code];
+  imports = [
+    ./fira-sans.nix
+    ./nerd-fonts-fira-code.nix
+  ];
 
   home-manager.sharedModules = [
     {

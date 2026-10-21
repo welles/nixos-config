@@ -1,12 +1,4 @@
-{...}: {
-  imports = [
-    ../../modules/networkmanager.nix
-    ../../modules/wifi-welles-intern
-    ../../modules/wifi-welles-starlink
-  ];
-
-  systemd.services.NetworkManager-wait-online.enable = false;
-
+_: {
   networking.firewall.allowedTCPPorts = [
     25565 # Minecraft server (~/Documents/Source/neoforge-server)
   ];

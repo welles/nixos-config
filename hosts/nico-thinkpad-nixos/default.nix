@@ -23,8 +23,8 @@
     ../../modules/avahi.nix
     ./fritzbox-wireguard.nix
     ./mobile-network.nix
-    ./networking.nix
     ../../modules/networkmanager.nix
+    ../../modules/networkmanager-skip-wait-online.nix
     ../../modules/wifi-welles-intern
     ../../modules/wifi-welles-starlink
 
@@ -33,7 +33,7 @@
     ../../modules/printing.nix
     ../../modules/removable-media.nix
 
-    # Home Manager
+    # Shell & user environment
     ../../modules/laptop-plasma.nix
     ../../modules/packages/yazi.nix
 

@@ -38,12 +38,13 @@
     done
   '';
 in {
+  # Terminal font
+  imports = [./packages/nerd-fonts-fira-code.nix];
+
   services.xserver = {
     enable = true;
     desktopManager.cinnamon.enable = true;
   };
-
-  fonts.packages = [pkgs.nerd-fonts.fira-code];
 
   _module.args.xrdpSession = "${pkgs.writeShellScript "xrdp-cinnamon-session" ''
     ${lib.getExe pkgs.setxkbmap} ${config.services.xserver.xkb.layout}

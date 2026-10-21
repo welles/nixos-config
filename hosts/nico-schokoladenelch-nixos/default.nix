@@ -14,7 +14,6 @@
     ./boot.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
-    ./impermanence.nix
     ./sops.nix
     ./users.nix
 
@@ -22,7 +21,7 @@
     ./networking.nix
     ../../modules/networkmanager.nix
 
-    # Home Manager
+    # Shell & user environment
     ../../modules/packages/yazi.nix
 
     # Services & hardware

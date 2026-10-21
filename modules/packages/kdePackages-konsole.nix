@@ -1,6 +1,7 @@
 {pkgs, ...}: {
+  imports = [./nerd-fonts-fira-code.nix];
+
   environment.systemPackages = [pkgs.kdePackages.konsole];
-  fonts.packages = [pkgs.nerd-fonts.fira-code];
 
   home-manager.sharedModules = [
     ({
