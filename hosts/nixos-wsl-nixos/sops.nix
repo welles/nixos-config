@@ -30,6 +30,7 @@ in {
         YOUTRACK_MCP_TOKEN=${config.sops.placeholder."youtrack-mcp-token"}
         TEAMCITY_TOKEN=${config.sops.placeholder."teamcity-token"}
         ATLASSIAN_MCP_TOKEN=${config.sops.placeholder."atlassian-mcp-token"}
+        ATLASSIAN_MCP_EMAIL=${config.sops.placeholder."atlassian-mcp-email"}
       '';
     };
   };
