@@ -1,7 +1,4 @@
-{
-  hostname,
-  ...
-}: {
+{hostname, ...}: {
   imports = [
     # Bundles
     ../../bundles/base.nix
