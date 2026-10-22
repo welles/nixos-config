@@ -1,8 +1,4 @@
-{
-  hostname,
-  config,
-  ...
-}: {
+{hostname, ...}: {
   imports = [
     # Bundles
     ../../bundles/base.nix
@@ -43,6 +39,7 @@
 
     # Services & hardware
     ../../modules/autologin.nix
+    ../../modules/kwallet-sops-unlock.nix
     ../../modules/easyeffects-voice-mic.nix
     ../../modules/removable-media.nix
 
@@ -85,7 +82,7 @@
     userEmail = "nico@welles.email";
     sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
-    passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
+    passwordConfig = {};
     extraGroups = ["wheel"];
   };
 }
