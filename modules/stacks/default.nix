@@ -18,6 +18,9 @@
 #   5. (If backup enabled) Creates a daily 3am restic backup timer that stops
 #      the stack, backs up to B2 bucket schokoladenelch-<name>, and restarts.
 #      Requires a sops secret "restic-<name>" with restic env vars.
+#
+# Domains that only need to resolve to the server's public IP (no Caddy
+# reverse proxy, e.g. game servers) go into `dnsOnlyDomains`.
 {
   config,
   pkgs,
@@ -193,6 +196,10 @@
     };
   };
 
+  dnsOnlyDomains = [
+    "mc.welles.games"
+  ];
+
   activeStacks = lib.filterAttrs (_name: cfg: cfg.enabled) stacks;
 
   createStackConfig = name: cfg:
@@ -348,11 +355,22 @@
                 (cfg.redirects or {}))
             ];
           };
-          cloudflare-dyndns = {
-            enable = true;
-            apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
-            domains = lib.attrNames cfg.proxies ++ lib.attrNames (cfg.redirects or {});
-          };
+        };
+      })
+    ];
+  proxiedStacks = lib.filterAttrs (_: cfg: cfg.proxies != {}) activeStacks;
+  ddnsDomains =
+    lib.concatMap (cfg: lib.attrNames cfg.proxies ++ lib.attrNames (cfg.redirects or {})) (lib.attrValues activeStacks)
+    ++ dnsOnlyDomains;
+in
+  lib.mkMerge (
+    lib.mapAttrsToList createStackConfig activeStacks
+    ++ [
+      (lib.mkIf (ddnsDomains != []) {
+        services.cloudflare-dyndns = {
+          enable = true;
+          apiTokenFile = config.sops.secrets."cloudflare-ddns-token".path;
+          domains = ddnsDomains;
         };
 
         # Wait for internet connectivity before updating DNS records
@@ -361,12 +379,6 @@
           wants = ["network-online.target"];
         };
       })
-    ];
-  proxiedStacks = lib.filterAttrs (_: cfg: cfg.proxies != {}) activeStacks;
-in
-  lib.mkMerge (
-    lib.mapAttrsToList createStackConfig activeStacks
-    ++ [
       {
         systemd.services.caddy = {
           after =
