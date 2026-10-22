@@ -11,7 +11,8 @@
 # white NixOS snowflake as menu icon and a window list that shows each window
 # with its title, ungrouped. The background changes every hour to a random dark
 # KDE wallpaper. GNOME Terminal (Cinnamon's terminal) uses FiraCode Nerd
-# Font, Qt applications follow the GTK theme. No screen locking or blanking.
+# Font 10 with pastel colours on #212226, Qt applications follow the GTK
+# theme. No screen locking or blanking.
 # Set in dconf by
 # Home Manager on every activation (changes in Cinnamon's settings don't
 # last).
@@ -65,11 +66,43 @@ in {
 
       dconf.settings = {
         # GNOME Terminal's default profile (the uuid is fixed by GNOME
-        # Terminal) with FiraCode Nerd Font
+        # Terminal) with FiraCode Nerd Font and pastel colours on a dark
+        # grey background. FiraCode's ligatures stay off: GNOME Terminal's
+        # VTE widget doesn't render ligatures.
         "org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9" = {
           visible-name = "Default";
           use-system-font = false;
           font = "FiraCode Nerd Font 10";
+          use-theme-colors = false;
+          background-color = "#212226";
+          foreground-color = "#dcdfe4";
+          bold-color-same-as-fg = true;
+          cursor-colors-set = true;
+          cursor-background-color = "#dcdfe4";
+          cursor-foreground-color = "#212226";
+          highlight-colors-set = true;
+          highlight-background-color = "#3d4150";
+          highlight-foreground-color = "#eceef2";
+          # black, red, green, yellow, blue, magenta, cyan, white; then
+          # the same as bright variants
+          palette = [
+            "#2e3036"
+            "#f2a3a8"
+            "#b5dfa6"
+            "#f4dc9e"
+            "#9ec5f2"
+            "#d3b0f0"
+            "#9fdcd8"
+            "#c9ccd3"
+            "#5c6070"
+            "#f7bdc1"
+            "#cbe9c0"
+            "#f8e7b9"
+            "#b9d6f6"
+            "#e1c8f5"
+            "#bae7e4"
+            "#eceef2"
+          ];
         };
 
         "org/cinnamon/desktop/interface" = {
