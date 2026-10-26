@@ -34,6 +34,7 @@
     ../../modules/wsl.nix
 
     # Packages
+    ../../modules/packages/awscli2.nix
     ../../modules/packages/bruno.nix
     ../../modules/packages/headlamp.nix
     ../../modules/packages/hoppscotch.nix
