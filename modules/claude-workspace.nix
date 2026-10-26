@@ -16,6 +16,9 @@
 #   - Each session runs in a tmux server of its own, with its socket at
 #     /run/claude-remote-control/<repo>/tmux:
 #       claude-attach <repo>
+#   - The Claude Code Remote tools the sessions need for pull requests
+#     (attaching a repository, watching a PR) are allowed in the user's
+#     ~/.claude/settings.json, so auto mode does not deny them.
 #
 # One-time setup after the first deploy: run `claude` once and sign in, then
 # `sudo systemctl restart claude-workspace-clone 'claude-remote-control-*'`.
@@ -39,6 +42,13 @@
   trustFilters =
     lib.concatMapStrings (repo: " | .projects[\"${workspace}/${repoName repo}\"].hasTrustDialogAccepted = true")
     repos;
+
+  settings = "${home}/.claude/settings.json";
+  allowedTools = [
+    "mcp__claude-code-remote__add_repo"
+    "mcp__claude-code-remote__subscribe_pr_activity"
+    "mcp__claude-code-remote__unsubscribe_pr_activity"
+  ];
 
   # Everything the sessions may need: system and Home Manager packages
   sessionPath = [
@@ -121,6 +131,14 @@ in {
               json=$(jq '.remoteDialogSeen = true${trustFilters}' ${home}/.claude.json)
               printf '%s\n' "$json" > ${home}/.claude.json
             fi
+
+            # ~/.claude/settings.json is mutable too (Claude Code writes the
+            # theme there), so the allowed tools are merged into it
+            mkdir -p ${home}/.claude
+            [ -f ${settings} ] || echo '{}' > ${settings}
+            json=$(jq --argjson allow ${lib.escapeShellArg (builtins.toJSON allowedTools)} \
+              '.permissions.allow = ((.permissions.allow // []) + $allow | unique)' ${settings})
+            printf '%s\n' "$json" > ${settings}
           '';
       };
     }
