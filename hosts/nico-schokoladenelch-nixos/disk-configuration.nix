@@ -261,6 +261,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "ntfy" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/ntfy";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
           # Disks of libvirt VMs (nico-devbox-vm.nix); the zvol is created
           # sparse by nico-devbox-vm.service on an existing system
           "vms" = {
