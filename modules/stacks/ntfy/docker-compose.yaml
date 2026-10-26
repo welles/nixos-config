@@ -1,0 +1,43 @@
+name: ntfy
+
+services:
+  ntfy:
+    container_name: ntfy
+    command: serve
+    environment:
+      NTFY_BASE_URL: https://ntfy.welles.app
+      NTFY_LISTEN_HTTP: ":80"
+      NTFY_BEHIND_PROXY: "true"
+      NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
+      NTFY_AUTH_FILE: /var/lib/ntfy/auth.db
+      NTFY_AUTH_DEFAULT_ACCESS: deny-all
+      NTFY_ENABLE_LOGIN: "true"
+      NTFY_ATTACHMENT_CACHE_DIR: /var/lib/ntfy/attachments
+      NTFY_UPSTREAM_BASE_URL: https://ntfy.sh
+      TZ: Europe/Berlin
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider --proxy off localhost:80/v1/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    image: binwiederhier/ntfy:v2.34.0
+    networks:
+      ntfy:
+        ipv4_address: 10.10.18.10
+    ports:
+      - 50180:80/tcp
+    restart: unless-stopped
+    stop_grace_period: 60s
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/ntfy/data:/var/lib/ntfy:rw
+
+networks:
+  ntfy:
+    name: ntfy
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.18.0/24

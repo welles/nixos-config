@@ -165,6 +165,17 @@
         paths = [];
       };
     };
+    ntfy = {
+      enabled = true;
+      secrets = [];
+      proxies = {
+        "ntfy.welles.app" = 50180;
+      };
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     webtop = {
       enabled = false;
       secrets = [];
