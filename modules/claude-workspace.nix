@@ -57,6 +57,8 @@
     "/etc/profiles/per-user/${user}"
   ];
 in {
+  imports = [./github-known-host.nix];
+
   sops.secrets."github-ssh-key" = {
     owner = user;
     mode = "0400";
@@ -64,11 +66,6 @@ in {
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.users.${user}.directories = ["workspace"];
-  };
-
-  programs.ssh.knownHosts.github = {
-    hostNames = ["github.com"];
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
   };
 
   # Attach to the tmux server of a session

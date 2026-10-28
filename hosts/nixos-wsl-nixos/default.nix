@@ -31,6 +31,7 @@
 
     # Services & hardware
     ../../modules/podman.nix
+    ../../modules/timetracker.nix
     ../../modules/wsl.nix
 
     # Packages
@@ -68,5 +69,6 @@
     extraGroups = ["wheel"];
     persistRoot = null;
     sopsAgeKeyFile = "/var/lib/sops-nix/key.txt";
+    timetrackerDevRepo = "/home/nixos/timetracker";
   };
 }
