@@ -56,13 +56,15 @@ in {
           };
 
           # Even loudness without the pumping of an automatic gain control.
+          # The makeup gain also lifts the A50, which captures quietly even at
+          # 100 % source volume; the limiter keeps the extra gain from clipping.
           "compressor#0" = {
             mode = "Downward";
             threshold = -20.0;
             ratio = 3.0;
             attack = 10.0;
             release = 120.0;
-            makeup = 4.0;
+            makeup = 10.0;
           };
 
           "equalizer#0" = {
