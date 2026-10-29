@@ -7,14 +7,14 @@
 #     ~/.local/state/timetracker/current, with its data (database, the
 #     MARIProject browser profile, the Google token) in
 #     ~/.local/share/timetracker. It does not depend on a working copy.
-#   - timetracker-deploy.service builds the newest commit of `main` into
-#     its own clone and build directory, switches `current` over and
-#     restarts the app; a failed build leaves the running version alone.
-#     It fetches from the working copy `timetrackerDevRepo` when that
-#     exists, so commits roll out without a push, and from GitHub with the
-#     SSH key github-ssh-key otherwise (e.g. on a fresh host).
-#     It runs at boot and, through timetracker-deploy.path, whenever `main`
-#     of the working copy changes.
+#   - timetracker-deploy.service fetches `main` from GitHub (SSH key
+#     github-ssh-key), so only pushed commits roll out. It builds the
+#     newest one into its own clone and build directory, switches `current`
+#     over and restarts the app; a failed build leaves the running version
+#     alone.
+#   - It runs at boot and every 2 minutes (timetracker-deploy.timer, for
+#     pushes from anywhere), and right after a push from the working copy
+#     `timetrackerDevRepo` (timetracker-deploy.path, on its origin/main).
 #   - The MARIProject login and the Google OAuth client come from sops and
 #     reach the app as systemd credentials, one file per configuration key.
 #
@@ -26,6 +26,7 @@
 #
 #   journalctl -u timetracker -u timetracker-deploy
 #   sudo systemctl start timetracker-deploy   # roll out by hand
+#   rm ~/.local/state/timetracker/failed-rev  # retry a failed build at once
 {
   config,
   lib,
@@ -50,19 +51,9 @@
     "Calendar__ClientSecret" = "timetracker-google-client-secret";
   };
 
-  fetchSource =
-    if timetrackerDevRepo != null
-    then ''
-      # The working copy first: its commits roll out without a push
-      if [ -d ${timetrackerDevRepo}/.git ]; then
-        git -C "$src" fetch --quiet ${timetrackerDevRepo} main
-      else
-        git -C "$src" fetch --quiet git@github.com:welles/mari-time-tracker.git main
-      fi
-    ''
-    else ''
-      git -C "$src" fetch --quiet git@github.com:welles/mari-time-tracker.git main
-    '';
+  fetchSource = ''
+    git -C "$src" fetch --quiet git@github.com:welles/mari-time-tracker.git main
+  '';
 
   restartIfDeployed = pkgs.writeShellScript "timetracker-restart" ''
     if [ -e ${stateDir}/restart-pending ]; then
@@ -159,12 +150,24 @@ in {
               echo "$rev is the newest build"
               break
             fi
+            # A commit that failed to build is retried after 30 minutes, not on
+            # every timer run; the wait also lets a passing error (no network
+            # for NuGet) heal by itself. Delete failed-rev to retry at once
+            if [ "$(cat "$state/failed-rev" 2>/dev/null)" = "$rev" ] \
+              && [ -n "$(find "$state/failed-rev" -mmin -30)" ]; then
+              echo "$rev failed to build less than 30 minutes ago; retrying later"
+              break
+            fi
 
             echo "Building $rev"
             work=$(mktemp -d "$state/work.XXXXXX")
             trap 'rm -rf "$work"' EXIT
             git -C "$src" archive "$rev" | tar -x -C "$work"
-            dotnet publish "$work/src/TimeTracker.Web" -c Release -o "$work/out"
+            if ! dotnet publish "$work/src/TimeTracker.Web" -c Release -o "$work/out"; then
+              echo "$rev" > "$state/failed-rev"
+              exit 1
+            fi
+            rm -f "$state/failed-rev"
             # `current` does not point here (checked above), so an old build
             # of the same revision can go
             rm -rf "$builds/$rev"
@@ -182,21 +185,25 @@ in {
       };
     };
 
+    # GitHub cannot reach this host, so it asks: after boot, then 2 minutes
+    # after each run. Without a new commit a run is a single fetch
     timers.timetracker-deploy = {
-      description = "Roll out the newest time tracker commit after boot";
+      description = "Roll out pushed time tracker commits";
       wantedBy = ["timers.target"];
-      timerConfig.OnBootSec = "1min";
+      timerConfig = {
+        OnBootSec = "1min";
+        OnUnitInactiveSec = "2min";
+      };
     };
 
     paths.timetracker-deploy = lib.mkIf (timetrackerDevRepo != null) {
-      description = "Roll out the time tracker on commits to main";
+      description = "Roll out the time tracker right after a push";
       wantedBy = ["multi-user.target"];
       pathConfig = {
-        # Git replaces the ref file on every commit; packed-refs after a gc
-        PathChanged = [
-          "${timetrackerDevRepo}/.git/refs/heads/main"
-          "${timetrackerDevRepo}/.git/packed-refs"
-        ];
+        # A push updates origin/main of the working copy, which appends a
+        # line to its reflog. Not the ref file itself: Git writes a .lock
+        # file and renames it over the ref, which PathChanged does not notice
+        PathChanged = "${timetrackerDevRepo}/.git/logs/refs/remotes/origin/main";
         Unit = "timetracker-deploy.service";
       };
     };
