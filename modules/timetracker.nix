@@ -26,6 +26,7 @@
 #
 #   journalctl -u timetracker -u timetracker-deploy
 #   sudo systemctl start timetracker-deploy   # roll out by hand
+#   rm ~/.local/state/timetracker/failed-rev  # retry a commit that failed to build
 {
   config,
   lib,
@@ -149,12 +150,22 @@ in {
               echo "$rev is the newest build"
               break
             fi
+            # A commit that failed to build waits for the next push instead of
+            # being rebuilt on every timer run; delete failed-rev to retry it
+            if [ "$(cat "$state/failed-rev" 2>/dev/null)" = "$rev" ]; then
+              echo "$rev failed to build before; waiting for a new push"
+              break
+            fi
 
             echo "Building $rev"
             work=$(mktemp -d "$state/work.XXXXXX")
             trap 'rm -rf "$work"' EXIT
             git -C "$src" archive "$rev" | tar -x -C "$work"
-            dotnet publish "$work/src/TimeTracker.Web" -c Release -o "$work/out"
+            if ! dotnet publish "$work/src/TimeTracker.Web" -c Release -o "$work/out"; then
+              echo "$rev" > "$state/failed-rev"
+              exit 1
+            fi
+            rm -f "$state/failed-rev"
             # `current` does not point here (checked above), so an old build
             # of the same revision can go
             rm -rf "$builds/$rev"
