@@ -7,14 +7,14 @@
 #     ~/.local/state/timetracker/current, with its data (database, the
 #     MARIProject browser profile, the Google token) in
 #     ~/.local/share/timetracker. It does not depend on a working copy.
-#   - timetracker-deploy.service builds the newest commit of `main` into
-#     its own clone and build directory, switches `current` over and
-#     restarts the app; a failed build leaves the running version alone.
-#     It fetches from the working copy `timetrackerDevRepo` when that
-#     exists, so commits roll out without a push, and from GitHub with the
-#     SSH key github-ssh-key otherwise (e.g. on a fresh host).
-#     It runs at boot and, through timetracker-deploy.path, whenever `main`
-#     of the working copy changes.
+#   - timetracker-deploy.service fetches `main` from GitHub (SSH key
+#     github-ssh-key), so only pushed commits roll out. It builds the
+#     newest one into its own clone and build directory, switches `current`
+#     over and restarts the app; a failed build leaves the running version
+#     alone.
+#   - It runs at boot and every 2 minutes (timetracker-deploy.timer, for
+#     pushes from anywhere), and right after a push from the working copy
+#     `timetrackerDevRepo` (timetracker-deploy.path, on its origin/main).
 #   - The MARIProject login and the Google OAuth client come from sops and
 #     reach the app as systemd credentials, one file per configuration key.
 #
@@ -50,19 +50,9 @@
     "Calendar__ClientSecret" = "timetracker-google-client-secret";
   };
 
-  fetchSource =
-    if timetrackerDevRepo != null
-    then ''
-      # The working copy first: its commits roll out without a push
-      if [ -d ${timetrackerDevRepo}/.git ]; then
-        git -C "$src" fetch --quiet ${timetrackerDevRepo} main
-      else
-        git -C "$src" fetch --quiet git@github.com:welles/mari-time-tracker.git main
-      fi
-    ''
-    else ''
-      git -C "$src" fetch --quiet git@github.com:welles/mari-time-tracker.git main
-    '';
+  fetchSource = ''
+    git -C "$src" fetch --quiet git@github.com:welles/mari-time-tracker.git main
+  '';
 
   restartIfDeployed = pkgs.writeShellScript "timetracker-restart" ''
     if [ -e ${stateDir}/restart-pending ]; then
@@ -182,20 +172,25 @@ in {
       };
     };
 
+    # GitHub cannot reach this host, so it asks: after boot, then 2 minutes
+    # after each run. Without a new commit a run is a single fetch
     timers.timetracker-deploy = {
-      description = "Roll out the newest time tracker commit after boot";
+      description = "Roll out pushed time tracker commits";
       wantedBy = ["timers.target"];
-      timerConfig.OnBootSec = "1min";
+      timerConfig = {
+        OnBootSec = "1min";
+        OnUnitInactiveSec = "2min";
+      };
     };
 
     paths.timetracker-deploy = lib.mkIf (timetrackerDevRepo != null) {
-      description = "Roll out the time tracker on commits to main";
+      description = "Roll out the time tracker right after a push";
       wantedBy = ["multi-user.target"];
       pathConfig = {
-        # The reflog of main gets a line appended on every update of main.
-        # The ref file itself does not work: Git writes main.lock and renames
-        # it over the ref, which PathChanged does not notice
-        PathChanged = "${timetrackerDevRepo}/.git/logs/refs/heads/main";
+        # A push updates origin/main of the working copy, which appends a
+        # line to its reflog. Not the ref file itself: Git writes a .lock
+        # file and renames it over the ref, which PathChanged does not notice
+        PathChanged = "${timetrackerDevRepo}/.git/logs/refs/remotes/origin/main";
         Unit = "timetracker-deploy.service";
       };
     };
