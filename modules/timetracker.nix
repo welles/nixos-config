@@ -192,11 +192,10 @@ in {
       description = "Roll out the time tracker on commits to main";
       wantedBy = ["multi-user.target"];
       pathConfig = {
-        # Git replaces the ref file on every commit; packed-refs after a gc
-        PathChanged = [
-          "${timetrackerDevRepo}/.git/refs/heads/main"
-          "${timetrackerDevRepo}/.git/packed-refs"
-        ];
+        # The reflog of main gets a line appended on every update of main.
+        # The ref file itself does not work: Git writes main.lock and renames
+        # it over the ref, which PathChanged does not notice
+        PathChanged = "${timetrackerDevRepo}/.git/logs/refs/heads/main";
         Unit = "timetracker-deploy.service";
       };
     };
