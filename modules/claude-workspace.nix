@@ -8,8 +8,8 @@
 # own (--spawn worktree).
 #
 #   - GitHub access without 1Password: the SSH key github-ssh-key from sops
-#     (the host sets its sopsFile, unless it is in the default one), used for
-#     every repository in ~/workspace through core.sshCommand. Commits there
+#     (modules/github-ssh-key.nix), used for every repository in ~/workspace
+#     through core.sshCommand. Commits there
 #     are not signed, as the signing key lives in 1Password.
 #   - Existing clones are never touched (no pull, no reset); a repository
 #     removed from the list keeps its clone, only its session goes away.
@@ -57,12 +57,7 @@
     "/etc/profiles/per-user/${user}"
   ];
 in {
-  imports = [./github-known-host.nix];
-
-  sops.secrets."github-ssh-key" = {
-    owner = user;
-    mode = "0400";
-  };
+  imports = [./github-ssh-key.nix];
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.users.${user}.directories = ["workspace"];

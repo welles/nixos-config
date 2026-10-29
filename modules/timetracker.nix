@@ -12,7 +12,7 @@
 #     restarts the app; a failed build leaves the running version alone.
 #     It fetches from the working copy `timetrackerDevRepo` when that
 #     exists, so commits roll out without a push, and from GitHub with the
-#     deploy key `timetracker-deploy-key` otherwise (e.g. on a fresh host).
+#     SSH key github-ssh-key otherwise (e.g. on a fresh host).
 #     It runs at boot and, through timetracker-deploy.path, whenever `main`
 #     of the working copy changes.
 #   - The MARIProject login and the Google OAuth client come from sops and
@@ -20,8 +20,8 @@
 #
 # The host provides the secrets in its sops file: timetracker-mari-url,
 # timetracker-mari-username, timetracker-mari-password,
-# timetracker-google-client-id, timetracker-google-client-secret and
-# timetracker-deploy-key (private key of a read-only deploy key).
+# timetracker-google-client-id and timetracker-google-client-secret, and
+# github-ssh-key (modules/github-ssh-key.nix).
 # The Google sign-in is mutable state: connect once in the app.
 #
 #   journalctl -u timetracker -u timetracker-deploy
@@ -71,11 +71,9 @@
     fi
   '';
 in {
-  imports = [./github-known-host.nix];
+  imports = [./github-ssh-key.nix];
 
-  sops.secrets =
-    lib.genAttrs (lib.attrValues credentials) (_: {})
-    // {"timetracker-deploy-key" = {};};
+  sops.secrets = lib.genAttrs (lib.attrValues credentials) (_: {});
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.users.${user}.directories = [
@@ -130,7 +128,6 @@ in {
         serviceConfig = {
           Type = "oneshot";
           User = user;
-          LoadCredential = "deploy-key:${config.sops.secrets."timetracker-deploy-key".path}";
           # "+": as root, to restart the app service
           ExecStartPost = "+${restartIfDeployed}";
           TimeoutStartSec = "15min";
@@ -143,7 +140,7 @@ in {
           builds="$state/builds"
           mkdir -p "$builds" ${dataDir}
           [ -d "$src" ] || git init --quiet --bare "$src"
-          export GIT_SSH_COMMAND="ssh -i $CREDENTIALS_DIRECTORY/deploy-key -o IdentitiesOnly=yes -o IdentityAgent=none"
+          export GIT_SSH_COMMAND="ssh -i ${config.sops.secrets."github-ssh-key".path} -o IdentitiesOnly=yes -o IdentityAgent=none"
 
           ${fetchSource}
           rev=$(git -C "$src" rev-parse FETCH_HEAD)
