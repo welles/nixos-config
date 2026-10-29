@@ -26,7 +26,7 @@
 #
 #   journalctl -u timetracker -u timetracker-deploy
 #   sudo systemctl start timetracker-deploy   # roll out by hand
-#   rm ~/.local/state/timetracker/failed-rev  # retry a commit that failed to build
+#   rm ~/.local/state/timetracker/failed-rev  # retry a failed build at once
 {
   config,
   lib,
@@ -150,10 +150,12 @@ in {
               echo "$rev is the newest build"
               break
             fi
-            # A commit that failed to build waits for the next push instead of
-            # being rebuilt on every timer run; delete failed-rev to retry it
-            if [ "$(cat "$state/failed-rev" 2>/dev/null)" = "$rev" ]; then
-              echo "$rev failed to build before; waiting for a new push"
+            # A commit that failed to build is retried after 30 minutes, not on
+            # every timer run; the wait also lets a passing error (no network
+            # for NuGet) heal by itself. Delete failed-rev to retry at once
+            if [ "$(cat "$state/failed-rev" 2>/dev/null)" = "$rev" ] \
+              && [ -n "$(find "$state/failed-rev" -mmin -30)" ]; then
+              echo "$rev failed to build less than 30 minutes ago; retrying later"
               break
             fi
 
