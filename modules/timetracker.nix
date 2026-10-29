@@ -71,7 +71,8 @@
     fi
   '';
 in {
-  imports = [./github-ssh-key.nix];
+  # nix-ld runs the Node driver Playwright ships with
+  imports = [./github-ssh-key.nix ./nix-ld.nix];
 
   sops.secrets = lib.genAttrs (lib.attrValues credentials) (_: {});
 
@@ -112,9 +113,11 @@ in {
         };
       };
 
+      # Started by its timer at boot and by its path unit, not by
+      # multi-user.target: boot and `nixos-rebuild switch` must not wait for
+      # a build, nor fail with it
       timetracker-deploy = {
         description = "Build and roll out the newest time tracker commit";
-        wantedBy = ["multi-user.target"];
         wants = ["network-online.target"];
         after = ["network-online.target" "sops-install-secrets.service"];
         path = [dotnet pkgs.git pkgs.openssh pkgs.gnutar pkgs.coreutils];
@@ -142,30 +145,41 @@ in {
           [ -d "$src" ] || git init --quiet --bare "$src"
           export GIT_SSH_COMMAND="ssh -i ${config.sops.secrets."github-ssh-key".path} -o IdentitiesOnly=yes -o IdentityAgent=none"
 
-          ${fetchSource}
-          rev=$(git -C "$src" rev-parse FETCH_HEAD)
-          if [ -e "$state/current" ] && [ "$(cat "$state/current.rev" 2>/dev/null)" = "$rev" ]; then
-            echo "$rev is already running"
-            exit 0
-          fi
+          # The path unit does not watch while this runs, so fetch again after
+          # each build until no newer commit has arrived in the meantime
+          while true; do
+            ${fetchSource}
+            rev=$(git -C "$src" rev-parse FETCH_HEAD)
+            if [ -e "$state/current" ] && [ "$(cat "$state/current.rev" 2>/dev/null)" = "$rev" ]; then
+              echo "$rev is the newest build"
+              break
+            fi
 
-          echo "Building $rev"
-          work=$(mktemp -d "$state/work.XXXXXX")
-          trap 'rm -rf "$work"' EXIT
-          git -C "$src" archive "$rev" | tar -x -C "$work"
-          rm -rf "$builds/$rev"
-          dotnet publish "$work/src/TimeTracker.Web" -c Release -o "$work/out"
-          mv "$work/out" "$builds/$rev"
+            echo "Building $rev"
+            work=$(mktemp -d "$state/work.XXXXXX")
+            trap 'rm -rf "$work"' EXIT
+            git -C "$src" archive "$rev" | tar -x -C "$work"
+            rm -rf "$builds/$rev"
+            dotnet publish "$work/src/TimeTracker.Web" -c Release -o "$work/out"
+            mv "$work/out" "$builds/$rev"
+            rm -rf "$work"
 
-          ln -sfn "builds/$rev" "$state/current.new"
-          mv -T "$state/current.new" "$state/current"
-          echo "$rev" > "$state/current.rev"
-          touch "$state/restart-pending"
+            ln -sfn "builds/$rev" "$state/current.new"
+            mv -T "$state/current.new" "$state/current"
+            echo "$rev" > "$state/current.rev"
+            touch "$state/restart-pending"
+          done
 
           # Keep the three newest builds to go back to
           ls -1t "$builds" | tail -n +4 | while read -r old; do rm -rf "''${builds:?}/$old"; done
         '';
       };
+    };
+
+    timers.timetracker-deploy = {
+      description = "Roll out the newest time tracker commit after boot";
+      wantedBy = ["timers.target"];
+      timerConfig.OnBootSec = "1min";
     };
 
     paths.timetracker-deploy = lib.mkIf (timetrackerDevRepo != null) {
