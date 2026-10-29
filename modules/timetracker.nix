@@ -131,8 +131,10 @@ in {
         serviceConfig = {
           Type = "oneshot";
           User = user;
-          # "+": as root, to restart the app service
-          ExecStartPost = "+${restartIfDeployed}";
+          # "+": as root, to restart the app service. ExecStopPost also runs
+          # when a later build of the same run failed, so an earlier
+          # successful one still rolls out
+          ExecStopPost = "+${restartIfDeployed}";
           TimeoutStartSec = "15min";
           Nice = 10;
         };
@@ -150,7 +152,9 @@ in {
           while true; do
             ${fetchSource}
             rev=$(git -C "$src" rev-parse FETCH_HEAD)
-            if [ -e "$state/current" ] && [ "$(cat "$state/current.rev" 2>/dev/null)" = "$rev" ]; then
+            # The running revision is the target of `current` itself, so no
+            # second record can disagree with it
+            if [ -e "$state/current" ] && [ "$(readlink "$state/current")" = "builds/$rev" ]; then
               echo "$rev is the newest build"
               break
             fi
@@ -159,14 +163,15 @@ in {
             work=$(mktemp -d "$state/work.XXXXXX")
             trap 'rm -rf "$work"' EXIT
             git -C "$src" archive "$rev" | tar -x -C "$work"
-            rm -rf "$builds/$rev"
             dotnet publish "$work/src/TimeTracker.Web" -c Release -o "$work/out"
+            # `current` does not point here (checked above), so an old build
+            # of the same revision can go
+            rm -rf "$builds/$rev"
             mv "$work/out" "$builds/$rev"
             rm -rf "$work"
 
             ln -sfn "builds/$rev" "$state/current.new"
             mv -T "$state/current.new" "$state/current"
-            echo "$rev" > "$state/current.rev"
             touch "$state/restart-pending"
           done
 
