@@ -120,7 +120,8 @@ in {
         description = "Build and roll out the newest time tracker commit";
         wants = ["network-online.target"];
         after = ["network-online.target" "sops-install-secrets.service"];
-        path = [dotnet pkgs.git pkgs.openssh pkgs.gnutar pkgs.coreutils];
+        # bash for `sh`, which MSBuild's Exec task runs (Playwright's build targets)
+        path = [dotnet pkgs.bash pkgs.git pkgs.openssh pkgs.gnutar pkgs.coreutils];
         environment = {
           DOTNET_ROOT = "${dotnet}/share/dotnet";
           DOTNET_CLI_TELEMETRY_OPTOUT = "1";
