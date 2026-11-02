@@ -18,7 +18,10 @@
     ../../modules/keeper-autostart.nix
 
     # Secrets
-    ./sops.nix
+    ../../modules/atlassian-mcp-authorization.nix
+    ../../modules/sops-age-key.nix
+    ../../modules/teamcity-token.nix
+    ../../modules/youtrack-mcp-token.nix
 
     # Shell & user environment
     ../../modules/packages/mercurial.nix
@@ -26,7 +29,7 @@
     ../../modules/packages/yazi.nix
 
     # System
-    ./ld-library-path.nix
+    ../../modules/ld-library-path-libstdcxx.nix
     ../../modules/mentz-root-ca
     ../../modules/nix-ld-dev-libraries.nix
 
@@ -61,6 +64,7 @@
   ];
 
   networking.hostName = hostname;
+  sops.defaultSopsFile = ./secrets.yaml;
   system.stateVersion = "25.11";
   _module.args = {
     user = "nixos";

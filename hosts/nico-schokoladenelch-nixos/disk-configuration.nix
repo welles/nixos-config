@@ -269,8 +269,8 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
-          # Disks of libvirt VMs (nico-devbox-vm.nix); the zvol is created
-          # sparse by nico-devbox-vm.service on an existing system
+          # Disks of libvirt VMs (modules/libvirt-vm.nix); the zvols are
+          # created sparse by libvirt-vm-<name>.service on an existing system
           "vms" = {
             type = "zfs_fs";
             options.mountpoint = "none";

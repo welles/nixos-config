@@ -1,5 +1,8 @@
 {pkgs, ...}: {
-  environment.systemPackages = [pkgs.lazygit pkgs.delta];
+  # delta renders the diffs (git.diffRenderers below)
+  imports = [./delta.nix];
+
+  environment.systemPackages = [pkgs.lazygit];
 
   home-manager.sharedModules = [
     {
