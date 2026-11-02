@@ -48,8 +48,6 @@
     ../../modules/minecraft-modding.nix
 
     # Services & hardware
-    ../../modules/autologin.nix
-    ../../modules/kwallet-sops-unlock.nix
     ../../modules/easyeffects-voice-mic.nix
     ../../modules/removable-media.nix
     ../../modules/user-password-plaintext.nix
