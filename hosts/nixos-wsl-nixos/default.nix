@@ -27,6 +27,7 @@
 
     # System
     ./ld-library-path.nix
+    ../../modules/mentz-root-ca
     ../../modules/nix-ld-dev-libraries.nix
 
     # Services & hardware
