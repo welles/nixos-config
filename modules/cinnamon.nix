@@ -9,7 +9,7 @@
 #
 # Look: dark mode with the Mint-Y theme in orange, and a 48px panel with the
 # white NixOS snowflake as menu icon and a window list that shows each window
-# with its title, ungrouped. The background changes every hour to a random dark
+# as its icon, ungrouped. The background changes every hour to a random dark
 # KDE wallpaper. GNOME Terminal (Cinnamon's terminal) uses FiraCode Nerd
 # Font 10 with pastel colours on #212226, Qt applications follow the GTK
 # theme. No screen locking or blanking.
@@ -38,6 +38,20 @@
       ln -s "$image" "$out/$name.''${image##*.}"
     done
   '';
+
+  # Sets one value in the settings file of a Cinnamon applet (see the window
+  # list below): file, key, value as JSON. Cinnamon writes the file itself,
+  # so it can't be a link into the store. A file that doesn't exist yet gets
+  # just this value; Cinnamon completes it from the applet's schema and keeps
+  # the value.
+  setAppletSetting = pkgs.writeShellScript "cinnamon-set-applet-setting" ''
+    file=$1 key=$2 value=$3
+    mkdir -p "$(dirname "$file")"
+    if [ -s "$file" ]; then current=$(cat "$file"); else current='{}'; fi
+    echo "$current" | ${lib.getExe pkgs.jq} --arg key "$key" --argjson value "$value" \
+      '.[$key].value = $value' > "$file.tmp"
+    mv "$file.tmp" "$file"
+  '';
 in {
   # Terminal font
   imports = [./packages/nerd-fonts-fira-code.nix];
@@ -56,7 +70,11 @@ in {
   # Cinnamon panel and menus, icons, and the preference the portal reports to
   # applications (GTK 4, Electron, browsers)
   home-manager.sharedModules = [
-    ({lib, ...}: {
+    ({
+      config,
+      lib,
+      ...
+    }: {
       # Qt applications (kdiff3, TortoiseHg) take colours and dialogs from
       # the GTK theme instead of the light Fusion default
       qt = {
@@ -114,8 +132,8 @@ in {
         "org/x/apps/portal".color-scheme = "prefer-dark";
 
         # Cinnamon's default panel, with the window list that shows one
-        # button with its title per window instead of grouping them by
-        # application. Entries are panel:side:position:applet:instance id.
+        # button per window instead of grouping them by application. Entries
+        # are panel:side:position:applet:instance id.
         "org/cinnamon".enabled-applets = lib.imap0 (id: applet: "panel1:${applet}:${toString id}") [
           "left:0:menu@cinnamon.org"
           "left:1:separator@cinnamon.org"
@@ -177,6 +195,15 @@ in {
         };
         "org/cinnamon/settings-daemon/plugins/power".sleep-display-ac = 0;
       };
+
+      # The window list shows only the icons, without the window titles; set
+      # on every activation, it takes effect at the next login. The file name
+      # is the applet's instance id from enabled-applets.
+      home.activation.cinnamonWindowListIconsOnly = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        run ${setAppletSetting} \
+          ${config.xdg.configHome}/cinnamon/spices/window-list@cinnamon.org/2.json \
+          panel-show-label false
+      '';
     })
   ];
 
