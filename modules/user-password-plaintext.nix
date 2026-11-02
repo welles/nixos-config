@@ -1,6 +1,6 @@
 # The user's login password as plaintext sops secret user-password (the host
-# sets its sopsFile, unless it is in the default one), for modules that need
-# the password itself, like kwallet-sops-unlock.nix. The hash for
+# provides it in its sops.defaultSopsFile), also for modules that need the
+# password itself, like kwallet-sops-unlock.nix. The hash for
 # /etc/shadow is computed from it on every activation, before the users are
 # set up, so login, sudo and keyrings always share one password.
 #

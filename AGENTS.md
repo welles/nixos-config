@@ -29,8 +29,9 @@ A host directory contains the minimum configuration that is inherently specific
 to that one machine:
 
 - `default.nix`: the list of imported modules, host-specific scalar values
-  (`networking.hostName`, `networking.hostId`, `system.stateVersion`), and the
-  module arguments in `_module.args`.
+  (`networking.hostName`, `networking.hostId`, `system.stateVersion`,
+  `sops.defaultSopsFile = ./secrets.yaml`), and the module arguments in
+  `_module.args`.
 - Generated or hardware-bound files: `hardware-configuration.nix`,
   `disk-configuration.nix` (disko layout).
 - `secrets.yaml` for secrets that belong to this machine only.
@@ -73,8 +74,10 @@ named, flat group of features (a bundle).
   bundles.
 - Create a bundle only when at least two hosts need exactly that set. A bundle
   used by a single host is just a relocated list; keep it in the host.
-- Name bundles after a role or purpose (`media.nix`, `impermanence-zfs.nix`),
-  never after a host.
+- Name bundles after a role or purpose (`video-tools.nix`,
+  `impermanence-zfs.nix`), never after a host or a kind of machine
+  (`laptop.nix`, `workstation.nix`): a bundle groups what its modules do,
+  not who uses them.
 - Cut bundles so they are all-or-nothing. If a host needs "bundle X without
   module Y", split the bundle instead of using `disabledModules`.
 - Importing the same module from several bundles or directly from the host is
@@ -103,6 +106,30 @@ arguments.
   names, emails, keys). Those come from module arguments.
 - Name modules after the feature they provide (`bluetooth.nix`,
   `zfs-rollback.nix`), not after the host that first needed them.
+
+#### Cut modules by what they do, as small as possible
+
+A module is one feature, not a profile for a kind of machine. Settings that a
+host could want independently of each other go into separate modules, however
+small they get — one setting in a module is fine. Hosts then combine exactly
+the features they need.
+
+- Wrong: `laptop-plasma.nix` and `desktop-plasma.nix`, each a full set of
+  Plasma settings for one kind of machine.
+- Right: `plasma-panel.nix`, `plasma-power-ac.nix`, `plasma-power-battery.nix`,
+  `plasma-lid-hibernate.nix`, `plasma-no-screen-autolock.nix`,
+  `autologin.nix`, … — the laptop imports the battery and lid modules, the
+  desktop doesn't.
+
+The same goes for hardware: the modem driver setup
+(`quectel-rm520n-fcc-unlock.nix`), the mobile network
+(`modemmanager.nix`) and the provider's connection (`lte-telekom.nix`) are
+three modules, not one `mobile-network.nix`.
+
+Modules and packages that only make sense with a specific device or
+situation (a modem's FCC unlock, a VPN into the home network, the companion
+app of a peripheral) go only on hosts that have it, even when other modules
+or packages are shared between hosts.
 
 Think of `modules/` as a vending machine: hosts pick the features they need,
 and not every module has to be in use. A module no host imports right now is
@@ -183,27 +210,28 @@ an impermanent host without the host adding anything:
 When a module needs a value that differs per host, it receives it as a module
 argument that the host sets in `_module.args`. Common arguments:
 
-| Argument               | Meaning                                                    |
-| ---------------------- | ---------------------------------------------------------- |
-| `hostname`             | Set by `flake.nix` via `specialArgs`.                      |
-| `user`                 | Login name of the primary user.                            |
-| `userDescription`      | Display name of the primary user.                          |
-| `userEmail`            | Email of the primary user.                                 |
-| `persistRoot`          | Impermanence persist root, or `null` without impermanence. |
-| `pool`                 | ZFS pool name.                                             |
-| `sopsAgeKeyFile`       | Path to the sops age key.                                  |
-| `passwordConfig`       | Password attributes for the primary user's `users.users`.  |
-| `extraGroups`          | Extra groups of the primary user.                          |
-| `sshSigningKey`        | Public SSH key Git signs commits with.                     |
-| `onePasswordVaults`    | 1Password vaults the SSH agent offers keys from.           |
-| `sshAuthorizedKeys`    | Public keys allowed to log in over SSH.                    |
-| `acmeEmail`            | Contact email for Caddy's ACME certificates.               |
-| `msmtpAccount`         | SMTP account (`host`, `user`, `from`) of the mail relay.   |
-| `nextcloudUrl`         | Nextcloud base URL the rclone mount uses.                  |
-| `extraDiskMounts`      | Additional mount points the server status shows.           |
-| `claudeWorkspaceRepos` | Repositories (`owner/repo`) of the Claude workspace.       |
-| `timetrackerDevRepo`   | Working copy the time tracker deploys from, or `null`.     |
-| `xrdpSession`          | Session command xrdp starts; set by `cinnamon.nix` itself. |
+| Argument                   | Meaning                                                    |
+| -------------------------- | ---------------------------------------------------------- |
+| `hostname`                 | Set by `flake.nix` via `specialArgs`.                      |
+| `user`                     | Login name of the primary user.                            |
+| `userDescription`          | Display name of the primary user.                          |
+| `userEmail`                | Email of the primary user.                                 |
+| `persistRoot`              | Impermanence persist root, or `null` without impermanence. |
+| `pool`                     | ZFS pool name.                                             |
+| `sopsAgeKeyFile`           | Path to the sops age key.                                  |
+| `passwordConfig`           | Password attributes for the primary user's `users.users`.  |
+| `extraGroups`              | Extra groups of the primary user.                          |
+| `sshSigningKey`            | Public SSH key Git signs commits with.                     |
+| `onePasswordVaults`        | 1Password vaults the SSH agent offers keys from.           |
+| `sshAuthorizedKeys`        | Public keys allowed to log in over SSH.                    |
+| `acmeEmail`                | Contact email for Caddy's ACME certificates.               |
+| `msmtpAccount`             | SMTP account (`host`, `user`, `from`) of the mail relay.   |
+| `nextcloudUrl`             | Nextcloud base URL the rclone mount uses.                  |
+| `fritzboxWireguardAddress` | Tunnel addresses (`ipv4`, `ipv6`) of the FritzBox VPN.     |
+| `extraDiskMounts`          | Additional mount points the server status shows.           |
+| `claudeWorkspaceRepos`     | Repositories (`owner/repo`) of the Claude workspace.       |
+| `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |
+| `xrdpSession`              | Session command xrdp starts; set by `cinnamon.nix` itself. |
 
 `xrdpSession` is the one argument a module sets (`cinnamon.nix` provides the
 command that starts its own session). A module may provide an argument for

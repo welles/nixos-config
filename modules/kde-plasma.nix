@@ -21,13 +21,20 @@
     config.common.default = "kde";
   };
 
-  # plasma-manager's `overrideConfig` wipes kxkbrc on every activation, so the
-  # layout must be declared here rather than set once via System Settings.
+  # Plasma's settings are declared by the plasma-*.nix modules. plasma-manager's
+  # `overrideConfig` resets everything else on every activation, so settings
+  # made in System Settings don't survive. It also wipes kxkbrc, so the layout
+  # must be declared here rather than set once via System Settings.
   home-manager.sharedModules = [
     {
-      programs.plasma.input.keyboard = {
-        numlockOnStartup = "on";
-        layouts = [{layout = "de";}];
+      programs.plasma = {
+        enable = true;
+        overrideConfig = true;
+
+        input.keyboard = {
+          numlockOnStartup = "on";
+          layouts = [{layout = "de";}];
+        };
       };
     }
   ];

@@ -1,15 +1,21 @@
 # FritzBox WireGuard VPN
 #
 # Creates a NetworkManager WireGuard connection profile to the home
-# FritzBox router. The private key and preshared key are injected
-# from sops secrets into the .nmconnection file at activation time.
-# The tunnel routes all traffic through the home network and is not
-# set to autoconnect (must be activated manually).
+# FritzBox router. The FritzBox creates one WireGuard client per device,
+# so each host has its own keys and tunnel addresses: the host provides
+# the secrets wireguard/private-key and wireguard/preshared-key in its
+# sops.defaultSopsFile and the addresses in `fritzboxWireguardAddress`.
+# The private key and preshared key are injected into the .nmconnection
+# file at activation time. The tunnel routes all traffic through the home
+# network and is not set to autoconnect (must be activated manually).
 {
   config,
   pkgs,
+  fritzboxWireguardAddress,
   ...
 }: {
+  imports = [./networkmanager.nix];
+
   environment.systemPackages = with pkgs; [
     wireguard-tools
   ];
@@ -25,8 +31,8 @@
   };
 
   sops.secrets = {
-    "wireguard/private-key" = {sopsFile = ./secrets.yaml;};
-    "wireguard/preshared-key" = {sopsFile = ./secrets.yaml;};
+    "wireguard/private-key" = {};
+    "wireguard/preshared-key" = {};
   };
 
   sops.templates."FritzBox.nmconnection" = {
@@ -57,13 +63,13 @@
       persistent-keepalive=25
 
       [ipv4]
-      address1=10.0.0.201/24
+      address1=${fritzboxWireguardAddress.ipv4}/24
       dns=10.0.0.1;
       dns-search=fritz.box;
       method=manual
 
       [ipv6]
-      address1=fdb0:b8e0:ea8f::201/64
+      address1=${fritzboxWireguardAddress.ipv6}/64
       dns=fdb0:b8e0:ea8f::464e:6dff:feda:e75d;
       method=manual
     '';

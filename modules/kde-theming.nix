@@ -6,6 +6,8 @@ _: {
       lib,
       ...
     }: {
+      programs.plasma.workspace.lookAndFeel = "org.kde.breezedark.desktop";
+
       dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
 
       gtk = {
