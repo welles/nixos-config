@@ -15,13 +15,15 @@
 #   - It runs at boot and every 2 minutes (timetracker-deploy.timer, for
 #     pushes from anywhere), and right after a push from the working copy
 #     `timetrackerDevRepo` (timetracker-deploy.path, on its origin/main).
-#   - The MARIProject login and the Google OAuth client come from sops and
-#     reach the app as systemd credentials, one file per configuration key.
+#   - The MARIProject login, the Google OAuth client and the YouTrack token
+#     come from sops and reach the app as systemd credentials, one file per
+#     configuration key.
 #
 # The host provides the secrets in its sops file: timetracker-mari-url,
 # timetracker-mari-username, timetracker-mari-password,
-# timetracker-google-client-id and timetracker-google-client-secret, and
-# github-ssh-key (modules/github-ssh-key.nix).
+# timetracker-google-client-id, timetracker-google-client-secret,
+# youtrack-mcp-token (read-only use) and github-ssh-key
+# (modules/github-ssh-key.nix).
 # The Google sign-in is mutable state: connect once in the app.
 #
 #   journalctl -u timetracker -u timetracker-deploy
@@ -49,6 +51,7 @@
     "Mari__Password" = "timetracker-mari-password";
     "Calendar__ClientId" = "timetracker-google-client-id";
     "Calendar__ClientSecret" = "timetracker-google-client-secret";
+    "YouTrack__Token" = "youtrack-mcp-token";
   };
 
   fetchSource = ''
