@@ -1,8 +1,4 @@
-{
-  hostname,
-  config,
-  ...
-}: {
+{hostname, ...}: {
   imports = [
     # Bundles
     ../../bundles/base.nix
@@ -11,15 +7,21 @@
     ../../bundles/sops-admin.nix
 
     # Hardware & boot
-    ./boot.nix
+    ../../modules/zfs-grub-mirrored-boot.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
-    ./sops.nix
-    ./users.nix
+    ../../modules/intel-gpu-i915.nix
 
     # Networking
-    ./networking.nix
-    ../../modules/networkmanager.nix
+    ../../modules/firewall-trusted-subnets.nix
+    ../../modules/networkmanager-lan-bridge.nix
+    ../../modules/nftables.nix
+    ../../modules/tcp-bbr.nix
+
+    # Users & secrets
+    ../../modules/root-password.nix
+    ../../modules/sops-age-key.nix
+    ../../modules/user-password-hashed.nix
 
     # Shell & user environment
     ../../modules/packages/yazi.nix
@@ -35,8 +37,14 @@
     ../../modules/msmtp.nix
     ../../modules/server-logind.nix
     ../../modules/zfs-maintenance.nix
-    ./nico-devbox-vm.nix
+
+    # Virtual machines (nico-devbox-nixos)
+    ../../modules/docker-bridge-forward.nix
+    ../../modules/libvirt-vm.nix
+
+    # Docker Compose stacks
     ../../modules/stacks/default.nix
+    ./stacks.nix
 
     # Packages
     ../../modules/packages/bottom.nix
@@ -57,6 +65,7 @@
 
   networking.hostName = hostname;
   networking.hostId = "c0ffee12";
+  sops.defaultSopsFile = ./secrets.yaml;
   system.stateVersion = "25.11";
   _module.args = {
     user = "schokoladenelch";
@@ -72,11 +81,38 @@
       from = "noreply@welles.email";
     };
     extraDiskMounts = ["/mnt/tank/movies"];
-    passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
+    passwordConfig = {};
     # 1Password SSH agent
     sshAuthorizedKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     extraGroups = ["wheel"];
+    trustedSubnets = [
+      "10.0.0.0/24" # LAN
+      "10.10.0.0/16" # Docker's internal networks
+    ];
+    lanBridge = {
+      name = "br0";
+      interface = "enp6s0";
+      macAddress = "10:7c:61:b4:90:e4";
+    };
+    libvirtVms.nico-devbox-nixos = {
+      uuid = "dfbb1886-3174-4fc4-9eb9-2c2a41061745";
+      # Fix the guest's address in the Fritzbox by this MAC address
+      macAddress = "52:54:00:c9:00:0a";
+      memoryGiB = 16;
+      vcpus = 6;
+      # Same size as in hosts/nico-devbox-nixos/disk-configuration.nix
+      diskSize = "256G";
+      # Mounted by the guest at the same paths (its virtiofsMounts)
+      virtiofsShares = {
+        tank-movies = "/mnt/tank/movies";
+        tank-shows = "/mnt/tank/shows";
+        tank-downloads = "/mnt/tank/downloads";
+        tank-music = "/mnt/tank/music";
+        tank-audiobooks = "/mnt/tank/audiobooks";
+        tank-podcasts = "/mnt/tank/podcasts";
+      };
+    };
   };
 }

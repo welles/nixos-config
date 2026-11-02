@@ -1,11 +1,10 @@
 {
   lib,
-  pkgs,
   user,
   persistRoot,
   ...
 }: {
-  environment.systemPackages = [pkgs.firefox];
+  programs.firefox.enable = true;
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.users.${user}.directories = [".mozilla"];

@@ -1,11 +1,10 @@
 {
   lib,
-  pkgs,
   user,
   persistRoot,
   ...
 }: {
-  environment.systemPackages = [pkgs.obs-studio];
+  programs.obs-studio.enable = true;
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.users.${user}.directories = [".config/obs-studio"];

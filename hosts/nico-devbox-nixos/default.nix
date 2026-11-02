@@ -1,58 +1,5 @@
-# Development Desktop VM ("nico-devbox-nixos")
-#
-# Full NixOS desktop (Cinnamon) running as a libvirt/KVM guest on
-# nico-schokoladenelch-nixos (see hosts/nico-schokoladenelch-nixos/nico-devbox-vm.nix).
-# The server only provides the VM and its disk (zvol bucket/vms/nico-devbox-nixos);
-# everything inside - Nix store, home directory, Docker - lives on that disk
-# and is deployed on its own like any other host in this flake.
-#
-#   - Bridged into the LAN: gets its address via DHCP from the Fritzbox
-#     (MAC 52:54:00:c9:00:0a, fix the address there) and is reachable as
-#     nico-devbox-nixos like any other machine, the server too
-#   - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
-#     Guacamole; SSH on port 22
-#   - A Claude Code Remote Control session per repository in ~/workspace
-#     (modules/claude-workspace.nix, repositories in claudeWorkspaceRepos)
-#   - Playwright MCP for Claude Code, a VS Code tunnel named
-#     nico-devbox-nixos
-#   - Impermanence: the ZFS root dataset is rolled back on every boot, only
-#     /persist survives
-#   - The server's media datasets (tank-shares.nix) are mounted under
-#     /mnt/tank over virtiofs (tank-mounts.nix)
-#
-# Installation (once):
-#   1. Deploy nico-schokoladenelch-nixos (with `nixos-rebuild boot` and a
-#      reboot, as it moves the server's address to the bridge br0): creates
-#      the zvol and the domain (which starts with an empty disk).
-#   2. On the server, put a NixOS minimal ISO where the domain expects it
-#      and restart the VM, so it boots the installer:
-#        sudo mkdir -p /var/lib/libvirt/images
-#        sudo curl -L -o /var/lib/libvirt/images/nixos-installer.iso \
-#          https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64-linux.iso
-#        sudo virsh destroy nico-devbox-nixos; sudo virsh start nico-devbox-nixos
-#   3. In the installer's console (virt-manager via
-#      qemu+ssh://schokoladenelch@<server>/system), set a password for the
-#      user `nixos` with `passwd`.
-#   4. Look up the installer's address in the Fritzbox (MAC
-#      52:54:00:c9:00:0a). From a machine in the LAN with this repository
-#      and the sops age key:
-#        mkdir -p /tmp/devbox-extra/persist/var/lib/sops-nix
-#        sudo cp /persist/var/lib/sops-nix/key.txt /tmp/devbox-extra/persist/var/lib/sops-nix/
-#        nix run github:nix-community/nixos-anywhere -- \
-#          --flake .#nico-devbox-nixos --extra-files /tmp/devbox-extra \
-#          nixos@<VM address>
-#      disko partitions the disk (including the @blank snapshot of
-#      devbox/root), the system is built on that machine, not on the server.
-#   5. Delete the ISO again (the disk boots first anyway); log in over RDP,
-#      sign in to 1Password and enable its SSH agent.
-#
-# Updates afterwards like on every other host (`nixos-switch` inside the VM,
-# or `nixos-rebuild switch --target-host` from elsewhere).
-{
-  config,
-  hostname,
-  ...
-}: {
+# Development desktop VM on nico-schokoladenelch-nixos; see README.md.
+{hostname, ...}: {
   imports = [
     # Bundles
     ../../bundles/base.nix
@@ -66,12 +13,14 @@
     ../../bundles/sops-admin.nix
 
     # Hardware & boot
-    ./boot.nix
     ../../modules/zfs-systemd-boot.nix
     ./disk-configuration.nix
     ./hardware-configuration.nix
-    ./tank-mounts.nix
-    ./sops.nix
+    ../../modules/serial-console.nix
+    ../../modules/virtiofs-mounts.nix
+
+    # Users & secrets
+    ../../modules/user-password-hashed.nix
 
     # Networking: DHCP from the Fritzbox. Unlike on the desktops,
     # NetworkManager-wait-online stays enabled, as the Claude services need a
@@ -116,6 +65,7 @@
 
   networking.hostName = hostname;
   networking.hostId = "75163031";
+  sops.defaultSopsFile = ./secrets.yaml;
   system.stateVersion = "26.05";
   _module.args = {
     user = "nico";
@@ -131,11 +81,20 @@
     ];
     sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
-    passwordConfig = {hashedPasswordFile = config.sops.secrets."user-password".path;};
+    passwordConfig = {};
     # Same key as for the server (1Password SSH agent)
     sshAuthorizedKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     extraGroups = ["wheel"];
+    # The server's tank datasets (its libvirtVms.nico-devbox-nixos.virtiofsShares)
+    virtiofsMounts = {
+      "/mnt/tank/movies" = "tank-movies";
+      "/mnt/tank/shows" = "tank-shows";
+      "/mnt/tank/downloads" = "tank-downloads";
+      "/mnt/tank/music" = "tank-music";
+      "/mnt/tank/audiobooks" = "tank-audiobooks";
+      "/mnt/tank/podcasts" = "tank-podcasts";
+    };
   };
 }

@@ -231,6 +231,10 @@ argument that the host sets in `_module.args`. Common arguments:
 | `extraDiskMounts`          | Additional mount points the server status shows.           |
 | `claudeWorkspaceRepos`     | Repositories (`owner/repo`) of the Claude workspace.       |
 | `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |
+| `trustedSubnets`           | IPv4 subnets the firewall accepts all traffic from.        |
+| `lanBridge`                | LAN bridge (`name`, `interface`, `macAddress`).            |
+| `libvirtVms`               | libvirt guests by name (fields: see `libvirt-vm.nix`).     |
+| `virtiofsMounts`           | virtiofs tags by mount point.                              |
 | `xrdpSession`              | Session command xrdp starts; set by `cinnamon.nix` itself. |
 
 `xrdpSession` is the one argument a module sets (`cinnamon.nix` provides the
