@@ -72,6 +72,7 @@
     ../../modules/packages/powershell.nix
     ../../modules/packages/prismlauncher.nix
     ../../modules/packages/remmina.nix
+    ../../modules/packages/solaar.nix
     ../../modules/packages/steam.nix
     ../../modules/packages/streamcontroller.nix
 
