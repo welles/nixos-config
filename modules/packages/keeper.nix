@@ -71,8 +71,8 @@
       # Desktop autofill (KeeperFill for other applications) has no Linux
       # implementation and throws, which skipped the rest of the tray setup
       substituteInPlace app/tray/index.js --replace-fail \
-        'auto_fill_1.default.initialize(),' \
-        '(()=>{try{auto_fill_1.default.initialize()}catch{}})(),'
+        '_autofill.default.initialize(),' \
+        '(()=>{try{_autofill.default.initialize()}catch{}})(),'
       rm -r "$resources/app.asar" "$resources/app.asar.unpacked"
       asar pack app "$resources/app.asar" --unpack "*.node"
       rm -r app
