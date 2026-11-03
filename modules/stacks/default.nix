@@ -197,7 +197,7 @@
       };
     };
     windows = {
-      enabled = false;
+      enabled = true;
       secrets = ["windows"];
       proxies = {};
       backup = {
