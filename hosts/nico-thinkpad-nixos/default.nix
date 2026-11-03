@@ -66,6 +66,7 @@
     ../../modules/packages/azure-cli.nix
     ../../modules/packages/calibre.nix
     ../../modules/packages/claude-code.nix
+    ../../modules/packages/claude-desktop.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/easyeffects.nix
     ../../modules/packages/fsearch.nix
