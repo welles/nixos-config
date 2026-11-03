@@ -59,6 +59,7 @@
     ../../modules/packages/calibre.nix
     ../../modules/packages/cheat-engine.nix
     ../../modules/packages/claude-code.nix
+    ../../modules/packages/claude-desktop.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gh.nix
