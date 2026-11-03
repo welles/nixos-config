@@ -34,12 +34,12 @@
 }:
 buildPythonApplication (finalAttrs: {
   pname = "keepercommander";
-  version = "18.1.8";
+  version = "18.1.9";
   pyproject = true;
 
   src = fetchPypi {
     inherit (finalAttrs) pname version;
-    hash = "sha256-e76iSl09AYRmf18rc1yUKhiAegsXwLw4hD51Zos6GVo=";
+    hash = "sha256-VgNTKKVAy/jbPgyITuWOWaLnGCvLkX4g0IzD9fF+DGE=";
   };
 
   build-system = [
