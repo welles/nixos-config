@@ -5,7 +5,8 @@
 # Debian file system layout (/usr/bin/qemu-system-x86_64,
 # /usr/share/OVMF/OVMF_CODE.fd, …), so it runs in an FHS environment.
 #
-# Update: pick the newest version from
+# Updated by .github/scripts/update-local-packages.sh. Manually: pick the
+# newest version from
 #   https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages
 # (sort -V, the file is not ordered) and take its SHA256 from the same entry.
 #
