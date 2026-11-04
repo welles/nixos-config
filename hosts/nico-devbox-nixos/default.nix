@@ -47,6 +47,7 @@
     ../../modules/packages/nerd-fonts-fira-code.nix
     ../../modules/packages/fira-sans.nix
     ../../modules/packages/gh.nix
+    ../../modules/packages/kdePackages-konsole.nix
 
     # Development: languages and runtimes
     ../../modules/packages/bun.nix

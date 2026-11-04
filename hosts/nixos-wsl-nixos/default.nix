@@ -47,6 +47,7 @@
     ../../modules/packages/jq.nix
     ../../modules/packages/k0sctl.nix
     ../../modules/packages/k9s.nix
+    ../../modules/packages/kdePackages-konsole.nix
     ../../modules/packages/keeper.nix
     ../../modules/packages/keeper-commander
     ../../modules/packages/kind.nix
