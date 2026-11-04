@@ -19,6 +19,7 @@
 
     # Secrets
     ../../modules/atlassian-mcp-authorization.nix
+    ../../modules/ntfy-api-token.nix
     ../../modules/sops-age-key.nix
     ../../modules/teamcity-token.nix
     ../../modules/youtrack-mcp-token.nix
