@@ -31,7 +31,7 @@
     ../../modules/minecraft-server-port.nix
     ../../modules/networkmanager.nix
     ../../modules/networkmanager-skip-wait-online.nix
-    ../../modules/wifi-welles-intern
+    ../../modules/wifi-welles-family
     ../../modules/wifi-welles-starlink
 
     # Desktop environment

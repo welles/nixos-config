@@ -34,7 +34,7 @@
     ../../modules/networkmanager.nix
     ../../modules/networkmanager-skip-wait-online.nix
     ../../modules/quectel-rm520n-fcc-unlock.nix
-    ../../modules/wifi-welles-intern
+    ../../modules/wifi-welles-family
     ../../modules/wifi-welles-starlink
 
     # Desktop environment
