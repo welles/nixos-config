@@ -28,13 +28,12 @@
   resourceFile = config.sops.secrets."claude-foundry-resource".path;
   apiKeyFile = config.sops.secrets."claude-foundry-api-key".path;
 
-  # Foundry deployment names behind Claude Code's model aliases. With only
-  # one deployment, all aliases (and so the default model, subagents and
-  # background tasks) point to it, as an alias without a deployment fails.
+  # Foundry deployment names behind Claude Code's model aliases; every alias
+  # needs a deployment, or requests for it (e.g. subagents on haiku) fail.
   models = {
     opus = "claude-opus-5-5";
-    sonnet = "claude-opus-5-5";
-    haiku = "claude-opus-5-5";
+    sonnet = "claude-sonnet-5-5";
+    haiku = "claude-haiku-5-5";
   };
 
   claude-foundry = pkgs.writeShellApplication {
@@ -56,12 +55,11 @@
       CLAUDE_CODE_USE_FOUNDRY=1
       ANTHROPIC_FOUNDRY_RESOURCE="$(cat ${resourceFile})"
       ANTHROPIC_FOUNDRY_API_KEY="$(cat ${apiKeyFile})"
-      ANTHROPIC_MODEL=${models.opus}
       ANTHROPIC_DEFAULT_OPUS_MODEL=${models.opus}
       ANTHROPIC_DEFAULT_SONNET_MODEL=${models.sonnet}
       ANTHROPIC_DEFAULT_HAIKU_MODEL=${models.haiku}
       export CLAUDE_CODE_USE_FOUNDRY ANTHROPIC_FOUNDRY_RESOURCE \
-        ANTHROPIC_FOUNDRY_API_KEY ANTHROPIC_MODEL ANTHROPIC_DEFAULT_OPUS_MODEL \
+        ANTHROPIC_FOUNDRY_API_KEY ANTHROPIC_DEFAULT_OPUS_MODEL \
         ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL
 
       exec claude "$@"
