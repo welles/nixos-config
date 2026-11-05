@@ -16,6 +16,7 @@
     ../../modules/cinnamon.nix
     ../../modules/xrdp.nix
     ../../modules/keeper-autostart.nix
+    ../../modules/google-chat-unread-title
 
     # Secrets
     ../../modules/atlassian-mcp-authorization.nix
