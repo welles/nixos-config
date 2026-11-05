@@ -233,7 +233,6 @@ argument that the host sets in `_module.args`. Common arguments:
 | `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |
 | `trustedSubnets`           | IPv4 subnets the firewall accepts all traffic from.        |
 | `lanBridge`                | LAN bridge (`name`, `interface`, `macAddress`).            |
-| `lanAddress`               | IPv4 address of the host in the LAN.                       |
 | `libvirtVms`               | libvirt guests by name (fields: see `libvirt-vm.nix`).     |
 | `virtiofsMounts`           | virtiofs tags by mount point.                              |
 | `xrdpSession`              | Session command xrdp starts; set by `cinnamon.nix` itself. |

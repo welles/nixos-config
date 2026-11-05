@@ -18,19 +18,6 @@
 #   5. (If backup enabled) Creates a daily 3am restic backup timer that stops
 #      the stack, backs up to B2 bucket schokoladenelch-<name>, and restarts.
 #      Requires a sops secret "restic-<name>" with restic env vars.
-#   6. Serves every proxied domain inside the LAN as well, under the same
-#      name with `.local` in front of the base domain
-#      (jellyfin.welles.app → jellyfin.local.welles.app):
-#      - their Cloudflare A records point to the LAN address `lanAddress`
-#        (DNS only, not proxied)
-#      - Caddy answers them only for clients from private address ranges
-#      - they share one Let's Encrypt certificate, which security.acme gets
-#        through Cloudflare's DNS (DNS-01), since Let's Encrypt cannot reach
-#        a LAN address
-#      Apps that check the Host header (Nextcloud's trusted domains) must
-#      accept the LAN domain too. Apps with a fixed base URL (Forgejo,
-#      Windmill, ntfy, Navidrome) still build links and redirects with the
-#      public domain.
 #
 # Domains that only need to resolve to the server's public IP (no Caddy
 # reverse proxy, e.g. game servers) go into `dnsOnlyDomains`.
@@ -38,9 +25,6 @@
   config,
   pkgs,
   lib,
-  persistRoot,
-  acmeEmail,
-  lanAddress,
   ...
 }: let
   stacks = {
@@ -229,21 +213,6 @@
 
   activeStacks = lib.filterAttrs (_name: cfg: cfg.enabled) stacks;
 
-  # LAN counterpart of a public domain: jellyfin.welles.app →
-  # jellyfin.local.welles.app
-  baseDomain = "welles.app";
-  localBaseDomain = "local.${baseDomain}";
-  toLocalDomain = domain:
-    if lib.hasSuffix ".${baseDomain}" domain
-    then "${lib.removeSuffix ".${baseDomain}" domain}.${localBaseDomain}"
-    else throw "stacks: proxy domain ${domain} is not below ${baseDomain}";
-
-  # Certificate (security.acme) of all LAN domains
-  localCertName = localBaseDomain;
-  localDomains =
-    lib.concatMap (cfg: map toLocalDomain (lib.attrNames cfg.proxies))
-    (lib.attrValues activeStacks);
-
   createStackConfig = name: cfg:
     lib.mkMerge [
       {
@@ -389,16 +358,6 @@
                   '';
                 })
                 cfg.proxies)
-              (lib.mapAttrs' (domain: port:
-                lib.nameValuePair (toLocalDomain domain) {
-                  useACMEHost = localCertName;
-                  extraConfig = ''
-                    @external not remote_ip private_ranges
-                    abort @external
-                    reverse_proxy 127.0.0.1:${toString port}
-                  '';
-                })
-              cfg.proxies)
               (lib.mapAttrs (_domain: target: {
                   extraConfig = ''
                     redir https://${target}{uri} permanent
@@ -429,73 +388,6 @@ in
         systemd.services.cloudflare-dyndns = {
           after = ["network-online.target"];
           wants = ["network-online.target"];
-        };
-      })
-      (lib.mkIf (localDomains != []) {
-        # One certificate for all LAN domains, validated through Cloudflare's
-        # DNS (DNS-01) with the DDNS token, which may edit the zone's records
-        security.acme = {
-          acceptTerms = true;
-          certs.${localCertName} = {
-            domain = lib.head localDomains;
-            extraDomainNames = lib.tail localDomains;
-            email = acmeEmail;
-            dnsProvider = "cloudflare";
-            credentialFiles.CF_DNS_API_TOKEN_FILE = config.sops.secrets."cloudflare-ddns-token".path;
-          };
-        };
-
-        # A records of the LAN domains: the server's LAN address, DNS only
-        systemd.services.cloudflare-dns-local = {
-          description = "Point the LAN domains' Cloudflare A records to ${lanAddress}";
-          after = ["network-online.target"];
-          wants = ["network-online.target"];
-          wantedBy = ["multi-user.target"];
-          path = [pkgs.curl pkgs.jq];
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-            Restart = "on-failure";
-            RestartSec = "30s";
-            LoadCredential = "token:${config.sops.secrets."cloudflare-ddns-token".path}";
-            DynamicUser = true;
-          };
-          script = ''
-            token=$(cat "$CREDENTIALS_DIRECTORY/token")
-            api() {
-              curl -fsS --retry 3 \
-                -H "Authorization: Bearer $token" \
-                -H "Content-Type: application/json" \
-                "$@"
-            }
-            base=https://api.cloudflare.com/client/v4
-
-            zone=$(api "$base/zones?name=${baseDomain}" | jq -er '.result[0].id')
-
-            for domain in ${lib.escapeShellArgs localDomains}; do
-              record=$(jq -n --arg name "$domain" --arg ip ${lib.escapeShellArg lanAddress} \
-                '{type: "A", name: $name, content: $ip, ttl: 1, proxied: false}')
-              id=$(api "$base/zones/$zone/dns_records?type=A&name=$domain" | jq -r '.result[0].id // empty')
-              if [ -z "$id" ]; then
-                api -X POST "$base/zones/$zone/dns_records" --data "$record" > /dev/null
-                echo "$domain: created"
-              else
-                api -X PUT "$base/zones/$zone/dns_records/$id" --data "$record" > /dev/null
-                echo "$domain: updated"
-              fi
-            done
-          '';
-        };
-
-        environment.persistence = lib.mkIf (persistRoot != null) {
-          ${persistRoot}.directories = [
-            {
-              directory = "/var/lib/acme";
-              user = "acme";
-              group = "acme";
-              mode = "0755";
-            }
-          ];
         };
       })
       {

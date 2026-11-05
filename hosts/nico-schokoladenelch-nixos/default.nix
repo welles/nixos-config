@@ -87,9 +87,6 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     extraGroups = ["wheel"];
-    # Address of the server in its VLAN (fixed in the UniFi router); the
-    # stacks' *.local.welles.app domains point to it
-    lanAddress = "10.0.5.5";
     trustedSubnets = [
       "10.0.1.0/24" # VLAN
       "10.0.4.0/24" # VLAN
