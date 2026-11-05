@@ -204,6 +204,8 @@ Add an entry to the `stacks` attrset in `modules/stacks/default.nix`:
 ```
 
 - Proxy domains follow the pattern `{service}.welles.app`
+- Every proxy domain is also served in the LAN as `{service}.local.welles.app`
+  (DNS record, certificate and Caddy virtual host are generated; nothing to add)
 - The proxy maps a domain to the **host** port (not the container port)
 - Caddy adds HSTS headers automatically; no need to configure TLS in compose
 
