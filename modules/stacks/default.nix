@@ -27,6 +27,10 @@
 #      - they share one Let's Encrypt certificate, which security.acme gets
 #        through Cloudflare's DNS (DNS-01), since Let's Encrypt cannot reach
 #        a LAN address
+#      Apps that check the Host header (Nextcloud's trusted domains) must
+#      accept the LAN domain too. Apps with a fixed base URL (Forgejo,
+#      Windmill, ntfy, Navidrome) still build links and redirects with the
+#      public domain.
 #
 # Domains that only need to resolve to the server's public IP (no Caddy
 # reverse proxy, e.g. game servers) go into `dnsOnlyDomains`.
