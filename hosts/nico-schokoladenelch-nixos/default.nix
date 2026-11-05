@@ -87,8 +87,13 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     extraGroups = ["wheel"];
+    # Address of the server in its VLAN (fixed in the UniFi router); the
+    # stacks' *.local.welles.app domains point to it
+    lanAddress = "10.0.5.5";
     trustedSubnets = [
-      "10.0.0.0/24" # LAN
+      "10.0.1.0/24" # VLAN
+      "10.0.4.0/24" # VLAN
+      "10.0.5.0/24" # VLAN of the server (and the devbox VM)
       "10.10.0.0/16" # Docker's internal networks
     ];
     lanBridge = {
@@ -98,7 +103,7 @@
     };
     libvirtVms.nico-devbox-nixos = {
       uuid = "dfbb1886-3174-4fc4-9eb9-2c2a41061745";
-      # Fix the guest's address in the Fritzbox by this MAC address
+      # Fix the guest's address in the UniFi router by this MAC address
       macAddress = "52:54:00:c9:00:0a";
       memoryGiB = 16;
       vcpus = 6;

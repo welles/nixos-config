@@ -7,7 +7,7 @@ Full NixOS desktop (Cinnamon) running as a libvirt/KVM guest on
 directory, Docker) lives on that disk and is deployed on its own like any
 other host in this flake.
 
-- Bridged into the LAN: gets its address via DHCP from the Fritzbox
+- Bridged into the LAN: gets its address via DHCP from the UniFi router
   (MAC `52:54:00:c9:00:0a`, fix the address there) and is reachable as
   `nico-devbox-nixos` like any other machine, the server too.
 - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
@@ -41,7 +41,7 @@ other host in this flake.
 3. In the installer's console (virt-manager via
    `qemu+ssh://schokoladenelch@<server>/system`), set a password for the
    user `nixos` with `passwd`.
-4. Look up the installer's address in the Fritzbox (MAC
+4. Look up the installer's address in the UniFi router (MAC
    `52:54:00:c9:00:0a`). From a machine in the LAN with this repository and
    the sops age key:
 
