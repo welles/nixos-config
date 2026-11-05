@@ -17,6 +17,7 @@
     ../../modules/xrdp.nix
     ../../modules/keeper-autostart.nix
     ../../modules/google-chat-unread-title
+    ../../modules/chrome-pwa-autostart.nix
 
     # Secrets
     ../../modules/atlassian-mcp-authorization.nix
