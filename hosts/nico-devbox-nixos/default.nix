@@ -42,6 +42,7 @@
 
     # Packages
     ../../modules/packages/bottles.nix
+    ../../modules/claude-code-foundry
     ../../modules/packages/claude-code.nix
     ../../modules/packages/claude-desktop.nix
     ../../modules/packages/nerd-fonts-fira-code.nix

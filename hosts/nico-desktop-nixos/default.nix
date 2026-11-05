@@ -58,6 +58,7 @@
     ../../modules/packages/bottles.nix
     ../../modules/packages/calibre.nix
     ../../modules/packages/cheat-engine.nix
+    ../../modules/claude-code-foundry
     ../../modules/packages/claude-code.nix
     ../../modules/packages/claude-desktop.nix
     ../../modules/packages/codex.nix
