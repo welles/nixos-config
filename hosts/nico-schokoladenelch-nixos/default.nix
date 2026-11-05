@@ -93,6 +93,7 @@
     trustedSubnets = [
       "10.0.1.0/24" # VLAN
       "10.0.4.0/24" # VLAN
+      "10.0.5.0/24" # VLAN of the server (and the devbox VM)
       "10.10.0.0/16" # Docker's internal networks
     ];
     lanBridge = {
