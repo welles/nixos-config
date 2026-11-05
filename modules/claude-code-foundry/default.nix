@@ -11,7 +11,9 @@
 # "Endpoints and keys") live in ./secrets.yaml:
 #   sops modules/claude-code-foundry/secrets.yaml
 # They are read from the decrypted secrets when `claude-foundry` starts, so
-# they never end up in the Nix store or in the environment of other programs.
+# they never end up in the Nix store or in the login environment. They do
+# reach the processes Claude Code starts (Bash commands, hooks, MCP servers),
+# as Claude Code takes them from its own environment.
 #
 # The deployments in Foundry must be named after the model IDs below (or the
 # names below changed to the deployment names). `/status` inside
@@ -39,6 +41,11 @@
       for secret in ${resourceFile} ${apiKeyFile}; do
         if [ ! -r "$secret" ]; then
           echo "claude-foundry: cannot read $secret (sops secret missing?)" >&2
+          exit 1
+        fi
+        if [ "$(cat "$secret")" = CHANGE-ME ]; then
+          echo "claude-foundry: $secret is still a placeholder;" \
+            "set it with: sops modules/claude-code-foundry/secrets.yaml" >&2
           exit 1
         fi
       done
