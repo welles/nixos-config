@@ -22,7 +22,7 @@
     # Users & secrets
     ../../modules/user-password-hashed.nix
 
-    # Networking: DHCP from the Fritzbox. Unlike on the desktops,
+    # Networking: DHCP from the UniFi router. Unlike on the desktops,
     # NetworkManager-wait-online stays enabled, as the Claude services need a
     # working network, including DNS, once network-online.target is reached.
     ../../modules/networkmanager.nix
