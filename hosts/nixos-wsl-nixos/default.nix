@@ -47,7 +47,6 @@
     ../../modules/packages/bruno.nix
     ../../modules/packages/headlamp.nix
     ../../modules/packages/hoppscotch.nix
-    ../../modules/packages/jq.nix
     ../../modules/packages/k0sctl.nix
     ../../modules/packages/k9s.nix
     ../../modules/packages/kdePackages-konsole.nix

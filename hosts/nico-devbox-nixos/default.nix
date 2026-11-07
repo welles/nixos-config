@@ -58,7 +58,6 @@
     # Development: tools
     ../../modules/nix-ld-dev-libraries.nix
     ../../modules/packages/azure-cli.nix
-    ../../modules/packages/jq.nix
     ../../modules/packages/just.nix
     ../../modules/packages/ripgrep.nix
     ../../modules/packages/sqlcmd.nix

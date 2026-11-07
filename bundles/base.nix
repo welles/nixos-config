@@ -11,6 +11,7 @@
     ../modules/packages/eza.nix
     ../modules/packages/fzf.nix
     ../modules/packages/git.nix
+    ../modules/packages/jq.nix
     ../modules/packages/starship.nix
     ../modules/packages/tmux.nix
     ../modules/shell.nix
