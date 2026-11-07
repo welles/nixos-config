@@ -12,6 +12,13 @@ RESULT="$WORKDIR/result"
 CURRENT=/run/current-system
 BOOTED=/run/booted-system
 
+# Resolve a local flake path (e.g. `.#host`) before changing into the work
+# directory; refs like `github:...` stay as they are.
+flake_path="${FLAKE%%#*}"
+if [ -n "$flake_path" ] && [ -e "$flake_path" ]; then
+  FLAKE="$(realpath "$flake_path")${FLAKE#"$flake_path"}"
+fi
+
 echo "Building $FLAKE ..."
 (cd "$WORKDIR" && nixos-rebuild build --flake "$FLAKE" --refresh)
 NEW=$(readlink -f "$RESULT")
@@ -28,7 +35,10 @@ nvd diff "$CURRENT" "$RESULT"
 
 echo ""
 echo "=== Service changes (dry-activate) ==="
-DRY=$(sudo "$RESULT/bin/switch-to-configuration" dry-activate 2>&1) || true
+DRY_FAILED=0
+if ! DRY=$(sudo "$RESULT/bin/switch-to-configuration" dry-activate 2>&1); then
+  DRY_FAILED=1
+fi
 echo "$DRY"
 
 # Reasons that make `switch` fail or leave the system half-updated.
@@ -86,17 +96,21 @@ if ! same "$CURRENT" "$RESULT" systemd; then
   reboot_reasons+=("systemd updated: $(version "$CURRENT") -> $(version "$RESULT") (re-executed on switch, usually fine)")
 fi
 
-# Units that keep running the old version (restartIfChanged = false).
-not_restarted=$(grep -E "NOT (restart|stop)" <<<"$DRY" | sed 's/.*units: //' || true)
-if [ -n "$not_restarted" ]; then
-  notes+=("not restarted, old version keeps running until reboot/relogin: $not_restarted")
-fi
+if [ "$DRY_FAILED" -eq 1 ]; then
+  notes+=("dry-activate failed, service changes unknown")
+else
+  # Units that keep running the old version (restartIfChanged = false).
+  not_restarted=$(grep -E "NOT (restart|stop)" <<<"$DRY" | sed 's/.*units: //' || true)
+  if [ -n "$not_restarted" ]; then
+    notes+=("not restarted, old version keeps running until reboot/relogin: $not_restarted")
+  fi
 
-# Critical units a switch would stop or restart.
-critical='display-manager|NetworkManager|sshd|systemd-logind|wpa_supplicant|iwd|tailscaled|docker'
-touched=$(grep -E "^would (stop|restart) the following units" <<<"$DRY" | sed 's/.*units: //' | tr ',' '\n' | sed 's/^ *//' | grep -E "^($critical)\.service$" | paste -sd, - || true)
-if [ -n "$touched" ]; then
-  notes+=("switch would stop/restart: $touched (interrupts the desktop session, network, SSH or containers)")
+  # Critical units a switch would stop or restart.
+  critical='display-manager|NetworkManager|sshd|systemd-logind|wpa_supplicant|iwd|tailscaled|docker'
+  touched=$(grep -E "^would (stop|restart) the following units" <<<"$DRY" | sed 's/.*units: //' | tr ',' '\n' | sed 's/^ *//' | grep -E "^($critical)\.service$" | paste -sd, - || true)
+  if [ -n "$touched" ]; then
+    notes+=("switch would stop/restart: $touched (interrupts the desktop session, network, SSH or containers)")
+  fi
 fi
 
 echo ""
@@ -111,6 +125,8 @@ if [ ${#boot_reasons[@]} -gt 0 ]; then
 elif [ ${#reboot_reasons[@]} -gt 0 ]; then
   echo "=> A reboot is needed anyway: nh-boot and reboot is the cleaner choice."
   echo "   nh-switch is possible too, but the changes above only take effect after a reboot."
+elif [ "$DRY_FAILED" -eq 1 ]; then
+  echo "=> Unknown: dry-activate failed, so the service changes were not checked. Fix the error above and run nixos-diff again."
 elif [ ${#notes[@]} -gt 0 ]; then
   echo "=> nh-switch is fine; mind the notes above (save your work if the desktop is restarted)."
 else
