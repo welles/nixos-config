@@ -93,10 +93,10 @@ if [ -n "$not_restarted" ]; then
 fi
 
 # Critical units a switch would stop or restart.
-critical='display-manager|NetworkManager|sshd|systemd-logind|polkit|wpa_supplicant|iwd|tailscaled|docker'
+critical='display-manager|NetworkManager|sshd|systemd-logind|wpa_supplicant|iwd|tailscaled|docker'
 touched=$(grep -E "^would (stop|restart) the following units" <<<"$DRY" | sed 's/.*units: //' | tr ',' '\n' | sed 's/^ *//' | grep -E "^($critical)\.service$" | paste -sd, - || true)
 if [ -n "$touched" ]; then
-  notes+=("switch would stop/restart: $touched (may drop the desktop session, network or SSH)")
+  notes+=("switch would stop/restart: $touched (interrupts the desktop session, network, SSH or containers)")
 fi
 
 echo ""
