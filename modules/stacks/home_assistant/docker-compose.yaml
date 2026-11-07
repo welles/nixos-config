@@ -1,0 +1,47 @@
+name: home_assistant
+
+services:
+  home_assistant:
+    container_name: home_assistant
+    # Home Assistant only accepts requests from a reverse proxy it trusts.
+    # Make sure configuration.yaml trusts the Docker gateway Caddy's
+    # requests arrive from, also on the first start before it exists.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /config/configuration.yaml ]; then
+          printf 'default_config:\n' > /config/configuration.yaml
+        fi
+        if ! grep -q '^http:' /config/configuration.yaml; then
+          printf '\nhttp:\n  use_x_forwarded_for: true\n  trusted_proxies:\n    - 10.10.19.1\n' >> /config/configuration.yaml
+        fi
+        exec /init
+    environment:
+      TZ: Europe/Berlin
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8123/manifest.json || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    image: homeassistant/home-assistant:2026.11.0
+    networks:
+      home_assistant:
+        ipv4_address: 10.10.19.10
+    ports:
+      - 50190:8123/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/home_assistant/config:/config:rw
+
+networks:
+  home_assistant:
+    name: home_assistant
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.19.0/24
