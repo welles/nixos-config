@@ -23,9 +23,18 @@ echo "Building $FLAKE ..."
 (cd "$WORKDIR" && nixos-rebuild build --flake "$FLAKE" --refresh)
 NEW=$(readlink -f "$RESULT")
 
+# Same store path of a link in two system generations?
+same() { [ "$(readlink -f "$1/$3")" = "$(readlink -f "$2/$3")" ]; }
+
 if [ "$NEW" = "$(readlink -f "$CURRENT")" ]; then
   echo ""
   echo "No changes: the new configuration is identical to the running one."
+  # An earlier switch may have activated a new kernel or driver without a reboot.
+  if ! same "$BOOTED" "$RESULT" kernel || ! same "$BOOTED" "$RESULT" initrd \
+    || ! same "$BOOTED" "$RESULT" kernel-modules \
+    || ! cmp -s "$BOOTED/kernel-params" "$RESULT/kernel-params"; then
+    echo "=> A reboot is still pending: kernel, initrd, kernel parameters or modules differ from the booted system."
+  fi
   exit 0
 fi
 
@@ -47,9 +56,6 @@ boot_reasons=()
 reboot_reasons=()
 # Things to know when switching.
 notes=()
-
-# Same store path of a link in two system generations?
-same() { [ "$(readlink -f "$1/$3")" = "$(readlink -f "$2/$3")" ]; }
 
 # Kernel-level changes only take effect on the next boot.
 same "$BOOTED" "$RESULT" kernel || reboot_reasons+=("new kernel ($(basename "$(dirname "$(readlink -f "$RESULT/kernel")")"))")
