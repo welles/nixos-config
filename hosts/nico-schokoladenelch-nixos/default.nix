@@ -33,6 +33,7 @@
     ../../modules/caddy.nix
     ../../modules/cloudflared.nix
     ../../modules/fail2ban.nix
+    ../../modules/fritzbox-remote-proxy.nix
     ../../modules/glances.nix
     ../../modules/msmtp.nix
     ../../modules/server-logind.nix
@@ -75,6 +76,11 @@
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";
     acmeEmail = "admin@welles.email";
+    fritzboxRemoteProxy = {
+      domain = "fritz.welles.app";
+      # Fixed address of the FRITZ!Box in the UniFi router (IoT VLAN)
+      upstream = "10.0.3.40:63352";
+    };
     msmtpAccount = {
       host = "smtp.ionos.de";
       user = "noreply@welles.email";
