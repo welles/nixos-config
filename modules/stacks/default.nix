@@ -209,6 +209,10 @@
 
   dnsOnlyDomains = [
     "mc.welles.games"
+    # FritzBox WireGuard endpoint: the FritzBox runs as IP client behind the
+    # UniFi gateway, so MyFRITZ only knows its LAN address. The server's
+    # public IP is the Telekom line (WAN2), which forwards UDP 52935 to it.
+    "fritz.welles.app"
   ];
 
   activeStacks = lib.filterAttrs (_name: cfg: cfg.enabled) stacks;

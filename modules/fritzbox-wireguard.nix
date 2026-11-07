@@ -59,7 +59,7 @@
       preshared-key=${config.sops.placeholder."wireguard/preshared-key"}
       preshared-key-flags=0
       allowed-ips=10.0.0.0/24;0.0.0.0/0;fdb0:b8e0:ea8f::/64;::/0;
-      endpoint=ekssr2zstzfswdnx.myfritz.net:52935
+      endpoint=fritz.welles.app:52935
       persistent-keepalive=25
 
       [ipv4]
