@@ -20,24 +20,13 @@ in {
   environment.systemPackages = [
     pkgs.nix-output-monitor
     pkgs.nh
-    (pkgs.writeShellScriptBin "nixos-diff" ''
-      TMPDIR=$(mktemp -d)
-      trap 'rm -rf "$TMPDIR"' EXIT
-      RESULT="$TMPDIR/result"
-
-      echo "Building new configuration..."
-      (cd "$TMPDIR" && nixos-rebuild build \
-        --flake ${flakeUri}#${hostname} \
-        --refresh) || exit 1
-
-      echo ""
-      echo "=== Package changes ==="
-      ${pkgs.nvd}/bin/nvd diff /run/current-system "$RESULT"
-
-      echo ""
-      echo "=== Service changes ==="
-      sudo "$RESULT/bin/switch-to-configuration" dry-activate
-    '')
+    # Shows what a switch would change and recommends `switch` or `boot`.
+    (pkgs.writeShellApplication {
+      name = "nixos-diff";
+      runtimeInputs = [pkgs.nvd pkgs.jq pkgs.diffutils];
+      runtimeEnv.DEFAULT_FLAKE = "${flakeUri}#${hostname}";
+      text = builtins.readFile ./nixos-diff.sh;
+    })
     (nhWithSudo "nh-switch" "switch")
     (nhWithSudo "nh-boot" "boot")
   ];
