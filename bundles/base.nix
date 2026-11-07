@@ -6,7 +6,7 @@
     ../modules/keyboard.nix
     ../modules/locale-de.nix
     ../modules/nix-settings.nix
-    ../modules/nixos-tools.nix
+    ../modules/nixos-tools
     ../modules/packages/btop.nix
     ../modules/packages/eza.nix
     ../modules/packages/fzf.nix
