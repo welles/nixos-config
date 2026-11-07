@@ -165,6 +165,17 @@
         paths = [];
       };
     };
+    home_assistant = {
+      enabled = true;
+      secrets = [];
+      proxies = {
+        "homeassistant.welles.app" = 50190;
+      };
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     ntfy = {
       enabled = true;
       secrets = [];
