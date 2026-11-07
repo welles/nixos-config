@@ -80,6 +80,8 @@
       domain = "fritz.welles.app";
       # Fixed address of the FRITZ!Box in the UniFi router (IoT VLAN)
       upstream = "10.0.3.40:63352";
+      # Self-signed certificate of the FRITZ!Box (HTTPS remote access)
+      certificate = ./fritzbox-certificate.pem;
     };
     msmtpAccount = {
       host = "smtp.ionos.de";
