@@ -165,6 +165,17 @@
         paths = [];
       };
     };
+    home_assistant = {
+      enabled = true;
+      secrets = [];
+      # No proxy until onboarding is done locally at http://10.0.5.5:50190:
+      # a fresh instance lets anyone create the owner account.
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     ntfy = {
       enabled = true;
       secrets = [];

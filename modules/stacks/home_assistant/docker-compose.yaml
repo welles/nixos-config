@@ -1,0 +1,52 @@
+name: home_assistant
+
+services:
+  home_assistant:
+    container_name: home_assistant
+    # Home Assistant only accepts requests from a reverse proxy it trusts.
+    # Make sure configuration.yaml trusts the Docker gateway Caddy's
+    # requests arrive from. On the first start, write Home Assistant's own
+    # default configuration first (it only does so itself when the file is
+    # missing), so automations, scripts and scenes from the UI get loaded.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /config/configuration.yaml ]; then
+          printf '# Loads default set of integrations. Do not remove.\ndefault_config:\n\n# Load frontend themes from the themes folder\nfrontend:\n  themes: !include_dir_merge_named themes\n\nautomation: !include automations.yaml\nscript: !include scripts.yaml\nscene: !include scenes.yaml\n' > /config/configuration.yaml
+          [ -f /config/automations.yaml ] || printf '[]\n' > /config/automations.yaml
+          touch /config/scripts.yaml /config/scenes.yaml
+          mkdir -p /config/themes
+        fi
+        if ! grep -q '^http:' /config/configuration.yaml; then
+          printf '\nhttp:\n  use_x_forwarded_for: true\n  trusted_proxies:\n    - 10.10.19.1\n' >> /config/configuration.yaml
+        fi
+        exec /init
+    environment:
+      TZ: Europe/Berlin
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8123/manifest.json || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    image: homeassistant/home-assistant:2026.11.0
+    networks:
+      home_assistant:
+        ipv4_address: 10.10.19.10
+    ports:
+      - 50190:8123/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/home_assistant/config:/config:rw
+
+networks:
+  home_assistant:
+    name: home_assistant
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.19.0/24

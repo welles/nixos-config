@@ -261,6 +261,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "home_assistant" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/home_assistant";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
           "ntfy" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/ntfy";
