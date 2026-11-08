@@ -383,9 +383,8 @@
       })
     ];
   proxiedStacks = lib.filterAttrs (_: cfg: cfg.proxies != {}) activeStacks;
-  ddnsDomains =
-    lib.concatMap (cfg: lib.attrNames cfg.proxies ++ lib.attrNames (cfg.redirects or {})) (lib.attrValues activeStacks)
-    ++ dnsOnlyDomains;
+  caddyDomains = lib.concatMap (cfg: lib.attrNames cfg.proxies ++ lib.attrNames (cfg.redirects or {})) (lib.attrValues activeStacks);
+  ddnsDomains = caddyDomains ++ dnsOnlyDomains;
 in
   lib.mkMerge (
     lib.mapAttrsToList createStackConfig activeStacks
@@ -401,6 +400,28 @@ in
         systemd.services.cloudflare-dyndns = {
           after = ["network-online.target"];
           wants = ["network-online.target"];
+        };
+      })
+      # AAAA records for the domains Caddy serves. The IPv4 records point at
+      # the router's IPv4 (WAN2, Starlink has CGNAT); IPv6 reaches the server
+      # directly through Starlink. Only Caddy's domains: the router lets
+      # ports 80 and 443 in over IPv6, not the game servers' ports. The
+      # NixOS module sets A and AAAA records for the same domains, so this
+      # is a unit of its own with the same hardening.
+      (lib.mkIf (caddyDomains != []) {
+        systemd.services.cloudflare-dyndns-ipv6 = {
+          description = "CloudFlare Dynamic DNS Client (IPv6)";
+          after = ["network-online.target"];
+          wants = ["network-online.target"];
+          startAt = "*:0/5";
+          serviceConfig = {
+            Type = "simple";
+            DynamicUser = true;
+            StateDirectory = "cloudflare-dyndns-ipv6";
+            LoadCredential = ["apiToken:${config.sops.secrets."cloudflare-ddns-token".path}"];
+            Environment = ["CLOUDFLARE_DOMAINS=${lib.concatStringsSep " " caddyDomains}"];
+            ExecStart = "${pkgs.cloudflare-dyndns}/bin/cloudflare-dyndns --api-token-file \${CREDENTIALS_DIRECTORY}/apiToken --cache-file /var/lib/cloudflare-dyndns-ipv6/ip.cache -no-4 -6";
+          };
         };
       })
       {

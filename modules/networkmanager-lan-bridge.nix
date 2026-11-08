@@ -19,7 +19,14 @@
       ethernet.cloned-mac-address = lanBridge.macAddress;
       bridge.stp = false;
       ipv4.method = "auto";
-      ipv6.method = "auto";
+      ipv6 = {
+        method = "auto";
+        # A fixed address derived from the MAC address, and no temporary
+        # privacy addresses: services are published under this address
+        # (DNS AAAA records, firewall), so it must not change.
+        addr-gen-mode = "eui64";
+        ip6-privacy = 0;
+      };
     };
     "${lanBridge.name}-${lanBridge.interface}" = {
       connection = {
