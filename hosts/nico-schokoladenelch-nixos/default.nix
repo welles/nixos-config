@@ -79,7 +79,7 @@
     fritzboxRemoteProxy = {
       domain = "fritz.welles.app";
       # Fixed address of the FRITZ!Box (IP client) in the UniFi router (IoT VLAN)
-      upstream = "10.0.3.43:63352";
+      upstream = "10.0.3.10:63352";
       # Self-signed certificate of the FRITZ!Box (HTTPS remote access)
       certificate = ./fritzbox-certificate.pem;
     };
