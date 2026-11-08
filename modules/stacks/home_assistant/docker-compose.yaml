@@ -5,7 +5,8 @@ services:
     container_name: home_assistant
     # Home Assistant only accepts requests from a reverse proxy it trusts.
     # Make sure configuration.yaml trusts the Docker gateway Caddy's
-    # requests arrive from. On the first start, write Home Assistant's own
+    # requests arrive from, and ban client IPs after 5 failed logins, since
+    # the login page is public. On the first start, write Home Assistant's own
     # default configuration first (it only does so itself when the file is
     # missing), so automations, scripts and scenes from the UI get loaded.
     entrypoint:
@@ -20,6 +21,9 @@ services:
         fi
         if ! grep -q '^http:' /config/configuration.yaml; then
           printf '\nhttp:\n  use_x_forwarded_for: true\n  trusted_proxies:\n    - 10.10.19.1\n' >> /config/configuration.yaml
+        fi
+        if ! grep -q 'ip_ban_enabled' /config/configuration.yaml; then
+          sed -i -e '/^http:/a\  ip_ban_enabled: true' -e '/^http:/a\  login_attempts_threshold: 5' /config/configuration.yaml
         fi
         exec /init
     environment:
