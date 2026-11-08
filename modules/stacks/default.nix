@@ -414,12 +414,13 @@ in
           after = ["network-online.target"];
           wants = ["network-online.target"];
           startAt = "*:0/5";
+          # `environment` quotes the value; the domains are separated by spaces
+          environment.CLOUDFLARE_DOMAINS = lib.concatStringsSep " " caddyDomains;
           serviceConfig = {
             Type = "simple";
             DynamicUser = true;
             StateDirectory = "cloudflare-dyndns-ipv6";
             LoadCredential = ["apiToken:${config.sops.secrets."cloudflare-ddns-token".path}"];
-            Environment = ["CLOUDFLARE_DOMAINS=${lib.concatStringsSep " " caddyDomains}"];
             ExecStart = "${pkgs.cloudflare-dyndns}/bin/cloudflare-dyndns --api-token-file \${CREDENTIALS_DIRECTORY}/apiToken --cache-file /var/lib/cloudflare-dyndns-ipv6/ip.cache -no-4 -6";
           };
         };
