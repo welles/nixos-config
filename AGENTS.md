@@ -228,7 +228,6 @@ argument that the host sets in `_module.args`. Common arguments:
 | `msmtpAccount`             | SMTP account (`host`, `user`, `from`) of the mail relay.   |
 | `nextcloudUrl`             | Nextcloud base URL the rclone mount uses.                  |
 | `fritzboxWireguardAddress` | Tunnel addresses (`ipv4`, `ipv6`) of the FritzBox VPN.     |
-| `fritzboxRemoteProxy`      | Domain, `host:port` and certificate of the FritzBox proxy. |
 | `extraDiskMounts`          | Additional mount points the server status shows.           |
 | `claudeWorkspaceRepos`     | Repositories (`owner/repo`) of the Claude workspace.       |
 | `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |
