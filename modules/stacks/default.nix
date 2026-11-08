@@ -168,9 +168,11 @@
     home_assistant = {
       enabled = true;
       secrets = [];
-      # No proxy until onboarding is done locally at http://10.0.5.5:50190:
-      # a fresh instance lets anyone create the owner account.
-      proxies = {};
+      # Onboarding must be done before the proxy is enabled: a fresh
+      # instance lets anyone create the owner account.
+      proxies = {
+        "homeassistant.welles.app" = 50190;
+      };
       backup = {
         enable = false;
         paths = [];
