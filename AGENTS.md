@@ -122,9 +122,10 @@ the features they need.
   desktop doesn't.
 
 The same goes for hardware: the modem driver setup
-(`quectel-rm520n-fcc-unlock.nix`), the mobile network
-(`modemmanager.nix`) and the provider's connection (`lte-telekom.nix`) are
-three modules, not one `mobile-network.nix`.
+(`quectel-rm520n-fcc-unlock.nix`) and the mobile network
+(`modemmanager.nix`) are two modules, not one `mobile-network.nix`. The
+provider's connection itself is set up in NetworkManager, like Wi-Fi
+networks, and persisted (`networkmanager.nix`).
 
 Modules and packages that only make sense with a specific device or
 situation (a modem's FCC unlock, a VPN into the home network, the companion
