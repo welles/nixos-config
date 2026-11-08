@@ -3,10 +3,11 @@
 # Enables NetworkManager for network management and adds the system
 # user to the networkmanager group for unprivileged network control.
 #
-# Connections (Wi-Fi networks with their passwords, mobile data, …) are set
-# up in NetworkManager itself, not declared here. Their profiles in
-# /etc/NetworkManager/system-connections are persisted, and NetworkManager's
-# state in /var/lib/NetworkManager (which networks are on, last used) too.
+# Wi-Fi networks with their passwords, and other connections no module
+# declares (unlike lte-telekom.nix), are set up in NetworkManager itself.
+# Their profiles in /etc/NetworkManager/system-connections are persisted, and
+# NetworkManager's state in /var/lib/NetworkManager (which networks are on,
+# last used) too.
 {
   lib,
   user,

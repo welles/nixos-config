@@ -30,7 +30,7 @@
     # Networking
     ../../modules/avahi.nix
     ../../modules/fritzbox-wireguard.nix
-    ../../modules/modemmanager.nix
+    ../../modules/lte-telekom.nix
     ../../modules/networkmanager.nix
     ../../modules/networkmanager-skip-wait-online.nix
     ../../modules/quectel-rm520n-fcc-unlock.nix
