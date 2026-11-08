@@ -29,11 +29,11 @@
 
     # Networking
     ../../modules/avahi.nix
-    ../../modules/fritzbox-wireguard.nix
     ../../modules/lte-telekom.nix
     ../../modules/networkmanager.nix
     ../../modules/networkmanager-skip-wait-online.nix
     ../../modules/quectel-rm520n-fcc-unlock.nix
+    ../../modules/wireguard-home.nix
 
     # Desktop environment
     ../../modules/flatpak.nix
@@ -96,9 +96,9 @@
     passwordConfig = {};
     extraGroups = ["wheel"];
     nextcloudUrl = "https://nextcloud.welles.app";
-    fritzboxWireguardAddress = {
-      ipv4 = "10.0.0.201";
-      ipv6 = "fdb0:b8e0:ea8f::201";
+    homeWireguardAddress = {
+      ipv4 = "10.0.6.2";
+      ipv6 = "fdcc:e6dd:c616:f6a8::2";
     };
   };
 }

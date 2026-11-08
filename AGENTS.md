@@ -227,7 +227,7 @@ argument that the host sets in `_module.args`. Common arguments:
 | `acmeEmail`                | Contact email for Caddy's ACME certificates.               |
 | `msmtpAccount`             | SMTP account (`host`, `user`, `from`) of the mail relay.   |
 | `nextcloudUrl`             | Nextcloud base URL the rclone mount uses.                  |
-| `fritzboxWireguardAddress` | Tunnel addresses (`ipv4`, `ipv6`) of the FritzBox VPN.     |
+| `homeWireguardAddress`     | Tunnel addresses (`ipv4`, `ipv6`) of the home VPN.         |
 | `extraDiskMounts`          | Additional mount points the server status shows.           |
 | `claudeWorkspaceRepos`     | Repositories (`owner/repo`) of the Claude workspace.       |
 | `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |
