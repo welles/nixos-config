@@ -30,12 +30,10 @@
     # Networking
     ../../modules/avahi.nix
     ../../modules/fritzbox-wireguard.nix
-    ../../modules/lte-telekom.nix
+    ../../modules/modemmanager.nix
     ../../modules/networkmanager.nix
     ../../modules/networkmanager-skip-wait-online.nix
     ../../modules/quectel-rm520n-fcc-unlock.nix
-    ../../modules/wifi-welles-family
-    ../../modules/wifi-welles-starlink
 
     # Desktop environment
     ../../modules/flatpak.nix
