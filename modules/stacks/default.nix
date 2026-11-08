@@ -222,6 +222,8 @@
 
   dnsOnlyDomains = [
     "mc.welles.games"
+    # WireGuard server on the router (WAN2), see modules/wireguard-home.nix
+    "vpn.welles.app"
   ];
 
   activeStacks = lib.filterAttrs (_name: cfg: cfg.enabled) stacks;
