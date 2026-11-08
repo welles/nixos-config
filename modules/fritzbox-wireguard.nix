@@ -8,9 +8,16 @@
 # The private key and preshared key are injected into the .nmconnection
 # file at activation time. The tunnel routes all traffic through the home
 # network and is not set to autoconnect (must be activated manually).
+#
+# On impermanent hosts /etc/NetworkManager/system-connections is a bind
+# mount of the persisted directory (networkmanager.nix), set up by systemd
+# only after activation. So the file goes straight into the persisted
+# directory under `persistRoot`, or it would end up hidden under the mount.
 {
   config,
+  lib,
   pkgs,
+  persistRoot,
   fritzboxWireguardAddress,
   ...
 }: {
@@ -36,7 +43,7 @@
   };
 
   sops.templates."FritzBox.nmconnection" = {
-    path = "/etc/NetworkManager/system-connections/FritzBox.nmconnection";
+    path = "${lib.optionalString (persistRoot != null) persistRoot}/etc/NetworkManager/system-connections/FritzBox.nmconnection";
     mode = "0600";
     owner = "root";
     group = "root";
