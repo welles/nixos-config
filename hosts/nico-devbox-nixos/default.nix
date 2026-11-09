@@ -27,6 +27,8 @@
     # working network, including DNS, once network-online.target is reached.
     ../../modules/networkmanager.nix
     ../../modules/openssh.nix
+    # The server, whose Cloudflare Tunnel publishes the web UIs below
+    ../../modules/firewall-trusted-subnets.nix
 
     # Desktop environment: Cinnamon over RDP (Plasma 6.8 dropped the X11
     # sessions xrdp needs), no local login screen.
@@ -37,7 +39,9 @@
 
     # Services
     ../../modules/claude-workspace.nix
+    ../../modules/cloudcli
     ../../modules/playwright-mcp.nix
+    ../../modules/t3code-server.nix
     ../../modules/vscode-tunnel.nix
 
     # Packages
@@ -89,6 +93,9 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     extraGroups = ["wheel"];
+    # nico-schokoladenelch-nixos (fixed in the UniFi router): its Cloudflare
+    # Tunnel reaches CloudCLI (3001) and T3 Code (3773) here
+    trustedSubnets = ["10.0.5.5/32"];
     # The server's tank datasets (its libvirtVms.nico-devbox-nixos.virtiofsShares)
     virtiofsMounts = {
       "/mnt/tank/movies" = "tank-movies";
