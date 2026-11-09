@@ -285,6 +285,26 @@ primary user for Home Manager.
 - Host-specific Home Manager settings go into a file in the host directory
   following the same pattern (see `hosts/nixos-wsl-nixos/mercurial.nix`).
 
+## Workarounds
+
+A workaround is a temporary fix for a problem outside this repository: a
+broken nixpkgs package, an upstream bug, a missing NixOS default. Every
+workaround gets an entry in `CURRENT_WORKAROUNDS.md` in the same commit that
+adds it, with:
+
+- where it lives (file),
+- the date it was added,
+- the problem it works around,
+- what the workaround does,
+- when it can be removed, ideally with a command that checks it (an upstream
+  commit or PR to wait for, a package that must build again, ...).
+
+Also leave a short comment at the workaround in the code that says when to
+drop it. When a workaround is removed, delete its entry in the same commit.
+
+Permanent customisations (patching an application to behave the way we want)
+are not workarounds and do not belong in the file.
+
 ## After changing `.nix` files
 
 Ensure every modified `.nix` file is formatted and linted:
