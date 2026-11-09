@@ -27,7 +27,6 @@
   lib,
   pkgs,
   user,
-  persistRoot,
   claudeWorkspaceRepos,
   ...
 }: let
@@ -57,11 +56,7 @@
     "/etc/profiles/per-user/${user}"
   ];
 in {
-  imports = [./github-ssh-key.nix];
-
-  environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.users.${user}.directories = ["workspace"];
-  };
+  imports = [./github-ssh-key.nix ./workspace-state.nix];
 
   # Attach to the tmux server of a session
   environment.systemPackages = [

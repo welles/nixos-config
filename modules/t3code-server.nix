@@ -26,7 +26,7 @@
   home = "/home/${user}";
   port = 3773;
 in {
-  imports = [./nftables.nix];
+  imports = [./nftables.nix ./workspace-state.nix];
 
   environment.systemPackages = [t3code];
 
