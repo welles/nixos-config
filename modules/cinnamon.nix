@@ -113,7 +113,9 @@ in {
 
   # cinnamon2d renders with llvmpipe; on an X server with glamor its frames
   # never reach the screen and the session shows only the bare background.
-  # So hosts with xrdp-glamor.nix get the GPU variant.
+  # So hosts with xrdp-glamor.nix (which sets `xrdpGlamor`) get the GPU
+  # variant.
+  _module.args.xrdpGlamor = lib.mkDefault false;
   _module.args.xrdpSession = "${pkgs.writeShellScript "xrdp-cinnamon-session" ''
     ${lib.getExe pkgs.setxkbmap} ${config.services.xserver.xkb.layout}
     exec ${pkgs.cinnamon}/bin/cinnamon-session-${
