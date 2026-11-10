@@ -44,15 +44,45 @@ When removing a workaround, delete its entry here in the same commit.
   the binary cache:
   `nix path-info --store https://cache.nixos.org $(nix eval --raw .#nixosConfigurations.nico-desktop-nixos.pkgs.video2x.outPath)`
 
-## Bottles: Wine needs `/var/lib/dbus/machine-id`
+## Wine needs `/var/lib/dbus/machine-id`
 
-- **Where:** `modules/packages/bottles.nix`
+- **Where:** `modules/wine-machine-id.nix` (imported by `modules/packages/bottles.nix`
+  and `modules/packages/musicfab.nix`)
 - **Added:** 2026-10-21
 - **Problem:** Wine reads the SMBIOS system UUID only from
-  `/var/lib/dbus/machine-id`, which NixOS does not create. Every bottle then
+  `/var/lib/dbus/machine-id`, which NixOS does not create. Every prefix then
   reports the placeholder UUID `deaddead-…`, and StreamFab's key server hands
   out keys that do not decrypt (error 605).
 - **Workaround:** A tmpfiles rule links `/var/lib/dbus/machine-id` to
   `/etc/machine-id`.
 - **Remove when:** NixOS creates `/var/lib/dbus/machine-id` itself, or Wine
   falls back to `/etc/machine-id`.
+
+## MusicFab: Wine's PulseAudio driver busy-loops in MIDI
+
+- **Where:** `modules/packages/musicfab.nix`
+- **Added:** 2026-11-10
+- **Problem:** `winepulse.drv` does not implement the MIDI unix calls, so
+  `midi_notify_wait` returns at once and mmdevapi's `notify_thread` spins
+  forever. MusicFab then hangs on its splash screen ("Accessing server
+  information") at 100 % CPU. Still the case in Wine 11.21.
+- **Workaround:** The launcher sets `HKCU\Software\Wine\Drivers` `Audio` to
+  `alsa` (winealsa implements MIDI; ALSA's default device goes to
+  PulseAudio).
+- **Remove when:** winepulse implements the MIDI calls or mmdevapi stops the
+  notify thread on `STATUS_NOT_IMPLEMENTED` (`dlls/mmdevapi/main.c`,
+  `notify_thread`). Check by deleting the `Audio` value in the prefix and
+  starting `musicfab`.
+
+## MusicFab: blank page after dialogs (cross-process rendering)
+
+- **Where:** `modules/packages/musicfab.nix`
+- **Added:** 2026-11-10
+- **Problem:** Chromium's GPU process draws into MusicFab's window from
+  another process, which Wine does not keep in the window's surface. After
+  the converter dialog closes or the window is covered, the Spotify page
+  stays blank or stale until something in it changes.
+- **Workaround:** The launcher starts MusicFab with `--in-process-gpu`.
+- **Remove when:** Wine retains cross-process child window rendering. Check by
+  starting MusicFab without the argument, opening a playlist, cancelling the
+  converter dialog and seeing whether the page is still drawn.
