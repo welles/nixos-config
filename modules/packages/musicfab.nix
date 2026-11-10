@@ -29,7 +29,8 @@
       appDirs = ["Program Files/MusicFab/MusicFab" "MusicFab"];
       # Without it the page stays blank after the converter dialog closes or
       # the window was covered: Chromium's GPU process draws into the window
-      # from another process, which Wine does not retain
+      # from another process, which Wine does not retain. Workaround (see
+      # CURRENT_WORKAROUNDS.md): drop once Wine keeps cross-process rendering
       args = ["--in-process-gpu"];
       installer = pkgs.fetchurl {
         url = "https://d145.dvdfab.cn/download/70_2003_cc69dde7/MusicFab_x64_2003.exe";

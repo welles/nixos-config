@@ -74,11 +74,15 @@
         [ -e "$fonts/$(basename "$font")" ] || install -m 644 "$font" "$fonts/"
       done
 
+      # Workaround (CURRENT_WORKAROUNDS.md): drop once winepulse implements
+      # the MIDI calls or mmdevapi's notify thread stops on them
       if ! grep -q '^"Audio"="alsa"' "$prefix/user.reg"; then
         wine reg add 'HKCU\Software\Wine\Drivers' /v Audio /d alsa /f >/dev/null
         wineserver --wait
       fi
 
+      # Workaround (CURRENT_WORKAROUNDS.md): drop once the programs no longer
+      # run under xrdp or xorgxrdp accepts gamma requests
       if ! grep -q '^"UseXVidMode"="N"' "$prefix/user.reg"; then
         wine reg add 'HKCU\Software\Wine\X11 Driver' /v UseXVidMode /d N /f >/dev/null
         wineserver --wait
