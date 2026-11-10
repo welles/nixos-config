@@ -46,8 +46,8 @@ When removing a workaround, delete its entry here in the same commit.
 
 ## Wine needs `/var/lib/dbus/machine-id`
 
-- **Where:** `modules/wine-machine-id.nix` (imported by `modules/packages/bottles.nix`
-  and `modules/packages/musicfab.nix`)
+- **Where:** `modules/wine-machine-id.nix` (imported by `modules/packages/bottles.nix`,
+  `modules/packages/musicfab.nix` and `modules/packages/streamfab.nix`)
 - **Added:** 2026-10-21
 - **Problem:** Wine reads the SMBIOS system UUID only from
   `/var/lib/dbus/machine-id`, which NixOS does not create. Every prefix then
