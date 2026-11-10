@@ -3,7 +3,8 @@
 # Runs the guests in `libvirtVms` as libvirt/KVM domains. The host only
 # provides the virtual hardware; each guest's system and data live on its
 # own disk and are deployed separately. Per guest (`libvirtVms.<name>`:
-# uuid, macAddress, memoryGiB, vcpus, diskSize, virtiofsShares):
+# uuid, macAddress, memoryGiB, vcpus, diskSize, virtiofsShares,
+# virglRenderNode):
 #
 #   - Disk: sparse zvol <pool>/vms/<name> (volmode=dev, so the host never
 #     scans the guest's partitions or ZFS pool), handed to the guest as
@@ -24,6 +25,11 @@
 #     so a reboot would not pick up changes to the domain. Changes to the
 #     domain take effect on the next start of the VM; while it is running, a
 #     `virsh shutdown` and `virsh start` are needed.
+#   - Graphics: virtio-gpu. With `virglRenderNode` set to a host render
+#     node (e.g. "/dev/dri/renderD128"), the guest gets 3D acceleration
+#     through virgl: QEMU renders the guest's OpenGL on that GPU
+#     (egl-headless, next to the non-GL SPICE console). OpenGL only, no
+#     video decoding; `null` keeps the plain 2D virtio-gpu.
 #   - Consoles: `virsh console <name>` (serial) or virt-manager with the
 #     connection qemu+ssh://<user>@<host>/system (SPICE, only listening on
 #     localhost, tunnelled through SSH)
@@ -41,6 +47,8 @@
 }: let
   installerIso = "/var/lib/libvirt/images/nixos-installer.iso";
   virsh = "${config.virtualisation.libvirtd.package}/bin/virsh";
+
+  virglVms = lib.filterAttrs (_: vm: vm.virglRenderNode != null) libvirtVms;
 
   # One virtiofs device per entry of virtiofsShares (tag = directory)
   filesystems = vm:
@@ -117,8 +125,19 @@
           <graphics type='spice' autoport='yes'>
             <listen type='address' address='127.0.0.1'/>
           </graphics>
+        ${lib.optionalString (vm.virglRenderNode != null) ''
+        <graphics type='egl-headless'>
+          <gl rendernode='${vm.virglRenderNode}'/>
+        </graphics>
+      ''}
           <video>
-            <model type='virtio' heads='1'/>
+            <model type='virtio' heads='1'>
+              <acceleration accel3d='${
+        if vm.virglRenderNode != null
+        then "yes"
+        else "no"
+      }'/>
+            </model>
           </video>
           <input type='tablet' bus='usb'/>
           <memballoon model='virtio' freePageReporting='on'/>
@@ -159,6 +178,11 @@ in {
     ./libvirtd.nix
     ./networkmanager-lan-bridge.nix
   ];
+
+  # virgl: QEMU renders through the host's Mesa drivers and needs access to
+  # the render node (libvirt runs it unprivileged as qemu-libvirtd)
+  hardware.graphics.enable = lib.mkIf (virglVms != {}) true;
+  users.users.qemu-libvirtd.extraGroups = lib.mkIf (virglVms != {}) ["render"];
 
   systemd.services = lib.mapAttrs' (name: vm: lib.nameValuePair "libvirt-vm-${name}" (vmService name vm)) libvirtVms;
 }

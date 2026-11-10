@@ -236,6 +236,7 @@ argument that the host sets in `_module.args`. Common arguments:
 | `lanBridge`                | LAN bridge (`name`, `interface`, `macAddress`).            |
 | `libvirtVms`               | libvirt guests by name (fields: see `libvirt-vm.nix`).     |
 | `virtiofsMounts`           | virtiofs tags by mount point.                              |
+| `xrdpGlamorExtraDrivers`   | Extra kernel GPU drivers glamor may use in xrdp sessions.  |
 | `xrdpSession`              | Session command xrdp starts; set by `cinnamon.nix` itself. |
 
 `xrdpSession` is the one argument a module sets (`cinnamon.nix` provides the

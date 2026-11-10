@@ -106,6 +106,8 @@
       vcpus = 6;
       # Same size as in hosts/nico-devbox-nixos/disk-configuration.nix
       diskSize = "256G";
+      # 3D acceleration through the iGPU (shared with Jellyfin)
+      virglRenderNode = "/dev/dri/renderD128";
       # Mounted by the guest at the same paths (its virtiofsMounts)
       virtiofsShares = {
         tank-movies = "/mnt/tank/movies";

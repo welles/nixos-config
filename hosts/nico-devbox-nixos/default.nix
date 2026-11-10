@@ -96,6 +96,8 @@
     # Tunnel publishes CloudCLI and T3 Code
     webUiSources = ["10.0.5.5"];
     # The server's tank datasets (its libvirtVms.nico-devbox-nixos.virtiofsShares)
+    # The server gives this VM virgl (its libvirtVms.nico-devbox-nixos.virglRenderNode)
+    xrdpGlamorExtraDrivers = ["virtio_gpu"];
     virtiofsMounts = {
       "/mnt/tank/movies" = "tank-movies";
       "/mnt/tank/shows" = "tank-shows";
