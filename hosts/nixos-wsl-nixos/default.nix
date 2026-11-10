@@ -40,6 +40,7 @@
     ../../modules/podman.nix
     ../../modules/timetracker.nix
     ../../modules/wsl.nix
+    ../../modules/wsl-windows-gpu-driver.nix
 
     # Packages
     ../../modules/claude-code-foundry
