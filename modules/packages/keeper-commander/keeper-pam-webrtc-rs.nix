@@ -7,7 +7,7 @@
 }:
 buildPythonPackage (finalAttrs: {
   pname = "keeper-pam-webrtc-rs";
-  version = "2.2.13";
+  version = "2.2.14";
   format = "wheel";
 
   src = fetchPypi {
@@ -18,7 +18,7 @@ buildPythonPackage (finalAttrs: {
     python = "cp38";
     abi = "abi3";
     platform = "manylinux_2_28_x86_64";
-    hash = "sha256-a3GCn/NZniZr7X+biPOC/juUIjwFIRmsi8vjwCd2ZRs=";
+    hash = "sha256-vSBIJnsox9hw9adSCIoEaxlOhZ2b09Jmrxvc4PtvgNQ=";
   };
 
   nativeBuildInputs = [autoPatchelfHook];
