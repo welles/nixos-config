@@ -2,3 +2,6 @@
 /result
 /*.qcow2
 /*-efi-vars.fd
+
+# Claude Code worktrees
+/.claude/worktrees/
