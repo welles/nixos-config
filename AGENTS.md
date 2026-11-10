@@ -241,9 +241,10 @@ argument that the host sets in `_module.args`. Common arguments:
 | `xrdpGlamor`               | xrdp's X server runs glamor; set by `xrdp-glamor.nix`.     |
 
 `xrdpSession` and `xrdpGlamor` are arguments that modules set (`cinnamon.nix`
-provides the command that starts its own session, `xrdp.nix` and
-`xrdp-glamor.nix` say whether that X server runs glamor). A module may provide
-an argument for the modules that build on it this way; hosts never set it.
+provides the command that starts its own session, `xrdp-glamor.nix` says that
+its X server runs glamor; `cinnamon.nix` defaults it to `false`). A module may
+provide an argument for the modules that build on it this way; hosts never set
+it.
 
 Rules:
 

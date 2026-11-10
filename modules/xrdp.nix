@@ -17,9 +17,6 @@
   xrdpSession,
   ...
 }: {
-  # Whether the session's X server runs glamor; xrdp-glamor.nix sets it
-  _module.args.xrdpGlamor = lib.mkDefault false;
-
   services.xrdp = {
     enable = true;
     openFirewall = true;
