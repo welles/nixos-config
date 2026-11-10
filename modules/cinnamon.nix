@@ -2,10 +2,11 @@
 #
 # Cinnamon on X11, for hosts used over RDP (xrdp only starts X11 sessions,
 # which Plasma dropped with 6.8). Sets `xrdpSession` for xrdp.nix: the
-# software-rendering variant of Cinnamon, as xrdp's X server has no OpenGL
-# acceleration. xrdp's X server takes the keyboard layout from the RDP client
-# instead of services.xserver.xkb (keyboard.nix), so the session sets it
-# again before Cinnamon starts.
+# software-rendering variant of Cinnamon (cinnamon2d), unless the session's
+# X server runs glamor (xrdp-glamor.nix), then the GPU variant. xrdp's X
+# server takes the keyboard layout from the RDP client instead of
+# services.xserver.xkb (keyboard.nix), so the session sets it again before
+# Cinnamon starts.
 #
 # Look: dark mode with the Mint-Y theme in orange, and a 48px panel with the
 # white NixOS snowflake as menu icon and a window list that shows each window
@@ -109,8 +110,16 @@ in {
     desktopManager.cinnamon.enable = true;
   };
 
+  # cinnamon2d renders with llvmpipe; on an X server with glamor
+  # (xrdp-glamor.nix) its frames never reach the screen and the session
+  # shows only the bare background. So the session asks the log of its own
+  # X server whether glamor is in use and starts the GPU variant if so.
   _module.args.xrdpSession = "${pkgs.writeShellScript "xrdp-cinnamon-session" ''
     ${lib.getExe pkgs.setxkbmap} ${config.services.xserver.xkb.layout}
+    display=''${DISPLAY#:}
+    if ${lib.getExe pkgs.gnugrep} -q "glamor init ok" "$HOME/.xorgxrdp.''${display%%.*}.log" 2>/dev/null; then
+      exec ${pkgs.cinnamon}/bin/cinnamon-session-cinnamon
+    fi
     exec ${pkgs.cinnamon}/bin/cinnamon-session-cinnamon2d
   ''}";
 
