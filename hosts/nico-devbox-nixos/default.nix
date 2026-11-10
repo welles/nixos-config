@@ -33,6 +33,7 @@
     ../../modules/cinnamon.nix
     ../../modules/rdp-only-desktop.nix
     ../../modules/xrdp-audio.nix
+    ../../modules/xrdp-glamor.nix
     ../../modules/user-dirs.nix
 
     # Services
