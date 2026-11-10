@@ -46,6 +46,9 @@
 in {
   imports = [./xrdp.nix];
 
+  # The desktop session picks its GPU variant (cinnamon.nix)
+  _module.args.xrdpGlamor = true;
+
   # glamor's EGL needs the Mesa drivers from /run/opengl-driver
   hardware.graphics.enable = true;
 
