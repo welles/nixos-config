@@ -3,9 +3,14 @@
 # Not a module: musicfab.nix and streamfab.nix call it. It returns the
 # launcher command and its desktop entry. The command runs the program in its
 # own Wine prefix at ~/.local/share/<pname>; the first start creates the
-# prefix and runs the installer, after which the program updates itself
-# inside the prefix (which also keeps the login, settings and the embedded
-# browser's profile).
+# prefix, downloads the installer and runs it, after which the program
+# updates itself inside the prefix (which also keeps the login, settings and
+# the embedded browser's profile).
+#
+# The installer is downloaded at run time (and checked against its hash)
+# rather than fetched by Nix: anything in the launcher's closure ends up in
+# the public Cachix cache with the hosts' builds, and DVDFab's installers
+# must not be redistributed there.
 #
 # What every start does:
 # - Audio driver ALSA instead of PulseAudio: with winepulse, Wine's mmdevapi
@@ -15,12 +20,8 @@
 # - XVidMode off: the X server of an xrdp session rejects gamma changes
 #   (XF86VidModeSetGamma: BadValue), and Xlib then kills the whole process
 #   (StreamFab died on start).
-# - Microsoft core fonts in the prefix, as Bottles installs them.
 # - The program's own `args` (MusicFab: --in-process-gpu).
 # The first two are listed in CURRENT_WORKAROUNDS.md.
-#
-# The installers and corefonts are kept out of the public Cachix cache (the
-# workflows' pushFilter); rename them only together with that filter.
 {
   pkgs,
   # Command and prefix directory (~/.local/share/<pname>)
@@ -34,6 +35,7 @@
   # look for it in: the installer's default first
   exe,
   appDirs,
+  # { url, hash } of the installer, hash in SRI form like fetchurl's
   installer,
   # Arguments the program always starts with
   args ? [],
@@ -41,11 +43,17 @@
   # stableFull: the plain build has no PulseAudio/ALSA support
   wine = pkgs.wineWow64Packages.stableFull;
 
+  installerSha256 = builtins.convertHash {
+    inherit (installer) hash;
+    toHashFormat = "base16";
+  };
+
   launcher = pkgs.writeShellApplication {
     name = pname;
     runtimeInputs = [
       wine
       pkgs.coreutils
+      pkgs.curl
       pkgs.gnugrep
       pkgs.icoutils
     ];
@@ -71,11 +79,6 @@
           fi
         done
       fi
-
-      fonts="$prefix/drive_c/windows/Fonts"
-      for font in ${pkgs.corefonts}/share/fonts/truetype/*.ttf; do
-        [ -e "$fonts/$(basename "$font")" ] || install -m 644 "$font" "$fonts/"
-      done
 
       # Workaround (CURRENT_WORKAROUNDS.md): drop once winepulse implements
       # the MIDI calls or mmdevapi's notify thread stops on them
@@ -105,8 +108,17 @@
         # setup starts the program itself when done (without the arguments
         # below, until the next start through this launcher). Wait for all
         # of it, so the next start doesn't run the installer again.
-        wine ${installer}
+        setup="$prefix/drive_c/users/$USER/Temp/${baseNameOf installer.url}"
+        mkdir -p "$(dirname "$setup")"
+        curl --fail --location --silent --show-error --output "$setup" ${pkgs.lib.escapeShellArg installer.url}
+        if ! echo "${installerSha256}  $setup" | sha256sum --check --status; then
+          echo "${pname}: the downloaded installer doesn't match its hash; update URL and hash in nixos-config" >&2
+          rm -f "$setup"
+          exit 1
+        fi
+        wine "$setup"
         wineserver --wait
+        rm -f "$setup"
         exit 0
       fi
       app=$(find_app)
