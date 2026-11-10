@@ -28,9 +28,6 @@ jobs:
         with:
           name: welles-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          # Not into the public cache: proprietary DVDFab installers and the
-          # Microsoft core fonts (unfree, redistributable only as published)
-          pushFilter: "MusicFab_x64|streamfab_x64|corefonts"
 
       - name: Run deadnix
         run: |
@@ -64,9 +61,6 @@ jobs:
         with:
           name: welles-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          # Not into the public cache: proprietary DVDFab installers and the
-          # Microsoft core fonts (unfree, redistributable only as published)
-          pushFilter: "MusicFab_x64|streamfab_x64|corefonts"
 
       - name: Run nix flake check
         run: nix flake check
@@ -97,9 +91,6 @@ jobs:
         with:
           name: welles-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          # Not into the public cache: proprietary DVDFab installers and the
-          # Microsoft core fonts (unfree, redistributable only as published)
-          pushFilter: "MusicFab_x64|streamfab_x64|corefonts"
 
       - name: Evaluate configuration (${{ matrix.host }})
         run: |
