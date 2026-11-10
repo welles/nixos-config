@@ -56,3 +56,33 @@ When removing a workaround, delete its entry here in the same commit.
   `/etc/machine-id`.
 - **Remove when:** NixOS creates `/var/lib/dbus/machine-id` itself, or Wine
   falls back to `/etc/machine-id`.
+
+## MusicFab: Proton's tabtip.exe makes Spotify playlists hang
+
+- **Where:** `modules/musicfab-bottle.nix`
+- **Added:** 2026-11-10
+- **Problem:** The soda runner (Proton-based) starts `tabtip.exe`, which
+  registers for UI Automation focus events. MusicFab's Chromium then creates
+  UIA providers that pile up in Wine's Global Interface Table and stub
+  manager lists; both are searched linearly
+  (`StdGlobalInterfaceTable_FindEntry`, `get_stub_manager*`), so opening a
+  Spotify playlist froze MusicFab at >100 % CPU.
+- **Workaround:** DLL override `tabtip.exe=d` in the bottle.
+- **Remove when:** a runner without `tabtip.exe` is used, or Wine looks up
+  GIT cookies and stub managers without walking a list. Check by removing the
+  override, opening Discover Weekly in MusicFab and watching the CPU of
+  `musicfab64.exe` (and `perf top` for combase/ole32).
+
+## MusicFab: blank page after dialogs (cross-process rendering)
+
+- **Where:** `modules/musicfab-bottle.nix`
+- **Added:** 2026-11-10
+- **Problem:** Chromium's GPU process draws into MusicFab's window from
+  another process, which Wine does not keep in the window's surface. After
+  the converter dialog closes or the window is covered, the Spotify page
+  stays blank or stale until something in it changes.
+- **Workaround:** MusicFab starts with `--in-process-gpu` (Bottles program
+  entry).
+- **Remove when:** Wine retains cross-process child window rendering. Check by
+  starting MusicFab without the argument, opening a playlist, cancelling the
+  converter dialog and seeing whether the page is still drawn.
