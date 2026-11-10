@@ -46,6 +46,7 @@
     # Packages
     ../../modules/packages/bottles.nix
     ../../modules/packages/musicfab.nix
+    ../../modules/packages/streamfab.nix
     ../../modules/claude-code-foundry
     ../../modules/packages/claude-code.nix
     ../../modules/packages/claude-desktop.nix
