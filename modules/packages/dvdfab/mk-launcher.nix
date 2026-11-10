@@ -18,6 +18,9 @@
 # - Microsoft core fonts in the prefix, as Bottles installs them.
 # - The program's own `args` (MusicFab: --in-process-gpu).
 # The first two are listed in CURRENT_WORKAROUNDS.md.
+#
+# The installers and corefonts are kept out of the public Cachix cache (the
+# workflows' pushFilter); rename them only together with that filter.
 {
   pkgs,
   # Command and prefix directory (~/.local/share/<pname>)
