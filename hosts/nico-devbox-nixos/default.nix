@@ -44,7 +44,6 @@
     ../../modules/vscode-tunnel.nix
 
     # Packages
-    ../../modules/packages/bottles.nix
     ../../modules/packages/musicfab.nix
     ../../modules/packages/streamfab.nix
     ../../modules/claude-code-foundry
