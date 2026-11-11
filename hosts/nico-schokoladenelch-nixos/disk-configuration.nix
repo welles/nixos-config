@@ -229,6 +229,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "music_manager" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/music_manager";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
           "forgejo" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/forgejo";
