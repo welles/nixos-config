@@ -38,9 +38,7 @@
 
     # Services
     ../../modules/claude-workspace.nix
-    ../../modules/cloudcli
     ../../modules/playwright-mcp.nix
-    ../../modules/t3code-server.nix
     ../../modules/vscode-tunnel.nix
 
     # Packages
@@ -92,9 +90,6 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     extraGroups = ["wheel"];
-    # nico-schokoladenelch-nixos (fixed in the UniFi router): its Cloudflare
-    # Tunnel publishes CloudCLI and T3 Code
-    webUiSources = ["10.0.5.5"];
     # The server gives this VM virgl (its libvirtVms.nico-devbox-nixos.virglRenderNode)
     xrdpGlamorExtraDrivers = ["virtio_gpu"];
     # The server's tank datasets (its libvirtVms.nico-devbox-nixos.virtiofsShares)

@@ -20,18 +20,6 @@ When removing a workaround, delete its entry here in the same commit.
   (the list must contain `zstd`), or by building `pkgs.codex` without the
   override.
 
-## t3code: bundled codex does not build
-
-- **Where:** `modules/t3code-server.nix`
-- **Added:** 2026-11-09
-- **Problem:** The `t3code` wrapper in nixpkgs puts its own `pkgs.codex` on
-  the PATH, and that codex fails to build in `zstd-sys` (see the codex entry
-  above), so `t3code` does not build either.
-- **Workaround:** `pkgs.t3code.override {enableCodex = false;}`; T3 Code uses
-  the agents from the system PATH instead.
-- **Remove when:** `pkgs.codex` builds without the override from
-  `modules/packages/codex.nix` (same check as the codex entry above).
-
 ## video2x: GCC 16 defaults to C++20
 
 - **Where:** `modules/packages/video2x.nix`
