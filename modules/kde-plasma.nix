@@ -25,11 +25,17 @@
   # `overrideConfig` resets everything else on every activation, so settings
   # made in System Settings don't survive. It also wipes kxkbrc, so the layout
   # must be declared here rather than set once via System Settings.
+  #
+  # kglobalshortcutsrc is exempt: apps such as 1Password or the Claude desktop
+  # app register their global shortcuts through the xdg-desktop-portal, and
+  # KDE asks for confirmation whenever the entry is missing. Resetting the
+  # file brings that dialog back after every activation.
   home-manager.sharedModules = [
     {
       programs.plasma = {
         enable = true;
         overrideConfig = true;
+        resetFilesExclude = ["kglobalshortcutsrc"];
 
         input.keyboard = {
           numlockOnStartup = "on";
@@ -49,6 +55,7 @@
         ".local/share/kwalletd"
       ];
       files = [
+        ".config/kglobalshortcutsrc"
         ".config/kwinoutputconfig.json"
         ".config/mimeapps.list"
       ];
