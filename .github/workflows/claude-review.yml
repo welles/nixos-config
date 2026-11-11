@@ -14,4 +14,8 @@ permissions:
 jobs:
   review:
     uses: welles/claude-reviewer/.github/workflows/review.yml@v1
-    secrets: inherit
+    # Only the secrets of the review, not `inherit`: the workflow lives in another repository
+    secrets:
+      ANTHROPIC_REVIEW_KEY: ${{ secrets.ANTHROPIC_REVIEW_KEY }}
+      REVIEWER_APP_CLIENT_ID: ${{ secrets.REVIEWER_APP_CLIENT_ID }}
+      REVIEWER_APP_KEY: ${{ secrets.REVIEWER_APP_KEY }}
