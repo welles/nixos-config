@@ -143,6 +143,17 @@
         paths = [];
       };
     };
+    music_manager = {
+      enabled = true;
+      secrets = ["music_manager"];
+      # No Caddy proxy: the app has no login and is published through the
+      # Cloudflare Tunnel behind Cloudflare Access instead.
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     navidrome = {
       enabled = true;
       secrets = ["navidrome"];

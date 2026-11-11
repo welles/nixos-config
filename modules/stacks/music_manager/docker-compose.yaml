@@ -1,0 +1,44 @@
+name: music_manager
+
+services:
+  music_manager:
+    container_name: music_manager
+    environment:
+      TZ: Europe/Berlin
+    env_file:
+      - /run/secrets/music_manager
+    healthcheck:
+      # The ASP.NET image has neither curl nor wget
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    image: ghcr.io/welles/music-manager:sha-f170ee7
+    networks:
+      music_manager:
+        ipv4_address: 10.10.20.10
+    ports:
+      # No login of its own: reached through the Cloudflare Tunnel behind Cloudflare Access
+      - 50200:8080/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    # Owner of the music shares, so filed files keep the usual permissions
+    user: "1000:100"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/bucket/music_manager/data:/data:rw
+      - /mnt/bucket/music_manager/trash:/trash:rw
+      # Under downloads so the devbox (MusicFab) reaches it through its virtiofs share
+      - /mnt/tank/downloads/music_inbox:/inbox:rw
+      # Library run into music_v2 first; Navidrome still reads /mnt/tank/music
+      - /mnt/tank/music_v2:/music:rw
+
+networks:
+  music_manager:
+    name: music_manager
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.20.0/24
