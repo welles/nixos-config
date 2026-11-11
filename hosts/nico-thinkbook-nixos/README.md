@@ -4,7 +4,10 @@ Lenovo ThinkBook laptop with KDE Plasma, composed like `nico-thinkpad-nixos`
 minus the ThinkPad-only hardware (screen rotation, LTE modem, on-screen
 keyboard) and the home VPN, plus NVIDIA PRIME offload
 (`modules/nvidia-prime-offload.nix`): the Intel GPU drives the display,
-`nvidia-offload <command>` renders on the NVIDIA GPU.
+`nvidia-offload <command>` renders on the NVIDIA GPU. NVIDIA Dynamic Boost
+(`modules/nvidia-dynamic-boost.nix`) lets the GPU go above its 50 W base
+limit, but only on AC power in the performance mode; check with
+`nvidia-smi -q -d POWER` ("Current Power Limit") while a game runs.
 
 - Impermanence: the ZFS root dataset `main/root` is rolled back to
   `main/root@blank` on every boot, only `/persist` (and `/nix`) survive.
