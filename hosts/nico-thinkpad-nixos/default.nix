@@ -37,16 +37,13 @@
 
     # Desktop environment
     ../../modules/flatpak.nix
-    ../../modules/plasma-battery-hibernate.nix
     ../../modules/plasma-hot-corners.nix
-    ../../modules/plasma-lid-hibernate.nix
     ../../modules/plasma-night-color.nix
     ../../modules/plasma-no-logout-confirmation.nix
     ../../modules/plasma-no-screen-autolock.nix
     ../../modules/plasma-panel.nix
     ../../modules/plasma-power-ac.nix
     ../../modules/plasma-power-battery.nix
-    ../../modules/plasma-power-button-hibernate.nix
     ../../modules/printing.nix
     ../../modules/removable-media.nix
 
@@ -55,6 +52,7 @@
 
     # System
     ../../modules/nix-ld.nix
+    ../../modules/no-hibernate.nix
 
     # Services & hardware
     ../../modules/rclone
