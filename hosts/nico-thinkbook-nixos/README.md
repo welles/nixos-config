@@ -49,8 +49,9 @@ keyboard) and the home VPN, plus NVIDIA PRIME offload
 
 4. After the first boot: log in with the password from `secrets.yaml`,
    check the rollback (`zfs list -t snapshot`, a file touched in `/` is gone
-   after a reboot), the GPU (`nvidia-smi`,
-   `nvidia-offload glxinfo | grep renderer`); then sign in to 1Password and
-   enable its SSH agent.
+   after a reboot), the GPU (`nvidia-smi`, and
+   `nix shell nixpkgs#mesa-demos -c nvidia-offload glxinfo -B | grep renderer`
+   shows the NVIDIA GPU, without `nvidia-offload` the Intel one); then sign in
+   to 1Password and enable its SSH agent.
 
 Updates afterwards like on every other host (`nixos-switch` on the laptop).
