@@ -43,6 +43,7 @@
     ../../modules/plasma-panel.nix
     ../../modules/plasma-power-ac.nix
     ../../modules/plasma-power-battery.nix
+    ../../modules/plasma-touchpad-no-disable-while-typing.nix
     ../../modules/printing.nix
     ../../modules/removable-media.nix
 
@@ -97,5 +98,12 @@
     passwordConfig = {};
     extraGroups = ["wheel"];
     nextcloudUrl = "https://nextcloud.welles.app";
+    touchpads = [
+      {
+        name = "SYNA2BA6:00 06CB:CF00 Touchpad";
+        vendorId = "06cb";
+        productId = "cf00";
+      }
+    ];
   };
 }
