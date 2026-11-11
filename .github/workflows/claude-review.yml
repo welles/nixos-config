@@ -2,7 +2,7 @@ name: Claude Review
 # AI review of pull requests with the central reviewer welles/claude-reviewer: every new or updated
 # PR gets a review, the label "claude-review" starts a thorough one. The reviewer approves the PR
 # or requests changes while a finding of severity "kritisch" or "fehler" is open. What to look for
-# in this repo is in .github/review-instructions.md; setup and costs: docs/ki-review.md.
+# in this repo is in .github/review-instructions.md; setup and costs: README of welles/claude-reviewer.
 on:
   pull_request:
     types: [opened, reopened, ready_for_review, synchronize, labeled]
