@@ -10,6 +10,7 @@
     directories = [
       "/var/lib/nixos"
       "/var/lib/sops-nix"
+      "/var/lib/systemd/backlight"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
       "/var/log"
