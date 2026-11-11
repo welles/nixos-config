@@ -73,6 +73,7 @@
     ../../modules/packages/powershell.nix
     ../../modules/packages/remmina.nix
     ../../modules/packages/solaar.nix
+    ../../modules/steam-nvidia-offload.nix
   ];
 
   networking.hostName = hostname;
