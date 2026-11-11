@@ -14,7 +14,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    image: ghcr.io/welles/music-manager:sha-6b28d68
+    image: ghcr.io/welles/music-manager:sha-4340c12
     networks:
       music_manager:
         ipv4_address: 10.10.20.10
