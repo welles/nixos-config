@@ -80,7 +80,7 @@
   networking.hostId = "54af8977";
   hardware.nvidia.prime = {
     intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:2:0:0";
+    nvidiaBusId = "PCI:1:0:0";
   };
   sops.defaultSopsFile = ./secrets.yaml;
   system.stateVersion = "26.11";
