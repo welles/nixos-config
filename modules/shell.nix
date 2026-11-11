@@ -30,7 +30,14 @@
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
 
-        initContent = "fastfetch";
+        # Only greet a terminal. Apps such as Claude Desktop or VS Code run
+        # `zsh -l -i -c env` with a pipe as stdout to read the login
+        # environment; fastfetch there runs `plasmashell --version` (to show
+        # the Plasma version), which aborts without a display connection
+        # and pops up a crash report.
+        initContent = ''
+          [[ -t 1 ]] && fastfetch
+        '';
 
         history.path = "${config.home.homeDirectory}/.local/share/zsh/history";
 
