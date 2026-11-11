@@ -233,7 +233,6 @@ argument that the host sets in `_module.args`. Common arguments:
 | `claudeWorkspaceRepos`     | Repositories (`owner/repo`) of the Claude workspace.       |
 | `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |
 | `trustedSubnets`           | IPv4 subnets the firewall accepts all traffic from.        |
-| `webUiSources`             | IPv4 addresses that may reach the host's web UIs' ports.   |
 | `lanBridge`                | LAN bridge (`name`, `interface`, `macAddress`).            |
 | `libvirtVms`               | libvirt guests by name (fields: see `libvirt-vm.nix`).     |
 | `virtiofsMounts`           | virtiofs tags by mount point.                              |
