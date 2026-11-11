@@ -7,8 +7,8 @@
 # (https://www.dvdfab.cn/mlink/download.php?g=MusicFab_x64 redirects to the
 # current version). The launcher downloads it only for a fresh prefix, as
 # MusicFab updates itself afterwards (dvdfab/mk-launcher.nix says why
-# Nix doesn't fetch it); old versions may disappear from the server, then
-# bump URL and hash to what the redirect points to.
+# Nix doesn't fetch it). The Update Local Packages workflow keeps URL and
+# hash at the current version, as old ones disappear from the server.
 {
   config,
   lib,
