@@ -17,6 +17,13 @@ readonly PYPI_PACKAGES=(
 	"Keeper WebRTC|modules/packages/keeper-commander/keeper-pam-webrtc-rs.nix|keeper-pam-webrtc-rs|keeper_pam_webrtc_rs-@VERSION@-cp38-abi3-manylinux_2_28_x86_64.whl"
 )
 
+# name|file|download center id (https://www.dvdfab.cn/mlink/download.php?g=ID
+# redirects to the current installer on one of DVDFab's mirrors)
+readonly DVDFAB_PACKAGES=(
+	"MusicFab|modules/packages/musicfab.nix|MusicFab_x64"
+	"StreamFab|modules/packages/streamfab.nix|StreamFab_x64"
+)
+
 fail() {
 	echo "error: $*" >&2
 	exit 1
@@ -55,6 +62,30 @@ prefetch_hash() {
 	nix store prefetch-file --json --name package-source "$url" | jq -er '.hash'
 }
 
+# The DVDFab installers must stay out of the Nix store, which the workflow's
+# Cachix step pushes to the public cache, so hash them outside of it.
+download_hash() {
+	local url=$1
+	local file
+
+	echo "Downloading ${url}" >&2
+	file=$(mktemp)
+	curl -fsSL -o "$file" "$url" || {
+		rm -f -- "$file"
+		fail "could not download ${url}"
+	}
+	nix hash convert --hash-algo sha256 --to sri "$(sha256sum "$file" | cut -d' ' -f1)"
+	rm -f -- "$file"
+}
+
+# The path of a DVDFab installer URL without the mirror host, e.g.
+# download/70_2003_cc69dde7/MusicFab_x64_2003.exe
+dvdfab_path() {
+	[[ $1 =~ ^https://d[0-9]+\.dvdfab\.cn/(download/[^/]+/[^/]+\.exe)$ ]] ||
+		fail "unexpected DVDFab installer URL: $1"
+	printf '%s\n' "${BASH_REMATCH[1]}"
+}
+
 replace_once() {
 	local file=$1
 	local old=$2
@@ -91,7 +122,17 @@ for entry in "${PYPI_PACKAGES[@]}"; do
 	pypi_filenames+=("$filename")
 done
 
-for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE" "$CHEATENGINE_FILE" "$CLAUDEDESKTOP_FILE" "${pypi_files[@]}"; do
+dvdfab_names=()
+dvdfab_files=()
+dvdfab_ids=()
+for entry in "${DVDFAB_PACKAGES[@]}"; do
+	IFS='|' read -r name file id <<<"$entry"
+	dvdfab_names+=("$name")
+	dvdfab_files+=("$file")
+	dvdfab_ids+=("$id")
+done
+
+for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE" "$CHEATENGINE_FILE" "$CLAUDEDESKTOP_FILE" "${pypi_files[@]}" "${dvdfab_files[@]}"; do
 	[[ -f $file ]] || fail "run this script from the repository root (${file} not found)"
 done
 
@@ -113,6 +154,14 @@ pypi_current_hashes=()
 for i in "${!pypi_files[@]}"; do
 	pypi_current_versions+=("$(read_single_value "${pypi_files[i]}" version)")
 	pypi_current_hashes+=("$(read_first_hash "${pypi_files[i]}")")
+done
+
+dvdfab_current_urls=()
+dvdfab_current_hashes=()
+for i in "${!dvdfab_files[@]}"; do
+	dvdfab_current_urls+=("$(read_single_value "${dvdfab_files[i]}" url)")
+	dvdfab_path "${dvdfab_current_urls[i]}" >/dev/null
+	dvdfab_current_hashes+=("$(read_first_hash "${dvdfab_files[i]}")")
 done
 
 echo "Discovering current stable releases"
@@ -240,6 +289,16 @@ for i in "${!pypi_projects[@]}"; do
 	pypi_urls+=("$pypi_url")
 done
 
+# The download center answers with a redirect to a random mirror, so only a
+# changed path (not host) means a new installer.
+dvdfab_urls=()
+for i in "${!dvdfab_ids[@]}"; do
+	dvdfab_url=$(curl -fsS -o /dev/null -w '%{redirect_url}' \
+		"https://www.dvdfab.cn/mlink/download.php?g=${dvdfab_ids[i]}")
+	dvdfab_path "$dvdfab_url" >/dev/null
+	dvdfab_urls+=("$dvdfab_url")
+done
+
 eden_hash=$eden_current_hash
 occt_hash=$occt_current_hash
 keeper_hash=$keeper_current_hash
@@ -247,6 +306,8 @@ nuke_hash=$nuke_current_hash
 cheatengine_hash=$cheatengine_current_hash
 claudedesktop_hash=$claudedesktop_current_hash
 pypi_hashes=("${pypi_current_hashes[@]}")
+dvdfab_hashes=("${dvdfab_current_hashes[@]}")
+dvdfab_changed=()
 changed=false
 
 if [[ $eden_version != "$eden_current_version" ]]; then
@@ -280,6 +341,16 @@ for i in "${!pypi_files[@]}"; do
 	fi
 done
 
+for i in "${!dvdfab_files[@]}"; do
+	if [[ $(dvdfab_path "${dvdfab_urls[i]}") != "$(dvdfab_path "${dvdfab_current_urls[i]}")" ]]; then
+		dvdfab_hashes[i]=$(download_hash "${dvdfab_urls[i]}")
+		dvdfab_changed[i]=true
+		changed=true
+	else
+		dvdfab_changed[i]=false
+	fi
+done
+
 printf 'Eden:  %s -> %s\n' "$eden_current_version" "$eden_version"
 printf 'OCCT:   %s -> %s\n' "$occt_current_version" "$occt_version"
 printf 'Keeper: %s -> %s\n' "$keeper_current_version" "$keeper_version"
@@ -288,6 +359,11 @@ printf 'Cheat Engine: %s -> %s\n' "$cheatengine_current_version" "$cheatengine_v
 printf 'Claude Desktop: %s -> %s\n' "$claudedesktop_current_version" "$claudedesktop_version"
 for i in "${!pypi_names[@]}"; do
 	printf '%s: %s -> %s\n' "${pypi_names[i]}" "${pypi_current_versions[i]}" "${pypi_versions[i]}"
+done
+
+for i in "${!dvdfab_names[@]}"; do
+	printf '%s: %s -> %s\n' "${dvdfab_names[i]}" \
+		"$(basename "${dvdfab_current_urls[i]}")" "$(basename "${dvdfab_urls[i]}")"
 done
 
 if [[ $changed == false ]]; then
@@ -306,6 +382,9 @@ cp -p -- "$CHEATENGINE_FILE" "$temporary_directory/cheat-engine.nix"
 cp -p -- "$CLAUDEDESKTOP_FILE" "$temporary_directory/claude-desktop.nix"
 for i in "${!pypi_files[@]}"; do
 	cp -p -- "${pypi_files[i]}" "$temporary_directory/pypi-${i}.nix"
+done
+for i in "${!dvdfab_files[@]}"; do
+	cp -p -- "${dvdfab_files[i]}" "$temporary_directory/dvdfab-${i}.nix"
 done
 
 if [[ $eden_version != "$eden_current_version" ]]; then
@@ -353,6 +432,15 @@ for i in "${!pypi_files[@]}"; do
 	fi
 done
 
+for i in "${!dvdfab_files[@]}"; do
+	if [[ ${dvdfab_changed[i]} == true ]]; then
+		replace_once "$temporary_directory/dvdfab-${i}.nix" \
+			"url = \"${dvdfab_current_urls[i]}\";" "url = \"${dvdfab_urls[i]}\";"
+		replace_once "$temporary_directory/dvdfab-${i}.nix" \
+			"hash = \"${dvdfab_current_hashes[i]}\";" "hash = \"${dvdfab_hashes[i]}\";"
+	fi
+done
+
 cp -- "$temporary_directory/eden.nix" "$EDEN_FILE"
 cp -- "$temporary_directory/occt.nix" "$OCCT_FILE"
 cp -- "$temporary_directory/keeper.nix" "$KEEPER_FILE"
@@ -361,6 +449,9 @@ cp -- "$temporary_directory/cheat-engine.nix" "$CHEATENGINE_FILE"
 cp -- "$temporary_directory/claude-desktop.nix" "$CLAUDEDESKTOP_FILE"
 for i in "${!pypi_files[@]}"; do
 	cp -- "$temporary_directory/pypi-${i}.nix" "${pypi_files[i]}"
+done
+for i in "${!dvdfab_files[@]}"; do
+	cp -- "$temporary_directory/dvdfab-${i}.nix" "${dvdfab_files[i]}"
 done
 
 echo 'Local package versions and hashes updated.'

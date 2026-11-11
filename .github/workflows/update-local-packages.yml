@@ -70,6 +70,8 @@ jobs:
             modules/packages/keeper-commander/keeper-secrets-manager-core.nix
             modules/packages/keeper-commander/keeper-mlkem.nix
             modules/packages/keeper-commander/keeper-pam-webrtc-rs.nix
+            modules/packages/musicfab.nix
+            modules/packages/streamfab.nix
           )
           if git diff --quiet -- "${package_files[@]}"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -117,6 +119,8 @@ jobs:
             modules/packages/keeper-commander/keeper-secrets-manager-core.nix
             modules/packages/keeper-commander/keeper-mlkem.nix
             modules/packages/keeper-commander/keeper-pam-webrtc-rs.nix
+            modules/packages/musicfab.nix
+            modules/packages/streamfab.nix
           retention-days: 1
 
   # Runs in parallel to the host builds and does not gate the commit, so a
@@ -224,6 +228,6 @@ jobs:
           commit_message: "Update local packages"
           repo: ${{ github.repository }}
           branch: ${{ needs.update-and-setup.outputs.target_branch }}
-          file_pattern: "modules/packages/eden.nix modules/packages/occt.nix modules/packages/keeper.nix modules/packages/nuke.nix modules/packages/cheat-engine.nix modules/packages/claude-desktop.nix modules/packages/keeper-commander/keepercommander.nix modules/packages/keeper-commander/keeper-secrets-manager-core.nix modules/packages/keeper-commander/keeper-mlkem.nix modules/packages/keeper-commander/keeper-pam-webrtc-rs.nix"
+          file_pattern: "modules/packages/eden.nix modules/packages/occt.nix modules/packages/keeper.nix modules/packages/nuke.nix modules/packages/cheat-engine.nix modules/packages/claude-desktop.nix modules/packages/keeper-commander/keepercommander.nix modules/packages/keeper-commander/keeper-secrets-manager-core.nix modules/packages/keeper-commander/keeper-mlkem.nix modules/packages/keeper-commander/keeper-pam-webrtc-rs.nix modules/packages/musicfab.nix modules/packages/streamfab.nix"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
