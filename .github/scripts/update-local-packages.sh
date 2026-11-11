@@ -74,8 +74,12 @@ download_hash() {
 		rm -f -- "$file"
 		fail "could not download ${url}"
 	}
-	nix hash convert --hash-algo sha256 --to sri "$(sha256sum "$file" | cut -d' ' -f1)"
+	local sha256 hash
+	sha256=$(sha256sum "$file" | cut -d' ' -f1)
 	rm -f -- "$file"
+	hash=$(nix hash convert --hash-algo sha256 --to sri "$sha256") && [[ -n $hash ]] ||
+		fail "could not hash ${url}"
+	printf '%s\n' "$hash"
 }
 
 # The path of a DVDFab installer URL without the mirror host, e.g.
