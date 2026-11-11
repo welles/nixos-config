@@ -1,21 +1,11 @@
-# Closing the lid hibernates on battery and does nothing on AC power, and
-# nothing either while an external monitor is connected.
+# Closing the lid hibernates on battery. Combine with
+# plasma-lid-ignore-on-ac.nix for AC power and external monitors.
 _: {
   home-manager.sharedModules = [
     {
       programs.plasma.powerdevil = {
-        AC = {
-          whenLaptopLidClosed = "doNothing";
-          inhibitLidActionWhenExternalMonitorConnected = true;
-        };
-        battery = {
-          whenLaptopLidClosed = "hibernate";
-          inhibitLidActionWhenExternalMonitorConnected = true;
-        };
-        lowBattery = {
-          whenLaptopLidClosed = "hibernate";
-          inhibitLidActionWhenExternalMonitorConnected = true;
-        };
+        battery.whenLaptopLidClosed = "hibernate";
+        lowBattery.whenLaptopLidClosed = "hibernate";
       };
     }
   ];
