@@ -37,6 +37,7 @@
 
     # Desktop environment
     ../../modules/flatpak.nix
+    ../../modules/plasma-battery-hibernate.nix
     ../../modules/plasma-hot-corners.nix
     ../../modules/plasma-lid-hibernate.nix
     ../../modules/plasma-night-color.nix

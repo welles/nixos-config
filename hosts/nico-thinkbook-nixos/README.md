@@ -8,8 +8,9 @@ keyboard) and the home VPN, plus NVIDIA PRIME offload
 
 - Impermanence: the ZFS root dataset `main/root` is rolled back to
   `main/root@blank` on every boot, only `/persist` (and `/nix`) survive.
-- Hibernation on lid close and power button: the swap partition must be at
-  least as large as the RAM.
+- No hibernation: NixOS blocks it on ZFS (`nohibernate`), and
+  `modules/no-hibernate.nix` hides it in KDE. The 32G swap is plain swap.
+  On low battery the laptop sleeps, at 5 % it shuts down.
 - No SSH server after installation.
 
 ## Installation (nixos-anywhere, erases the disk)
@@ -24,7 +25,7 @@ keyboard) and the home VPN, plus NVIDIA PRIME offload
    ```sh
    ls -l /dev/disk/by-id/ | grep nvme   # device in disk-configuration.nix
    lspci | grep -Ei 'vga|3d'            # bus IDs in default.nix, 00:02.0 → PCI:0:2:0
-   free -g                              # swap size in disk-configuration.nix ≥ RAM
+   free -g                              # RAM, for the swap size
    ```
 
 3. From a machine with this repository and the sops age key:
@@ -49,7 +50,7 @@ keyboard) and the home VPN, plus NVIDIA PRIME offload
 4. After the first boot: log in with the password from `secrets.yaml`,
    check the rollback (`zfs list -t snapshot`, a file touched in `/` is gone
    after a reboot), the GPU (`nvidia-smi`,
-   `nvidia-offload glxinfo | grep renderer`) and hibernation; then sign in to
-   1Password and enable its SSH agent.
+   `nvidia-offload glxinfo | grep renderer`); then sign in to 1Password and
+   enable its SSH agent.
 
 Updates afterwards like on every other host (`nixos-switch` on the laptop).
