@@ -1,6 +1,6 @@
 # Worauf das KI-Review achtet
 
-Anweisungen für das Claude-Review (`.github/workflows/claude-review.yml`, Einrichtung in `docs/ki-review.md`). Der Workflow und das Skript `.github/scripts/claude-review.mjs` sind dieselben wie in stamm-phoenix/website-astro und stamm-phoenix/playwright-api; was nur für dieses Repo gilt, steht hier.
+Anweisungen für das Claude-Review (`.github/workflows/claude-review.yml`). Workflow, Prompt und Skripte liegen im zentralen Reviewer [welles/claude-reviewer](https://github.com/welles/claude-reviewer); was nur für dieses Repo gilt, steht hier.
 
 ## Projekt
 
