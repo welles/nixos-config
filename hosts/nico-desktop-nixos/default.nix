@@ -36,13 +36,13 @@
     ../../modules/plasma-no-screen-autolock.nix
     ../../modules/plasma-panel.nix
     ../../modules/plasma-power-ac.nix
-    ../../modules/plasma-power-button-hibernate.nix
 
     # Shell & user environment
     ../../modules/packages/yazi.nix
 
     # System
     ../../modules/nix-ld.nix
+    ../../modules/no-hibernate.nix
     ../../modules/minecraft-modding.nix
 
     # Services & hardware

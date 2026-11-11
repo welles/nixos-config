@@ -35,6 +35,7 @@
     # Desktop environment
     ../../modules/flatpak.nix
     ../../modules/plasma-hot-corners.nix
+    ../../modules/plasma-lid-ignore-on-ac.nix
     ../../modules/plasma-night-color.nix
     ../../modules/plasma-no-logout-confirmation.nix
     ../../modules/plasma-no-screen-autolock.nix
