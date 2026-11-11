@@ -43,9 +43,9 @@
     ../../modules/wsl-windows-gpu-driver.nix
 
     # Packages
-    ../../modules/claude-code-foundry
     ../../modules/packages/awscli2.nix
     ../../modules/packages/bruno.nix
+    ../../modules/packages/claude-code.nix
     ../../modules/packages/headlamp.nix
     ../../modules/packages/hoppscotch.nix
     ../../modules/packages/k0sctl.nix
