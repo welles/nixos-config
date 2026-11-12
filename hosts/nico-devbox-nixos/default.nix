@@ -20,7 +20,7 @@
     ../../modules/virtiofs-mounts.nix
 
     # Users & secrets
-    ../../modules/user-password-hashed.nix
+    ../../modules/user-password-plaintext.nix
 
     # Networking: DHCP from the UniFi router. Unlike on the desktops,
     # NetworkManager-wait-online stays enabled, as the Claude services need a
@@ -34,10 +34,12 @@
     ../../modules/rdp-only-desktop.nix
     ../../modules/xrdp-audio.nix
     ../../modules/xrdp-glamor.nix
+    ../../modules/xrdp-boot-session.nix
     ../../modules/user-dirs.nix
 
     # Services
     ../../modules/claude-workspace.nix
+    ../../modules/claude-desktop-autostart.nix
     ../../modules/playwright-mcp.nix
     ../../modules/vscode-tunnel.nix
 
@@ -45,7 +47,6 @@
     ../../modules/packages/musicfab.nix
     ../../modules/packages/streamfab.nix
     ../../modules/packages/claude-code.nix
-    ../../modules/packages/claude-desktop.nix
     ../../modules/packages/nerd-fonts-fira-code.nix
     ../../modules/packages/fira-sans.nix
     ../../modules/packages/gh.nix
