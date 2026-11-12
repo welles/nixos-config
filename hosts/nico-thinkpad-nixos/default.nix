@@ -56,6 +56,7 @@
     ../../modules/no-hibernate.nix
 
     # Services & hardware
+    ../../modules/home-assistant-api
     ../../modules/rclone
     ../../modules/user-password-plaintext.nix
 
@@ -94,6 +95,7 @@
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
     passwordConfig = {};
     extraGroups = ["wheel"];
+    homeAssistantUrl = "https://homeassistant.welles.app";
     nextcloudUrl = "https://nextcloud.welles.app";
     homeWireguardAddress = {
       ipv4 = "10.0.6.2";

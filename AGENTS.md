@@ -227,6 +227,7 @@ argument that the host sets in `_module.args`. Common arguments:
 | `acmeEmail`                | Contact email for Caddy's ACME certificates.               |
 | `msmtpAccount`             | SMTP account (`host`, `user`, `from`) of the mail relay.   |
 | `nextcloudUrl`             | Nextcloud base URL the rclone mount uses.                  |
+| `homeAssistantUrl`         | Home Assistant base URL the API clients use.               |
 | `touchpads`                | Built-in touchpads (`name`, `vendorId`, `productId`).      |
 | `homeWireguardAddress`     | Tunnel addresses (`ipv4`, `ipv6`) of the home VPN.         |
 | `extraDiskMounts`          | Additional mount points the server status shows.           |

@@ -6,6 +6,20 @@ is still needed, so it can be removed once the cause is gone.
 
 When removing a workaround, delete its entry here in the same commit.
 
+## hass-cli: `raw ws` fails on Python 3.14
+
+- **Where:** `modules/home-assistant-api/default.nix`,
+  `modules/home-assistant-api/ha-ws.py`
+- **Added:** 2026-11-12
+- **Problem:** hass-cli 1.0.0 on Python 3.14 aborts every WebSocket command
+  with "RuntimeError: There is no current event loop in thread
+  'MainThread'", because it still calls `asyncio.get_event_loop()`.
+- **Workaround:** The module ships its own `ha-ws` script, which sends one
+  WebSocket command with `HASS_SERVER`/`HASS_TOKEN` and prints the result.
+- **Remove when:** `hass-cli raw ws get_config` prints the configuration in
+  a shell with `HASS_SERVER`/`HASS_TOKEN` set (e.g. after a hass-cli update
+  in nixpkgs). Then drop `ha-ws` and use `hass-cli raw ws` instead.
+
 ## Chrome: standalone app windows hide unread counts
 
 - **Where:** `modules/google-chat-unread-title/content.js`
