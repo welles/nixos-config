@@ -1,6 +1,5 @@
-# ~/workspace, where the agent services (Claude Remote Control) clone
-# repositories and work. Imported by every module that uses it;
-# impermanence rejects paths persisted twice, and the module system loads
+# ~/workspace, where the repositories Claude sessions work in live.
+# Imported by every module that uses it; impermanence rejects paths persisted twice, and the module system loads
 # this file only once however often it is imported.
 {
   lib,

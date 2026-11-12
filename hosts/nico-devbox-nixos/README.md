@@ -16,8 +16,9 @@ other host in this flake.
   unlocked); an RDP login takes it over (`modules/xrdp-boot-session.nix`).
 - Claude Desktop starts with that session, so the VM is ready for Remote
   Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
-- A Claude Code Remote Control session per repository in `~/workspace`
-  (`modules/claude-workspace.nix`, repositories in `claudeWorkspaceRepos`).
+  Repositories for them are cloned by hand into `~/workspace`, where Git
+  uses the SSH key from sops instead of 1Password
+  (`modules/workspace-git.nix`).
 - Playwright MCP for Claude Code, a VS Code tunnel named
   `nico-devbox-nixos`.
 - Impermanence: the ZFS root dataset is rolled back on every boot, only

@@ -38,8 +38,8 @@
     ../../modules/user-dirs.nix
 
     # Services
-    ../../modules/claude-workspace.nix
     ../../modules/claude-desktop-autostart.nix
+    ../../modules/workspace-git.nix
     ../../modules/playwright-mcp.nix
     ../../modules/vscode-tunnel.nix
 
@@ -78,11 +78,6 @@
     pool = "devbox";
     userDescription = "Nico Welles";
     userEmail = "nico@welles.email";
-    claudeWorkspaceRepos = [
-      "welles/nixos-config"
-      "stamm-phoenix/website-astro"
-      "stamm-phoenix/playwright-api"
-    ];
     sshSigningKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKIfp1vknvLG8NUOIq6BAh8rIAq96kU+bbem0HtopQL";
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
     passwordConfig = {};
