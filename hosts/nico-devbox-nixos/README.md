@@ -11,7 +11,11 @@ other host in this flake.
   (MAC `52:54:00:c9:00:0a`, fix the address there) and is reachable as
   `nico-devbox-nixos` like any other machine, the server too.
 - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
-  Guacamole; SSH on port 22.
+  Guacamole; SSH on port 22. The desktop session already starts at boot,
+  logged in with the plaintext `user-password` from sops (GNOME keyring
+  unlocked); an RDP login takes it over (`modules/xrdp-boot-session.nix`).
+- Claude Desktop starts with that session, so the VM is ready for Remote
+  Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
 - A Claude Code Remote Control session per repository in `~/workspace`
   (`modules/claude-workspace.nix`, repositories in `claudeWorkspaceRepos`).
 - Playwright MCP for Claude Code, a VS Code tunnel named
