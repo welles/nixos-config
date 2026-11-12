@@ -34,8 +34,8 @@
       # CURRENT_WORKAROUNDS.md): drop once Wine keeps cross-process rendering
       args = ["--in-process-gpu"];
       installer = {
-        url = "https://d145.dvdfab.cn/download/70_2003_cc69dde7/MusicFab_x64_2003.exe";
-        hash = "sha256-ABxf6GM4sL8BBf5kBVfa9iL8YDeeuNuo+MhMpzqsQJI=";
+        url = "https://d217.dvdfab.cn/download/70_2004_7834d030/MusicFab_x64_2004.exe";
+        hash = "sha256-cVE1DAhevWKvW17sh69gmxNZWkPTYlePVyhVGzl2Kco=";
       };
     })
     launcher
