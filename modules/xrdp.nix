@@ -11,8 +11,15 @@
 # it with that password if it doesn't exist yet). A keyring created earlier
 # with a different password has to be changed to the login password once
 # (Seahorse) or deleted (~/.local/share/keyrings).
+#
+# Each RDP connection brings its own monitor, which the desktop registers with
+# colord. polkit only allows that without a password in an active local
+# session, which an RDP session isn't, so every connection asked for the
+# password ("Legitimierung ist zur Erstellung eines farbverwalteten Geräts
+# notwendig"). The user may manage colord devices and profiles without it.
 {
   lib,
+  user,
   persistRoot,
   xrdpSession,
   ...
@@ -26,6 +33,15 @@
   };
 
   security.pam.services.xrdp-sesman.enableGnomeKeyring = true;
+
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id.indexOf("org.freedesktop.color-manager.") == 0 &&
+          subject.user == "${user}") {
+        return polkit.Result.YES;
+      }
+    });
+  '';
 
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.directories = ["/var/lib/xrdp"];
