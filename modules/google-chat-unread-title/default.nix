@@ -1,8 +1,11 @@
-# Chrome extension that puts Google Chat's unread count in front of its window
-# title, as "(3) Google Chat - Chat". Chat reports the count only as app
+# Chrome extension that keeps Google Chat's and Gmail's unread counts in their
+# window titles, as "Google Chat (3) - Chat" or "Gmail - Posteingang (3)".
+# Chat reports the count only as app
 # badge (navigator.setAppBadge), which Chrome doesn't show on Linux; window
 # lists that read counts from titles (see the window list in cinnamon.nix)
 # show it this way.
+# The title starts with the installed app name because Chrome 157 otherwise
+# hides it in standalone app windows (see CURRENT_WORKAROUNDS.md).
 #
 # Chrome doesn't load unpacked extensions from the command line any more, so
 # it is loaded once by hand: chrome://extensions → Developer mode → Load

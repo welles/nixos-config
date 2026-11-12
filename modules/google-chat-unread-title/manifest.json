@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Google Chat unread count in title",
-  "version": "1.0",
-  "description": "Writes the unread count Google Chat reports as app badge into the window title, as \"(3) Google Chat\".",
+  "name": "Google Chat and Gmail unread count in title",
+  "version": "1.1",
+  "description": "Keeps Google Chat and Gmail unread counts in Chrome app window titles for desktop notification badges.",
   "content_scripts": [
     {
-      "matches": ["https://chat.google.com/*", "https://mail.google.com/chat/*"],
+      "matches": ["https://chat.google.com/*", "https://mail.google.com/*"],
       "js": ["content.js"],
       "run_at": "document_start",
       "all_frames": true,

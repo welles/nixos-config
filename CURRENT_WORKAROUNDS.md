@@ -6,6 +6,23 @@ is still needed, so it can be removed once the cause is gone.
 
 When removing a workaround, delete its entry here in the same commit.
 
+## Chrome: standalone app windows hide unread counts
+
+- **Where:** `modules/google-chat-unread-title/content.js`
+- **Added:** 2026-11-12
+- **Problem:** Chrome 157 shows only the installed app name for a single
+  standalone PWA window unless the page title starts with that name.
+  Cinnamon's window list therefore loses Gmail's unread count and the count
+  supplied by the Google Chat extension.
+- **Workaround:** The extension starts page titles with `Google Chat` or
+  `Gmail`, followed by the unread count and original page title. Gmail is
+  included in the extension's content-script matches.
+- **Remove when:** Chrome includes page titles for single standalone app
+  windows again. Check `WebAppBrowserController::GetTitle()` in
+  `chrome/browser/ui/web_applications/web_app_browser_controller.cc`, or set
+  a PWA's `document.title` to `Posteingang (3)` and check that `xprop
+  _NET_WM_NAME` on its window includes `(3)`.
+
 ## codex: missing system libraries
 
 - **Where:** `modules/packages/codex.nix`
