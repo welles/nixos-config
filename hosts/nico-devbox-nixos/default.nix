@@ -87,6 +87,7 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDl1C29djVxWt/uHCdkGdzwHFUCxm3MeSdJeqvkcnhRJ"
     ];
     extraGroups = ["wheel"];
+    homeAssistantUrl = "https://homeassistant.welles.app";
     # The server gives this VM virgl (its libvirtVms.nico-devbox-nixos.virglRenderNode)
     xrdpGlamorExtraDrivers = ["virtio_gpu"];
     # The server's tank datasets (its libvirtVms.nico-devbox-nixos.virtiofsShares)

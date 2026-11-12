@@ -98,6 +98,7 @@
     onePasswordVaults = ["Persönlich" "Schokoladenelch"];
     passwordConfig = {};
     extraGroups = ["wheel"];
+    homeAssistantUrl = "https://homeassistant.welles.app";
     nextcloudUrl = "https://nextcloud.welles.app";
     touchpads = [
       {
