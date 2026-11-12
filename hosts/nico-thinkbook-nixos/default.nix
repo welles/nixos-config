@@ -55,6 +55,7 @@
     ../../modules/no-hibernate.nix
 
     # Services & hardware
+    ../../modules/home-assistant-api
     ../../modules/rclone
     ../../modules/user-password-plaintext.nix
 

@@ -47,6 +47,7 @@
 
     # Services & hardware
     ../../modules/easyeffects-voice-mic.nix
+    ../../modules/home-assistant-api
     ../../modules/removable-media.nix
     ../../modules/user-password-plaintext.nix
 
