@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: let
+  cinnamonEnabled = config.services.xserver.desktopManager.cinnamon.enable;
+in {
   imports = [./nerd-fonts-fira-code.nix];
 
   environment.systemPackages = [pkgs.kdePackages.konsole];
@@ -10,6 +16,15 @@
       ...
     }: {
       home.sessionVariables.TERMINAL = "konsole";
+
+      # Cinnamon's built-in terminal shortcut launches its default terminal.
+      dconf.settings = lib.mkIf cinnamonEnabled {
+        "org/cinnamon/desktop/applications/terminal" = {
+          exec = "${pkgs.kdePackages.konsole}/bin/konsole";
+          exec-arg = "-e";
+        };
+        "org/cinnamon/desktop/keybindings/media-keys".terminal = ["<Primary><Alt>t"];
+      };
 
       programs.konsole = {
         enable = true;
