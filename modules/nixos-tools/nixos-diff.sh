@@ -5,22 +5,22 @@
 
 FLAKE="${1:-$DEFAULT_FLAKE}"
 
+# dry-activate needs sudo after the build; ask for the password up front and
+# keep the credentials fresh until the script exits.
+sudo -v
+while sleep 60; do sudo -n -v || exit; done 2>/dev/null &
+KEEPALIVE=$!
+
 WORKDIR=$(mktemp -d)
-trap 'rm -rf "$WORKDIR"' EXIT
+trap 'kill "$KEEPALIVE" 2>/dev/null; rm -rf "$WORKDIR"' EXIT
 RESULT="$WORKDIR/result"
 
 CURRENT=/run/current-system
 BOOTED=/run/booted-system
 
-# Resolve a local flake path (e.g. `.#host`) before changing into the work
-# directory; refs like `github:...` stay as they are.
-flake_path="${FLAKE%%#*}"
-if [ -n "$flake_path" ] && [ -e "$flake_path" ]; then
-	FLAKE="$(realpath "$flake_path")${FLAKE#"$flake_path"}"
-fi
-
-echo "Building $FLAKE ..."
-(cd "$WORKDIR" && nixos-rebuild build --flake "$FLAKE" --refresh)
+# nh shows the build progress (nix-output-monitor) and the package diff
+# against the running system.
+nh os build "$FLAKE" --out-link "$RESULT" --diff always --refresh
 NEW=$(readlink -f "$RESULT")
 
 # Same store path of a link in two system generations?
@@ -37,10 +37,6 @@ if [ "$NEW" = "$(readlink -f "$CURRENT")" ]; then
 	fi
 	exit 0
 fi
-
-echo ""
-echo "=== Package changes ==="
-nvd diff "$CURRENT" "$RESULT"
 
 echo ""
 echo "=== Service changes (dry-activate) ==="
