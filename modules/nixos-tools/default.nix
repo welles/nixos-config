@@ -23,7 +23,7 @@ in {
     # Shows what a switch would change and recommends `switch` or `boot`.
     (pkgs.writeShellApplication {
       name = "nixos-diff";
-      runtimeInputs = [pkgs.nvd pkgs.jq pkgs.diffutils];
+      runtimeInputs = [pkgs.nh pkgs.nix-output-monitor pkgs.jq pkgs.diffutils];
       runtimeEnv.DEFAULT_FLAKE = "${flakeUri}#${hostname}";
       text = builtins.readFile ./nixos-diff.sh;
     })
