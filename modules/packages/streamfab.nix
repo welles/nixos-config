@@ -29,8 +29,8 @@
       # C:\StreamFab: the layout of the former Bottles install
       appDirs = ["Program Files/StreamFab/StreamFab" "Program Files/DVDFab/StreamFab" "StreamFab"];
       installer = {
-        url = "https://d74.dvdfab.cn/download/49_7057_44344b79/streamfab_x64_7057.exe";
-        hash = "sha256-chgLioZ0RYdUo1oYAvchH+D3RpAl2tqh7033rSNMnx8=";
+        url = "https://d207.dvdfab.cn/download/49_7058_ff6db107/streamfab_x64_7058.exe";
+        hash = "sha256-Jq35tM8yXMUDSIJjJiN499Z6fV9UquWVtpnMA0cVJ68=";
       };
     })
     launcher
