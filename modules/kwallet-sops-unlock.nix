@@ -1,7 +1,9 @@
-# Unlocks KWallet with the login password from sops, for Plasma hosts with
-# autologin (autologin.nix), where no password is typed that pam_kwallet could
-# use. The password is the plaintext user-password (user-password-plaintext.nix),
-# so the wallet keeps the login password as its password.
+# Unlocks KWallet with the login password from sops at every Plasma login,
+# also where no password is typed that pam_kwallet could use: autologin
+# (autologin.nix) and fingerprint login (fprintd.nix). The password is the
+# plaintext user-password (user-password-plaintext.nix), so the wallet keeps
+# the login password as its password. pam_kwallet in the login service (which
+# SDDM substacks) is turned off, since it would start a second ksecretd.
 #
 # Does what pam_kwallet does at a password login, split in two:
 #   - kwallet-sops-key (root, before the display manager) derives the key from
@@ -18,6 +20,7 @@
 # The wallet is protected no better than the disk the age key lies on.
 {
   config,
+  lib,
   pkgs,
   user,
   ...
@@ -106,6 +109,8 @@
   '';
 in {
   imports = [./user-password-plaintext.nix];
+
+  security.pam.services.login.kwallet.enable = lib.mkForce false;
 
   systemd.services.kwallet-sops-key = {
     description = "Derive the KWallet key from the login password";

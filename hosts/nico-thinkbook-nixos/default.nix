@@ -55,7 +55,9 @@
     ../../modules/no-hibernate.nix
 
     # Services & hardware
+    ../../modules/fprintd.nix
     ../../modules/home-assistant-api
+    ../../modules/kwallet-sops-unlock.nix
     ../../modules/rclone
     ../../modules/user-password-plaintext.nix
 
