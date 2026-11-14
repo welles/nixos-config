@@ -12,11 +12,11 @@
   # the hood). Unlike the "stable" rolling URL, this pins to a fixed release
   # so the hash won't silently drift. Bump version + hash together when
   # updating: check https://www.ocbase.com/download for the latest version.
-  version = "17.1.10";
+  version = "17.1.11";
 
   src = pkgs.fetchurl {
     url = "https://www.ocbase.com/download-bin/edition:Personal/os:Linux/version:${version}";
-    hash = "sha256-ott/S/mGwkD6POxAoG8ya8JoY0GeazRY0wn2m7mYfCE=";
+    hash = "sha256-WHpLM0BIQifN66sxJLuC2Z3TLfqf2pPHkom2377G4TU=";
     name = "OCCT";
   };
 
