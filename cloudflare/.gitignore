@@ -1,0 +1,8 @@
+# Downloaded providers
+/.terraform/
+
+# Previous state, already in the Git history
+/terraform.tfstate.backup
+
+# Saved plans
+/*.tfplan

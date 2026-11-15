@@ -63,6 +63,7 @@
     ../../modules/nix-ld-dev-libraries.nix
     ../../modules/packages/azure-cli.nix
     ../../modules/packages/just.nix
+    ../../modules/packages/opentofu.nix
     ../../modules/packages/ripgrep.nix
     ../../modules/packages/sqlcmd.nix
     ../../modules/packages/unzip.nix
