@@ -2,6 +2,10 @@
 # once an object is in the state; they stay so that a lost state can be
 # rebuilt with a single apply.
 
+locals {
+  tunnel_id = "fc4393b6-548b-4382-8d11-a4f3eb673089"
+}
+
 import {
   to = cloudflare_zero_trust_access_policy.google_email
   id = "${local.account_id}/6ec4ba9e-33f5-4501-88c4-154ecc2f5212"
@@ -33,4 +37,19 @@ import {
 import {
   to = cloudflare_zero_trust_tunnel_cloudflared_config.schokoladenelch
   id = "${local.account_id}/${local.tunnel_id}"
+}
+
+import {
+  to = cloudflare_zero_trust_tunnel_cloudflared.schokoladenelch
+  id = "${local.account_id}/${local.tunnel_id}"
+}
+
+import {
+  to = cloudflare_zero_trust_access_identity_provider.google
+  id = "accounts/${local.account_id}/4f8aea74-5fa8-40c7-83ad-c0fdec6c41d9"
+}
+
+import {
+  to = cloudflare_zero_trust_access_group.google_email
+  id = "accounts/${local.account_id}/235f2d58-c25a-4b8a-a04a-84dd2fdb245c"
 }
