@@ -14,6 +14,9 @@
   be gone after a reboot.
 - `~/workspace` holds the owner's own clones, used by other Claude
   sessions; work there only when asked.
+- Previews of dev servers are not enabled on this machine yet, so
+  `expose_port` is not available and the user cannot open a dev server you
+  start; test it yourself on `localhost`.
 - The Docker daemon runs here, but its socket is not reachable from your
   sessions.
 - The server's media datasets are mounted read-only for you under

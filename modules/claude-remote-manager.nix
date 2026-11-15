@@ -9,9 +9,10 @@
 # tunnel on another machine.
 #
 # `claudeRemoteManager` holds the host's values: `hostName` (the app's public
-# host name), `previewUrl` (base of the preview host names), the Cloudflare
-# Access `accessTeamDomain`, `accessAudience` (app) and
-# `previewAccessAudience` (previews, their own Access application),
+# host name), `previewUrl` (base of the preview host names of dev servers, or
+# `null` for no previews), the Cloudflare Access `accessTeamDomain`,
+# `accessAudience` (app) and `previewAccessAudience` (previews, their own
+# Access application; only with `previewUrl`),
 # `accessAllowedEmails`, the GitHub App's `githubAppId`, the `ntfyTopic` on
 # the ntfy server `ntfyUrl`, and `instructions` (Markdown for the sessions'
 # managed CLAUDE.md: what the machine and its network are). A value still
@@ -60,17 +61,17 @@
     ".1password"
   ];
 
-  required = [
-    "hostName"
-    "previewUrl"
-    "accessTeamDomain"
-    "accessAudience"
-    "previewAccessAudience"
-    "accessAllowedEmails"
-    "githubAppId"
-    "ntfyTopic"
-    "instructions"
-  ];
+  required =
+    [
+      "hostName"
+      "accessTeamDomain"
+      "accessAudience"
+      "accessAllowedEmails"
+      "githubAppId"
+      "ntfyTopic"
+      "instructions"
+    ]
+    ++ lib.optional (cfg.previewUrl != null) "previewAccessAudience";
   missing = lib.filter (name: (cfg.${name} or null) == null) required;
 in {
   imports = [inputs.claude-remote-manager.nixosModules.default];
@@ -101,9 +102,9 @@ in {
     };
     allowedHosts = lib.optional (cfg.hostName != null) cfg.hostName;
     publicUrl = lib.mkIf (cfg.hostName != null) "https://${cfg.hostName}";
-    preview = {
+    preview = lib.mkIf (cfg.previewUrl != null) {
       url = cfg.previewUrl;
-      accessAudiences = lib.optional (cfg.previewAccessAudience != null) cfg.previewAccessAudience;
+      accessAudiences = lib.optional ((cfg.previewAccessAudience or null) != null) cfg.previewAccessAudience;
     };
 
     github = {

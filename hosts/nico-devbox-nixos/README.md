@@ -76,9 +76,14 @@ runs as the system service `claude-remote-manager`
 runs as the system user `claude-remote-manager`; the Claude Code sessions it
 starts run as `nico`.
 
-- **Reachable** at `https://claude.welles.app`, previews of dev servers at
-  `https://<session>-<port>.claude-preview.welles.app`, both through the
-  server's Cloudflare Tunnel and behind Cloudflare Access. The service
+- **Reachable** at `https://claude.welles.app` through the server's
+  Cloudflare Tunnel and behind Cloudflare Access. Previews of dev servers
+  are not enabled yet (`previewUrl = null`): a wildcard two labels below
+  `welles.app` needs Cloudflare's paid Advanced Certificate, a separate
+  domain is the alternative. Enabling them later means setting `previewUrl`
+  and `previewAccessAudience` (the previews' own Access application) in
+  `claudeRemoteManager`, plus a tunnel host name and DNS record for the
+  wildcard. The service
   listens on port 8080 of the VM; the firewall admits that port only from
   the server (by its MAC address, `tunnelHostMacAddress`;
   `modules/claude-remote-manager-lan-tunnel.nix`). Open it through
@@ -102,8 +107,8 @@ starts run as `nico`.
   App ID 5736769), `claude-remote-manager/github-webhook-secret`,
   `claude-remote-manager/ntfy-token` (a token of the ntfy user that publishes
   to the topic `claude-remote-manager` on `ntfy.welles.app`).
-- **Cloudflare Access values** (team domain, the Application Audience tags of
-  the app's and the previews' Access applications, allowed emails) are in
+- **Cloudflare Access values** (team domain, the Application Audience tag of
+  the app's Access application, allowed emails) are in
   `claudeRemoteManager` in `default.nix`.
 
 After the first deploy, log Claude in once for the sessions (on the VM, over

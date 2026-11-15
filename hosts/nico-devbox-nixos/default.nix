@@ -102,18 +102,18 @@
     };
     ntfyUrl = "https://ntfy.welles.app";
     # The server's lanBridge.macAddress: its cloudflared forwards
-    # claude.welles.app and the previews to this VM.
+    # claude.welles.app to this VM.
     tunnelHostMacAddress = "10:7c:61:b4:90:e4";
     claudeRemoteManager = {
       hostName = "claude.welles.app";
-      previewUrl = "https://claude-preview.welles.app";
+      # Previews off for now; later the preview base URL and previewAccessAudience.
+      previewUrl = null;
       # From Cloudflare Zero Trust (see README.md, "Claude Remote Manager"):
       # the team domain (<team>.cloudflareaccess.com), the Application
-      # Audience tags of the app's and the previews' Access applications,
-      # and the email addresses allowed in ([] for everyone Access admits).
+      # Audience tag of the app's Access application, and the email
+      # addresses allowed in ([] for everyone Access admits).
       accessTeamDomain = null;
       accessAudience = null;
-      previewAccessAudience = null;
       accessAllowedEmails = null;
       githubAppId = 5736769;
       ntfyTopic = "claude-remote-manager";
