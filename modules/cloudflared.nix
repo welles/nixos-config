@@ -15,7 +15,10 @@
     wants = ["network-online.target"];
     wantedBy = ["multi-user.target"];
     serviceConfig = {
-      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.cloudflared}/bin/cloudflared tunnel --no-autoupdate run --token $(cat $CREDENTIALS_DIRECTORY/token)'";
+      # HTTP/2 (TCP) instead of the default QUIC: on this line QUIC counted many reordered packets as lost and kept its
+      # window small, which slowed streaming over the tunnel (music_manager, issue welles/music-manager#17). Same TLS
+      # and token; revert by removing --protocol if it does not help.
+      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.cloudflared}/bin/cloudflared tunnel --no-autoupdate --protocol http2 run --token $(cat $CREDENTIALS_DIRECTORY/token)'";
       LoadCredential = "token:${config.sops.secrets."cloudflare-tunnel-token".path}";
       Restart = "always";
       RestartSec = "5s";
