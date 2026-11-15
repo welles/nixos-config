@@ -33,7 +33,6 @@
     ../../modules/caddy.nix
     ../../modules/cloudflared.nix
     ../../modules/fail2ban.nix
-    ../../modules/glances.nix
     ../../modules/msmtp.nix
     ../../modules/server-logind.nix
     ../../modules/zfs-maintenance.nix
