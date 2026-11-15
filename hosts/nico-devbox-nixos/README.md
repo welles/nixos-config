@@ -21,6 +21,8 @@ other host in this flake.
   (`modules/workspace-git.nix`).
 - Playwright MCP for Claude Code, a VS Code tunnel named
   `nico-devbox-nixos`.
+- Claude Remote Manager at `https://claude.welles.app`: web frontend for
+  Claude Code sessions, which run here as `nico` (see below).
 - Impermanence: the ZFS root dataset is rolled back on every boot, only
   `/persist` survives.
 - The server's media datasets are mounted under `/mnt/tank` over virtiofs
@@ -65,3 +67,60 @@ other host in this flake.
 
 Updates afterwards like on every other host (`nixos-switch` inside the VM,
 or `nixos-rebuild switch --target-host` from elsewhere).
+
+## Claude Remote Manager
+
+[Claude Remote Manager](https://github.com/welles/claude-remote-manager)
+runs as the system service `claude-remote-manager`
+(`modules/claude-remote-manager.nix`, the app's own NixOS module). Its API
+runs as the system user `claude-remote-manager`; the Claude Code sessions it
+starts run as `nico`.
+
+- **Reachable** at `https://claude.welles.app`, previews of dev servers at
+  `https://<session>-<port>.claude-preview.welles.app`, both through the
+  server's Cloudflare Tunnel and behind Cloudflare Access. The service
+  listens on port 8080 of the VM; the firewall admits that port only from
+  the server (by its MAC address, `tunnelHostMacAddress`;
+  `modules/claude-remote-manager-lan-tunnel.nix`). Open it through
+  `claude.welles.app` also from the devbox itself: the API refuses
+  requests from processes of `nico` on this machine, as they could be
+  sessions.
+- **Sessions** see the file system read-only except `/home/nico` and the
+  app's data directory, with their own `/tmp`. Hidden from them: the sops
+  secrets and the age key, the SSH host keys, the Docker socket, the
+  1Password SSH agent, `~/.claude`, `~/.claude.json` (the interactive
+  Claude Code and Claude Desktop) and `~/.config/gh`. They reach the network
+  and read the media mounts under `/mnt/tank`. `~/.ssh` and the rest of the
+  home stay readable. The managed `CLAUDE.md` of the sessions ends with
+  `claude-remote-manager.md` in this directory.
+- **State**: everything in `/var/lib/claude-remote-manager` (persisted as one
+  directory): database, mirrors and session clones, and in `claude/` the
+  sessions' own Claude Code configuration with their login, separate from
+  `~/.claude`.
+- **Secrets** in this host's `secrets.yaml`, readable by root only:
+  `claude-remote-manager/github-app-key` (private key of the GitHub App,
+  App ID 5736769), `claude-remote-manager/github-webhook-secret`,
+  `claude-remote-manager/ntfy-token` (a token of the ntfy user that publishes
+  to the topic `claude-remote-manager` on `ntfy.welles.app`).
+- **Cloudflare Access values** (team domain, the Application Audience tags of
+  the app's and the previews' Access applications, allowed emails) are in
+  `claudeRemoteManager` in `default.nix`.
+
+After the first deploy, log Claude in once for the sessions (on the VM, over
+SSH or RDP):
+
+```sh
+sudo claude-remote-manager-claude auth login
+sudo claude-remote-manager-claude auth status
+```
+
+The login lands in `/var/lib/claude-remote-manager/claude`, not in
+`~/.claude`; the Claude Code and Claude Desktop of the desktop keep their
+own.
+
+**Updates**: after every green CI run on the app's `main`, the workflow
+`.github/workflows/update-claude-remote-manager.yml` updates the flake input
+`claude-remote-manager` and commits `flake.lock`; besides that, the nightly
+input update moves it too. The next `nixos-switch` here brings the new
+version and restarts the service (running sessions are interrupted; database
+migrations run at startup).

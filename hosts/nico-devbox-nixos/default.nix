@@ -39,6 +39,7 @@
 
     # Services
     ../../modules/claude-desktop-autostart.nix
+    ../../modules/claude-remote-manager-lan-tunnel.nix
     ../../modules/home-assistant-api
     ../../modules/workspace-git.nix
     ../../modules/playwright-mcp.nix
@@ -98,6 +99,25 @@
       "/mnt/tank/music" = "tank-music";
       "/mnt/tank/audiobooks" = "tank-audiobooks";
       "/mnt/tank/podcasts" = "tank-podcasts";
+    };
+    ntfyUrl = "https://ntfy.welles.app";
+    # The server's lanBridge.macAddress: its cloudflared forwards
+    # claude.welles.app and the previews to this VM.
+    tunnelHostMacAddress = "10:7c:61:b4:90:e4";
+    claudeRemoteManager = {
+      hostName = "claude.welles.app";
+      previewUrl = "https://claude-preview.welles.app";
+      # From Cloudflare Zero Trust (see README.md, "Claude Remote Manager"):
+      # the team domain (<team>.cloudflareaccess.com), the Application
+      # Audience tags of the app's and the previews' Access applications,
+      # and the email addresses allowed in ([] for everyone Access admits).
+      accessTeamDomain = null;
+      accessAudience = null;
+      previewAccessAudience = null;
+      accessAllowedEmails = null;
+      githubAppId = 5736769;
+      ntfyTopic = "claude-remote-manager";
+      instructions = builtins.readFile ./claude-remote-manager.md;
     };
   };
 }
