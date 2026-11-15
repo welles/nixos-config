@@ -17,6 +17,9 @@ locals {
   # policies:                 Access policies (keys of local.policy_ids), in
   #                           order of precedence
   # disable_chunked_encoding: for origins that cannot take chunked requests
+  # bypass_paths:             exact paths that reach the app without Access
+  #                           (for callers that cannot log in and that the
+  #                           app authenticates itself, e.g. webhooks)
   apps = {
     guacamole = {
       hostname                 = "guacamole.welles.app"
@@ -25,6 +28,7 @@ locals {
       session_duration         = "24h"
       policies                 = ["google_email"]
       disable_chunked_encoding = true
+      bypass_paths             = []
     }
     music-manager = {
       hostname                 = "music-manager.welles.app"
@@ -33,12 +37,39 @@ locals {
       session_duration         = "12h"
       policies                 = ["google_email", "symfonium"]
       disable_chunked_encoding = null
+      bypass_paths             = []
+    }
+    # Claude Remote Manager on the devbox VM (hosts/nico-devbox-nixos), which
+    # the server reaches by its name in the LAN. A long session, as the
+    # installed web app would otherwise end up at the login page every day;
+    # hence its own policy, since a policy's session duration overrides the
+    # application's. The GitHub App's webhook deliveries carry no login and
+    # are authenticated by the app through their signature.
+    claude-remote-manager = {
+      hostname                 = "claude.welles.app"
+      zone                     = "welles.app"
+      service                  = "http://nico-devbox-nixos:8080"
+      session_duration         = "720h"
+      policies                 = ["google_email_long_session"]
+      disable_chunked_encoding = null
+      bypass_paths             = ["/api/github/webhook"]
     }
   }
 
+  # One entry per path of local.apps' bypass_paths, keyed "<app><path>"
+  bypass_paths = merge([
+    for key, app in local.apps : {
+      for path in app.bypass_paths : "${key}${path}" => {
+        app  = key
+        path = path
+      }
+    }
+  ]...)
+
   policy_ids = {
-    google_email = cloudflare_zero_trust_access_policy.google_email.id
-    symfonium    = cloudflare_zero_trust_access_policy.symfonium.id
+    google_email              = cloudflare_zero_trust_access_policy.google_email.id
+    google_email_long_session = cloudflare_zero_trust_access_policy.google_email_long_session.id
+    symfonium                 = cloudflare_zero_trust_access_policy.symfonium.id
   }
 }
 
@@ -55,6 +86,33 @@ resource "cloudflare_zero_trust_access_policy" "google_email" {
 
   require = [{
     login_method = { id = cloudflare_zero_trust_access_identity_provider.google.id }
+  }]
+}
+
+# The same login, valid for 30 days
+resource "cloudflare_zero_trust_access_policy" "google_email_long_session" {
+  account_id       = local.account_id
+  name             = "Google E-Mail (30 days)"
+  decision         = "allow"
+  session_duration = "720h"
+
+  include = [{
+    group = { id = cloudflare_zero_trust_access_group.google_email.id }
+  }]
+
+  require = [{
+    login_method = { id = cloudflare_zero_trust_access_identity_provider.google.id }
+  }]
+}
+
+# Lets everyone through, without a login; only for the bypass paths
+resource "cloudflare_zero_trust_access_policy" "bypass" {
+  account_id = local.account_id
+  name       = "Bypass"
+  decision   = "bypass"
+
+  include = [{
+    everyone = {}
   }]
 }
 
@@ -101,6 +159,38 @@ resource "cloudflare_zero_trust_access_application" "app" {
       precedence = index + 1
     }
   ]
+}
+
+# The bypass paths: an Access application of their own, scoped to the path,
+# which takes precedence over the app's application for that path
+resource "cloudflare_zero_trust_access_application" "bypass" {
+  for_each = local.bypass_paths
+
+  account_id = local.account_id
+  name       = "${local.apps[each.value.app].hostname}${each.value.path}"
+  type       = "self_hosted"
+  domain     = "${local.apps[each.value.app].hostname}${each.value.path}"
+
+  destinations = [{
+    type = "public"
+    uri  = "${local.apps[each.value.app].hostname}${each.value.path}"
+  }]
+
+  app_launcher_visible = false
+
+  policies = [{
+    id         = cloudflare_zero_trust_access_policy.bypass.id
+    precedence = 1
+  }]
+}
+
+# The Application Audience (AUD) tag of every app, for apps that check the
+# Access token themselves (e.g. claudeRemoteManager.accessAudience of
+# hosts/nico-devbox-nixos): ./tofu.sh output access_audiences
+output "access_audiences" {
+  value = {
+    for key, app in cloudflare_zero_trust_access_application.app : key => app.aud
+  }
 }
 
 resource "cloudflare_dns_record" "app" {

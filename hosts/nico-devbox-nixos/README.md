@@ -77,19 +77,23 @@ runs as the system user `claude-remote-manager`; the Claude Code sessions it
 starts run as `nico`.
 
 - **Reachable** at `https://claude.welles.app` through the server's
-  Cloudflare Tunnel and behind Cloudflare Access. Previews of dev servers
-  are not enabled yet (`previewUrl = null`): a wildcard two labels below
-  `welles.app` needs Cloudflare's paid Advanced Certificate, a separate
-  domain is the alternative. Enabling them later means setting `previewUrl`
-  and `previewAccessAudience` (the previews' own Access application) in
-  `claudeRemoteManager`, plus a tunnel host name and DNS record for the
-  wildcard. The service
-  listens on port 8080 of the VM; the firewall admits that port only from
-  the server (by its MAC address, `tunnelHostMacAddress`;
+  Cloudflare Tunnel and behind Cloudflare Access (Google login, 30-day
+  session), both in `cloudflare/` (`local.apps.claude-remote-manager`).
+  Only the GitHub webhook `/api/github/webhook` passes without a login
+  (`bypass_paths`; the app checks its signature). The service listens on
+  port 8080 of the VM; the firewall admits that port only from the server
+  (by its MAC address, `tunnelHostMacAddress`;
   `modules/claude-remote-manager-lan-tunnel.nix`). Open it through
   `claude.welles.app` also from the devbox itself: the API refuses
   requests from processes of `nico` on this machine, as they could be
   sessions.
+- **Previews** of dev servers are not enabled yet (`previewUrl = null`): a
+  wildcard two labels below `welles.app` needs Cloudflare's paid Advanced
+  Certificate, a separate domain is the alternative. Enabling them means an
+  entry for the wildcard host name in `local.apps` of `cloudflare/apps.tf`
+  (its own Access application), plus a `cloudflare_certificate_pack` for
+  the first option or the new zone in `zone_ids` for the second, and
+  `previewUrl` and `previewAccessAudience` in `claudeRemoteManager`.
 - **Sessions** see the file system read-only except `/home/nico` and the
   app's data directory, with their own `/tmp`. Hidden from them: the sops
   secrets and the age key, the SSH host keys, the Docker socket, the
@@ -107,9 +111,10 @@ starts run as `nico`.
   App ID 5736769), `claude-remote-manager/github-webhook-secret`,
   `claude-remote-manager/ntfy-token` (a token of the ntfy user that publishes
   to the topic `claude-remote-manager` on `ntfy.welles.app`).
-- **Cloudflare Access values** (team domain, the Application Audience tag of
-  the app's Access application, allowed emails) are in
-  `claudeRemoteManager` in `default.nix`.
+- **Cloudflare Access values** are in `claudeRemoteManager` in
+  `default.nix`: the team domain, and the app's Application Audience tag
+  from `./tofu.sh output access_audiences` in `cloudflare/`. No email
+  allowlist: Access issues tokens only to the Google E-Mail group.
 
 After the first deploy, log Claude in once for the sessions (on the VM, over
 SSH or RDP):

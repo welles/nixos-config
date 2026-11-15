@@ -109,13 +109,14 @@
       hostName = "claude.welles.app";
       # Previews off for now; later the preview base URL and previewAccessAudience.
       previewUrl = null;
-      # From Cloudflare Zero Trust (see README.md, "Claude Remote Manager"):
-      # the team domain (<team>.cloudflareaccess.com), the Application
-      # Audience tag of the app's Access application, and the email
-      # addresses allowed in ([] for everyone Access admits).
-      accessTeamDomain = null;
+      # cloudflare/apps.tf: team_name, and the app's audience tag, which
+      # exists after `./tofu.sh apply` (`./tofu.sh output access_audiences`).
+      accessTeamDomain = "nicowelles.cloudflareaccess.com";
       accessAudience = null;
-      accessAllowedEmails = null;
+      # Deliberately empty: only the Google E-Mail group of cloudflare/ gets
+      # a token for this app, and the app checks every token's audience. The
+      # addresses stay a secret of cloudflare/secrets.yaml.
+      accessAllowedEmails = [];
       githubAppId = 5736769;
       ntfyTopic = "claude-remote-manager";
       instructions = builtins.readFile ./claude-remote-manager.md;
