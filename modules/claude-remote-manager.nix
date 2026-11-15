@@ -54,6 +54,15 @@
 
   # The user's own credentials and Claude Code configuration, relative to
   # the home directory, hidden from sessions (and their persistent copies).
+  # A hidden path that does not exist when the service starts is skipped
+  # (the app's module passes them as `-path`), and so stays visible if it
+  # appears later. These exist in time: .claude and .config/gh are
+  # impermanence mounts (packages/claude-code.nix, packages/gh.nix), set up
+  # before local-fs.target; .claude.json is one too once the interactive
+  # Claude Code has created it (before that it holds nothing to hide);
+  # .1password comes from the tmpfiles rule below. The copies under
+  # `persistRoot` and the other hidden paths (sops-nix, SSH host keys) are
+  # on file systems mounted before the service starts.
   privateHomePaths = [
     ".claude"
     ".claude.json"
@@ -129,18 +138,19 @@ in {
     extraInstructions = lib.mkIf (cfg.instructions != null) cfg.instructions;
   };
 
-  # Hidden paths must exist when the service starts. The 1Password agent
-  # creates its directory only when it runs, possibly after the service.
+  # The 1Password agent creates its directory only when it runs, possibly
+  # after the service has started, when the hidden path would be skipped:
+  # create it at boot, before the service (ordered after tmpfiles).
   systemd.tmpfiles.settings."10-claude-remote-manager-hidden"."${home}/.1password".d = {
     inherit user;
     group = config.users.users.${user}.group;
     mode = "0700";
   };
 
-  # /run/docker.sock is hidden by a mount on the file, which exists only from
-  # docker.socket on. Restarting docker.socket recreates the file and so
-  # drops the mount inside the namespace: stop the service with docker.socket
-  # and start it again with it.
+  # /run/docker.sock exists only from docker.socket on, so the service starts
+  # after it. Restarting docker.socket recreates the file and so drops the
+  # mount that hides it inside the namespace: stop the service with
+  # docker.socket and start it again with it.
   systemd.services.claude-remote-manager = lib.mkIf config.virtualisation.docker.enable {
     after = ["docker.socket"];
     partOf = ["docker.socket"];
