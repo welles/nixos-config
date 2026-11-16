@@ -13,7 +13,7 @@
 
     # Desktop environment: Cinnamon over RDP (port 3390, see wsl.nix);
     # without xrdp-audio.nix, as WSLg brings its own PulseAudio server
-    ../../modules/cinnamon.nix
+    ../../modules/cinnamon-panel-windows
     ../../modules/xrdp.nix
     ../../modules/keeper-autostart.nix
     ../../modules/google-chat-unread-title

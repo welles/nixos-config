@@ -1,0 +1,141 @@
+
+/* Match the opaque blue-grey Windows taskbar in the reference screenshot.
+ * Scope overrides to the panel so Mint-Y still styles menus and popovers. */
+#panel {
+  font-family: "Segoe UI", "Noto Sans", sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+#panel.panel-top,
+#panel.panel-bottom,
+#panel.panel-left,
+#panel.panel-right {
+  background-color: #263746;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+#panelLeft, #panelCenter, #panelRight {
+  spacing: 0;
+  padding: 0;
+}
+
+#panelLeft.vertical {
+  padding-top: 11px;
+}
+
+#panel .applet-box {
+  padding: 0 8px;
+  spacing: 0;
+  color: #ffffff;
+  border-radius: 0;
+}
+
+#panel .applet-box.vertical {
+  padding: 8px 0;
+}
+
+#panel .menu-cinnamon-org-applet.vertical {
+  padding: 10px 0;
+}
+
+#panel .applet-label,
+#panel .window-list-item-label {
+  font-family: "Segoe UI", "Noto Sans", sans-serif;
+  font-weight: normal;
+  color: #ffffff;
+  text-shadow: none;
+}
+
+#panel .applet-box:hover,
+#panel .applet-box:checked {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+/* Keep the separator's instance ID, without introducing a gap or a line. */
+#panel .applet-separator,
+#panel .applet-separator-line,
+#panel .applet-separator-line-vertical {
+  padding: 0;
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+#panel .window-list-box {
+  spacing: 0;
+  padding: 0;
+}
+
+#panel .window-list-item-box {
+  padding: 0 10px;
+  border: 0 solid transparent;
+  border-radius: 0;
+  color: #ffffff;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* 24px icon + 10px padding on each side = 44px between icon centres. */
+#panel .window-list-item-box.left,
+#panel .window-list-item-box.right {
+  padding: 10px 0;
+  border: none;
+  background-image: url("windows-running.svg");
+  background-size: contain;
+}
+
+#panel .window-list-item-box.top,
+#panel .window-list-item-box.bottom {
+  border-bottom-width: 2px;
+  border-color: #8098ab;
+}
+
+#panel .window-list-item-box:hover,
+#panel .window-list-item-box:groupFocus {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+#panel .window-list-item-box:active,
+#panel .window-list-item-box:checked,
+#panel .window-list-item-box:focus,
+#panel .window-list-item-box:running {
+  background-color: rgba(255, 255, 255, 0.16);
+  border-color: #76c6f1;
+}
+
+#panel .window-list-item-box.left:active,
+#panel .window-list-item-box.left:checked,
+#panel .window-list-item-box.left:focus,
+#panel .window-list-item-box.left:running,
+#panel .window-list-item-box.right:active,
+#panel .window-list-item-box.right:checked,
+#panel .window-list-item-box.right:focus,
+#panel .window-list-item-box.right:running {
+  background-image: url("windows-active.svg");
+}
+
+#panel .window-list-item-box .progress {
+  background-color: rgba(118, 198, 241, 0.5);
+}
+
+#panel .calendar-cinnamon-org-applet.vertical {
+  padding: 8px 0;
+}
+
+#panel .applet-cornerbar {
+  width: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+#panel .applet-cornerbar.vertical {
+  height: 5px;
+}
+
+#panel .applet-cornerbar-box:hover > .applet-cornerbar {
+  background-color: rgba(255, 255, 255, 0.35);
+}
