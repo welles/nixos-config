@@ -1,0 +1,47 @@
+name: musicfab
+
+services:
+  musicfab:
+    container_name: musicfab
+    environment:
+      TZ: Europe/Berlin
+      # Same owner as the Music Manager, which picks the files up from the inbox
+      USER_ID: "1000"
+      GROUP_ID: "100"
+      KEEP_APP_RUNNING: "1"
+    # VNC_PASSWORD; optional MACHINE_ID
+    env_file:
+      - /run/secrets/musicfab
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 5900 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # MusicFab ships its own software into /config and updates itself there
+    image: ghcr.io/welles/musicfab:latest
+    networks:
+      musicfab:
+        ipv4_address: 10.10.22.10
+    ports:
+      # VNC
+      - 50220:5900/tcp
+    restart: unless-stopped
+    # Embedded Chromium
+    shm_size: 1gb
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # Wine prefix with MusicFab, logins, settings and machine-id
+      - /mnt/bucket/musicfab/config:/config:rw
+      # Wine drive O:; the Music Manager's inbox (MusicFab's output folder must be set to O:\)
+      - /mnt/tank/downloads/music_inbox:/output:rw
+
+networks:
+  musicfab:
+    name: musicfab
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.22.0/24
