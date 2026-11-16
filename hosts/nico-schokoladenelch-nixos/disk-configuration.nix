@@ -237,6 +237,22 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "streamfab" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/streamfab";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
+          "musicfab" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/musicfab";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
           "forgejo" = {
             type = "zfs_fs";
             mountpoint = "/mnt/bucket/forgejo";

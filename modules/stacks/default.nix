@@ -143,6 +143,17 @@
         paths = [];
       };
     };
+    musicfab = {
+      # Enable together with adding the "musicfab" secret to the host's
+      # secrets.yaml: sops-nix fails the build while the key is missing.
+      enabled = false;
+      secrets = ["musicfab"];
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     music_manager = {
       enabled = true;
       secrets = ["music_manager"];
@@ -194,6 +205,21 @@
       secrets = [];
       proxies = {
         "ntfy.welles.app" = 50180;
+      };
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
+    streamfab = {
+      # Enable together with adding the "streamfab" secret to the host's
+      # secrets.yaml: sops-nix fails the build while the key is missing.
+      enabled = false;
+      secrets = ["streamfab"];
+      # StreamFab.Manager (web UI + REST API) has its own login (FAB_API_KEY).
+      # The noVNC/VNC side is not proxied, like jdownloader.
+      proxies = {
+        "streamfab.welles.app" = 50211;
       };
       backup = {
         enable = false;
