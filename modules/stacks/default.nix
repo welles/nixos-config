@@ -218,8 +218,9 @@
       # secrets.yaml: sops-nix fails the build while the key is missing.
       enabled = false;
       secrets = ["streamfab"];
-      # No Caddy proxy: the manager and the noVNC web UI are published through
-      # the Cloudflare Tunnel behind Cloudflare Access (cloudflare/apps.tf).
+      # No Caddy proxy: the manager (which also shows StreamFab's noVNC) is
+      # published through the Cloudflare Tunnel behind Cloudflare Access
+      # (cloudflare/apps.tf).
       proxies = {};
       backup = {
         enable = false;
