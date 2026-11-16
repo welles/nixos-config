@@ -15,9 +15,14 @@ limit, but only on AC power in the performance mode; check with
   `modules/no-hibernate.nix` hides it in KDE. The 32G swap is plain swap.
   On low battery the laptop sleeps, at 5 % it shuts down.
 - No SSH server after installation.
-- Home VPN (`modules/wireguard-home.nix`): its own WireGuard client on the
-  router with the tunnel addresses `10.0.6.3` / `fdcc:e6dd:c616:f6a8::3`;
-  the private key is `wireguard/private-key` in `secrets.yaml`.
+- Home VPN (`modules/wireguard-home.nix`): for now it shares the ThinkPad's
+  WireGuard client on the router, i.e. the same tunnel addresses
+  (`10.0.6.2` / `fdcc:e6dd:c616:f6a8::2`) and the same private key, read
+  from `../nico-thinkpad-nixos/secrets.yaml`. Only one of the two laptops
+  can be connected at a time. For its own client: generate a key pair, put
+  the private key as `wireguard/private-key` into this host's
+  `secrets.yaml`, drop the `sopsFile` override in `default.nix`, pick free
+  addresses and register the public key on the router.
 
 ## Installation (nixos-anywhere, erases the disk)
 
