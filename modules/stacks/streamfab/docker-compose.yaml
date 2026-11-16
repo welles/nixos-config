@@ -8,7 +8,10 @@ services:
       USER_ID: "1000"
       GROUP_ID: "1000"
       KEEP_APP_RUNNING: "1"
-    # VNC_PASSWORD and FAB_API_KEY (API key of StreamFab.Manager); optional MACHINE_ID
+      # Jellyfin to scan after filing a download (with FAB_JELLYFIN_API_KEY)
+      FAB_JELLYFIN_URL: https://jellyfin.welles.app
+    # VNC_PASSWORD and FAB_API_KEY (API key of StreamFab.Manager); optional
+    # FAB_JELLYFIN_API_KEY (Jellyfin → Dashboard → API Keys) and MACHINE_ID
     env_file:
       - /run/secrets/streamfab
     healthcheck:
@@ -43,6 +46,9 @@ services:
       - /mnt/bucket/streamfab/config:/config:rw
       # Wine drive O:, YouTube goes into /output/YouTube
       - /mnt/tank/downloads:/output:rw
+      # Jellyfin's libraries: StreamFab.Manager files finished downloads there
+      - /mnt/tank/movies:/media/movies:rw
+      - /mnt/tank/shows:/media/shows:rw
 
 networks:
   streamfab:
