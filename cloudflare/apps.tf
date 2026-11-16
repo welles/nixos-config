@@ -26,6 +26,30 @@ locals {
       policies                 = ["google_email"]
       disable_chunked_encoding = true
     }
+    streamfab = {
+      hostname                 = "streamfab.welles.app"
+      zone                     = "welles.app"
+      service                  = "http://localhost:50211"
+      session_duration         = "24h"
+      policies                 = ["google_email"]
+      disable_chunked_encoding = null
+    }
+    streamfab-gui = {
+      hostname                 = "streamfab-gui.welles.app"
+      zone                     = "welles.app"
+      service                  = "http://localhost:50212"
+      session_duration         = "24h"
+      policies                 = ["google_email"]
+      disable_chunked_encoding = null
+    }
+    musicfab = {
+      hostname                 = "musicfab.welles.app"
+      zone                     = "welles.app"
+      service                  = "http://localhost:50221"
+      session_duration         = "24h"
+      policies                 = ["google_email"]
+      disable_chunked_encoding = null
+    }
     music-manager = {
       hostname                 = "music-manager.welles.app"
       zone                     = "welles.app"
