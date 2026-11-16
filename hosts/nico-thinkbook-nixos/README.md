@@ -17,12 +17,11 @@ limit, but only on AC power in the performance mode; check with
 - No SSH server after installation.
 - Home VPN (`modules/wireguard-home.nix`): for now it shares the ThinkPad's
   WireGuard client on the router, i.e. the same tunnel addresses
-  (`10.0.6.2` / `fdcc:e6dd:c616:f6a8::2`) and the same private key, read
-  from `../nico-thinkpad-nixos/secrets.yaml`. Only one of the two laptops
-  can be connected at a time. For its own client: generate a key pair, put
-  the private key as `wireguard/private-key` into this host's
-  `secrets.yaml`, drop the `sopsFile` override in `default.nix`, pick free
-  addresses and register the public key on the router.
+  (`10.0.6.2` / `fdcc:e6dd:c616:f6a8::2`) and a copy of the same private
+  key in `secrets.yaml`. Only one of the two laptops can be connected at a
+  time. For its own client: generate a key pair, replace
+  `wireguard/private-key` in `secrets.yaml`, pick free addresses and
+  register the public key on the router.
 
 ## Installation (nixos-anywhere, erases the disk)
 
