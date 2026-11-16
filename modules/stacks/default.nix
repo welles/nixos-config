@@ -148,6 +148,8 @@
       # secrets.yaml: sops-nix fails the build while the key is missing.
       enabled = false;
       secrets = ["musicfab"];
+      # No Caddy proxy: the noVNC web UI is published through the Cloudflare
+      # Tunnel behind Cloudflare Access (cloudflare/apps.tf).
       proxies = {};
       backup = {
         enable = false;
@@ -216,11 +218,9 @@
       # secrets.yaml: sops-nix fails the build while the key is missing.
       enabled = false;
       secrets = ["streamfab"];
-      # StreamFab.Manager (web UI + REST API) has its own login (FAB_API_KEY).
-      # The noVNC/VNC side is not proxied, like jdownloader.
-      proxies = {
-        "streamfab.welles.app" = 50211;
-      };
+      # No Caddy proxy: the manager and the noVNC web UI are published through
+      # the Cloudflare Tunnel behind Cloudflare Access (cloudflare/apps.tf).
+      proxies = {};
       backup = {
         enable = false;
         paths = [];

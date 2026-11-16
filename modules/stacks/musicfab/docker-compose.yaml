@@ -26,6 +26,9 @@ services:
     ports:
       # VNC
       - 50220:5900/tcp
+      # noVNC web UI, only for the host's cloudflared (Cloudflare Tunnel behind
+      # Access), as Docker's published ports bypass the host firewall
+      - 127.0.0.1:50221:5800/tcp
     restart: unless-stopped
     # Embedded Chromium
     shm_size: 1gb
