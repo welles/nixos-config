@@ -89,9 +89,6 @@
     nvidiaBusId = "PCI:1:0:0";
   };
   sops.defaultSopsFile = ./secrets.yaml;
-  # Shares the ThinkPad's WireGuard client on the router (same key and
-  # addresses), so only one of the two laptops can be connected at a time
-  sops.secrets."wireguard/private-key".sopsFile = ../nico-thinkpad-nixos/secrets.yaml;
   system.stateVersion = "26.11";
   _module.args = {
     user = "nico";
