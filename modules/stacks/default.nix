@@ -148,8 +148,9 @@
       # secrets.yaml: sops-nix fails the build while the key is missing.
       enabled = false;
       secrets = ["musicfab"];
-      # No Caddy proxy: the noVNC web UI is published through the Cloudflare
-      # Tunnel behind Cloudflare Access (cloudflare/apps.tf).
+      # No Caddy proxy: the manager (which also shows MusicFab's noVNC) is
+      # published through the Cloudflare Tunnel behind Cloudflare Access
+      # (cloudflare/apps.tf).
       proxies = {};
       backup = {
         enable = false;
