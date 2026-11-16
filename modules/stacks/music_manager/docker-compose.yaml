@@ -5,6 +5,11 @@ services:
     container_name: music_manager
     environment:
       TZ: Europe/Berlin
+      # MusicFab manager (musicfab stack), reached through Cloudflare Access; the
+      # secret adds MusicManager__MusicFabApiKey (musicfab's FAB_API_KEY) and the
+      # service token (MusicManager__MusicFabAccessClientId/-Secret, see
+      # cloudflare/access.tf)
+      MusicManager__MusicFabUrl: https://musicfab.welles.app
     env_file:
       - /run/secrets/music_manager
     healthcheck:

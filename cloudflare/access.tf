@@ -47,3 +47,24 @@ resource "cloudflare_zero_trust_access_group" "google_email" {
 locals {
   symfonium_service_token_id = "e63e7ef2-9d66-47c1-bc45-02c549b7c067"
 }
+
+# The service token the Music Manager sends to request downloads from the
+# MusicFab manager (policy "music_manager" on musicfab.welles.app). Its secret
+# is in the encrypted state; copy both values into the music_manager secret:
+#
+#   ./tofu.sh output -raw music_manager_access_client_id
+#   ./tofu.sh output -raw music_manager_access_client_secret
+resource "cloudflare_zero_trust_access_service_token" "music_manager" {
+  account_id = local.account_id
+  name       = "Music Manager"
+  duration   = "forever"
+}
+
+output "music_manager_access_client_id" {
+  value = cloudflare_zero_trust_access_service_token.music_manager.client_id
+}
+
+output "music_manager_access_client_secret" {
+  value     = cloudflare_zero_trust_access_service_token.music_manager.client_secret
+  sensitive = true
+}

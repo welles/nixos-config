@@ -39,7 +39,7 @@ locals {
       zone                     = "welles.app"
       service                  = "http://localhost:50221"
       session_duration         = "24h"
-      policies                 = ["google_email"]
+      policies                 = ["google_email", "music_manager"]
       disable_chunked_encoding = null
     }
     music-manager = {
@@ -53,8 +53,9 @@ locals {
   }
 
   policy_ids = {
-    google_email = cloudflare_zero_trust_access_policy.google_email.id
-    symfonium    = cloudflare_zero_trust_access_policy.symfonium.id
+    google_email  = cloudflare_zero_trust_access_policy.google_email.id
+    symfonium     = cloudflare_zero_trust_access_policy.symfonium.id
+    music_manager = cloudflare_zero_trust_access_policy.music_manager.id
   }
 }
 
@@ -86,6 +87,18 @@ resource "cloudflare_zero_trust_access_policy" "symfonium" {
 
   # Empty, but the dashboard created the policy with it
   connection_rules = { rdp = {} }
+}
+
+# The Music Manager requests downloads from the MusicFab manager with its
+# service token (access.tf)
+resource "cloudflare_zero_trust_access_policy" "music_manager" {
+  account_id = local.account_id
+  name       = "Music Manager Service Token"
+  decision   = "non_identity"
+
+  include = [{
+    service_token = { token_id = cloudflare_zero_trust_access_service_token.music_manager.id }
+  }]
 }
 
 resource "cloudflare_zero_trust_access_application" "app" {
