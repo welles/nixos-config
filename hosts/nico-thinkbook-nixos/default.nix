@@ -89,6 +89,9 @@
     nvidiaBusId = "PCI:1:0:0";
   };
   sops.defaultSopsFile = ./secrets.yaml;
+  # Shares the ThinkPad's WireGuard client on the router (same key and
+  # addresses), so only one of the two laptops can be connected at a time
+  sops.secrets."wireguard/private-key".sopsFile = ../nico-thinkpad-nixos/secrets.yaml;
   system.stateVersion = "26.11";
   _module.args = {
     user = "nico";
@@ -104,8 +107,8 @@
     homeAssistantUrl = "https://homeassistant.welles.app";
     nextcloudUrl = "https://nextcloud.welles.app";
     homeWireguardAddress = {
-      ipv4 = "10.0.6.3";
-      ipv6 = "fdcc:e6dd:c616:f6a8::3";
+      ipv4 = "10.0.6.2";
+      ipv6 = "fdcc:e6dd:c616:f6a8::2";
     };
     touchpads = [
       {
