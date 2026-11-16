@@ -32,10 +32,8 @@ services:
       - 50210:5900/tcp
       # Only for the host's cloudflared (Cloudflare Tunnel behind Access), as
       # Docker's published ports bypass the host firewall:
-      # StreamFab.Manager (web UI + REST API)
+      # StreamFab.Manager (web UI + REST API; shows StreamFab itself under /program)
       - 127.0.0.1:50211:5810/tcp
-      # noVNC web UI of StreamFab itself
-      - 127.0.0.1:50212:5800/tcp
     restart: unless-stopped
     # Embedded Chromium
     shm_size: 1gb
