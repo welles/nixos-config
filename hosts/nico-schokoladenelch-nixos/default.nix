@@ -11,8 +11,10 @@
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ../../modules/intel-gpu-i915.nix
+    ../../modules/pcie-aspm-off.nix
 
     # Networking
+    ../../modules/igc-eee-off.nix
     ../../modules/firewall-trusted-subnets.nix
     ../../modules/networkmanager-lan-bridge.nix
     ../../modules/nftables.nix

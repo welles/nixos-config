@@ -6,6 +6,23 @@ is still needed, so it can be removed once the cause is gone.
 
 When removing a workaround, delete its entry here in the same commit.
 
+## Server: Intel I225/I226 network card hangs
+
+- **Where:** `modules/pcie-aspm-off.nix`, `modules/igc-eee-off.nix`
+  (imported by `hosts/nico-schokoladenelch-nixos`)
+- **Added:** 2026-11-17
+- **Problem:** About six minutes after boot the server's network card
+  (`igc`, `enp6s0`) logged "NETDEV WATCHDOG: transmit queue 3 timed out" and
+  "Reset adapter", after which several CPUs reported soft lockups and the
+  server stopped responding. PCIe power management (ASPM) and Energy
+  Efficient Ethernet (EEE) are the usual triggers for this on I225/I226.
+- **Workaround:** Boots with `pcie_aspm=off` and turns EEE off for every
+  `igc` interface when it appears.
+- **Remove when:** The hang turns out to have another cause, or the server
+  runs stable for weeks without both modules. Check
+  `journalctl -k | grep -iE 'igc|NETDEV WATCHDOG|soft lockup'` after
+  removing them.
+
 ## hass-cli: `raw ws` fails on Python 3.14
 
 - **Where:** `modules/home-assistant-api/default.nix`,
