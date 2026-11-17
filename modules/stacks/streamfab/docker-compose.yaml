@@ -22,8 +22,9 @@ services:
       retries: 3
       # The first start downloads and installs StreamFab into the Wine prefix
       start_period: 120s
-    # StreamFab ships its own software into /config and updates itself there
-    image: ghcr.io/welles/streamfab:latest
+    # StreamFab itself is installed into /config and updates itself there; the
+    # image (Wine and the manager, whose database has migrations) is pinned
+    image: ghcr.io/welles/streamfab:sha-cc8b0ba
     networks:
       streamfab:
         ipv4_address: 10.10.21.10
