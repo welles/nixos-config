@@ -112,7 +112,7 @@
       # cloudflare/apps.tf: team_name, and the app's audience tag, which
       # exists after `./tofu.sh apply` (`./tofu.sh output access_audiences`).
       accessTeamDomain = "nicowelles.cloudflareaccess.com";
-      accessAudience = null;
+      accessAudience = "fa22da04b3e7c6c5ba0a0529d443a722d0570e5561daa2ff43839d82432be1f3";
       # Deliberately empty: only the Google E-Mail group of cloudflare/ gets
       # a token for this app, and the app checks every token's audience. The
       # addresses stay a secret of cloudflare/secrets.yaml.
