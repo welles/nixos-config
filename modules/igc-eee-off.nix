@@ -7,6 +7,6 @@
 # without it, or the hang turns out to have another cause.
 {pkgs, ...}: {
   services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="net", DRIVERS=="igc", RUN+="${pkgs.ethtool}/bin/ethtool --set-eee %k eee off"
+    ACTION=="add", SUBSYSTEM=="net", DRIVERS=="igc", RUN+="${pkgs.ethtool}/bin/ethtool --set-eee $name eee off"
   '';
 }
