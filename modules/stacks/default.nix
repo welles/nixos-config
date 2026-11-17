@@ -144,9 +144,7 @@
       };
     };
     musicfab = {
-      # Enable together with adding the "musicfab" secret to the host's
-      # secrets.yaml: sops-nix fails the build while the key is missing.
-      enabled = false;
+      enabled = true;
       secrets = ["musicfab"];
       # No Caddy proxy: the manager (which also shows MusicFab's noVNC) is
       # published through the Cloudflare Tunnel behind Cloudflare Access
@@ -215,9 +213,7 @@
       };
     };
     streamfab = {
-      # Enable together with adding the "streamfab" secret to the host's
-      # secrets.yaml: sops-nix fails the build while the key is missing.
-      enabled = false;
+      enabled = true;
       secrets = ["streamfab"];
       # No Caddy proxy: the manager (which also shows StreamFab's noVNC) is
       # published through the Cloudflare Tunnel behind Cloudflare Access
