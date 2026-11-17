@@ -289,7 +289,9 @@
           serviceConfig =
             {
               Restart = "always";
-              TimeoutStopSec = 60;
+              # Longer than RULES.md's stop_grace_period (2m), which
+              # `docker compose down` in preStop waits for
+              TimeoutStopSec = 150;
             }
             // lib.optionalAttrs ((cfg.composeSecrets or []) != []) {
               EnvironmentFile = map (s: config.sops.secrets.${s}.path) (cfg.composeSecrets or []);
