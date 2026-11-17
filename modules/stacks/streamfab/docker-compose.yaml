@@ -1,0 +1,59 @@
+name: streamfab
+
+services:
+  streamfab:
+    container_name: streamfab
+    environment:
+      TZ: Europe/Berlin
+      USER_ID: "1000"
+      GROUP_ID: "1000"
+      KEEP_APP_RUNNING: "1"
+      # Jellyfin to scan after filing a download (with FAB_JELLYFIN_API_KEY)
+      FAB_JELLYFIN_URL: https://jellyfin.welles.app
+    # VNC_PASSWORD and FAB_API_KEY (API key of StreamFab.Manager); optional
+    # FAB_JELLYFIN_API_KEY (Jellyfin → Dashboard → API Keys) and MACHINE_ID
+    env_file:
+      - /run/secrets/streamfab
+    healthcheck:
+      # StreamFab.Manager answers /health without the API key
+      test: ["CMD-SHELL", "curl -f http://localhost:5810/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      # The first start downloads and installs StreamFab into the Wine prefix
+      start_period: 120s
+    # StreamFab itself is installed into /config and updates itself there; the
+    # image (Wine and the manager, whose database has migrations) is pinned
+    image: ghcr.io/welles/streamfab:sha-cc8b0ba
+    networks:
+      streamfab:
+        ipv4_address: 10.10.21.10
+    ports:
+      # VNC
+      - 50210:5900/tcp
+      # Only for the host's cloudflared (Cloudflare Tunnel behind Access), as
+      # Docker's published ports bypass the host firewall:
+      # StreamFab.Manager (web UI + REST API; shows StreamFab itself under /program)
+      - 127.0.0.1:50211:5810/tcp
+    restart: unless-stopped
+    # Embedded Chromium
+    shm_size: 1gb
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # Wine prefix with StreamFab, logins, settings, machine-id and the manager's database
+      - /mnt/bucket/streamfab/config:/config:rw
+      # Wine drive O:, YouTube goes into /output/YouTube
+      - /mnt/tank/downloads:/output:rw
+      # Jellyfin's libraries: StreamFab.Manager files finished downloads there
+      - /mnt/tank/movies:/media/movies:rw
+      - /mnt/tank/shows:/media/shows:rw
+
+networks:
+  streamfab:
+    name: streamfab
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.21.0/24

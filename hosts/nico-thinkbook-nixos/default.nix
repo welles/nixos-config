@@ -32,6 +32,7 @@
     ../../modules/avahi.nix
     ../../modules/networkmanager.nix
     ../../modules/networkmanager-skip-wait-online.nix
+    ../../modules/wireguard-home.nix
 
     # Desktop environment
     ../../modules/flatpak.nix
@@ -102,6 +103,10 @@
     extraGroups = ["wheel"];
     homeAssistantUrl = "https://homeassistant.welles.app";
     nextcloudUrl = "https://nextcloud.welles.app";
+    homeWireguardAddress = {
+      ipv4 = "10.0.6.2";
+      ipv6 = "fdcc:e6dd:c616:f6a8::2";
+    };
     touchpads = [
       {
         name = "SYNA2BA6:00 06CB:CF00 Touchpad";

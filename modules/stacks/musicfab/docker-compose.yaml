@@ -1,0 +1,54 @@
+name: musicfab
+
+services:
+  musicfab:
+    container_name: musicfab
+    environment:
+      TZ: Europe/Berlin
+      # Same owner as the Music Manager, which picks the files up from the inbox
+      USER_ID: "1000"
+      GROUP_ID: "100"
+      KEEP_APP_RUNNING: "1"
+    # VNC_PASSWORD and FAB_API_KEY (API key of MusicFab.Manager); optional MACHINE_ID
+    env_file:
+      - /run/secrets/musicfab
+    healthcheck:
+      # MusicFab.Manager answers /health without the API key
+      test: ["CMD-SHELL", "curl -f http://localhost:5810/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      # The first start downloads and installs MusicFab into the Wine prefix
+      start_period: 120s
+    # MusicFab itself is installed into /config and updates itself there; the
+    # image (Wine and the manager, whose database has migrations) is pinned
+    image: ghcr.io/welles/musicfab:sha-cc8b0ba
+    networks:
+      musicfab:
+        ipv4_address: 10.10.22.10
+    ports:
+      # VNC
+      - 50220:5900/tcp
+      # MusicFab.Manager (web UI + REST API; shows MusicFab itself under
+      # /program), only for the host's cloudflared (Cloudflare Tunnel behind
+      # Access), as Docker's published ports bypass the host firewall
+      - 127.0.0.1:50221:5810/tcp
+    restart: unless-stopped
+    # Embedded Chromium
+    shm_size: 1gb
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # Wine prefix with MusicFab, logins, settings and machine-id
+      - /mnt/bucket/musicfab/config:/config:rw
+      # Wine drive O:, the Music Manager's inbox: MusicFab writes to musicfab/<album>
+      - /mnt/tank/downloads/music_inbox:/output:rw
+
+networks:
+  musicfab:
+    name: musicfab
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.22.0/24

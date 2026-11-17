@@ -2,7 +2,7 @@
 
 Lenovo ThinkBook laptop with KDE Plasma, composed like `nico-thinkpad-nixos`
 minus the ThinkPad-only hardware (screen rotation, LTE modem, on-screen
-keyboard) and the home VPN, plus NVIDIA PRIME offload
+keyboard), plus NVIDIA PRIME offload
 (`modules/nvidia-prime-offload.nix`): the Intel GPU drives the display,
 `nvidia-offload <command>` renders on the NVIDIA GPU. NVIDIA Dynamic Boost
 (`modules/nvidia-dynamic-boost.nix`) lets the GPU go above its 50 W base
@@ -15,6 +15,13 @@ limit, but only on AC power in the performance mode; check with
   `modules/no-hibernate.nix` hides it in KDE. The 32G swap is plain swap.
   On low battery the laptop sleeps, at 5 % it shuts down.
 - No SSH server after installation.
+- Home VPN (`modules/wireguard-home.nix`): for now it shares the ThinkPad's
+  WireGuard client on the router, i.e. the same tunnel addresses
+  (`10.0.6.2` / `fdcc:e6dd:c616:f6a8::2`) and a copy of the same private
+  key in `secrets.yaml`. Only one of the two laptops can be connected at a
+  time. For its own client: generate a key pair, replace
+  `wireguard/private-key` in `secrets.yaml`, pick free addresses and
+  register the public key on the router.
 
 ## Installation (nixos-anywhere, erases the disk)
 

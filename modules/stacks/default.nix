@@ -143,6 +143,18 @@
         paths = [];
       };
     };
+    musicfab = {
+      enabled = true;
+      secrets = ["musicfab"];
+      # No Caddy proxy: the manager (which also shows MusicFab's noVNC) is
+      # published through the Cloudflare Tunnel behind Cloudflare Access
+      # (cloudflare/apps.tf).
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     music_manager = {
       enabled = true;
       secrets = ["music_manager"];
@@ -195,6 +207,18 @@
       proxies = {
         "ntfy.welles.app" = 50180;
       };
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
+    streamfab = {
+      enabled = true;
+      secrets = ["streamfab"];
+      # No Caddy proxy: the manager (which also shows StreamFab's noVNC) is
+      # published through the Cloudflare Tunnel behind Cloudflare Access
+      # (cloudflare/apps.tf).
+      proxies = {};
       backup = {
         enable = false;
         paths = [];
@@ -265,7 +289,9 @@
           serviceConfig =
             {
               Restart = "always";
-              TimeoutStopSec = 60;
+              # Longer than RULES.md's stop_grace_period (2m), which
+              # `docker compose down` in preStop waits for
+              TimeoutStopSec = 150;
             }
             // lib.optionalAttrs ((cfg.composeSecrets or []) != []) {
               EnvironmentFile = map (s: config.sops.secrets.${s}.path) (cfg.composeSecrets or []);
