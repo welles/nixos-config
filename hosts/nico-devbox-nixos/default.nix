@@ -39,6 +39,7 @@
 
     # Services
     ../../modules/claude-desktop-autostart.nix
+    ../../modules/claude-remote-manager-lan-tunnel.nix
     ../../modules/home-assistant-api
     ../../modules/workspace-git.nix
     ../../modules/playwright-mcp.nix
@@ -99,6 +100,26 @@
       "/mnt/tank/music" = "tank-music";
       "/mnt/tank/audiobooks" = "tank-audiobooks";
       "/mnt/tank/podcasts" = "tank-podcasts";
+    };
+    ntfyUrl = "https://ntfy.welles.app";
+    # The server's lanBridge.macAddress: its cloudflared forwards
+    # claude.welles.app to this VM.
+    tunnelHostMacAddress = "10:7c:61:b4:90:e4";
+    claudeRemoteManager = {
+      hostName = "claude.welles.app";
+      # Previews off for now; later the preview base URL and previewAccessAudience.
+      previewUrl = null;
+      # cloudflare/apps.tf: team_name, and the app's audience tag, which
+      # exists after `./tofu.sh apply` (`./tofu.sh output access_audiences`).
+      accessTeamDomain = "nicowelles.cloudflareaccess.com";
+      accessAudience = "fa22da04b3e7c6c5ba0a0529d443a722d0570e5561daa2ff43839d82432be1f3";
+      # Deliberately empty: only the Google E-Mail group of cloudflare/ gets
+      # a token for this app, and the app checks every token's audience. The
+      # addresses stay a secret of cloudflare/secrets.yaml.
+      accessAllowedEmails = [];
+      githubAppId = 5736769;
+      ntfyTopic = "claude-remote-manager";
+      instructions = builtins.readFile ./claude-remote-manager.md;
     };
   };
 }

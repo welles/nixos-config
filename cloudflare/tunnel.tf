@@ -19,6 +19,19 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "schokoladenelch" {
 
   config = {
     ingress = concat(
+      # The apps' bypass paths, before the apps' own rules: exactly that
+      # path, without cloudflared's Access check (Access lets these requests
+      # through without a token); the app authenticates them itself
+      [
+        for bypass in local.bypass_paths : {
+          hostname = local.apps[bypass.app].hostname
+          path     = "^${replace(bypass.path, ".", "\\.")}$"
+          service  = local.apps[bypass.app].service
+          origin_request = {
+            disable_chunked_encoding = local.apps[bypass.app].disable_chunked_encoding
+          }
+        }
+      ],
       [
         for key, app in local.apps : {
           hostname = app.hostname

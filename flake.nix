@@ -45,6 +45,11 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # No `follows`: the package (an unfree Claude Code binary and prebuilt
+    # native Node.js modules) is built with the nixpkgs the app's CI tests it
+    # against. Updated after every green CI run of the app's main branch
+    # (.github/workflows/update-claude-remote-manager.yml).
+    claude-remote-manager.url = "github:welles/claude-remote-manager";
   };
 
   outputs = {

@@ -1,0 +1,181 @@
+name: Update Claude Remote Manager
+
+# Updates only the flake input claude-remote-manager, so the devbox gets a new
+# version of the app with its next deploy instead of after the nightly update.
+# Started by the app repository (welles/claude-remote-manager) after a green CI
+# run on its main branch, with the commit that passed as `rev`; checks and
+# commit as in update-inputs.yml. Same concurrency group as the nightly update
+# and the local package update, so they never change flake.lock at once.
+
+concurrency:
+  group: nix-flake
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      rev:
+        description: "Commit of claude-remote-manager that passed CI (empty: newest main)"
+        required: false
+        default: ""
+
+jobs:
+  update-and-setup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      changed: ${{ steps.check-changes.outputs.changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Set up Cachix
+        uses: cachix/cachix-action@v17
+        with:
+          name: welles-nixos-config
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Update flake input claude-remote-manager
+        run: nix flake update claude-remote-manager
+
+      # The newest main may already be a later commit whose CI has not
+      # finished; its own run updates the input once it is green.
+      - name: Check for changes
+        id: check-changes
+        env:
+          EXPECTED_REV: ${{ inputs.rev }}
+        run: |
+          locked=$(jq -r '.nodes["claude-remote-manager"].locked.rev' flake.lock)
+          if git diff --quiet flake.lock; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "claude-remote-manager is already at $locked. Stopping early."
+          elif [[ -n "$EXPECTED_REV" && "$locked" != "$EXPECTED_REV" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "main of claude-remote-manager is at $locked, not at $EXPECTED_REV, which passed CI. Stopping early."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "claude-remote-manager updated to $locked. Proceeding with checks."
+          fi
+
+      - name: Generate host matrix
+        if: steps.check-changes.outputs.changed == 'true'
+        id: set-matrix
+        run: |
+          HOSTS=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json)
+          echo "matrix=$HOSTS" >> "$GITHUB_OUTPUT"
+
+      - name: Upload updated flake.lock
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: flake-lock
+          path: flake.lock
+          retention-days: 1
+
+  # Runs in parallel to the host builds and does not gate the commit, so a
+  # broken host only fails the run (and triggers a notification).
+  flake-check:
+    needs: update-and-setup
+    if: needs.update-and-setup.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v8
+        with:
+          name: flake-lock
+          path: .
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Run nix flake check
+        run: nix flake check
+
+  evaluate:
+    needs: update-and-setup
+    if: needs.update-and-setup.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ${{ fromJson(needs.update-and-setup.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v8
+        with:
+          name: flake-lock
+          path: .
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Set up Cachix
+        uses: cachix/cachix-action@v17
+        with:
+          name: welles-nixos-config
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build NixOS Configuration (${{ matrix.host }})
+        env:
+          HOST: ${{ matrix.host }}
+        run: |
+          set -o pipefail
+          if ! nix build ".#nixosConfigurations.\"$HOST\".config.system.build.toplevel" 2>&1 | tee build.log; then
+            # The Cachix post step floods the log, so surface the error as an
+            # annotation and in the job summary.
+            {
+              echo "### Build of \`$HOST\` failed"
+              echo '```'
+              tail -n 80 build.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            msg=$(tail -n 30 build.log)
+            msg=${msg//'%'/'%25'}
+            msg=${msg//$'\r'/'%0D'}
+            msg=${msg//$'\n'/'%0A'}
+            echo "::error title=Build of $HOST failed::$msg"
+            exit 1
+          fi
+
+  # Commit even if some hosts failed to build, like the nightly update: a
+  # single broken host must not hold back the update for all others. Failed
+  # host builds still mark the run as failed, so GitHub sends a notification.
+  commit-update:
+    needs: [update-and-setup, evaluate]
+    if: >-
+      !cancelled()
+      && needs.update-and-setup.result == 'success'
+      && needs.update-and-setup.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v8
+        with:
+          name: flake-lock
+          path: .
+
+      - name: Commit and push changes
+        uses: planetscale/ghcommit-action@v0.2.22
+        with:
+          commit_message: "Update flake lock file (claude-remote-manager)"
+          repo: ${{ github.repository }}
+          branch: ${{ github.ref_name }}
+          file_pattern: "flake.lock"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
