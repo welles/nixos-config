@@ -7,18 +7,14 @@
 # xrdp keeps running as before, so RDP and this work side by side; if this
 # breaks, RDP is unaffected.
 #
-# The web client listens on all IPv4 addresses without a login of its own,
-# as Cloudflare Access is in front of it; the firewall admits its port only
-# from the machine whose cloudflared forwards to it (`tunnelHostMacAddress`,
-# as claude-remote-manager-lan-tunnel.nix does).
+# The web client has no login of its own and listens on localhost only, port
+# 6901: publish it with a Cloudflare Tunnel of this host (cloudflared.nix,
+# cloudflare/devbox-vnc.tf), whose cloudflared rejects requests that did not
+# pass Cloudflare Access. Nothing in the LAN reaches it.
 #
 # The xrdp session is the first one sesman starts (the boot session), so its
 # display is :10 (X11DisplayOffset); KasmVNC uses :20.
-{
-  user,
-  tunnelHostMacAddress,
-  ...
-}: let
+{user, ...}: let
   port = 6901;
   appDisplay = ":10";
   vncDisplay = ":20";
@@ -26,7 +22,6 @@ in {
   imports = [
     ./packages/kasmvnc.nix
     ./xrdp-boot-session.nix
-    ./nftables.nix
   ];
 
   systemd.services = {
@@ -44,7 +39,7 @@ in {
           "-geometry 1920x1080"
           "-depth 24"
           "-nolisten tcp"
-          "-interface 0.0.0.0"
+          "-interface 127.0.0.1"
           "-websocketPort ${toString port}"
           "-sslOnly 0"
           "-DisableBasicAuth"
@@ -74,8 +69,4 @@ in {
       };
     };
   };
-
-  networking.firewall.extraInputRules = ''
-    ether saddr ${tunnelHostMacAddress} tcp dport ${toString port} accept
-  '';
 }

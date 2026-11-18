@@ -20,7 +20,9 @@ other host in this flake.
 - The same desktop session in the browser through KasmVNC at
   `https://devbox-vnc.welles.app`, next to RDP (`modules/kasmvnc-xrdp-mirror.nix`:
   KasmVNC mirrors the xrdp session's display :10); only the Google login of
-  Cloudflare Access. If it breaks, RDP keeps working.
+  Cloudflare Access. KasmVNC listens on localhost only and is published by
+  the devbox's own Cloudflare Tunnel (`modules/cloudflared.nix`, token in
+  `secrets.yaml`). If it breaks, RDP keeps working.
 - Claude Desktop starts with that session, so the VM is ready for Remote
   Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
   Repositories for them are cloned by hand into `~/workspace`, where Git

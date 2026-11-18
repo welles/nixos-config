@@ -48,18 +48,6 @@ locals {
       disable_chunked_encoding = null
       bypass_paths             = []
     }
-    # The devbox's desktop through KasmVNC (modules/kasmvnc-xrdp-mirror.nix),
-    # next to the browser-based RDP of devbox-rdp.tf; KasmVNC has no login of
-    # its own, this application is it.
-    devbox-vnc = {
-      hostname                 = "devbox-vnc.welles.app"
-      zone                     = "welles.app"
-      service                  = "http://nico-devbox-nixos:6901"
-      session_duration         = "24h"
-      policies                 = ["google_email"]
-      disable_chunked_encoding = null
-      bypass_paths             = []
-    }
     # Claude Remote Manager on the devbox VM (hosts/nico-devbox-nixos), which
     # the server reaches by its name in the LAN. A long session, as the
     # installed web app would otherwise end up at the login page every day;
