@@ -37,6 +37,7 @@
     ../../modules/xrdp-boot-session.nix
     ../../modules/xrdp-keyboard-default-de.nix
     ../../modules/xrdp-debug-log.nix
+    ../../modules/xrdp-login-with-client-credentials
     ../../modules/user-dirs.nix
 
     # Services
