@@ -35,6 +35,7 @@
     ../../modules/xrdp-audio.nix
     ../../modules/xrdp-glamor.nix
     ../../modules/xrdp-boot-session.nix
+    ../../modules/xrdp-keyboard-us-as-de.nix
     ../../modules/user-dirs.nix
 
     # Services

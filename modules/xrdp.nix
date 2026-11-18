@@ -17,14 +17,27 @@
 # session, which an RDP session isn't, so every connection asked for the
 # password ("Legitimierung ist zur Erstellung eines farbverwalteten Geräts
 # notwendig"). The user may manage colord devices and profiles without it.
+#
+# `services.xrdp.extraConfDirCommands` takes only one definition, so modules
+# that change xrdp's config files add their commands to `xrdpConfDirCommands`
+# instead, which collects them all.
 {
+  config,
   lib,
   user,
   persistRoot,
   xrdpSession,
   ...
 }: {
-  services.xrdp = {
+  options.xrdpConfDirCommands = lib.mkOption {
+    type = lib.types.lines;
+    default = "";
+    description = "Commands run on xrdp's config directory ($out), from every module";
+  };
+
+  config.services.xrdp.extraConfDirCommands = config.xrdpConfDirCommands;
+
+  config.services.xrdp = {
     enable = true;
     openFirewall = true;
     defaultWindowManager = xrdpSession;
@@ -32,9 +45,9 @@
     sslKey = "/var/lib/xrdp/key.pem";
   };
 
-  security.pam.services.xrdp-sesman.enableGnomeKeyring = true;
+  config.security.pam.services.xrdp-sesman.enableGnomeKeyring = true;
 
-  security.polkit.extraConfig = ''
+  config.security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id.indexOf("org.freedesktop.color-manager.") == 0 &&
           subject.user == "${user}") {
@@ -43,7 +56,7 @@
     });
   '';
 
-  environment.persistence = lib.mkIf (persistRoot != null) {
+  config.environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.directories = ["/var/lib/xrdp"];
   };
 }
