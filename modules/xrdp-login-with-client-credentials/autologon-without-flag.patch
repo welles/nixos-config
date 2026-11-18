@@ -1,0 +1,23 @@
+--- a/libxrdp/xrdp_sec.c
++++ b/libxrdp/xrdp_sec.c
+@@ -773,6 +773,20 @@
+     in_uint16_le(s, len_password);
+ 
+     /*
++     * Log in with the credentials the client sent even if it didn't request
++     * auto logon: Cloudflare's browser-based RDP asks for them, sends them,
++     * but doesn't set INFO_AUTOLOGON (it would use NLA, which xrdp lacks).
++     * The password is still checked by sesman as usual. */
++    if (!(flags & RDP_LOGON_AUTO) && len_user > 0 && len_password > 0
++            && !self->rdp_layer->client_info.is_mce)
++    {
++        flags |= RDP_LOGON_AUTO;
++        self->rdp_layer->client_info.rdp_autologin = 1;
++        LOG(LOG_LEVEL_INFO, "Client sent credentials without requesting "
++            "auto logon, logging in with them.");
++    }
++
++    /*
+      * Ignore autologin requests if the password is empty. System managers
+      * who really want to allow empty passwords can do this with a
+      * special session type */

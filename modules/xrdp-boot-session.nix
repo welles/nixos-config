@@ -19,7 +19,6 @@
 # as usual; the boot session comes back with the next boot.
 {
   config,
-  pkgs,
   user,
   ...
 }: let
@@ -31,15 +30,11 @@ in {
     ./user-password-plaintext.nix
   ];
 
-  services.xrdp.package = pkgs.xrdp.overrideAttrs (old: {
-    postInstall =
-      old.postInstall
-      + ''
-        substituteInPlace $out/etc/xrdp/xrdp.ini \
-          --replace-fail '[Xorg]' '[Xorg]
-        xserverbpp=${toString bpp}'
-      '';
-  });
+  xrdpConfDirCommands = ''
+    substituteInPlace $out/xrdp.ini \
+      --replace-fail '[Xorg]' '[Xorg]
+    xserverbpp=${toString bpp}'
+  '';
 
   systemd.services.xrdp-boot-session = {
     description = "Start the xrdp desktop session of ${user}";
