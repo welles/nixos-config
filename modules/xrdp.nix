@@ -35,28 +35,29 @@
     description = "Commands run on xrdp's config directory ($out), from every module";
   };
 
-  config.services.xrdp.extraConfDirCommands = config.xrdpConfDirCommands;
+  config = {
+    services.xrdp = {
+      enable = true;
+      openFirewall = true;
+      defaultWindowManager = xrdpSession;
+      sslCert = "/var/lib/xrdp/cert.pem";
+      sslKey = "/var/lib/xrdp/key.pem";
+      extraConfDirCommands = config.xrdpConfDirCommands;
+    };
 
-  config.services.xrdp = {
-    enable = true;
-    openFirewall = true;
-    defaultWindowManager = xrdpSession;
-    sslCert = "/var/lib/xrdp/cert.pem";
-    sslKey = "/var/lib/xrdp/key.pem";
-  };
+    security.pam.services.xrdp-sesman.enableGnomeKeyring = true;
 
-  config.security.pam.services.xrdp-sesman.enableGnomeKeyring = true;
+    security.polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (action.id.indexOf("org.freedesktop.color-manager.") == 0 &&
+            subject.user == "${user}") {
+          return polkit.Result.YES;
+        }
+      });
+    '';
 
-  config.security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (action.id.indexOf("org.freedesktop.color-manager.") == 0 &&
-          subject.user == "${user}") {
-        return polkit.Result.YES;
-      }
-    });
-  '';
-
-  config.environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.directories = ["/var/lib/xrdp"];
+    environment.persistence = lib.mkIf (persistRoot != null) {
+      ${persistRoot}.directories = ["/var/lib/xrdp"];
+    };
   };
 }
