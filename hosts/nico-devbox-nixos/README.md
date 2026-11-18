@@ -106,8 +106,9 @@ a terminal session on this machine.
   included; an Autofix run asks for every call but reading.
 - **State**: everything in `/var/lib/claude-remote-manager` (persisted as one
   directory): database, mirrors and session clones; the Claude Code
-  transcripts are in `~/.claude`. The app's record of to whom it gave the
-  data directory, `/var/lib/claude-remote-manager-owner`, is persisted too.
+  transcripts are in `~/.claude`. The root-only directory in which the app
+  records to whom it gave the data directory,
+  `/var/lib/claude-remote-manager-owner`, is persisted too.
 - **Secrets** in this host's `secrets.yaml`, readable by root only:
   `claude-remote-manager/github-app-key` (private key of the GitHub App,
   App ID 5736769), `claude-remote-manager/github-webhook-secret`,

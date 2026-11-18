@@ -33,8 +33,10 @@
 #
 # State: the data directory /var/lib/claude-remote-manager (database,
 # mirrors and session clones) as one persisted directory, so clones keep
-# hardlinking the mirrors' objects, and the app's root-only record of to
-# whom the data directory was given (/var/lib/claude-remote-manager-owner).
+# hardlinking the mirrors' objects, and the root-only directory in which
+# the app records to whom it gave the data directory
+# (/var/lib/claude-remote-manager-owner/<hash of the data directory>; the
+# app creates it as root:root 0700 and checks that on every start).
 {
   config,
   lib,
@@ -132,7 +134,11 @@ in {
   environment.persistence = lib.mkIf (persistRoot != null) {
     ${persistRoot}.directories = [
       dataDir
-      "/var/lib/claude-remote-manager-owner"
+      # A directory (the app writes its stamp file inside), root's only.
+      {
+        directory = "/var/lib/claude-remote-manager-owner";
+        mode = "0700";
+      }
     ];
   };
 }
