@@ -17,33 +17,47 @@
 # session, which an RDP session isn't, so every connection asked for the
 # password ("Legitimierung ist zur Erstellung eines farbverwalteten Geräts
 # notwendig"). The user may manage colord devices and profiles without it.
+#
+# `services.xrdp.extraConfDirCommands` takes only one definition, so modules
+# that change xrdp's config files add their commands to `xrdpConfDirCommands`
+# instead, which collects them all.
 {
+  config,
   lib,
   user,
   persistRoot,
   xrdpSession,
   ...
 }: {
-  services.xrdp = {
-    enable = true;
-    openFirewall = true;
-    defaultWindowManager = xrdpSession;
-    sslCert = "/var/lib/xrdp/cert.pem";
-    sslKey = "/var/lib/xrdp/key.pem";
+  options.xrdpConfDirCommands = lib.mkOption {
+    type = lib.types.lines;
+    default = "";
+    description = "Commands run on xrdp's config directory ($out), from every module";
   };
 
-  security.pam.services.xrdp-sesman.enableGnomeKeyring = true;
+  config = {
+    services.xrdp = {
+      enable = true;
+      openFirewall = true;
+      defaultWindowManager = xrdpSession;
+      sslCert = "/var/lib/xrdp/cert.pem";
+      sslKey = "/var/lib/xrdp/key.pem";
+      extraConfDirCommands = config.xrdpConfDirCommands;
+    };
 
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (action.id.indexOf("org.freedesktop.color-manager.") == 0 &&
-          subject.user == "${user}") {
-        return polkit.Result.YES;
-      }
-    });
-  '';
+    security.pam.services.xrdp-sesman.enableGnomeKeyring = true;
 
-  environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.directories = ["/var/lib/xrdp"];
+    security.polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (action.id.indexOf("org.freedesktop.color-manager.") == 0 &&
+            subject.user == "${user}") {
+          return polkit.Result.YES;
+        }
+      });
+    '';
+
+    environment.persistence = lib.mkIf (persistRoot != null) {
+      ${persistRoot}.directories = ["/var/lib/xrdp"];
+    };
   };
 }

@@ -55,7 +55,7 @@ in {
   # The [Xorg] section of sesman.ini references xorgxrdp's modules and
   # xorg.conf by store path; swap the modules for the glamor build and the
   # config for a copy with the extended DRMAllowList next to sesman.ini.
-  services.xrdp.extraConfDirCommands = ''
+  xrdpConfDirCommands = ''
     cp ${xorgxrdpGlamor}/etc/X11/xrdp/xorg.conf $out/xorgxrdp.conf
     chmod +w $out/xorgxrdp.conf
     substituteInPlace $out/xorgxrdp.conf \
