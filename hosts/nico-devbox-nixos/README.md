@@ -74,9 +74,9 @@ or `nixos-rebuild switch --target-host` from elsewhere).
 
 [Claude Remote Manager](https://github.com/welles/claude-remote-manager)
 runs as the system service `claude-remote-manager`
-(`modules/claude-remote-manager.nix`, the app's own NixOS module). Its API
-runs as the system user `claude-remote-manager`; the Claude Code sessions it
-starts run as `nico`.
+(`modules/claude-remote-manager.nix`, the app's own NixOS module) as `nico`,
+without a sandbox: its Claude Code sessions are Claude Code of `nico`, like
+a terminal session on this machine.
 
 - **Reachable** at `https://claude.welles.app` through the server's
   Cloudflare Tunnel and behind Cloudflare Access (Google login, 30-day
@@ -86,9 +86,10 @@ starts run as `nico`.
   port 8080 of the VM; the firewall admits that port only from the server
   (by its MAC address, `tunnelHostMacAddress`;
   `modules/claude-remote-manager-lan-tunnel.nix`). Open it through
-  `claude.welles.app` also from the devbox itself: the API refuses
-  requests from processes of `nico` on this machine, as they could be
-  sessions.
+  `claude.welles.app` also from the devbox itself. The API refuses requests
+  from processes it started (sessions and their tools), so a session does
+  not approve its own requests by accident; the owner's own programs here
+  are not refused.
 - **Previews** of dev servers are not enabled yet (`previewUrl = null`): a
   wildcard two labels below `welles.app` needs Cloudflare's paid Advanced
   Certificate, a separate domain is the alternative. Enabling them means an
@@ -96,18 +97,20 @@ starts run as `nico`.
   (its own Access application), plus a `cloudflare_certificate_pack` for
   the first option or the new zone in `zone_ids` for the second, and
   `previewUrl` and `previewAccessAudience` in `claudeRemoteManager`.
-- **Sessions** see the file system read-only except `/home/nico` and the
-  app's data directory, with their own `/tmp`. Hidden from them: the sops
-  secrets and the age key, the SSH host keys, the Docker socket, the
-  1Password SSH agent, `~/.claude`, `~/.claude.json` (the interactive
-  Claude Code and Claude Desktop) and `~/.config/gh`. They reach the network
-  and read the media mounts under `/mnt/tank`. `~/.ssh` and the rest of the
-  home stay readable. The managed `CLAUDE.md` of the sessions ends with
-  `claude-remote-manager.md` in this directory.
+- **Sessions** use `~/.claude` (the login, skills, plugins and MCP servers
+  of Claude Desktop and the terminal), the whole file system, Docker, the
+  media mounts under `/mnt/tank` and the home's credentials. `sudo` asks
+  for `nico`'s password. Git in the session clones works like in
+  `~/workspace`: GitHub over SSH with the sops key `github-ssh-key` (pushes
+  to the clones' HTTPS `origin` are rewritten to SSH), unsigned commits.
+  The sessions' system prompt ends with `claude-remote-manager.md` in this
+  directory. The permission mode is chosen per session, `bypassPermissions`
+  included; an Autofix run asks for every call but reading.
 - **State**: everything in `/var/lib/claude-remote-manager` (persisted as one
-  directory): database, mirrors and session clones, and in `claude/` the
-  sessions' own Claude Code configuration with their login, separate from
-  `~/.claude`.
+  directory): database, mirrors and session clones; the Claude Code
+  transcripts are in `~/.claude`. The root-only directory in which the app
+  records to whom it gave the data directory,
+  `/var/lib/claude-remote-manager-owner`, is persisted too.
 - **Secrets** in this host's `secrets.yaml`, readable by root only:
   `claude-remote-manager/github-app-key` (private key of the GitHub App,
   App ID 5736769), `claude-remote-manager/github-webhook-secret`,
@@ -118,16 +121,7 @@ starts run as `nico`.
   from `./tofu.sh output access_audiences` in `cloudflare/`. No email
   allowlist: Access issues tokens only to the Google E-Mail group.
 
-After the first deploy, log Claude in once for the sessions (on the VM, over
-SSH or RDP):
-
-```sh
-sudo claude-remote-manager-claude auth login
-sudo claude-remote-manager-claude auth status
-```
-
-The login lands in `/var/lib/claude-remote-manager/claude`, not in
-`~/.claude`; the Claude Code and Claude Desktop of the desktop keep their
+Sessions use the Claude login of `~/.claude`; there is no login of their
 own.
 
 **Updates**: after every green CI run on the app's `main`, the workflow
