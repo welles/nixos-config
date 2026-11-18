@@ -17,6 +17,10 @@ other host in this flake.
   22. The desktop session already starts at boot, logged in with the
   plaintext `user-password` from sops (GNOME keyring unlocked); an RDP
   login takes it over (`modules/xrdp-boot-session.nix`).
+- The same desktop session in the browser through KasmVNC at
+  `https://devbox-vnc.welles.app`, next to RDP (`modules/kasmvnc-xrdp-mirror.nix`:
+  KasmVNC mirrors the xrdp session's display :10); only the Google login of
+  Cloudflare Access. If it breaks, RDP keeps working.
 - Claude Desktop starts with that session, so the VM is ready for Remote
   Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
   Repositories for them are cloned by hand into `~/workspace`, where Git

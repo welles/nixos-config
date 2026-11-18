@@ -37,6 +37,7 @@
     ../../modules/xrdp-boot-session.nix
     ../../modules/xrdp-keyboard-default-de.nix
     ../../modules/xrdp-login-with-client-credentials
+    ../../modules/kasmvnc-xrdp-mirror.nix
     ../../modules/user-dirs.nix
 
     # Services
