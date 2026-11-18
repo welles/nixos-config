@@ -21,15 +21,6 @@ locals {
   #                           (for callers that cannot log in and that the
   #                           app authenticates itself, e.g. webhooks)
   apps = {
-    guacamole = {
-      hostname                 = "guacamole.welles.app"
-      zone                     = "welles.app"
-      service                  = "http://localhost:50110"
-      session_duration         = "24h"
-      policies                 = ["google_email"]
-      disable_chunked_encoding = true
-      bypass_paths             = []
-    }
     streamfab = {
       hostname                 = "streamfab.welles.app"
       zone                     = "welles.app"

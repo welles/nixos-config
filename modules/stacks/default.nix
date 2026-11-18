@@ -96,7 +96,7 @@
       };
     };
     guacamole = {
-      enabled = true;
+      enabled = false;
       secrets = [
         "guacamole_app"
         "guacamole_db"

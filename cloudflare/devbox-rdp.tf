@@ -119,3 +119,28 @@ resource "cloudflare_dns_record" "devbox_rdp" {
 output "devbox_rdp_url" {
   value = "https://${local.devbox_rdp.hostname}/rdp/${local.default_vnet_id}/${local.devbox_rdp.ip}/${local.devbox_rdp.port}"
 }
+
+# devbox.welles.app itself only shows an error, as the RDP application needs
+# the target in the path; redirect it to the devbox's URL. Redirects run
+# before Access, so this exact path skips nothing.
+resource "cloudflare_ruleset" "redirects" {
+  zone_id = local.zone_ids[local.devbox_rdp.zone]
+  name    = "Redirects"
+  kind    = "zone"
+  phase   = "http_request_dynamic_redirect"
+
+  rules = [{
+    description = "devbox.welles.app to the devbox's RDP target"
+    expression  = "(http.host eq \"${local.devbox_rdp.hostname}\" and http.request.uri.path eq \"/\")"
+    action      = "redirect"
+    action_parameters = {
+      from_value = {
+        status_code           = 302
+        preserve_query_string = false
+        target_url = {
+          value = "https://${local.devbox_rdp.hostname}/rdp/${local.default_vnet_id}/${local.devbox_rdp.ip}/${local.devbox_rdp.port}"
+        }
+      }
+    }
+  }]
+}

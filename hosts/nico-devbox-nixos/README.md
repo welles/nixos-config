@@ -10,8 +10,10 @@ other host in this flake.
 - Bridged into the LAN: gets its address via DHCP from the UniFi router
   (MAC `52:54:00:c9:00:0a`, fix the address there) and is reachable as
   `nico-devbox-nixos` like any other machine, the server too.
-- Desktop over RDP (xrdp + Cinnamon, port 3389), directly or via
-  Guacamole; SSH on port 22. The desktop session already starts at boot,
+- Desktop over RDP (xrdp + Cinnamon, port 3389), directly or in the
+  browser at `https://devbox.welles.app` (Cloudflare browser-based RDP,
+  `cloudflare/devbox-rdp.tf`; its xrdp login screen renders garbled, the
+  desktop after it is fine); SSH on port 22. The desktop session already starts at boot,
   logged in with the plaintext `user-password` from sops (GNOME keyring
   unlocked); an RDP login takes it over (`modules/xrdp-boot-session.nix`).
 - Claude Desktop starts with that session, so the VM is ready for Remote

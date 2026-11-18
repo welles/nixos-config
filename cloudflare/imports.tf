@@ -18,7 +18,6 @@ import {
 
 import {
   for_each = {
-    guacamole     = "e96b11b0-c3b5-494e-9cc8-65f0a43b83b9"
     music-manager = "bdf367e1-037a-441e-9816-ce2e7d0ac210"
   }
   to = cloudflare_zero_trust_access_application.app[each.key]
@@ -27,7 +26,6 @@ import {
 
 import {
   for_each = {
-    guacamole     = "a6ff73620cbc58f2100b84f8568cade7"
     music-manager = "0fd4cca3df6a876397fba335274c2ca2"
   }
   to = cloudflare_dns_record.app[each.key]
