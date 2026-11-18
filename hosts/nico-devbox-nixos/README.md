@@ -14,8 +14,9 @@ other host in this flake.
   browser at `https://devbox.welles.app` (Cloudflare browser-based RDP,
   `cloudflare/devbox-rdp.tf`; the RDP login it asks for logs straight into
   the desktop, `modules/xrdp-login-with-client-credentials`); SSH on port
-  22. The desktop session already starts at boot, logged in with the plaintext `user-password` from sops (GNOME keyring
-  unlocked); an RDP login takes it over (`modules/xrdp-boot-session.nix`).
+  22. The desktop session already starts at boot, logged in with the
+  plaintext `user-password` from sops (GNOME keyring unlocked); an RDP
+  login takes it over (`modules/xrdp-boot-session.nix`).
 - Claude Desktop starts with that session, so the VM is ready for Remote
   Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
   Repositories for them are cloned by hand into `~/workspace`, where Git
