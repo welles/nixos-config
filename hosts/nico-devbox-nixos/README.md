@@ -12,9 +12,9 @@ other host in this flake.
   `nico-devbox-nixos` like any other machine, the server too.
 - Desktop over RDP (xrdp + Cinnamon, port 3389), directly or in the
   browser at `https://devbox.welles.app` (Cloudflare browser-based RDP,
-  `cloudflare/devbox-rdp.tf`; its xrdp login screen renders garbled, the
-  desktop after it is fine); SSH on port 22. The desktop session already starts at boot,
-  logged in with the plaintext `user-password` from sops (GNOME keyring
+  `cloudflare/devbox-rdp.tf`; the RDP login it asks for logs straight into
+  the desktop, `modules/xrdp-login-with-client-credentials`); SSH on port
+  22. The desktop session already starts at boot, logged in with the plaintext `user-password` from sops (GNOME keyring
   unlocked); an RDP login takes it over (`modules/xrdp-boot-session.nix`).
 - Claude Desktop starts with that session, so the VM is ready for Remote
   Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
