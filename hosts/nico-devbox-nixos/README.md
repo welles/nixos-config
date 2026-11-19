@@ -10,19 +10,18 @@ other host in this flake.
 - Bridged into the LAN: gets its address via DHCP from the UniFi router
   (MAC `52:54:00:c9:00:0a`, fix the address there) and is reachable as
   `nico-devbox-nixos` like any other machine, the server too.
-- Desktop over RDP (xrdp + Cinnamon, port 3389), directly or in the
-  browser at `https://devbox.welles.app` (Cloudflare browser-based RDP,
-  `cloudflare/devbox-rdp.tf`; the RDP login it asks for logs straight into
-  the desktop, `modules/xrdp-login-with-client-credentials`); SSH on port
+- Desktop over RDP in the LAN (xrdp + Cinnamon, port 3389); SSH on port
   22. The desktop session already starts at boot, logged in with the
   plaintext `user-password` from sops (GNOME keyring unlocked); an RDP
   login takes it over (`modules/xrdp-boot-session.nix`).
 - The same desktop session in the browser through KasmVNC at
-  `https://devbox-vnc.welles.app`, next to RDP (`modules/kasmvnc-xrdp-mirror.nix`:
-  KasmVNC mirrors the xrdp session's display :10); only the Google login of
-  Cloudflare Access. KasmVNC listens on localhost only and is published by
-  the devbox's own Cloudflare Tunnel (`modules/cloudflared.nix`, token in
-  `secrets.yaml`). If it breaks, RDP keeps working.
+  `https://devbox.welles.app` (`modules/kasmvnc-xrdp-mirror.nix`: KasmVNC
+  mirrors the xrdp session's display :10 and fits it to the browser window
+  while no RDP client is connected); only the Google login of Cloudflare
+  Access. KasmVNC listens on localhost only and is published by the
+  devbox's own Cloudflare Tunnel (`cloudflare/devbox.tf`,
+  `modules/cloudflared.nix`, token in `secrets.yaml`). If it breaks, RDP
+  keeps working.
 - Claude Desktop starts with that session, so the VM is ready for Remote
   Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
   Repositories for them are cloned by hand into `~/workspace`, where Git

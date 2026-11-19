@@ -1,5 +1,5 @@
-# The devbox's desktop through KasmVNC (modules/kasmvnc-xrdp-mirror.nix) at
-# devbox-vnc.welles.app, next to the browser-based RDP of devbox-rdp.tf.
+# The devbox's desktop in the browser through KasmVNC
+# (modules/kasmvnc-xrdp-mirror.nix) at devbox.welles.app.
 #
 # KasmVNC has no login of its own and listens on the devbox's localhost
 # only, so it is published by a tunnel of the devbox itself rather than the
@@ -11,7 +11,7 @@
 
 locals {
   devbox_vnc = {
-    hostname = "devbox-vnc.welles.app"
+    hostname = "devbox.welles.app"
     zone     = "welles.app"
     service  = "http://localhost:6901"
   }

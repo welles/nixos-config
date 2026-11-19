@@ -38,7 +38,7 @@
     ../../modules/xrdp-keyboard-default-de.nix
     ../../modules/xrdp-login-with-client-credentials
     ../../modules/kasmvnc-xrdp-mirror.nix
-    # Publishes KasmVNC (cloudflare/devbox-vnc.tf)
+    # Publishes KasmVNC (cloudflare/devbox.tf)
     ../../modules/cloudflared.nix
     ../../modules/user-dirs.nix
 
