@@ -33,9 +33,7 @@
   # counts Cinnamon notifications per process, and all web apps share
   # Chrome's process. Picture-in-picture windows of browsers (always on top
   # and on all workspaces, with the browser's window class instead of the
-  # web app's) get no entry at all. Window titles show only while an
-  # application has several windows; each web app counts as an application
-  # of its own (its desktop file matches crx_<id>), separate from Chrome.
+  # web app's) get no entry at all.
   # Installed under the same uuid in the user's applet
   # directory, which Cinnamon prefers over the system one, so the panel
   # entry and its settings stay. --replace-fail breaks the build when a
@@ -61,16 +59,7 @@
         '!metaWindow.is_skip_taskbar() &&' \
         '!metaWindow.is_skip_taskbar() &&
                 !(metaWindow.is_above() && metaWindow.is_on_all_workspaces() &&
-                  /chrom|edge|firefox/i.test(metaWindow.get_wm_class() ?? "")) &&' \
-      --replace-fail \
-        'if (this._applet.showLabelPanel) {' \
-        'const sameApp = this.appId && this._applet._windows.some(window =>
-                window !== this && !window.transient && window.appId === this.appId);
-            if (this._applet.showLabelPanel || sameApp) {' \
-      --replace-fail \
-        '_updateAllIconGeometry() {' \
-        '_updateAllIconGeometry() {
-            this._updateLabels();'
+                  /chrom|edge|firefox/i.test(metaWindow.get_wm_class() ?? "")) &&'
   '';
 
   # Keep Mint-Y's menus and assets; override only panel styling.
@@ -153,10 +142,8 @@ in {
 
       xdg.dataFile."cinnamon/applets/window-list@cinnamon.org".source = windowListWithTitleBadges;
 
-      # The window list shows only the icons, without the window titles
-      # (except for applications with several windows, see
-      # windowListWithTitleBadges); set on every activation. The file name is
-      # the applet's instance id from enabled-applets.
+      # Show only icons in the window list. Set on every activation; the file
+      # name is the applet's instance id from enabled-applets.
       home.activation.cinnamonWindowListIconsOnly = lib.hm.dag.entryAfter ["writeBoundary"] ''
         run ${setAppletSetting} \
           ${config.xdg.configHome}/cinnamon/spices/window-list@cinnamon.org/2.json \
