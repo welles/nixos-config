@@ -84,18 +84,16 @@ runs as the system service `claude-remote-manager`
 without a sandbox: its Claude Code sessions are Claude Code of `nico`, like
 a terminal session on this machine.
 
-- **Reachable** at `https://claude.welles.app` through the server's
+- **Reachable** at `https://claude.welles.app` through the devbox's own
   Cloudflare Tunnel and behind Cloudflare Access (Google login, 30-day
   session), both in `cloudflare/` (`local.apps.claude-remote-manager`).
   Only the GitHub webhook `/api/github/webhook` passes without a login
   (`bypass_paths`; the app checks its signature). The service listens on
-  port 8080 of the VM; the firewall admits that port only from the server
-  (by its MAC address, `tunnelHostMacAddress`;
-  `modules/claude-remote-manager-lan-tunnel.nix`). Open it through
-  `claude.welles.app` also from the devbox itself. The API refuses requests
-  from processes it started (sessions and their tools), so a session does
-  not approve its own requests by accident; the owner's own programs here
-  are not refused.
+  port 8080 of the VM's localhost only; nothing in the LAN reaches it.
+  Open it through `claude.welles.app` also from the devbox itself. The API
+  refuses requests from processes it started (sessions and their tools),
+  so a session does not approve its own requests by accident; the owner's
+  own programs here are not refused.
 - **Previews** of dev servers are not enabled yet (`previewUrl = null`): a
   wildcard two labels below `welles.app` needs Cloudflare's paid Advanced
   Certificate, a separate domain is the alternative. Enabling them means an

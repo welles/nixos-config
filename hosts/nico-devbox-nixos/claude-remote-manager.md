@@ -25,8 +25,9 @@
   are the owner's media library; change files there only when asked.
 - The home server `nico-schokoladenelch-nixos` runs ZFS and Docker Compose
   stacks (Home Assistant, Jellyfin, Nextcloud, ntfy and more) behind Caddy
-  and a Cloudflare Tunnel; the owner reaches this app from outside through
-  that tunnel. Do not log in to it or change it unless asked.
+  and a Cloudflare Tunnel. Do not log in to it or change it unless asked.
+  The owner reaches this app from outside through this machine's own
+  Cloudflare Tunnel.
 - Home Assistant is at `https://homeassistant.welles.app`; `hass-cli` and
   `ha-ws` are installed and find their token (`HASS_TOKEN`) in the login
   shell's environment.
