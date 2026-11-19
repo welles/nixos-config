@@ -13,6 +13,10 @@
 # clocks again until it brakes on the new source. Laptop GPUs do not allow
 # lowering the power limit itself (`nvidia-smi -pl`), only the clocks.
 #
+# Every nvidia-smi call counts as GPU activity. So the service never queries
+# a sleeping GPU, and once the GPU is idle (0 % utilization) it leaves it
+# alone for 30 s, so the driver can put it to sleep (runtime D3).
+#
 # Log: `journalctl -u nvidia-power-brake-clock-cap`.
 {
   config,
@@ -28,6 +32,8 @@
       # Graphics clock caps in MHz, tried from top to bottom while braking.
       caps=(2400 2100 1800 1500 1200)
       interval=2
+      # Intervals to leave an idle GPU alone (30 s), so it can go to sleep.
+      idle_steps=15
       # Braking time (µs) within one interval that counts as braking.
       threshold=200000
 
@@ -53,8 +59,10 @@
         done
       }
 
-      brake_counter() {
-        ${nvidiaSmi} -q -d PERFORMANCE | awk '/HW Power Braking/ {print $5}'
+      # Prints the braking counter (µs) and the GPU utilization (%).
+      gpu_stats() {
+        ${nvidiaSmi} -q -d PERFORMANCE,UTILIZATION |
+          awk '/HW Power Braking/ {b = $5} /^ *GPU *:/ {u = $3} END {print b, u}'
       }
 
       level=-1    # index into caps; -1 = no cap
@@ -70,6 +78,23 @@
         level=-1
         applied=0
         last=""
+      }
+
+      # Waits up to idle_steps intervals without touching the GPU, so the
+      # driver can put an idle GPU to sleep (every nvidia-smi call counts as
+      # activity). Only reads sysfs; ends early when the GPU wakes up again.
+      idle_wait() {
+        local step slept=0
+        for ((step = 0; step < idle_steps; step++)); do
+          sleep "$interval"
+          if [[ "$(cat "$gpu/power/runtime_status")" != active ]]; then
+            slept=1
+            applied=0
+            last=""
+          elif ((slept)); then
+            return
+          fi
+        done
       }
 
       while true; do
@@ -93,7 +118,7 @@
           ${nvidiaSmi} --lock-gpu-clocks "0,''${caps[level]}" >/dev/null && applied=1
         fi
 
-        counter="$(brake_counter)" || continue
+        read -r counter utilization < <(gpu_stats) || continue
         [[ "$counter" =~ ^[0-9]+$ ]] || continue
 
         if [[ -n "$last" ]] && ((counter - last > threshold && level < ''${#caps[@]} - 1)); then
@@ -104,6 +129,10 @@
           fi
         fi
         last="$counter"
+
+        if [[ "$utilization" == 0 ]]; then
+          idle_wait
+        fi
       done
     '';
   };
