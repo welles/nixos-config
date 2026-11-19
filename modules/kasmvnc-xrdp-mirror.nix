@@ -19,7 +19,8 @@
 # into keys by its own layout, and kasmxproxy passes on the keys; KasmVNC's
 # layout has to be the session's (German, xrdp-keyboard-default-de.nix), or
 # the session reads US keys. kasmxproxy resizes the session to the browser
-# window; an RDP login sets it back to the RDP client's size.
+# window while no RDP client is connected (xrdp-resize-without-client); an
+# RDP login sets it back to the RDP client's size.
 {
   lib,
   pkgs,
@@ -33,6 +34,7 @@ in {
   imports = [
     ./packages/kasmvnc.nix
     ./xrdp-boot-session.nix
+    ./xrdp-resize-without-client
   ];
 
   systemd.services = {
