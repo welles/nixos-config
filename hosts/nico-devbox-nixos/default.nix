@@ -31,6 +31,7 @@
     # Desktop environment: Cinnamon over RDP (Plasma 6.8 dropped the X11
     # sessions xrdp needs), no local login screen.
     ../../modules/cinnamon-panel-windows
+    ../../modules/cinnamon-screenshot-shortcut.nix
     ../../modules/rdp-only-desktop.nix
     ../../modules/xrdp-audio.nix
     ../../modules/xrdp-glamor.nix
