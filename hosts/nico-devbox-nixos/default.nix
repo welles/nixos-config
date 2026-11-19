@@ -119,6 +119,9 @@
       # addresses stay a secret of cloudflare/secrets.yaml.
       accessAllowedEmails = [];
       githubAppId = 5736769;
+      # The Claude reviewer of claude-review.yml: its reviews start autofix
+      # runs and its approvals count for the ready-to-merge message.
+      githubTrustedBots = ["welles-claude-reviewer[bot]"];
       ntfyTopic = "claude-remote-manager";
       instructions = builtins.readFile ./claude-remote-manager.md;
     };
