@@ -14,7 +14,18 @@
 #
 # The xrdp session is the first one sesman starts (the boot session), so its
 # display is :10 (X11DisplayOffset); KasmVNC uses :20.
-{user, ...}: let
+#
+# The browser sends KasmVNC the characters typed, which its X server turns
+# into keys by its own layout, and kasmxproxy passes on the keys; KasmVNC's
+# layout has to be the session's (German, xrdp-keyboard-default-de.nix), or
+# the session reads US keys. kasmxproxy resizes the session to the browser
+# window; an RDP login sets it back to the RDP client's size.
+{
+  lib,
+  pkgs,
+  user,
+  ...
+}: let
   port = 6901;
   appDisplay = ":10";
   vncDisplay = ":20";
@@ -49,6 +60,14 @@ in {
           # UDP connections the browser never makes through the tunnel
           "-publicIP 127.0.0.1"
         ];
+        # Its layout once the display is up; it starts with US
+        ExecStartPost = pkgs.writeShellScript "kasmvnc-keyboard" ''
+          for _ in $(seq 30); do
+            ${lib.getExe pkgs.setxkbmap} -display ${vncDisplay} -model pc105 -layout de && exit 0
+            sleep 1
+          done
+          exit 1
+        '';
         Restart = "always";
         RestartSec = "5s";
       };
@@ -62,7 +81,7 @@ in {
       environment.XAUTHORITY = "/home/${user}/.Xauthority";
       serviceConfig = {
         User = user;
-        ExecStart = "/run/current-system/sw/bin/kasmxproxy -a ${appDisplay} -v ${vncDisplay} -f 30";
+        ExecStart = "/run/current-system/sw/bin/kasmxproxy -a ${appDisplay} -v ${vncDisplay} -f 30 -r";
         # Until the xrdp session's display is up
         Restart = "always";
         RestartSec = "5s";
