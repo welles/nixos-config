@@ -14,7 +14,10 @@
 # `null` for no previews), the Cloudflare Access `accessTeamDomain`,
 # `accessAudience` (app) and `previewAccessAudience` (previews, their own
 # Access application; only with `previewUrl`),
-# `accessAllowedEmails`, the GitHub App's `githubAppId`, the `ntfyTopic` on
+# `accessAllowedEmails`, the GitHub App's `githubAppId`, the optional
+# `githubTrustedBots` (logins of reviewer bots whose reviews and comments the
+# PR automation treats like those of people with write access; only pure
+# reviewer apps, never github-actions[bot]), the `ntfyTopic` on
 # the ntfy server `ntfyUrl`, and `instructions` (Markdown appended to the
 # sessions' system prompt: what the machine and its network are). A value
 # still `null` stops the evaluation with a list of what is missing.
@@ -103,6 +106,7 @@ in {
       appId = cfg.githubAppId;
       privateKeyFile = secret "github-app-key";
       webhookSecretFile = secret "github-webhook-secret";
+      trustedBots = cfg.githubTrustedBots or [];
     };
     ntfy = {
       url = ntfyUrl;

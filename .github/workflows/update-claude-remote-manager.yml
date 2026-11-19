@@ -3,13 +3,18 @@ name: Update Claude Remote Manager
 # Updates only the flake input claude-remote-manager, so the devbox gets a new
 # version of the app with its next deploy instead of after the nightly update.
 # Started by the app repository (welles/claude-remote-manager) after a green CI
-# run on its main branch, with the commit that passed as `rev`; checks and
-# commit as in update-inputs.yml. Same concurrency group as the nightly update
-# and the local package update, so they never change flake.lock at once.
+# run on its main branch, with the commit that passed as `rev`.
+#
+# Only nico-devbox-nixos uses the app, so only that host is built as a test.
+# A newer run cancels a running one: only the newest commit of the app
+# matters. The commit job alone joins the concurrency group of the nightly
+# update and the local package update, so they never change flake.lock at
+# once; it updates the input again on the newest main, so it never reverts a
+# flake.lock committed by those in the meantime.
 
 concurrency:
-  group: nix-flake
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   workflow_dispatch:
@@ -20,13 +25,13 @@ on:
         default: ""
 
 jobs:
-  update-and-setup:
+  build-devbox:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
       changed: ${{ steps.check-changes.outputs.changed }}
+      rev: ${{ steps.check-changes.outputs.rev }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -51,6 +56,7 @@ jobs:
           EXPECTED_REV: ${{ inputs.rev }}
         run: |
           locked=$(jq -r '.nodes["claude-remote-manager"].locked.rev' flake.lock)
+          echo "rev=$locked" >> "$GITHUB_OUTPUT"
           if git diff --quiet flake.lock; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "claude-remote-manager is already at $locked. Stopping early."
@@ -59,76 +65,13 @@ jobs:
             echo "main of claude-remote-manager is at $locked, not at $EXPECTED_REV, which passed CI. Stopping early."
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "claude-remote-manager updated to $locked. Proceeding with checks."
+            echo "claude-remote-manager updated to $locked. Building the devbox."
           fi
 
-      - name: Generate host matrix
+      - name: Build NixOS Configuration (nico-devbox-nixos)
         if: steps.check-changes.outputs.changed == 'true'
-        id: set-matrix
-        run: |
-          HOSTS=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json)
-          echo "matrix=$HOSTS" >> "$GITHUB_OUTPUT"
-
-      - name: Upload updated flake.lock
-        if: steps.check-changes.outputs.changed == 'true'
-        uses: actions/upload-artifact@v7
-        with:
-          name: flake-lock
-          path: flake.lock
-          retention-days: 1
-
-  # Runs in parallel to the host builds and does not gate the commit, so a
-  # broken host only fails the run (and triggers a notification).
-  flake-check:
-    needs: update-and-setup
-    if: needs.update-and-setup.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Download updated flake.lock
-        uses: actions/download-artifact@v8
-        with:
-          name: flake-lock
-          path: .
-
-      - name: Install nix
-        uses: cachix/install-nix-action@v31
-
-      - name: Run nix flake check
-        run: nix flake check
-
-  evaluate:
-    needs: update-and-setup
-    if: needs.update-and-setup.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        host: ${{ fromJson(needs.update-and-setup.outputs.matrix) }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Download updated flake.lock
-        uses: actions/download-artifact@v8
-        with:
-          name: flake-lock
-          path: .
-
-      - name: Install nix
-        uses: cachix/install-nix-action@v31
-
-      - name: Set up Cachix
-        uses: cachix/cachix-action@v17
-        with:
-          name: welles-nixos-config
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: Build NixOS Configuration (${{ matrix.host }})
         env:
-          HOST: ${{ matrix.host }}
+          HOST: nico-devbox-nixos
         run: |
           set -o pipefail
           if ! nix build ".#nixosConfigurations.\"$HOST\".config.system.build.toplevel" 2>&1 | tee build.log; then
@@ -148,29 +91,44 @@ jobs:
             exit 1
           fi
 
-  # Commit even if some hosts failed to build, like the nightly update: a
-  # single broken host must not hold back the update for all others. Failed
-  # host builds still mark the run as failed, so GitHub sends a notification.
+  # Commits only if the devbox, the only host using the app, built.
   commit-update:
-    needs: [update-and-setup, evaluate]
-    if: >-
-      !cancelled()
-      && needs.update-and-setup.result == 'success'
-      && needs.update-and-setup.outputs.changed == 'true'
+    needs: build-devbox
+    if: needs.build-devbox.outputs.changed == 'true'
     runs-on: ubuntu-latest
+    concurrency:
+      group: nix-flake
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-
-      - name: Download updated flake.lock
-        uses: actions/download-artifact@v8
         with:
-          name: flake-lock
-          path: .
+          ref: ${{ github.ref_name }}
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Update flake input claude-remote-manager
+        id: update
+        env:
+          TESTED_REV: ${{ needs.build-devbox.outputs.rev }}
+        run: |
+          nix flake update claude-remote-manager
+          locked=$(jq -r '.nodes["claude-remote-manager"].locked.rev' flake.lock)
+          if git diff --quiet flake.lock; then
+            echo "commit=false" >> "$GITHUB_OUTPUT"
+            echo "flake.lock on ${GITHUB_REF_NAME} already has claude-remote-manager at $locked. Nothing to commit."
+          elif [[ "$locked" != "$TESTED_REV" ]]; then
+            echo "commit=false" >> "$GITHUB_OUTPUT"
+            echo "main of claude-remote-manager moved on to $locked, but $TESTED_REV was tested. Not committing."
+          else
+            echo "commit=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Commit and push changes
+        if: steps.update.outputs.commit == 'true'
         uses: planetscale/ghcommit-action@v0.2.22
         with:
           commit_message: "Update flake lock file (claude-remote-manager)"
