@@ -53,9 +53,8 @@ locals {
       disable_chunked_encoding = null
       bypass_paths             = []
     }
-    # Claude Remote Manager on the devbox VM (hosts/nico-devbox-nixos),
-    # listening on its localhost and published by its own tunnel. A long
-    # session, as the
+    # Claude Remote Manager, the stack claude_remote_manager on the home
+    # server (modules/stacks/), on its loopback port. A long session, as the
     # installed web app would otherwise end up at the login page every day;
     # hence its own policy, since a policy's session duration overrides the
     # application's. The GitHub App's webhook deliveries carry no login and
@@ -63,8 +62,8 @@ locals {
     claude-remote-manager = {
       hostname                 = "claude.welles.app"
       zone                     = "welles.app"
-      tunnel                   = "devbox"
-      service                  = "http://localhost:8080"
+      tunnel                   = "schokoladenelch"
+      service                  = "http://localhost:50230"
       session_duration         = "720h"
       policies                 = ["google_email_long_session"]
       disable_chunked_encoding = null
