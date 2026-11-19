@@ -6,8 +6,8 @@
 # through Cloudflare Access. No sandbox: sessions are Claude Code of `user`
 # like a terminal session, with the user's ~/.claude (login, skills,
 # plugins, MCP servers), the whole file system, Docker and the user's
-# credentials. Listens on loopback; claude-remote-manager-lan-tunnel.nix
-# opens it to a tunnel on another machine.
+# credentials. Listens on loopback, for a Cloudflare Tunnel of the same host
+# (cloudflared.nix).
 #
 # `claudeRemoteManager` holds the host's values: `hostName` (the app's public
 # host name), `previewUrl` (base of the preview host names of dev servers, or

@@ -1,7 +1,8 @@
-# The apps published through the Cloudflare Tunnel of the home server. Every
-# entry of `local.apps` gets a route in the tunnel, the DNS record pointing at
-# the tunnel and a Cloudflare Access application in front of it. The tunnel
-# and the login the apps share are in access.tf and tunnel.tf.
+# The apps published through a Cloudflare Tunnel: the home server's
+# (tunnel.tf) or the devbox's (devbox.tf). Every entry of `local.apps` gets a
+# route in its tunnel, the DNS record pointing at that tunnel and a Cloudflare
+# Access application in front of it. The login the apps share is in
+# access.tf.
 
 locals {
   account_id = "db8195291393053498a467a4bb121326"
@@ -12,7 +13,8 @@ locals {
   }
 
   # hostname:                 public hostname, in the zone `zone`
-  # service:                  where the server's cloudflared sends the requests
+  # tunnel:                   the tunnel that publishes it (local.tunnel_ids)
+  # service:                  where that tunnel's cloudflared sends the requests
   # session_duration:         how long a login to the app lasts
   # policies:                 Access policies (keys of local.policy_ids), in
   #                           order of precedence
@@ -24,6 +26,7 @@ locals {
     streamfab = {
       hostname                 = "streamfab.welles.app"
       zone                     = "welles.app"
+      tunnel                   = "schokoladenelch"
       service                  = "http://localhost:50211"
       session_duration         = "24h"
       policies                 = ["google_email"]
@@ -33,6 +36,7 @@ locals {
     musicfab = {
       hostname                 = "musicfab.welles.app"
       zone                     = "welles.app"
+      tunnel                   = "schokoladenelch"
       service                  = "http://localhost:50221"
       session_duration         = "24h"
       policies                 = ["google_email", "music_manager"]
@@ -42,14 +46,16 @@ locals {
     music-manager = {
       hostname                 = "music-manager.welles.app"
       zone                     = "welles.app"
+      tunnel                   = "schokoladenelch"
       service                  = "http://localhost:50200"
       session_duration         = "12h"
       policies                 = ["google_email", "symfonium"]
       disable_chunked_encoding = null
       bypass_paths             = []
     }
-    # Claude Remote Manager on the devbox VM (hosts/nico-devbox-nixos), which
-    # the server reaches by its name in the LAN. A long session, as the
+    # Claude Remote Manager on the devbox VM (hosts/nico-devbox-nixos),
+    # listening on its localhost and published by its own tunnel. A long
+    # session, as the
     # installed web app would otherwise end up at the login page every day;
     # hence its own policy, since a policy's session duration overrides the
     # application's. The GitHub App's webhook deliveries carry no login and
@@ -57,7 +63,8 @@ locals {
     claude-remote-manager = {
       hostname                 = "claude.welles.app"
       zone                     = "welles.app"
-      service                  = "http://nico-devbox-nixos:8080"
+      tunnel                   = "devbox"
+      service                  = "http://localhost:8080"
       session_duration         = "720h"
       policies                 = ["google_email_long_session"]
       disable_chunked_encoding = null
@@ -74,6 +81,45 @@ locals {
       }
     }
   ]...)
+
+  tunnel_ids = {
+    schokoladenelch = cloudflare_zero_trust_tunnel_cloudflared.schokoladenelch.id
+    devbox          = cloudflare_zero_trust_tunnel_cloudflared.devbox.id
+  }
+
+  # The ingress rules of each tunnel's apps, for its tunnel config: first the
+  # bypass paths, exactly that path, without cloudflared's Access check
+  # (Access lets these requests through without a token; the app
+  # authenticates them itself), then the apps, whose requests cloudflared
+  # itself rejects unless they passed the app's Access policies
+  app_ingress = {
+    for tunnel in keys(local.tunnel_ids) : tunnel => concat(
+      [
+        for bypass in local.bypass_paths : {
+          hostname = local.apps[bypass.app].hostname
+          path     = "^${replace(bypass.path, ".", "\\.")}$"
+          service  = local.apps[bypass.app].service
+          origin_request = {
+            disable_chunked_encoding = local.apps[bypass.app].disable_chunked_encoding
+          }
+        } if local.apps[bypass.app].tunnel == tunnel
+      ],
+      [
+        for key, app in local.apps : {
+          hostname = app.hostname
+          service  = app.service
+          origin_request = {
+            access = {
+              aud_tag   = [cloudflare_zero_trust_access_application.app[key].aud]
+              required  = true
+              team_name = local.team_name
+            }
+            disable_chunked_encoding = app.disable_chunked_encoding
+          }
+        } if app.tunnel == tunnel
+      ],
+    )
+  }
 
   policy_ids = {
     google_email              = cloudflare_zero_trust_access_policy.google_email.id
@@ -221,7 +267,7 @@ resource "cloudflare_dns_record" "app" {
   zone_id = local.zone_ids[each.value.zone]
   name    = each.value.hostname
   type    = "CNAME"
-  content = "${cloudflare_zero_trust_tunnel_cloudflared.schokoladenelch.id}.cfargotunnel.com"
+  content = "${local.tunnel_ids[each.value.tunnel]}.cfargotunnel.com"
   proxied = true
   ttl     = 1
 }

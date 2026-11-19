@@ -8,6 +8,8 @@
 # needs the tunnel's token as its sops secret cloudflare-tunnel-token:
 #
 #   ./tofu.sh output -raw devbox_tunnel_token
+#
+# The tunnel also publishes the apps of apps.tf with `tunnel = "devbox"`.
 
 locals {
   devbox_vnc = {
@@ -71,7 +73,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "devbox" {
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.devbox.id
 
   config = {
-    ingress = [
+    ingress = concat(local.app_ingress.devbox, [
       {
         hostname = local.devbox_vnc.hostname
         service  = local.devbox_vnc.service
@@ -85,7 +87,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "devbox" {
         }
       },
       { service = "http_status:404" },
-    ]
+    ])
   }
 }
 

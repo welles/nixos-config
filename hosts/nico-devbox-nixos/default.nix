@@ -38,13 +38,13 @@
     ../../modules/xrdp-keyboard-default-de.nix
     ../../modules/xrdp-login-with-client-credentials
     ../../modules/kasmvnc-xrdp-mirror.nix
-    # Publishes KasmVNC (cloudflare/devbox.tf)
+    # Publishes KasmVNC and Claude Remote Manager (cloudflare/devbox.tf)
     ../../modules/cloudflared.nix
     ../../modules/user-dirs.nix
 
     # Services
     ../../modules/claude-desktop-autostart.nix
-    ../../modules/claude-remote-manager-lan-tunnel.nix
+    ../../modules/claude-remote-manager.nix
     ../../modules/home-assistant-api
     ../../modules/workspace-git.nix
     ../../modules/playwright-mcp.nix
@@ -107,9 +107,6 @@
       "/mnt/tank/podcasts" = "tank-podcasts";
     };
     ntfyUrl = "https://ntfy.welles.app";
-    # The server's lanBridge.macAddress: its cloudflared forwards
-    # claude.welles.app to this VM.
-    tunnelHostMacAddress = "10:7c:61:b4:90:e4";
     claudeRemoteManager = {
       hostName = "claude.welles.app";
       # Previews off for now; later the preview base URL and previewAccessAudience.
