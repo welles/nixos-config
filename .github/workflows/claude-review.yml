@@ -14,6 +14,10 @@ permissions:
 jobs:
   review:
     uses: welles/claude-reviewer/.github/workflows/review.yml@v1
+    with:
+      # PRs of the Claude Remote Manager's GitHub App (opened by Claude sessions) are reviewed
+      # too; other bots (Dependabot) stay skipped
+      allowed-bots: welles-claude-remote-manager[bot]
     # Only the secrets of the review, not `inherit`: the workflow lives in another repository
     secrets:
       ANTHROPIC_REVIEW_KEY: ${{ secrets.ANTHROPIC_REVIEW_KEY }}
