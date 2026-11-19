@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Chrome web app external links",
+  "version": "1.0",
+  "description": "Opens external links from Chrome web app windows with the desktop's default browser.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvjnqYe4ByownTMJOoK8yJwl17AbLzDPEcWHcufuaRY/OZ7J1lIpFrohAcCmxPfGzVqSHDKhb4H5D4LA+1/LAsocNqXvi9vESmV8R/c8o5iF8en3NDt3mJTliHS7a7LkuqSfo2tVi8xHTRx4ro1pLHPcys6S5kYN9K4jOPo6E1xor3iMxTm+J8ee77PfQSwmOoBbAPBbITF2ZnKl0fWVre5c0XjHWKv13xnaNz1YEDmt5p+CvQese4QRQcfQiZVuxWXgqEcX3ea6UBeGadi76G5AvHlVKeEyX2a4rax6JQCpfdin1/XFUl42ZQjp6aHSmwr4+WacIcn4SSc6PcFTrVwIDAQAB",
+  "permissions": ["nativeMessaging"],
+  "background": {"service_worker": "background.js"},
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
