@@ -8,6 +8,7 @@ readonly KEEPER_FILE="modules/packages/keeper.nix"
 readonly NUKE_FILE="modules/packages/nuke.nix"
 readonly CHEATENGINE_FILE="modules/packages/cheat-engine.nix"
 readonly CLAUDEDESKTOP_FILE="modules/packages/claude-desktop.nix"
+readonly KASMVNC_FILE="modules/packages/kasmvnc.nix"
 
 # name|file|PyPI project|distribution filename (@VERSION@ is substituted)
 readonly PYPI_PACKAGES=(
@@ -136,7 +137,7 @@ for entry in "${DVDFAB_PACKAGES[@]}"; do
 	dvdfab_ids+=("$id")
 done
 
-for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE" "$CHEATENGINE_FILE" "$CLAUDEDESKTOP_FILE" "${pypi_files[@]}" "${dvdfab_files[@]}"; do
+for file in "$EDEN_FILE" "$OCCT_FILE" "$KEEPER_FILE" "$NUKE_FILE" "$CHEATENGINE_FILE" "$CLAUDEDESKTOP_FILE" "$KASMVNC_FILE" "${pypi_files[@]}" "${dvdfab_files[@]}"; do
 	[[ -f $file ]] || fail "run this script from the repository root (${file} not found)"
 done
 
@@ -152,6 +153,8 @@ cheatengine_current_version=$(read_single_value "$CHEATENGINE_FILE" version)
 cheatengine_current_hash=$(read_first_hash "$CHEATENGINE_FILE")
 claudedesktop_current_version=$(read_single_value "$CLAUDEDESKTOP_FILE" version)
 claudedesktop_current_hash=$(read_first_hash "$CLAUDEDESKTOP_FILE")
+kasmvnc_current_version=$(read_single_value "$KASMVNC_FILE" version)
+kasmvnc_current_hash=$(read_first_hash "$KASMVNC_FILE")
 
 pypi_current_versions=()
 pypi_current_hashes=()
@@ -278,6 +281,21 @@ claudedesktop_version=$(
 [[ -n $claudedesktop_version ]] || fail 'no Claude Desktop package version found'
 claudedesktop_url="https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${claudedesktop_version}_amd64.deb"
 
+# GitHub's latest release excludes drafts and pre-releases.
+kasmvnc_release=$(curl -fsSL \
+	'https://api.github.com/repos/kasmtech/KasmVNC/releases/latest')
+kasmvnc_tag=$(jq -er '.tag_name' <<<"$kasmvnc_release")
+[[ $kasmvnc_tag == v* ]] || fail "unexpected KasmVNC tag: ${kasmvnc_tag}"
+kasmvnc_version=${kasmvnc_tag#v}
+kasmvnc_asset="kasmvncserver_debian_trixie_${kasmvnc_version}_amd64.deb"
+kasmvnc_asset_count=$(
+	jq -er --arg asset "$kasmvnc_asset" \
+		'[.assets[] | select(.name == $asset)] | length' <<<"$kasmvnc_release"
+)
+[[ $kasmvnc_asset_count -eq 1 ]] ||
+	fail "expected one KasmVNC asset named ${kasmvnc_asset}, found ${kasmvnc_asset_count}"
+kasmvnc_url="https://github.com/kasmtech/KasmVNC/releases/download/v${kasmvnc_version}/${kasmvnc_asset}"
+
 pypi_versions=()
 pypi_urls=()
 for i in "${!pypi_projects[@]}"; do
@@ -309,6 +327,7 @@ keeper_hash=$keeper_current_hash
 nuke_hash=$nuke_current_hash
 cheatengine_hash=$cheatengine_current_hash
 claudedesktop_hash=$claudedesktop_current_hash
+kasmvnc_hash=$kasmvnc_current_hash
 pypi_hashes=("${pypi_current_hashes[@]}")
 dvdfab_hashes=("${dvdfab_current_hashes[@]}")
 dvdfab_changed=()
@@ -338,6 +357,10 @@ if [[ $claudedesktop_version != "$claudedesktop_current_version" ]]; then
 	claudedesktop_hash=$(prefetch_hash "$claudedesktop_url")
 	changed=true
 fi
+if [[ $kasmvnc_version != "$kasmvnc_current_version" ]]; then
+	kasmvnc_hash=$(prefetch_hash "$kasmvnc_url")
+	changed=true
+fi
 for i in "${!pypi_files[@]}"; do
 	if [[ ${pypi_versions[i]} != "${pypi_current_versions[i]}" ]]; then
 		pypi_hashes[i]=$(prefetch_hash "${pypi_urls[i]}")
@@ -361,6 +384,7 @@ printf 'Keeper: %s -> %s\n' "$keeper_current_version" "$keeper_version"
 printf 'NUKE:   %s -> %s\n' "$nuke_current_version" "$nuke_version"
 printf 'Cheat Engine: %s -> %s\n' "$cheatengine_current_version" "$cheatengine_version"
 printf 'Claude Desktop: %s -> %s\n' "$claudedesktop_current_version" "$claudedesktop_version"
+printf 'KasmVNC: %s -> %s\n' "$kasmvnc_current_version" "$kasmvnc_version"
 for i in "${!pypi_names[@]}"; do
 	printf '%s: %s -> %s\n' "${pypi_names[i]}" "${pypi_current_versions[i]}" "${pypi_versions[i]}"
 done
@@ -384,6 +408,7 @@ cp -p -- "$KEEPER_FILE" "$temporary_directory/keeper.nix"
 cp -p -- "$NUKE_FILE" "$temporary_directory/nuke.nix"
 cp -p -- "$CHEATENGINE_FILE" "$temporary_directory/cheat-engine.nix"
 cp -p -- "$CLAUDEDESKTOP_FILE" "$temporary_directory/claude-desktop.nix"
+cp -p -- "$KASMVNC_FILE" "$temporary_directory/kasmvnc.nix"
 for i in "${!pypi_files[@]}"; do
 	cp -p -- "${pypi_files[i]}" "$temporary_directory/pypi-${i}.nix"
 done
@@ -427,6 +452,12 @@ if [[ $claudedesktop_version != "$claudedesktop_current_version" ]]; then
 	replace_once "$temporary_directory/claude-desktop.nix" \
 		"hash = \"${claudedesktop_current_hash}\";" "hash = \"${claudedesktop_hash}\";"
 fi
+if [[ $kasmvnc_version != "$kasmvnc_current_version" ]]; then
+	replace_once "$temporary_directory/kasmvnc.nix" \
+		"version = \"${kasmvnc_current_version}\";" "version = \"${kasmvnc_version}\";"
+	replace_once "$temporary_directory/kasmvnc.nix" \
+		"hash = \"${kasmvnc_current_hash}\";" "hash = \"${kasmvnc_hash}\";"
+fi
 for i in "${!pypi_files[@]}"; do
 	if [[ ${pypi_versions[i]} != "${pypi_current_versions[i]}" ]]; then
 		replace_once "$temporary_directory/pypi-${i}.nix" \
@@ -451,6 +482,7 @@ cp -- "$temporary_directory/keeper.nix" "$KEEPER_FILE"
 cp -- "$temporary_directory/nuke.nix" "$NUKE_FILE"
 cp -- "$temporary_directory/cheat-engine.nix" "$CHEATENGINE_FILE"
 cp -- "$temporary_directory/claude-desktop.nix" "$CLAUDEDESKTOP_FILE"
+cp -- "$temporary_directory/kasmvnc.nix" "$KASMVNC_FILE"
 for i in "${!pypi_files[@]}"; do
 	cp -- "$temporary_directory/pypi-${i}.nix" "${pypi_files[i]}"
 done
