@@ -19,6 +19,7 @@
     ../../modules/keeper-autostart.nix
     ../../modules/google-chat-unread-title
     ../../modules/chrome-pwa-autostart.nix
+    ../../modules/chrome-pwa-tray
 
     # Secrets
     ../../modules/atlassian-mcp-authorization.nix
