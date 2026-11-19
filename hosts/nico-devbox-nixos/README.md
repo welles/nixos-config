@@ -130,7 +130,8 @@ own.
 
 **Updates**: after every green CI run on the app's `main`, the workflow
 `.github/workflows/update-claude-remote-manager.yml` updates the flake input
-`claude-remote-manager` and commits `flake.lock`; besides that, the nightly
+`claude-remote-manager`, builds only this host as a test and commits
+`flake.lock`; a newer run cancels a running one. Besides that, the nightly
 input update moves it too. The next `nixos-switch` here brings the new
 version and restarts the service (running sessions are interrupted; database
 migrations run at startup).
