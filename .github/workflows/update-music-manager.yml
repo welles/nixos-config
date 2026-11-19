@@ -1,0 +1,85 @@
+name: Update Music Manager
+
+# Sets the image tag of the music_manager stack to a new commit, so the server
+# runs it with its next deploy. Started by the app repository
+# (welles/music-manager) after a green CI run on its main branch, once the image
+# ghcr.io/welles/music-manager:sha-<commit> is pushed, with that commit as
+# `rev`. The stack is not a flake input, so flake.lock is not touched and no
+# host build is needed: only the tag in the compose file changes.
+
+concurrency:
+  group: music-manager-image
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      rev:
+        description: "Full commit SHA of welles/music-manager whose image was pushed"
+        required: true
+
+env:
+  COMPOSE_FILE: modules/stacks/music_manager/docker-compose.yaml
+  APP_REPO: welles/music-manager
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Only move forward: runs can finish out of order, and an older commit
+      # must not replace a newer image that is already set.
+      - name: Check the new commit
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REV: ${{ inputs.rev }}
+        run: |
+          if [[ ! "$REV" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::rev must be a full 40-character commit SHA, got '$REV'"
+            exit 1
+          fi
+          current=$(grep -oP 'image: ghcr\.io/welles/music-manager:sha-\K[0-9a-f]+' "$COMPOSE_FILE")
+          if [[ -z "$current" ]]; then
+            echo "::error file=$COMPOSE_FILE::no image ghcr.io/welles/music-manager:sha-… found"
+            exit 1
+          fi
+          new=${REV:0:7}
+          echo "tag=sha-$new" >> "$GITHUB_OUTPUT"
+          if [[ "$REV" == "$current"* ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "music_manager is already at sha-$current. Stopping early."
+            exit 0
+          fi
+          status=$(gh api "repos/$APP_REPO/compare/$current...$REV" --jq .status)
+          if [[ "$status" == "ahead" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "music_manager: sha-$current -> sha-$new"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "sha-$new is not newer than sha-$current (compare: $status). Stopping early."
+          fi
+
+      - name: Set the image tag
+        if: steps.check.outputs.changed == 'true'
+        env:
+          TAG: ${{ steps.check.outputs.tag }}
+        run: |
+          sed -i -E "s|(image: ghcr\.io/welles/music-manager:)sha-[0-9a-f]+|\1$TAG|" "$COMPOSE_FILE"
+          git diff --exit-code --quiet "$COMPOSE_FILE" && { echo "::error::tag was not replaced"; exit 1; }
+          git diff
+
+      - name: Commit and push changes
+        if: steps.check.outputs.changed == 'true'
+        uses: planetscale/ghcommit-action@v0.2.22
+        with:
+          commit_message: "chore(music_manager): update image to ${{ steps.check.outputs.tag }}"
+          repo: ${{ github.repository }}
+          branch: ${{ github.ref_name }}
+          file_pattern: ${{ env.COMPOSE_FILE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
