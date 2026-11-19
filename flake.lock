@@ -5,11 +5,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1795010263,
-        "narHash": "sha256-hvZG+YOj+1tQsk9fqhu3rzE49Jocfw0Hy2I1cOEYdzk=",
+        "lastModified": 1795060393,
+        "narHash": "sha256-U/MNRoH9S7MeDzmC99j0sZDYxU8SXjtJuZRidWP7n68=",
         "owner": "welles",
         "repo": "claude-remote-manager",
-        "rev": "b6242bae382959eb2d6eada192d6d9c8c9693913",
+        "rev": "b8991a3b07829b0865a44636412b18ba8d07f314",
         "type": "github"
       },
       "original": {
