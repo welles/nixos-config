@@ -6,6 +6,8 @@
   pkgs,
   ...
 }: let
+  unreadCountPattern = lib.removeSuffix "\n" (builtins.readFile ../google-chat-unread-title/unread-count.regex);
+
   # Sets one value in the settings file of a Cinnamon applet (see the window
   # list below): file, key, value as JSON. Cinnamon writes the file itself,
   # so it can't be a link into the store. A file that doesn't exist yet gets
@@ -45,7 +47,7 @@
       --replace-fail \
         'const nCount = Main.notificationDaemon.getNotificationCountForApp(this.app);' \
         'const titleCount = this.metaWindow.get_wm_class_instance()?.startsWith("crx_")
-                ? (this.metaWindow.get_title()?.match(/\((\d[\d.]*\+?)\)/)?.[1] ?? "0")
+                ? (this.metaWindow.get_title()?.match(/${unreadCountPattern}/)?.[1] ?? "0")
                 : null;
             const nCount = titleCount ?? Main.notificationDaemon.getNotificationCountForApp(this.app);' \
       --replace-fail \

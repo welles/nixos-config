@@ -1,5 +1,10 @@
-{pkgs, ...}: let
-  python = pkgs.python3.withPackages (ps: [ps.pygobject3 ps.python-xlib]);
+{
+  lib,
+  pkgs,
+  ...
+}: let
+  unreadCountPattern = lib.removeSuffix "\n" (builtins.readFile ../google-chat-unread-title/unread-count.regex);
+  python = pkgs.python3.withPackages (ps: [ps.pycairo ps.pygobject3 ps.python-xlib]);
   tray = pkgs.stdenvNoCC.mkDerivation {
     pname = "chrome-pwa-tray";
     version = "1";
@@ -10,7 +15,8 @@
       runHook preInstall
       install -Dm755 ${./tray.py} "$out/bin/chrome-pwa-tray"
       substituteInPlace "$out/bin/chrome-pwa-tray" \
-        --replace-fail '#!/usr/bin/env python3' '#!${python}/bin/python3'
+        --replace-fail '#!/usr/bin/env python3' '#!${python}/bin/python3' \
+        --subst-var-by unreadCountPattern ${lib.escapeShellArg unreadCountPattern}
       runHook postInstall
     '';
   };

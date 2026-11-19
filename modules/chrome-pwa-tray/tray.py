@@ -2,9 +2,13 @@
 import re
 import signal
 from contextlib import closing
+from dataclasses import dataclass
+from math import pi
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from uuid import uuid4
 
+import cairo
 import gi
 from Xlib import Xatom, display, error
 
@@ -18,6 +22,72 @@ from gi.repository import Gdk, GdkX11, Gio, GLib, GLibUnix, Gtk, Wnck, XApp
 
 
 CHROME_APP_INSTANCE = re.compile(r"crx_[a-p]{32}")
+UNREAD_COUNT = re.compile(r"@unreadCountPattern@", re.ASCII)
+
+
+def unread_count(title):
+    match = UNREAD_COUNT.search(title or "")
+    if match is None:
+        return None
+    count = match[1]
+    # Match the window list's parseInt(count) > 0 without imposing a digit limit.
+    if count.rstrip("+").split(".", 1)[0].lstrip("0"):
+        return count
+    return None
+
+
+def save_icon(pixbuf, count, path):
+    if count is None:
+        pixbuf.savev(str(path), "png", [], [])
+        return
+
+    size = 64
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, size, size)
+    context = cairo.Context(surface)
+    width, height = pixbuf.get_width(), pixbuf.get_height()
+    scale = size / max(width, height)
+    context.save()
+    context.translate((size - width * scale) / 2, (size - height * scale) / 2)
+    context.scale(scale, scale)
+    Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, 0)
+    context.paint()
+    context.restore()
+
+    radius = 16
+    inset = 1
+    font_size = 25
+    text_padding = 8
+    max_text_width = size - 2 * inset - text_padding
+    context.select_font_face("Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+    context.set_font_size(font_size)
+    text = context.text_extents(count)
+    if text.width > max_text_width:
+        context.set_font_size(font_size * max_text_width / text.width)
+        text = context.text_extents(count)
+
+    badge_width = max(2 * radius, text.width + text_padding)
+    right = size - inset
+    center_y = inset + radius
+    context.arc(right - radius, center_y, radius, -pi / 2, pi / 2)
+    context.arc(right - badge_width + radius, center_y, radius, pi / 2, 3 * pi / 2)
+    context.close_path()
+    context.set_source_rgb(0.91, 0.29, 0.22)
+    context.fill()
+
+    context.set_source_rgb(1, 1, 1)
+    context.move_to(
+        right - (badge_width + text.width) / 2 - text.x_bearing,
+        center_y - text.height / 2 - text.y_bearing,
+    )
+    context.show_text(count)
+    surface.write_to_png(str(path))
+
+
+@dataclass
+class TrayIcon:
+    status: XApp.StatusIcon
+    image: Path | None = None
+    count: str | None = None
 
 
 class ChromeAppTray:
@@ -68,28 +138,37 @@ class ChromeAppTray:
         if window.is_skip_tasklist() and window not in self.marked_windows:
             return
 
-        icon_path = self.icon_path(window)
-        window.get_icon().savev(str(icon_path), "png", [], [])
         icon = XApp.StatusIcon.new_with_name("chrome-pwa-tray")
         icon.set_visible(False)
-        icon.set_icon_name(str(icon_path))
-        self.icons[window] = icon
+        self.icons[window] = TrayIcon(icon)
         icon.connect("activate", self.restore_window, window)
         icon.connect("state-changed", self.tray_state_changed, window)
         self.update_title(window)
         self.tray_state_changed(icon, icon.get_state(), window)
 
-    def icon_path(self, window):
-        return self.icon_dir / f"{window.get_xid()}.png"
-
     def update_title(self, window):
         icon = self.icons.get(window)
-        if icon is not None:
-            icon.set_tooltip_text(window.get_name())
+        if icon is None:
+            return
+
+        title = window.get_name()
+        icon.status.set_tooltip_text(title)
+        count = unread_count(title)
+        if icon.image is not None and icon.count == count:
+            return
+
+        # Cinnamon reloads the image when the XApp icon path changes.
+        image = self.icon_dir / f"{uuid4().hex}.png"
+        save_icon(window.get_icon(), count, image)
+        icon.status.set_icon_name(str(image))
+        if icon.image is not None:
+            icon.image.unlink(missing_ok=True)
+        icon.image = image
+        icon.count = count
 
     def panel_applets_changed(self, _settings, _key):
         for window, icon in self.icons.items():
-            self.tray_state_changed(icon, icon.get_state(), window)
+            self.tray_state_changed(icon.status, icon.status.get_state(), window)
 
     def tray_state_changed(self, icon, state, window):
         # Require both a registered XApp monitor and an enabled panel applet.
@@ -151,9 +230,10 @@ class ChromeAppTray:
         if icon is None:
             return
 
-        icon.disconnect_by_func(self.tray_state_changed)
-        icon.set_visible(False)
-        self.icon_path(window).unlink(missing_ok=True)
+        icon.status.disconnect_by_func(self.tray_state_changed)
+        icon.status.set_visible(False)
+        if icon.image is not None:
+            icon.image.unlink(missing_ok=True)
 
     def window_closed(self, _screen, window):
         self.remove_icon(window, closed=True)
