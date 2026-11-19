@@ -3,8 +3,7 @@
 # nixpkgs builds xorgxrdp without glamor, so the X server of an RDP session
 # offers no DRI3 and every X11 program (GLX/EGL, Chromium, Wine, the desktop)
 # renders on the CPU through llvmpipe, whatever GPU the machine has. This
-# module builds xorgxrdp with `--enable-glamor` and points sesman's Xorg
-# session at it.
+# module builds xorgxrdp with `--enable-glamor` (`xorgxrdpOverrides`).
 #
 # glamor only switches on at runtime if the render node in xorg.conf
 # (`/dev/dri/renderD128`) opens and its kernel driver is on `DRMAllowList`;
@@ -25,21 +24,7 @@
   xrdpGlamorExtraDrivers,
   ...
 }: let
-  inherit (config.services.xrdp.package) xorgxrdp;
-
-  xorgxrdpGlamor = xorgxrdp.overrideAttrs (old: {
-    pname = "xorgxrdp-glamor";
-
-    configureFlags = (old.configureFlags or []) ++ ["--enable-glamor"];
-
-    buildInputs =
-      old.buildInputs
-      ++ (with pkgs; [
-        libepoxy
-        libgbm
-        libGL
-      ]);
-  });
+  inherit (config) xorgxrdp;
 
   defaultDrivers = "amdgpu i915 msm radeon";
   drivers = lib.concatStringsSep " " ([defaultDrivers "xe"] ++ xrdpGlamorExtraDrivers);
@@ -52,17 +37,30 @@ in {
   # glamor's EGL needs the Mesa drivers from /run/opengl-driver
   hardware.graphics.enable = true;
 
-  # The [Xorg] section of sesman.ini references xorgxrdp's modules and
-  # xorg.conf by store path; swap the modules for the glamor build and the
-  # config for a copy with the extended DRMAllowList next to sesman.ini.
+  xorgxrdpOverrides = [
+    (old: {
+      configureFlags = (old.configureFlags or []) ++ ["--enable-glamor"];
+
+      buildInputs =
+        old.buildInputs
+        ++ (with pkgs; [
+          libepoxy
+          libgbm
+          libGL
+        ]);
+    })
+  ];
+
+  # The [Xorg] section of sesman.ini references xorgxrdp's xorg.conf by store
+  # path; swap it for a copy with the extended DRMAllowList next to
+  # sesman.ini.
   xrdpConfDirCommands = ''
-    cp ${xorgxrdpGlamor}/etc/X11/xrdp/xorg.conf $out/xorgxrdp.conf
+    cp ${xorgxrdp}/etc/X11/xrdp/xorg.conf $out/xorgxrdp.conf
     chmod +w $out/xorgxrdp.conf
     substituteInPlace $out/xorgxrdp.conf \
       --replace-fail '"DRMAllowList" "${defaultDrivers}"' '"DRMAllowList" "${drivers}"'
 
     substituteInPlace $out/sesman.ini \
-      --replace-fail ${xorgxrdp}/etc/X11/xrdp/xorg.conf $out/xorgxrdp.conf \
-      --replace-fail ${xorgxrdp} ${xorgxrdpGlamor}
+      --replace-fail ${xorgxrdp}/etc/X11/xrdp/xorg.conf $out/xorgxrdp.conf
   '';
 }

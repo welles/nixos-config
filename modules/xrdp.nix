@@ -22,6 +22,9 @@
 # that change xrdp's config files add their commands to `xrdpConfDirCommands`
 # instead, which collects them all. Likewise, patches to xrdp go into
 # `xrdpPatches`, as `services.xrdp.package` takes only one definition too.
+# Changes to xorgxrdp, the X server modules of the sessions, go into
+# `xorgxrdpOverrides`; sesman.ini then starts the sessions with the result,
+# `xorgxrdp`.
 {
   config,
   lib,
@@ -31,19 +34,43 @@
   xrdpSession,
   ...
 }: {
-  options.xrdpConfDirCommands = lib.mkOption {
-    type = lib.types.lines;
-    default = "";
-    description = "Commands run on xrdp's config directory ($out), from every module";
-  };
+  options = {
+    xrdpConfDirCommands = lib.mkOption {
+      type = lib.types.lines;
+      default = "";
+      description = "Commands run on xrdp's config directory ($out), from every module";
+    };
 
-  options.xrdpPatches = lib.mkOption {
-    type = lib.types.listOf lib.types.path;
-    default = [];
-    description = "Patches applied to xrdp, from every module";
+    xrdpPatches = lib.mkOption {
+      type = lib.types.listOf lib.types.path;
+      default = [];
+      description = "Patches applied to xrdp, from every module";
+    };
+
+    xorgxrdpOverrides = lib.mkOption {
+      type = lib.types.listOf (lib.types.functionTo lib.types.attrs);
+      default = [];
+      description = "overrideAttrs functions applied to xorgxrdp, from every module";
+    };
+
+    xorgxrdp = lib.mkOption {
+      type = lib.types.package;
+      readOnly = true;
+      default =
+        lib.foldl (pkg: f: pkg.overrideAttrs f) config.services.xrdp.package.xorgxrdp
+        config.xorgxrdpOverrides;
+      description = "xorgxrdp with `xorgxrdpOverrides` applied, as the sessions use it";
+    };
   };
 
   config = {
+    # Before the other modules' commands, which then see the result in
+    # sesman.ini
+    xrdpConfDirCommands = lib.mkIf (config.xorgxrdpOverrides != []) (lib.mkBefore ''
+      substituteInPlace $out/sesman.ini \
+        --replace-fail ${config.services.xrdp.package.xorgxrdp} ${config.xorgxrdp}
+    '');
+
     services.xrdp = {
       enable = true;
       package = pkgs.xrdp.overrideAttrs (old: {

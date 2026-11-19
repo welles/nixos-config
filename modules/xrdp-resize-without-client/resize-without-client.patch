@@ -1,0 +1,41 @@
+--- a/module/rdpRandR.c
++++ b/module/rdpRandR.c
+@@ -123,6 +123,7 @@
+     PixmapPtr screenPixmap;
+     BoxRec box;
+     rdpPtr dev;
++    int without_client = 0;
+ 
+     LLOGLN(0, ("rdpRRScreenSetSize: width %d height %d mmWidth %d mmHeight %d",
+            width, height, (int)mmWidth, (int)mmHeight));
+@@ -135,8 +136,15 @@
+             LLOGLN(0, ("rdpRRScreenSetSize: already this size"));
+             return TRUE;
+         }
+-        LLOGLN(0, ("rdpRRScreenSetSize: not allowing resize"));
+-        return FALSE;
++        if (dev->clientConHead != NULL)
++        {
++            LLOGLN(0, ("rdpRRScreenSetSize: not allowing resize"));
++            return FALSE;
++        }
++        /* No RDP client is connected, whose size the screen would have to
++         * keep: let X clients resize it, with a single output covering it */
++        LLOGLN(0, ("rdpRRScreenSetSize: no RDP client, allowing resize"));
++        without_client = 1;
+     }
+     root = rdpGetRootWindowPtr(pScreen);
+     if ((width < 1) || (height < 1))
+@@ -206,6 +214,12 @@
+     xf86EnableDisableFBAccess(xf86Screens[pScreen->myNum], FALSE);
+     xf86EnableDisableFBAccess(xf86Screens[pScreen->myNum], TRUE);
+ #endif
++    if (without_client)
++    {
++        dev->monitorCount = 0;
++        rdpRRSetRdpOutputs(dev);
++        RRTellChanged(pScreen);
++    }
+     return TRUE;
+ }
+ 
