@@ -60,6 +60,9 @@
       # Started through the FHS environment below
       cp usr/bin/Xkasmvnc "$out/libexec/"
       cp -r usr/share/kasmvnc "$out/share/"
+      # The web client picks its language from the browser, with no setting
+      # for it; without the translations it stays in English
+      rm -r "$out/share/kasmvnc/www/app/locale"
 
       runHook postInstall
     '';
