@@ -35,8 +35,6 @@
     ../../modules/xrdp-audio.nix
     ../../modules/xrdp-glamor.nix
     ../../modules/xrdp-boot-session.nix
-    ../../modules/xrdp-keyboard-default-de.nix
-    ../../modules/xrdp-login-with-client-credentials
     ../../modules/kasmvnc-xrdp-mirror.nix
     # Publishes KasmVNC and Claude Remote Manager (cloudflare/devbox.tf)
     ../../modules/cloudflared.nix

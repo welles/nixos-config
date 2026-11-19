@@ -17,12 +17,14 @@
 #
 # The browser sends KasmVNC the characters typed, which its X server turns
 # into keys by its own layout, and kasmxproxy passes on the key codes as
-# they are; KasmVNC's keymap has to be the session's: German
-# (xrdp-keyboard-default-de.nix), or the session reads US keys, and xorgxrdp's
-# key codes (the xfree86 ones of the `base` rules) instead of the default
-# evdev ones, or arrow keys, AltGr etc. arrive as other keys. kasmxproxy resizes the session to the browser
-# window while no RDP client is connected (xrdp-resize-without-client); an
-# RDP login sets it back to the RDP client's size.
+# they are. KasmVNC's keymap has to be the session's: German (cinnamon.nix
+# sets it when the session starts), or the session reads US keys, and
+# xorgxrdp's key codes (the xfree86 ones of the `base` rules) instead of the
+# default evdev ones, or arrow keys, AltGr etc. arrive as other keys.
+#
+# kasmxproxy resizes the session to the browser window while no RDP client
+# is connected (xrdp-resize-without-client); an RDP login sets it back to
+# the RDP client's size.
 {
   lib,
   pkgs,
