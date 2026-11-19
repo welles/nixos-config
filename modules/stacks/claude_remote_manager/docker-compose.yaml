@@ -38,7 +38,7 @@ services:
       # Covers seeding the empty Nix store on the first start
       start_period: 180s
     # Pinned to the image of a commit on main (tags: sha-<short sha>)
-    image: ghcr.io/welles/claude-remote-manager:sha-c44dc96
+    image: ghcr.io/welles/claude-remote-manager:sha-2eb7876
     networks:
       claude_remote_manager:
         ipv4_address: 10.10.23.10
