@@ -16,9 +16,11 @@
 # display is :10 (X11DisplayOffset); KasmVNC uses :20.
 #
 # The browser sends KasmVNC the characters typed, which its X server turns
-# into keys by its own layout, and kasmxproxy passes on the keys; KasmVNC's
-# layout has to be the session's (German, xrdp-keyboard-default-de.nix), or
-# the session reads US keys. kasmxproxy resizes the session to the browser
+# into keys by its own layout, and kasmxproxy passes on the key codes as
+# they are; KasmVNC's keymap has to be the session's: German
+# (xrdp-keyboard-default-de.nix), or the session reads US keys, and xorgxrdp's
+# key codes (the xfree86 ones of the `base` rules) instead of the default
+# evdev ones, or arrow keys, AltGr etc. arrive as other keys. kasmxproxy resizes the session to the browser
 # window while no RDP client is connected (xrdp-resize-without-client); an
 # RDP login sets it back to the RDP client's size.
 {
@@ -62,10 +64,10 @@ in {
           # UDP connections the browser never makes through the tunnel
           "-publicIP 127.0.0.1"
         ];
-        # Its layout once the display is up; it starts with US
+        # Its keymap once the display is up; it starts with US and evdev
         ExecStartPost = pkgs.writeShellScript "kasmvnc-keyboard" ''
           for _ in $(seq 30); do
-            ${lib.getExe pkgs.setxkbmap} -display ${vncDisplay} -model pc105 -layout de && exit 0
+            ${lib.getExe pkgs.setxkbmap} -display ${vncDisplay} -rules base -model pc105 -layout de && exit 0
             sleep 1
           done
           exit 1
