@@ -25,6 +25,7 @@
     ./disk-configuration.nix
     ./hardware-configuration.nix
     ../../modules/nvidia-dynamic-boost.nix
+    ../../modules/nvidia-power-brake-clock-cap.nix
     ../../modules/nvidia-prime-offload.nix
     ../../modules/zfs-grub-boot.nix
 
