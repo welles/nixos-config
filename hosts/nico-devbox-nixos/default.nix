@@ -1,5 +1,9 @@
 # Development desktop VM on nico-schokoladenelch-nixos; see README.md.
-{hostname, ...}: {
+{
+  hostname,
+  lib,
+  ...
+}: {
   imports = [
     # Bundles
     ../../bundles/base.nix
@@ -73,6 +77,11 @@
     ../../modules/packages/unzip.nix
     ../../modules/packages/wget.nix
   ];
+
+  # Claude Remote Manager moved to the home server (the stack
+  # claude_remote_manager). Stopped here; its data in
+  # /var/lib/claude-remote-manager stays persisted until the module goes.
+  services.claude-remote-manager.enable = lib.mkForce false;
 
   networking.hostName = hostname;
   networking.hostId = "75163031";

@@ -39,6 +39,18 @@
         paths = [];
       };
     };
+    # Claude Remote Manager; published by the Cloudflare Tunnel
+    # (cloudflare/apps.tf), not Caddy. Its secrets need the container's API
+    # user as owner and are declared in hosts/nico-schokoladenelch-nixos/stacks.nix.
+    claude_remote_manager = {
+      enabled = true;
+      secrets = [];
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     ark_server = {
       enabled = false;
       secrets = ["ark_server"];

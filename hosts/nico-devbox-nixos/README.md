@@ -79,59 +79,10 @@ or `nixos-rebuild switch --target-host` from elsewhere).
 ## Claude Remote Manager
 
 [Claude Remote Manager](https://github.com/welles/claude-remote-manager)
-runs as the system service `claude-remote-manager`
-(`modules/claude-remote-manager.nix`, the app's own NixOS module) as `nico`,
-without a sandbox: its Claude Code sessions are Claude Code of `nico`, like
-a terminal session on this machine.
+moved to the home server (the Docker Compose stack `claude_remote_manager`,
+`modules/stacks/`), isolated from this machine. The service is stopped here
+(`services.claude-remote-manager.enable = false` in `default.nix`); the
+module `modules/claude-remote-manager.nix` stays imported only so that its
+data in `/var/lib/claude-remote-manager` stays persisted, until it is
+removed together with the NixOS module of the app.
 
-- **Reachable** at `https://claude.welles.app` through the devbox's own
-  Cloudflare Tunnel and behind Cloudflare Access (Google login, 30-day
-  session), both in `cloudflare/` (`local.apps.claude-remote-manager`).
-  Only the GitHub webhook `/api/github/webhook` passes without a login
-  (`bypass_paths`; the app checks its signature). The service listens on
-  port 8080 of the VM's localhost only; nothing in the LAN reaches it.
-  Open it through `claude.welles.app` also from the devbox itself. The API
-  refuses requests from processes it started (sessions and their tools),
-  so a session does not approve its own requests by accident; the owner's
-  own programs here are not refused.
-- **Previews** of dev servers are not enabled yet (`previewUrl = null`): a
-  wildcard two labels below `welles.app` needs Cloudflare's paid Advanced
-  Certificate, a separate domain is the alternative. Enabling them means an
-  entry for the wildcard host name in `local.apps` of `cloudflare/apps.tf`
-  (its own Access application), plus a `cloudflare_certificate_pack` for
-  the first option or the new zone in `zone_ids` for the second, and
-  `previewUrl` and `previewAccessAudience` in `claudeRemoteManager`.
-- **Sessions** use `~/.claude` (the login, skills, plugins and MCP servers
-  of Claude Desktop and the terminal), the whole file system, Docker, the
-  media mounts under `/mnt/tank` and the home's credentials. `sudo` asks
-  for `nico`'s password. Git in the session clones works like in
-  `~/workspace`: GitHub over SSH with the sops key `github-ssh-key` (pushes
-  to the clones' HTTPS `origin` are rewritten to SSH), unsigned commits.
-  The sessions' system prompt ends with `claude-remote-manager.md` in this
-  directory. The permission mode is chosen per session, `bypassPermissions`
-  included; an Autofix run asks for every call but reading.
-- **State**: everything in `/var/lib/claude-remote-manager` (persisted as one
-  directory): database, mirrors and session clones; the Claude Code
-  transcripts are in `~/.claude`. The root-only directory in which the app
-  records to whom it gave the data directory,
-  `/var/lib/claude-remote-manager-owner`, is persisted too.
-- **Secrets** in this host's `secrets.yaml`, readable by root only:
-  `claude-remote-manager/github-app-key` (private key of the GitHub App,
-  App ID 5736769), `claude-remote-manager/github-webhook-secret`,
-  `claude-remote-manager/ntfy-token` (a token of the ntfy user that publishes
-  to the topic `claude-remote-manager` on `ntfy.welles.app`).
-- **Cloudflare Access values** are in `claudeRemoteManager` in
-  `default.nix`: the team domain, and the app's Application Audience tag
-  from `./tofu.sh output access_audiences` in `cloudflare/`. No email
-  allowlist: Access issues tokens only to the Google E-Mail group.
-
-Sessions use the Claude login of `~/.claude`; there is no login of their
-own.
-
-**Updates**: after every green CI run on the app's `main`, the workflow
-`.github/workflows/update-claude-remote-manager.yml` updates the flake input
-`claude-remote-manager`, builds only this host as a test and commits
-`flake.lock`; a newer run cancels a running one. Besides that, the nightly
-input update moves it too. The next `nixos-switch` here brings the new
-version and restarts the service (running sessions are interrupted; database
-migrations run at startup).

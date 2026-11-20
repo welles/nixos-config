@@ -1,0 +1,73 @@
+name: claude_remote_manager
+
+# Claude Remote Manager (github.com/welles/claude-remote-manager): web
+# front end for Claude Code sessions that develop GitHub repositories.
+# Published by the server's Cloudflare Tunnel behind Cloudflare Access
+# (cloudflare/apps.tf), which the app verifies itself (AUTH_MODE). The port
+# is bound to loopback only: the app runs an agent with broad tool rights.
+#
+# Inside the container the API runs as UID 1000 and the sessions as UID
+# 1001; the secret files must be readable by 1000 and not by 1001
+# (hosts/nico-schokoladenelch-nixos/stacks.nix), or the entrypoint refuses
+# to start. Log in to Claude once:
+#   docker exec -it -u claude claude_remote_manager claude
+
+services:
+  claude_remote_manager:
+    container_name: claude_remote_manager
+    environment:
+      TZ: Europe/Berlin
+      AUTH_MODE: cloudflare-access
+      CF_ACCESS_TEAM_DOMAIN: nicowelles.cloudflareaccess.com
+      # Audience tag of the Access application (cloudflare/apps.tf,
+      # `./tofu.sh output access_audiences`)
+      CF_ACCESS_AUD: fa22da04b3e7c6c5ba0a0529d443a722d0570e5561daa2ff43839d82432be1f3
+      ALLOWED_HOSTS: claude.welles.app
+      PUBLIC_URL: https://claude.welles.app
+      GITHUB_APP_ID: "5736769"
+      GITHUB_APP_PRIVATE_KEY_FILE: /run/secrets/github-app-key
+      GITHUB_WEBHOOK_SECRET_FILE: /run/secrets/github-webhook-secret
+      NTFY_URL: https://ntfy.welles.app
+      NTFY_TOPIC: claude-remote-manager
+      NTFY_TOKEN_FILE: /run/secrets/ntfy-token
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -o /dev/null http://localhost:8080/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      # Covers seeding the empty Nix store on the first start
+      start_period: 180s
+    # Pinned to the image of a commit on main (tags: sha-<short sha>)
+    image: ghcr.io/welles/claude-remote-manager:sha-ac1a91d
+    networks:
+      claude_remote_manager:
+        ipv4_address: 10.10.23.10
+    ports:
+      - 127.0.0.1:50230:8080/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # Mirrors, session clones and scratch directories on one file system
+      # (hardlinks)
+      - /mnt/bucket/claude_remote_manager/workspace:/data/workspace:rw
+      # Claude Code login, settings and transcripts
+      - /mnt/bucket/claude_remote_manager/claude:/data/claude:rw
+      # The API's own git configuration (and SSH key, unused)
+      - /mnt/bucket/claude_remote_manager/git:/data/git:rw
+      # SQLite database, attachments
+      - /mnt/bucket/claude_remote_manager/db:/data/db:rw
+      # Nix store, so tools are downloaded once
+      - /mnt/bucket/claude_remote_manager/nix:/nix:rw
+      - /run/secrets/claude_remote_manager/github-app-key:/run/secrets/github-app-key:ro
+      - /run/secrets/claude_remote_manager/github-webhook-secret:/run/secrets/github-webhook-secret:ro
+      - /run/secrets/claude_remote_manager/ntfy-token:/run/secrets/ntfy-token:ro
+
+networks:
+  claude_remote_manager:
+    name: claude_remote_manager
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.23.0/24
