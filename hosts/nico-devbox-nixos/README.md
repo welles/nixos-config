@@ -29,8 +29,6 @@ other host in this flake.
   (`modules/workspace-git.nix`).
 - Playwright MCP for Claude Code, a VS Code tunnel named
   `nico-devbox-nixos`.
-- Claude Remote Manager at `https://claude.welles.app`: web frontend for
-  Claude Code sessions, which run here as `nico` (see below).
 - Impermanence: the ZFS root dataset is rolled back on every boot, only
   `/persist` survives.
 - The server's media datasets are mounted under `/mnt/tank` over virtiofs
@@ -78,11 +76,9 @@ or `nixos-rebuild switch --target-host` from elsewhere).
 
 ## Claude Remote Manager
 
-[Claude Remote Manager](https://github.com/welles/claude-remote-manager)
-moved to the home server (the Docker Compose stack `claude_remote_manager`,
-`modules/stacks/`), isolated from this machine. The service is stopped here
-(`services.claude-remote-manager.enable = false` in `default.nix`); the
-module `modules/claude-remote-manager.nix` stays imported only so that its
-data in `/var/lib/claude-remote-manager` stays persisted, until it is
-removed together with the NixOS module of the app.
-
+[Claude Remote Manager](https://github.com/welles/claude-remote-manager) no
+longer runs here: it is the Docker Compose stack `claude_remote_manager` on
+the home server (`modules/stacks/`). Its old data in
+`/persist/var/lib/claude-remote-manager` and
+`/persist/var/lib/claude-remote-manager-owner` is no longer used and can be
+deleted.

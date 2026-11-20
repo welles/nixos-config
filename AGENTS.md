@@ -237,8 +237,6 @@ argument that the host sets in `_module.args`. Common arguments:
 | `libvirtVms`               | libvirt guests by name (fields: see `libvirt-vm.nix`).     |
 | `virtiofsMounts`           | virtiofs tags by mount point.                              |
 | `xrdpGlamorExtraDrivers`   | Extra kernel GPU drivers glamor may use in xrdp sessions.  |
-| `ntfyUrl`                  | Base URL of the ntfy server.                               |
-| `claudeRemoteManager`      | Claude Remote Manager settings (see its module).           |
 | `xrdpSession`              | Session command xrdp starts; set by `cinnamon.nix` itself. |
 | `xrdpGlamor`               | xrdp's X server runs glamor; set by `xrdp-glamor.nix`.     |
 

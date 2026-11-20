@@ -1,139 +1,104 @@
 name: Update Claude Remote Manager
 
-# Updates only the flake input claude-remote-manager, so the devbox gets a new
-# version of the app with its next deploy instead of after the nightly update.
-# Started by the app repository (welles/claude-remote-manager) after a green CI
-# run on its main branch, with the commit that passed as `rev`.
-#
-# Only nico-devbox-nixos uses the app, so only that host is built as a test.
-# A newer run cancels a running one: only the newest commit of the app
-# matters. The commit job alone joins the concurrency group of the nightly
-# update and the local package update, so they never change flake.lock at
-# once; it updates the input again on the newest main, so it never reverts a
-# flake.lock committed by those in the meantime.
+# Sets the image tag of the claude_remote_manager stack to a new commit, so the
+# server runs it with its next deploy. Started by the app repository
+# (welles/claude-remote-manager) after a green CI run on its main branch, once
+# the image ghcr.io/welles/claude-remote-manager:sha-<commit> is pushed, with
+# that commit as `rev`. The stack is not a flake input, so flake.lock is not
+# touched and no host build is needed: only the tag in the compose file
+# changes.
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: claude-remote-manager-image
+  cancel-in-progress: false
 
 on:
   workflow_dispatch:
     inputs:
       rev:
-        description: "Commit of claude-remote-manager that passed CI (empty: newest main)"
-        required: false
-        default: ""
+        description: "Full commit SHA of welles/claude-remote-manager whose image was pushed"
+        required: true
+
+env:
+  COMPOSE_FILE: modules/stacks/claude_remote_manager/docker-compose.yaml
+  APP_REPO: welles/claude-remote-manager
 
 jobs:
-  build-devbox:
+  update:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    outputs:
-      changed: ${{ steps.check-changes.outputs.changed }}
-      rev: ${{ steps.check-changes.outputs.rev }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Install nix
-        uses: cachix/install-nix-action@v31
-
-      - name: Set up Cachix
-        uses: cachix/cachix-action@v17
-        with:
-          name: welles-nixos-config
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: Update flake input claude-remote-manager
-        run: nix flake update claude-remote-manager
-
-      # The newest main may already be a later commit whose CI has not
-      # finished; its own run updates the input once it is green.
-      - name: Check for changes
-        id: check-changes
-        env:
-          EXPECTED_REV: ${{ inputs.rev }}
-        run: |
-          locked=$(jq -r '.nodes["claude-remote-manager"].locked.rev' flake.lock)
-          echo "rev=$locked" >> "$GITHUB_OUTPUT"
-          if git diff --quiet flake.lock; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "claude-remote-manager is already at $locked. Stopping early."
-          elif [[ -n "$EXPECTED_REV" && "$locked" != "$EXPECTED_REV" ]]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "main of claude-remote-manager is at $locked, not at $EXPECTED_REV, which passed CI. Stopping early."
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "claude-remote-manager updated to $locked. Building the devbox."
-          fi
-
-      - name: Build NixOS Configuration (nico-devbox-nixos)
-        if: steps.check-changes.outputs.changed == 'true'
-        env:
-          HOST: nico-devbox-nixos
-        run: |
-          set -o pipefail
-          if ! nix build ".#nixosConfigurations.\"$HOST\".config.system.build.toplevel" 2>&1 | tee build.log; then
-            # The Cachix post step floods the log, so surface the error as an
-            # annotation and in the job summary.
-            {
-              echo "### Build of \`$HOST\` failed"
-              echo '```'
-              tail -n 80 build.log
-              echo '```'
-            } >> "$GITHUB_STEP_SUMMARY"
-            msg=$(tail -n 30 build.log)
-            msg=${msg//'%'/'%25'}
-            msg=${msg//$'\r'/'%0D'}
-            msg=${msg//$'\n'/'%0A'}
-            echo "::error title=Build of $HOST failed::$msg"
-            exit 1
-          fi
-
-  # Commits only if the devbox, the only host using the app, built.
-  commit-update:
-    needs: build-devbox
-    if: needs.build-devbox.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-    concurrency:
-      group: nix-flake
-      cancel-in-progress: false
     permissions:
       contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-        with:
-          ref: ${{ github.ref_name }}
 
-      - name: Install nix
-        uses: cachix/install-nix-action@v31
-
-      - name: Update flake input claude-remote-manager
-        id: update
+      # Only move forward: runs can finish out of order, and an older commit
+      # must not replace a newer image that is already set.
+      - name: Check the new commit
+        id: check
         env:
-          TESTED_REV: ${{ needs.build-devbox.outputs.rev }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REV: ${{ inputs.rev }}
         run: |
-          nix flake update claude-remote-manager
-          locked=$(jq -r '.nodes["claude-remote-manager"].locked.rev' flake.lock)
-          if git diff --quiet flake.lock; then
-            echo "commit=false" >> "$GITHUB_OUTPUT"
-            echo "flake.lock on ${GITHUB_REF_NAME} already has claude-remote-manager at $locked. Nothing to commit."
-          elif [[ "$locked" != "$TESTED_REV" ]]; then
-            echo "commit=false" >> "$GITHUB_OUTPUT"
-            echo "main of claude-remote-manager moved on to $locked, but $TESTED_REV was tested. Not committing."
+          if [[ ! "$REV" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::rev must be a full 40-character commit SHA, got '$REV'"
+            exit 1
+          fi
+          current=$(grep -oP 'image: ghcr\.io/welles/claude-remote-manager:sha-\K[0-9a-f]+' "$COMPOSE_FILE")
+          if [[ -z "$current" ]]; then
+            echo "::error file=$COMPOSE_FILE::no image ghcr.io/welles/claude-remote-manager:sha-… found"
+            exit 1
+          fi
+          new=${REV:0:7}
+          echo "tag=sha-$new" >> "$GITHUB_OUTPUT"
+          if [[ "$REV" == "$current"* ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "claude_remote_manager is already at sha-$current. Stopping early."
+            exit 0
+          fi
+          status=$(gh api "repos/$APP_REPO/compare/$current...$REV" --jq .status)
+          if [[ "$status" == "ahead" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "claude_remote_manager: sha-$current -> sha-$new"
           else
-            echo "commit=true" >> "$GITHUB_OUTPUT"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "sha-$new is not newer than sha-$current (compare: $status). Stopping early."
           fi
 
+      # The app's CI starts this workflow only after pushing the image; check
+      # anyway, as a tag without an image would stop the stack at its next
+      # deploy. The package is public, so an anonymous pull token suffices.
+      - name: Check the image exists
+        if: steps.check.outputs.changed == 'true'
+        env:
+          TAG: ${{ steps.check.outputs.tag }}
+        run: |
+          token=$(curl -fsS "https://ghcr.io/token?scope=repository:$APP_REPO:pull" | jq -r .token)
+          code=$(curl -s -o /dev/null -w '%{http_code}' -I \
+            -H "Authorization: Bearer $token" \
+            -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/$APP_REPO/manifests/$TAG")
+          if [[ "$code" != "200" ]]; then
+            echo "::error::ghcr.io/$APP_REPO:$TAG not found (HTTP $code)"
+            exit 1
+          fi
+
+      - name: Set the image tag
+        if: steps.check.outputs.changed == 'true'
+        env:
+          TAG: ${{ steps.check.outputs.tag }}
+        run: |
+          sed -i -E "s|(image: ghcr\.io/welles/claude-remote-manager:)sha-[0-9a-f]+|\1$TAG|" "$COMPOSE_FILE"
+          git diff --exit-code --quiet "$COMPOSE_FILE" && { echo "::error::tag was not replaced"; exit 1; }
+          git diff
+
       - name: Commit and push changes
-        if: steps.update.outputs.commit == 'true'
+        if: steps.check.outputs.changed == 'true'
         uses: planetscale/ghcommit-action@v0.2.22
         with:
-          commit_message: "Update flake lock file (claude-remote-manager)"
+          commit_message: "chore(claude_remote_manager): update image to ${{ steps.check.outputs.tag }}"
           repo: ${{ github.repository }}
           branch: ${{ github.ref_name }}
-          file_pattern: "flake.lock"
+          file_pattern: ${{ env.COMPOSE_FILE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

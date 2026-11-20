@@ -1,9 +1,5 @@
 # Development desktop VM on nico-schokoladenelch-nixos; see README.md.
-{
-  hostname,
-  lib,
-  ...
-}: {
+{hostname, ...}: {
   imports = [
     # Bundles
     ../../bundles/base.nix
@@ -41,13 +37,12 @@
     ../../modules/xrdp-glamor.nix
     ../../modules/xrdp-boot-session.nix
     ../../modules/kasmvnc-xrdp-mirror.nix
-    # Publishes KasmVNC and Claude Remote Manager (cloudflare/devbox.tf)
+    # Publishes KasmVNC (cloudflare/devbox.tf)
     ../../modules/cloudflared.nix
     ../../modules/user-dirs.nix
 
     # Services
     ../../modules/claude-desktop-autostart.nix
-    ../../modules/claude-remote-manager.nix
     ../../modules/home-assistant-api
     ../../modules/workspace-git.nix
     ../../modules/playwright-mcp.nix
@@ -77,11 +72,6 @@
     ../../modules/packages/unzip.nix
     ../../modules/packages/wget.nix
   ];
-
-  # Claude Remote Manager moved to the home server (the stack
-  # claude_remote_manager). Stopped here; its data in
-  # /var/lib/claude-remote-manager stays persisted until the module goes.
-  services.claude-remote-manager.enable = lib.mkForce false;
 
   networking.hostName = hostname;
   networking.hostId = "75163031";
@@ -113,26 +103,6 @@
       "/mnt/tank/music" = "tank-music";
       "/mnt/tank/audiobooks" = "tank-audiobooks";
       "/mnt/tank/podcasts" = "tank-podcasts";
-    };
-    ntfyUrl = "https://ntfy.welles.app";
-    claudeRemoteManager = {
-      hostName = "claude.welles.app";
-      # Previews off for now; later the preview base URL and previewAccessAudience.
-      previewUrl = null;
-      # cloudflare/apps.tf: team_name, and the app's audience tag, which
-      # exists after `./tofu.sh apply` (`./tofu.sh output access_audiences`).
-      accessTeamDomain = "nicowelles.cloudflareaccess.com";
-      accessAudience = "fa22da04b3e7c6c5ba0a0529d443a722d0570e5561daa2ff43839d82432be1f3";
-      # Deliberately empty: only the Google E-Mail group of cloudflare/ gets
-      # a token for this app, and the app checks every token's audience. The
-      # addresses stay a secret of cloudflare/secrets.yaml.
-      accessAllowedEmails = [];
-      githubAppId = 5736769;
-      # The Claude reviewer of claude-review.yml: its reviews start autofix
-      # runs and its approvals count for the ready-to-merge message.
-      githubTrustedBots = ["welles-claude-reviewer[bot]"];
-      ntfyTopic = "claude-remote-manager";
-      instructions = builtins.readFile ./claude-remote-manager.md;
     };
   };
 }
