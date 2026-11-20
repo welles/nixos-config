@@ -25,6 +25,13 @@
 # kasmxproxy resizes the session to the browser window while no RDP client
 # is connected (xrdp-resize-without-client); an RDP login sets it back to
 # the RDP client's size.
+#
+# kasmxproxy mirrors only the screen and the input, not the clipboard: what
+# the browser pastes lands in KasmVNC's display, what is copied in the
+# session stays in the session's. kasmvnc-clipboard copies the CLIPBOARD
+# selection's text between the two whenever it changes on either side.
+# PRIMARY stays apart, or every text selected in the session would replace
+# the browser's clipboard.
 {
   lib,
   pkgs,
@@ -34,6 +41,48 @@
   port = 6901;
   appDisplay = ":10";
   vncDisplay = ":20";
+
+  clipboardSync = pkgs.writeShellApplication {
+    name = "kasmvnc-clipboard";
+    runtimeInputs = with pkgs; [clipnotify coreutils diffutils xclip];
+    text = ''
+      dir=$(mktemp -d)
+      trap 'rm -rf "$dir"' EXIT
+
+      # The CLIPBOARD text of display $1, into file $2; fails when there is
+      # none (no owner, or an image)
+      read_clipboard() {
+        timeout 2 xclip -display "$1" -selection clipboard -o -t UTF8_STRING > "$2" 2>/dev/null
+      }
+
+      # Copies the text from display $1 to display $2. The copy changes the
+      # selection of $2, whose watcher then finds the same text on both
+      # sides and stops there.
+      copy() {
+        read_clipboard "$1" "$dir/from$1" || return 0
+        if read_clipboard "$2" "$dir/to$2" && cmp -s "$dir/from$1" "$dir/to$2"; then
+          return 0
+        fi
+        # xclip stays in the background as the selection's owner until the
+        # next copy replaces it
+        xclip -display "$2" -selection clipboard -i < "$dir/from$1"
+      }
+
+      # clipnotify exits on every selection change of its display, and
+      # fails while the display is not up
+      watch() {
+        while DISPLAY=$1 clipnotify; do
+          copy "$1" "$2"
+        done
+      }
+
+      watch ${vncDisplay} ${appDisplay} &
+      watch ${appDisplay} ${vncDisplay} &
+      # When one of the displays is gone, systemd starts both anew
+      wait -n
+      exit 1
+    '';
+  };
 in {
   imports = [
     ./packages/kasmvnc.nix
@@ -88,6 +137,21 @@ in {
       serviceConfig = {
         User = user;
         ExecStart = "/run/current-system/sw/bin/kasmxproxy -a ${appDisplay} -v ${vncDisplay} -f 30 -r";
+        # Until the xrdp session's display is up
+        Restart = "always";
+        RestartSec = "5s";
+      };
+    };
+
+    kasmvnc-clipboard = {
+      description = "Copy the clipboard between the xrdp session and KasmVNC";
+      wantedBy = ["multi-user.target"];
+      after = ["kasmvnc.service" "xrdp-boot-session.service"];
+      requires = ["kasmvnc.service"];
+      environment.XAUTHORITY = "/home/${user}/.Xauthority";
+      serviceConfig = {
+        User = user;
+        ExecStart = lib.getExe clipboardSync;
         # Until the xrdp session's display is up
         Restart = "always";
         RestartSec = "5s";
