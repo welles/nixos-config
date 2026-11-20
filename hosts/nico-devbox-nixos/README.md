@@ -24,9 +24,9 @@ other host in this flake.
   keeps working.
 - Claude Desktop starts with that session, so the VM is ready for Remote
   Control sessions after every boot (`modules/claude-desktop-autostart.nix`).
-  Repositories for them are cloned by hand into `~/workspace`, where Git
-  uses the SSH key from sops instead of 1Password
-  (`modules/workspace-git.nix`).
+  Repositories are cloned by hand into `~/Documents/Source`, like on the
+  other desktops; Git reaches GitHub through the 1Password SSH agent, so a
+  locked 1Password blocks pushes until it is unlocked.
 - Playwright MCP for Claude Code, a VS Code tunnel named
   `nico-devbox-nixos`.
 - Impermanence: the ZFS root dataset is rolled back on every boot, only
