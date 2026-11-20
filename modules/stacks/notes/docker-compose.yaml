@@ -8,7 +8,7 @@ name: notes
 # only.
 #
 # The image runs as UID 1654 (the .NET images' APP_UID); the data directory
-# belongs to it (hosts/nico-schokoladenelch-nixos/stacks.nix).
+# belongs to it (tmpfiles in modules/stacks/default.nix).
 
 services:
   notes:

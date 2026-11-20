@@ -20,10 +20,6 @@
       restartUnits = ["docker-compose-claude_remote_manager.service"];
     });
 
-  # Data directory of the stack notes, owned by the image's user (APP_UID of
-  # the .NET images); Docker would create a missing one owned by root
-  systemd.tmpfiles.rules = ["d /mnt/bucket/notes/data 0750 1654 1654 -"];
-
   networking.firewall = {
     allowedTCPPorts = [50051]; # Windows RDP (Docker, stack "windows")
     allowedUDPPorts = [50051];

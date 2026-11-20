@@ -9,6 +9,8 @@
 #     permanent redirect and Cloudflare DDNS still keeps the old domain resolving
 #   - backup.enable: whether to back up this stack with restic
 #   - backup.paths: host paths to include in the backup
+#   - tmpfiles (optional): systemd-tmpfiles rules for the stack's host paths,
+#     e.g. data directories owned by a container's non-root user
 #
 # For enabled stacks, this module automatically:
 #   1. Copies the docker-compose.yaml to /etc/docker-compose/<name>/
@@ -220,6 +222,9 @@
       # No Caddy proxy: published through the Cloudflare Tunnel behind
       # Cloudflare Access (cloudflare/apps.tf), which is the app's only login.
       proxies = {};
+      # Data directory owned by the image's user (APP_UID of the .NET
+      # images); Docker would create a missing one owned by root
+      tmpfiles = ["d /mnt/bucket/notes/data 0750 1654 1654 -"];
       backup = {
         enable = false;
         paths = [];
@@ -292,6 +297,8 @@
     lib.mkMerge [
       {
         environment.etc."docker-compose/${name}/docker-compose.yaml".source = ./${name}/docker-compose.yaml;
+
+        systemd.tmpfiles.rules = cfg.tmpfiles or [];
 
         systemd.services."docker-compose-${name}" = {
           description = "Docker Compose Stack - ${name}";
