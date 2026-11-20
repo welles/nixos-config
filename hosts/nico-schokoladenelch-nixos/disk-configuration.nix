@@ -309,6 +309,14 @@
               "com.sun:auto-snapshot" = "true";
             };
           };
+          "notes" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/bucket/notes";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
+          };
           # Disks of libvirt VMs (modules/libvirt-vm.nix); the zvols are
           # created sparse by libvirt-vm-<name>.service on an existing system
           "vms" = {

@@ -69,6 +69,21 @@ locals {
       disable_chunked_encoding = null
       bypass_paths             = ["/api/github/webhook"]
     }
+    # Notes, the stack notes on the home server (modules/stacks/), on its
+    # loopback port. The browser logs in with Google (long session, as for
+    # the installed web app above); the Android and desktop apps send the
+    # service token of their device (access.tf). The server verifies the
+    # Access JWT itself against this application's audience.
+    notes = {
+      hostname                 = "notes.welles.app"
+      zone                     = "welles.app"
+      tunnel                   = "schokoladenelch"
+      service                  = "http://localhost:50240"
+      session_duration         = "720h"
+      policies                 = ["google_email_long_session", "notes_devices"]
+      disable_chunked_encoding = null
+      bypass_paths             = []
+    }
   }
 
   # One entry per path of local.apps' bypass_paths, keyed "<app><path>"
@@ -125,6 +140,7 @@ locals {
     google_email_long_session = cloudflare_zero_trust_access_policy.google_email_long_session.id
     symfonium                 = cloudflare_zero_trust_access_policy.symfonium.id
     music_manager             = cloudflare_zero_trust_access_policy.music_manager.id
+    notes_devices             = cloudflare_zero_trust_access_policy.notes_devices.id
   }
 }
 
@@ -195,6 +211,19 @@ resource "cloudflare_zero_trust_access_policy" "music_manager" {
   include = [{
     service_token = { token_id = cloudflare_zero_trust_access_service_token.music_manager.id }
   }]
+}
+
+# The Notes apps send their device's service token (access.tf)
+resource "cloudflare_zero_trust_access_policy" "notes_devices" {
+  account_id = local.account_id
+  name       = "Notes Devices"
+  decision   = "non_identity"
+
+  include = [
+    for token in cloudflare_zero_trust_access_service_token.notes : {
+      service_token = { token_id = token.id }
+    }
+  ]
 }
 
 resource "cloudflare_zero_trust_access_application" "app" {

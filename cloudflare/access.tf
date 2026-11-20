@@ -68,3 +68,36 @@ output "music_manager_access_client_secret" {
   value     = cloudflare_zero_trust_access_service_token.music_manager.client_secret
   sensitive = true
 }
+
+# One service token per device running the Notes apps (policy
+# "notes_devices" on notes.welles.app). Revoke a device by removing it here.
+# Enter its values in the app (Settings → Sync):
+#
+#   ./tofu.sh output -json notes_access_client_ids
+#   ./tofu.sh output -json notes_access_client_secrets
+locals {
+  notes_devices = toset([
+    "phone",
+    "nico-desktop-nixos",
+    "nico-thinkpad-nixos",
+    "nico-thinkbook-nixos",
+    "nico-devbox-nixos",
+  ])
+}
+
+resource "cloudflare_zero_trust_access_service_token" "notes" {
+  for_each = local.notes_devices
+
+  account_id = local.account_id
+  name       = "Notes ${each.key}"
+  duration   = "forever"
+}
+
+output "notes_access_client_ids" {
+  value = { for device, token in cloudflare_zero_trust_access_service_token.notes : device => token.client_id }
+}
+
+output "notes_access_client_secrets" {
+  value     = { for device, token in cloudflare_zero_trust_access_service_token.notes : device => token.client_secret }
+  sensitive = true
+}
