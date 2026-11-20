@@ -217,7 +217,7 @@
       };
     };
     notes = {
-      # Enable once the image server-v0.9.0 is released and
+      # Enable once release v1 of notes-app (image tag 1) exists and
       # CloudflareAccess__Audience in its compose file is set (tofu apply)
       enabled = false;
       secrets = [];
