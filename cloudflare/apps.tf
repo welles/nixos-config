@@ -252,8 +252,8 @@ resource "cloudflare_zero_trust_access_application" "bypass" {
 }
 
 # The Application Audience (AUD) tag of every app, for apps that check the
-# Access token themselves (e.g. claudeRemoteManager.accessAudience of
-# hosts/nico-devbox-nixos): ./tofu.sh output access_audiences
+# Access token themselves (e.g. CF_ACCESS_AUD of the stack
+# claude_remote_manager): ./tofu.sh output access_audiences
 output "access_audiences" {
   value = {
     for key, app in cloudflare_zero_trust_access_application.app : key => app.aud

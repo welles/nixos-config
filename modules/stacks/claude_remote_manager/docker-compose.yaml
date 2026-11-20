@@ -30,6 +30,9 @@ services:
       NTFY_URL: https://ntfy.welles.app
       NTFY_TOPIC: claude-remote-manager
       NTFY_TOKEN_FILE: /run/secrets/ntfy-token
+      # The Claude reviewer of claude-review.yml: its reviews start autofix
+      # runs and its approvals count for the ready-to-merge message.
+      PR_TRUSTED_BOTS: welles-claude-reviewer[bot]
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS -o /dev/null http://localhost:8080/api/health || exit 1"]
       interval: 30s
@@ -37,7 +40,9 @@ services:
       retries: 3
       # Covers seeding the empty Nix store on the first start
       start_period: 180s
-    # Pinned to the image of a commit on main (tags: sha-<short sha>)
+    # Pinned to the image of a commit on main (tags: sha-<short sha>); moved
+    # after every green CI run of the app by
+    # .github/workflows/update-claude-remote-manager.yml
     image: ghcr.io/welles/claude-remote-manager:sha-ac1a91d
     networks:
       claude_remote_manager:
