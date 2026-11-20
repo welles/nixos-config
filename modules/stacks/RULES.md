@@ -196,6 +196,8 @@ Add an entry to the `stacks` attrset in `modules/stacks/default.nix`:
   proxies = {
     "{service}.welles.app" = {host_port};  # omit if not web-accessible
   };
+  # tmpfiles = [];          # systemd-tmpfiles rules, e.g. a data directory
+  #                         # owned by the container's non-root user
   backup = {
     enable = false;         # true to add daily restic backup
     paths = [];             # host paths to snapshot when backup is enabled
