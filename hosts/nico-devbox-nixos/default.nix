@@ -44,7 +44,6 @@
     # Services
     ../../modules/claude-desktop-autostart.nix
     ../../modules/home-assistant-api
-    ../../modules/workspace-git.nix
     ../../modules/playwright-mcp.nix
     ../../modules/vscode-tunnel.nix
 
