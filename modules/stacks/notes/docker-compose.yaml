@@ -18,7 +18,7 @@ services:
       CloudflareAccess__TeamDomain: nicowelles.cloudflareaccess.com
       # Audience tag of the Access application (cloudflare/apps.tf,
       # `./tofu.sh output access_audiences`)
-      CloudflareAccess__Audience: TODO-after-tofu-apply
+      CloudflareAccess__Audience: 7c5f0d20ced35a5924066a5500f593a7c8a2327e64d6b45f9208974bd05ad5ff
     healthcheck:
       # The ASP.NET image has neither curl nor wget
       test: ["CMD", "dotnet", "Notes.Server.dll", "--healthcheck"]
