@@ -217,7 +217,9 @@
       };
     };
     notes = {
-      enabled = true;
+      # Enable once the image server-v0.9.0 is released and
+      # CloudflareAccess__Audience in its compose file is set (tofu apply)
+      enabled = false;
       secrets = [];
       # No Caddy proxy: published through the Cloudflare Tunnel behind
       # Cloudflare Access (cloudflare/apps.tf), which is the app's only login.
