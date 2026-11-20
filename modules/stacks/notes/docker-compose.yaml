@@ -1,0 +1,50 @@
+name: notes
+
+# Notes server (github.com/welles/notes-app): sync API and web app of the
+# post-its. Published by the server's Cloudflare Tunnel behind Cloudflare
+# Access (cloudflare/apps.tf): the browser logs in with Google, the apps send
+# a service token per device (cloudflare/access.tf). The server checks
+# Access's JWT itself (CloudflareAccess__*), so the port is bound to loopback
+# only.
+#
+# The image runs as UID 1654 (the .NET images' APP_UID); the data directory
+# belongs to it (hosts/nico-schokoladenelch-nixos/stacks.nix).
+
+services:
+  notes:
+    container_name: notes
+    environment:
+      TZ: Europe/Berlin
+      CloudflareAccess__TeamDomain: nicowelles.cloudflareaccess.com
+      # Audience tag of the Access application (cloudflare/apps.tf,
+      # `./tofu.sh output access_audiences`)
+      CloudflareAccess__Audience: TODO-after-tofu-apply
+    healthcheck:
+      # The ASP.NET image has neither curl nor wget
+      test: ["CMD", "dotnet", "Notes.Server.dll", "--healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    # Release tags server-v<version> of the app repository; moved by Dependabot
+    image: ghcr.io/welles/notes:0.9.0
+    networks:
+      notes:
+        ipv4_address: 10.10.24.10
+    ports:
+      - 127.0.0.1:50240:8080/tcp
+    restart: unless-stopped
+    stop_grace_period: 2m
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # SQLite database and Data Protection keys
+      - /mnt/bucket/notes/data:/data:rw
+
+networks:
+  notes:
+    name: notes
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 10.10.24.0/24

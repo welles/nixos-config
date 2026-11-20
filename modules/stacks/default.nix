@@ -214,6 +214,17 @@
         paths = [];
       };
     };
+    notes = {
+      enabled = true;
+      secrets = [];
+      # No Caddy proxy: published through the Cloudflare Tunnel behind
+      # Cloudflare Access (cloudflare/apps.tf), which is the app's only login.
+      proxies = {};
+      backup = {
+        enable = false;
+        paths = [];
+      };
+    };
     ntfy = {
       enabled = true;
       secrets = [];
