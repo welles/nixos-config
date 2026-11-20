@@ -217,9 +217,7 @@
       };
     };
     notes = {
-      # Enable once release v1 of notes-app (image tag 1) exists and
-      # CloudflareAccess__Audience in its compose file is set (tofu apply)
-      enabled = false;
+      enabled = true;
       secrets = [];
       # No Caddy proxy: published through the Cloudflare Tunnel behind
       # Cloudflare Access (cloudflare/apps.tf), which is the app's only login.
