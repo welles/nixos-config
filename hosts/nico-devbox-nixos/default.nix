@@ -37,7 +37,7 @@
     ../../modules/xrdp-glamor.nix
     ../../modules/xrdp-boot-session.nix
     ../../modules/kasmvnc-xrdp-mirror.nix
-    # Publishes KasmVNC and Claude Remote Manager (cloudflare/devbox.tf)
+    # Publishes KasmVNC (cloudflare/devbox.tf)
     ../../modules/cloudflared.nix
     ../../modules/user-dirs.nix
 
