@@ -1,0 +1,133 @@
+name: Update Fab Containers
+
+# Sets the image tags of the streamfab and musicfab stacks to a new commit, so
+# the server runs it with its next deploy. Started by the app repository
+# (welles/fab-containers) after a green CI run on its main branch, once the
+# images ghcr.io/welles/streamfab:sha-<commit> and
+# ghcr.io/welles/musicfab:sha-<commit> are pushed, with that commit as `rev`.
+# Both images come from the same commit; each stack is checked on its own, so a
+# stack that is already newer stays as it is. The stacks are not flake inputs,
+# so flake.lock is not touched and no host build is needed: only the tags in
+# the compose files change.
+
+concurrency:
+  group: fab-containers-image
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      rev:
+        description: "Full commit SHA of welles/fab-containers whose images were pushed"
+        required: true
+
+env:
+  APP_REPO: welles/fab-containers
+  # stack:image pairs; the compose file is modules/stacks/<stack>/docker-compose.yaml
+  STACKS: streamfab:welles/streamfab musicfab:welles/musicfab
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Only move forward: runs can finish out of order, and an older commit
+      # must not replace a newer image that is already set.
+      - name: Check the new commit
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REV: ${{ inputs.rev }}
+        run: |
+          if [[ ! "$REV" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::rev must be a full 40-character commit SHA, got '$REV'"
+            exit 1
+          fi
+          new=${REV:0:7}
+          echo "tag=sha-$new" >> "$GITHUB_OUTPUT"
+          changed=()
+          for pair in $STACKS; do
+            stack=${pair%%:*}
+            image=${pair#*:}
+            file="modules/stacks/$stack/docker-compose.yaml"
+            current=$(grep -oP "image: ghcr\.io/${image//./\\.}:sha-\K[0-9a-f]+" "$file" || true)
+            if [[ -z "$current" ]]; then
+              echo "::error file=$file::no image ghcr.io/$image:sha-… found"
+              exit 1
+            fi
+            if [[ "$REV" == "$current"* ]]; then
+              echo "$stack is already at sha-$current."
+              continue
+            fi
+            status=$(gh api "repos/$APP_REPO/compare/$current...$REV" --jq .status)
+            if [[ "$status" == "ahead" ]]; then
+              echo "$stack: sha-$current -> sha-$new"
+              changed+=("$pair")
+            else
+              echo "$stack: sha-$new is not newer than sha-$current (compare: $status)."
+            fi
+          done
+          echo "stacks=${changed[*]}" >> "$GITHUB_OUTPUT"
+          if (( ${#changed[@]} == 0 )); then
+            echo "Nothing to update. Stopping early."
+          fi
+
+      # The app's CI starts this workflow only after pushing the images; check
+      # anyway, as a tag without an image would stop the stack at its next
+      # deploy. The packages are public, so an anonymous pull token suffices.
+      - name: Check the images exist
+        if: steps.check.outputs.stacks != ''
+        env:
+          TAG: ${{ steps.check.outputs.tag }}
+          CHANGED: ${{ steps.check.outputs.stacks }}
+        run: |
+          for pair in $CHANGED; do
+            image=${pair#*:}
+            token=$(curl -fsS "https://ghcr.io/token?scope=repository:$image:pull" | jq -r .token)
+            code=$(curl -s -o /dev/null -w '%{http_code}' -I \
+              -H "Authorization: Bearer $token" \
+              -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.docker.distribution.manifest.v2+json" \
+              "https://ghcr.io/v2/$image/manifests/$TAG")
+            if [[ "$code" != "200" ]]; then
+              echo "::error::ghcr.io/$image:$TAG not found (HTTP $code)"
+              exit 1
+            fi
+          done
+
+      - name: Set the image tags
+        id: set
+        if: steps.check.outputs.stacks != ''
+        env:
+          TAG: ${{ steps.check.outputs.tag }}
+          CHANGED: ${{ steps.check.outputs.stacks }}
+        run: |
+          files=()
+          names=()
+          for pair in $CHANGED; do
+            stack=${pair%%:*}
+            image=${pair#*:}
+            file="modules/stacks/$stack/docker-compose.yaml"
+            sed -i -E "s|(image: ghcr\.io/${image//./\\.}:)sha-[0-9a-f]+|\1$TAG|" "$file"
+            git diff --exit-code --quiet "$file" && { echo "::error file=$file::tag was not replaced"; exit 1; }
+            files+=("$file")
+            names+=("$stack")
+          done
+          git diff
+          echo "files=${files[*]}" >> "$GITHUB_OUTPUT"
+          scope=$(IFS=,; echo "${names[*]}")
+          echo "scope=$scope" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push changes
+        if: steps.check.outputs.stacks != ''
+        uses: planetscale/ghcommit-action@v0.2.22
+        with:
+          commit_message: "chore(${{ steps.set.outputs.scope }}): update image to ${{ steps.check.outputs.tag }}"
+          repo: ${{ github.repository }}
+          branch: ${{ github.ref_name }}
+          file_pattern: ${{ steps.set.outputs.files }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
