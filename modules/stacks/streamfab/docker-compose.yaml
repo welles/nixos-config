@@ -24,7 +24,7 @@ services:
       start_period: 120s
     # StreamFab itself is installed into /config and updates itself there; the
     # image (Wine and the manager, whose database has migrations) is pinned
-    image: ghcr.io/welles/streamfab:sha-cc8b0ba
+    image: ghcr.io/welles/streamfab:sha-2814b98
     networks:
       streamfab:
         ipv4_address: 10.10.21.10

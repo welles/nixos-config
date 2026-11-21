@@ -22,7 +22,7 @@ services:
       start_period: 120s
     # MusicFab itself is installed into /config and updates itself there; the
     # image (Wine and the manager, whose database has migrations) is pinned
-    image: ghcr.io/welles/musicfab:sha-cc8b0ba
+    image: ghcr.io/welles/musicfab:sha-2814b98
     networks:
       musicfab:
         ipv4_address: 10.10.22.10
