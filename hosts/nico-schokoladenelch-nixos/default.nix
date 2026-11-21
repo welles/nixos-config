@@ -30,7 +30,7 @@
 
     # Services & hardware
     ../../modules/openssh.nix
-    ../../modules/server-status.nix
+    ../../modules/server-status
     ../../modules/apcupsd.nix
     ../../modules/caddy.nix
     ../../modules/cloudflared.nix
