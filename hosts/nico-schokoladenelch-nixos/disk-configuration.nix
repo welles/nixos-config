@@ -4,7 +4,7 @@
 #
 # "bucket" pool (SSD mirror / RAID1):
 #   - WD Black SN850X 1TB + SK Hynix P41 1TB
-#   - Datasets: root (ephemeral), nix, persist, apps
+#   - Datasets: root (ephemeral), nix, persist, apps, docker
 #   - Each SSD has its own ESP (mirrored boot) and 32GB swap
 #
 # "tank" pool (HDD RAIDZ1 / ~48TB raw, ~32TB usable):
@@ -315,6 +315,16 @@
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
+            };
+          };
+          # Docker images, containers and volumes. Not snapshotted: images can
+          # be pulled again, and snapshots kept deleted layers for months.
+          "docker" = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/docker";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "false";
             };
           };
           # Disks of libvirt VMs (modules/libvirt-vm.nix); the zvols are
