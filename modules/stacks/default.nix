@@ -159,7 +159,7 @@
     };
     musicfab = {
       enabled = true;
-      secrets = ["musicfab"];
+      secrets = [];
       # No Caddy proxy: the manager (which also shows MusicFab's noVNC) is
       # published through the Cloudflare Tunnel behind Cloudflare Access
       # (cloudflare/apps.tf).

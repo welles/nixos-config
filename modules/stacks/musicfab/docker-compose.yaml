@@ -9,11 +9,14 @@ services:
       USER_ID: "1000"
       GROUP_ID: "100"
       KEEP_APP_RUNNING: "1"
-    # VNC_PASSWORD and FAB_API_KEY (API key of MusicFab.Manager); optional MACHINE_ID
-    env_file:
-      - /run/secrets/musicfab
+      # Cloudflare Access (Google, or the Music Manager's service token) is
+      # the only login: no API key for MusicFab.Manager's web UI and API, no
+      # password for noVNC.
+      FAB_API_KEY: ""
+      VNC_PASSWORD: ""
+    # No secrets: the machine ID (the activation's hardware ID) is kept in
+    # /config/machine-id
     healthcheck:
-      # MusicFab.Manager answers /health without the API key
       test: ["CMD-SHELL", "curl -f http://localhost:5810/health || exit 1"]
       interval: 30s
       timeout: 10s
@@ -27,8 +30,8 @@ services:
       musicfab:
         ipv4_address: 10.10.22.10
     ports:
-      # VNC
-      - 50220:5900/tcp
+      # No VNC port: without a password it would be open to the LAN. MusicFab
+      # is reached through the manager's noVNC (/program) instead.
       # MusicFab.Manager (web UI + REST API; shows MusicFab itself under
       # /program), only for the host's cloudflared (Cloudflare Tunnel behind
       # Access), as Docker's published ports bypass the host firewall
