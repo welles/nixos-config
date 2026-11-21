@@ -158,8 +158,7 @@
       };
     };
     musicfab = {
-      # Disabled while the server hangs (igc NIC) are investigated
-      enabled = false;
+      enabled = true;
       secrets = ["musicfab"];
       # No Caddy proxy: the manager (which also shows MusicFab's noVNC) is
       # published through the Cloudflare Tunnel behind Cloudflare Access
@@ -242,8 +241,7 @@
       };
     };
     streamfab = {
-      # Disabled while the server hangs (igc NIC) are investigated
-      enabled = false;
+      enabled = true;
       secrets = ["streamfab"];
       # No Caddy proxy: the manager (which also shows StreamFab's noVNC) is
       # published through the Cloudflare Tunnel behind Cloudflare Access
