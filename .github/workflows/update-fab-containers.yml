@@ -5,10 +5,15 @@ name: Update Fab Containers
 # (welles/fab-containers) after a green CI run on its main branch, once the
 # images ghcr.io/welles/streamfab:sha-<commit> and
 # ghcr.io/welles/musicfab:sha-<commit> are pushed, with that commit as `rev`.
-# Both images come from the same commit; each stack is checked on its own, so a
-# stack that is already newer stays as it is. The stacks are not flake inputs,
-# so flake.lock is not touched and no host build is needed: only the tags in
-# the compose files change.
+# Both images come from the same commit. The stacks are not flake inputs, so
+# flake.lock is not touched and no host build is needed: only the tags in the
+# compose files change.
+#
+# Unlike the music_manager and claude_remote_manager workflows, this one doesn't
+# check that `rev` is newer than the current tag: welles/fab-containers is
+# private, and this repository's token can't compare its commits. Out-of-order
+# runs are unlikely, as the app's CI cancels an older build on main when a newer
+# commit is pushed (and this workflow's runs are queued, not run in parallel).
 
 concurrency:
   group: fab-containers-image
@@ -22,7 +27,6 @@ on:
         required: true
 
 env:
-  APP_REPO: welles/fab-containers
   # stack:image pairs; the compose file is modules/stacks/<stack>/docker-compose.yaml
   STACKS: streamfab:welles/streamfab musicfab:welles/musicfab
 
@@ -35,12 +39,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      # Only move forward: runs can finish out of order, and an older commit
-      # must not replace a newer image that is already set.
       - name: Check the new commit
         id: check
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REV: ${{ inputs.rev }}
         run: |
           if [[ ! "$REV" =~ ^[0-9a-f]{40}$ ]]; then
@@ -63,13 +64,8 @@ jobs:
               echo "$stack is already at sha-$current."
               continue
             fi
-            status=$(gh api "repos/$APP_REPO/compare/$current...$REV" --jq .status)
-            if [[ "$status" == "ahead" ]]; then
-              echo "$stack: sha-$current -> sha-$new"
-              changed+=("$pair")
-            else
-              echo "$stack: sha-$new is not newer than sha-$current (compare: $status)."
-            fi
+            echo "$stack: sha-$current -> sha-$new"
+            changed+=("$pair")
           done
           echo "stacks=${changed[*]}" >> "$GITHUB_OUTPUT"
           if (( ${#changed[@]} == 0 )); then
