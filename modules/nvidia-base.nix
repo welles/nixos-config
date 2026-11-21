@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -11,7 +15,7 @@
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = true;
+    open = lib.mkDefault true;
     nvidiaSettings = false;
   };
 }

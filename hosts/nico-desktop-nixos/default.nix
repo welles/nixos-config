@@ -26,6 +26,7 @@
     ../../modules/logitech-wheel.nix
     ../../modules/nvidia-base.nix
     ../../modules/nvidia-early-kms.nix
+    ../../modules/nvidia-proprietary-kernel-module.nix
 
     # Networking
     ../../modules/minecraft-server-port.nix
