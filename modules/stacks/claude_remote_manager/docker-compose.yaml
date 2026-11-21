@@ -46,7 +46,7 @@ services:
     # Pinned to the image of a commit on main (tags: sha-<short sha>); moved
     # after every green CI run of the app by
     # .github/workflows/update-claude-remote-manager.yml
-    image: ghcr.io/welles/claude-remote-manager:sha-4ec17be
+    image: ghcr.io/welles/claude-remote-manager:sha-b5f0a4e
     networks:
       claude_remote_manager:
         ipv4_address: 10.10.23.10
