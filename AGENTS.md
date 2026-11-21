@@ -230,7 +230,6 @@ argument that the host sets in `_module.args`. Common arguments:
 | `homeAssistantUrl`         | Home Assistant base URL the API clients use.               |
 | `touchpads`                | Built-in touchpads (`name`, `vendorId`, `productId`).      |
 | `homeWireguardAddress`     | Tunnel addresses (`ipv4`, `ipv6`) of the home VPN.         |
-| `extraDiskMounts`          | Additional mount points the server status shows.           |
 | `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |
 | `trustedSubnets`           | IPv4 subnets the firewall accepts all traffic from.        |
 | `lanBridge`                | LAN bridge (`name`, `interface`, `macAddress`).            |

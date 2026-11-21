@@ -30,7 +30,7 @@
 
     # Services & hardware
     ../../modules/openssh.nix
-    ../../modules/server-status.nix
+    ../../modules/server-status
     ../../modules/apcupsd.nix
     ../../modules/caddy.nix
     ../../modules/cloudflared.nix
@@ -81,7 +81,6 @@
       user = "noreply@welles.email";
       from = "noreply@welles.email";
     };
-    extraDiskMounts = ["/mnt/tank/movies"];
     passwordConfig = {};
     # 1Password SSH agent
     sshAuthorizedKeys = [

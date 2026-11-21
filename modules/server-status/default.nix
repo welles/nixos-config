@@ -1,22 +1,35 @@
 # Local server status display
 #
-# Reserves tty1 for btop so a directly attached display shows the server's
-# resource usage after boot. A normal login remains available on tty2.
+# Reserves tty1 for a status overview (status.sh) so a directly attached
+# display shows that the server runs and how it is doing: clock, system,
+# network, UPS, ZFS, disk temperatures, Docker stacks and failed units.
+# A normal login remains available on tty2. `server-status` shows the same
+# overview in any terminal (as root for disk temperatures).
 {
+  config,
   lib,
   pkgs,
-  extraDiskMounts,
   ...
 }: let
-  btopStatusConfig = pkgs.writeText "btop-status.conf" ''
-    # Keep btop's defaults, except for graphs: the console font has no
-    # braille glyphs, so use Unicode block graphs instead.
-    graph_symbol = "block"
-    # Each selected mount reports its pool-wide capacity and free space.
-    disks_filter = "${lib.concatStringsSep " " (["/boot" "/"] ++ extraDiskMounts)}"
-  '';
+  serverStatus = pkgs.writeShellApplication {
+    name = "server-status";
+    runtimeInputs = [
+      config.boot.zfs.package
+      pkgs.apcupsd
+      pkgs.coreutils
+      pkgs.docker-client
+      pkgs.figlet
+      pkgs.gawk
+      pkgs.iproute2
+      pkgs.jq
+      pkgs.smartmontools
+      pkgs.systemd
+      pkgs.util-linux
+    ];
+    text = builtins.readFile ./status.sh;
+  };
 in {
-  environment.systemPackages = [pkgs.btop];
+  environment.systemPackages = [serverStatus];
 
   console = {
     font = "ter-v14n";
@@ -39,7 +52,7 @@ in {
     environment.TERM = "linux";
 
     serviceConfig = {
-      ExecStart = "${pkgs.btop}/bin/btop --force-utf --config ${btopStatusConfig}";
+      ExecStart = lib.getExe serverStatus;
       Restart = "always";
       RestartSec = "2s";
       TTYPath = "/dev/tty1";
