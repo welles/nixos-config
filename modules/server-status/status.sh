@@ -29,6 +29,20 @@ human_rate() {
   }'
 }
 
+# Prints the interface of the default route (empty when there is none)
+default_iface() {
+  ip route show default 2>/dev/null | awk '{ for (i = 1; i < NF; i++) if ($i == "dev") { print $(i + 1); exit } }'
+}
+
+# Sets net_rx/net_tx (bytes) and net_now (microseconds) for an interface;
+# fails when the interface is gone
+read_net_counters() {
+  local stats="/sys/class/net/$1/statistics"
+  net_rx=$(cat "$stats/rx_bytes" 2>/dev/null) || return 1
+  net_tx=$(cat "$stats/tx_bytes" 2>/dev/null) || return 1
+  net_now=${EPOCHREALTIME/[.,]/}
+}
+
 # Formats a byte count with binary units
 human_bytes() {
   awk -v b="$1" 'BEGIN {
@@ -188,14 +202,11 @@ probe_units() {
 }
 
 coretemp=$(find_hwmon coretemp)
-iface=$(ip route show default 2>/dev/null | awk '{ for (i = 1; i < NF; i++) if ($i == "dev") { print $(i + 1); exit } }')
 read -r cpu_total_prev cpu_idle_prev < <(read_cpu)
+iface=""
 rx_prev=0
 tx_prev=0
-if [[ -n "$iface" ]]; then
-  rx_prev=$(cat "/sys/class/net/$iface/statistics/rx_bytes")
-  tx_prev=$(cat "/sys/class/net/$iface/statistics/tx_bytes")
-fi
+net_time_prev=0
 
 printf '%s' "${esc}[?25l${esc}[2J"
 trap 'printf "%s" "${esc}[?25h${reset}"' EXIT
@@ -211,6 +222,19 @@ while true; do
     probe_units
   fi
   ((iteration % smart_every == 0)) && probe_disks
+
+  # Follow the default route: it may appear only after DHCP or move elsewhere
+  if [[ -z "$iface" ]] || ((iteration % slow_every == 0)); then
+    route_iface=$(default_iface)
+    if [[ "$route_iface" != "$iface" ]]; then
+      iface=$route_iface
+      if [[ -n "$iface" ]] && read_net_counters "$iface"; then
+        rx_prev=$net_rx
+        tx_prev=$net_tx
+        net_time_prev=$net_now
+      fi
+    fi
+  fi
 
   # CPU usage since the last redraw
   read -r cpu_total cpu_idle < <(read_cpu)
@@ -245,13 +269,20 @@ while true; do
     lines+=("$(printf '%s%-*s%s' "$green$bold" "$clock_width" "${clock[i]:-}" "$reset")${info[i]:-}")
   done
 
-  if [[ -n "$iface" ]]; then
-    rx=$(cat "/sys/class/net/$iface/statistics/rx_bytes")
-    tx=$(cat "/sys/class/net/$iface/statistics/tx_bytes")
+  if [[ -n "$iface" ]] && read_net_counters "$iface"; then
+    # Rates over the time that really passed (slow probes stretch some loops)
+    elapsed=$((net_now - net_time_prev))
+    ((elapsed > 0)) || elapsed=1
+    rx_rate=$(((net_rx - rx_prev) * 1000000 / elapsed))
+    tx_rate=$(((net_tx - tx_prev) * 1000000 / elapsed))
     ip_addr=$(ip -4 -br addr show "$iface" 2>/dev/null | awk '{ print $3 }')
-    lines+=("" "${bold}Netz${reset} ${iface} ${ip_addr}   ${green}↓ $(human_rate $(((rx - rx_prev) / interval)))${reset}   ${cyan}↑ $(human_rate $(((tx - tx_prev) / interval)))${reset}")
-    rx_prev=$rx
-    tx_prev=$tx
+    lines+=("" "${bold}Netz${reset} ${iface} ${ip_addr}   ${green}↓ $(human_rate "$rx_rate")${reset}   ${cyan}↑ $(human_rate "$tx_rate")${reset}")
+    rx_prev=$net_rx
+    tx_prev=$net_tx
+    net_time_prev=$net_now
+  elif [[ -n "$iface" ]]; then
+    # The interface disappeared; look for the default route again next loop
+    iface=""
   fi
   [[ -n "$ups_line" ]] && lines+=("$ups_line")
 

@@ -81,7 +81,6 @@
       user = "noreply@welles.email";
       from = "noreply@welles.email";
     };
-    extraDiskMounts = ["/mnt/tank/movies"];
     passwordConfig = {};
     # 1Password SSH agent
     sshAuthorizedKeys = [
