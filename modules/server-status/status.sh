@@ -1,7 +1,7 @@
 # Draws a status overview of the server on the terminal and redraws it every
 # few seconds: clock, system, network, UPS, ZFS pools, disk temperatures,
-# Docker stacks and failed systemd units. Sections whose tool or data is
-# missing on a host are left out.
+# Docker stacks, failed systemd units and the running NixOS configuration.
+# Sections whose tool or data is missing on a host are left out.
 #
 # Deliberately reads no GPU counters: reading the i915 PMU (as btop does)
 # deadlocked the kernel's scheduler together with busy Wine containers.
@@ -85,9 +85,20 @@ find_hwmon() {
 	done
 }
 
+# Formats a number of seconds as "2d 3h 4m" or "3h 4m"
+format_duration() {
+	local s=$1
+	if ((s >= 86400)); then
+		printf '%dd %dh %dm' $((s / 86400)) $((s % 86400 / 3600)) $((s % 3600 / 60))
+	else
+		printf '%dh %dm' $((s / 3600)) $((s % 3600 / 60))
+	fi
+}
+
 format_uptime() {
-	awk '{ s = int($1); d = int(s / 86400); h = int(s % 86400 / 3600); m = int(s % 3600 / 60)
-    if (d > 0) printf "%dd %dh %dm", d, h, m; else printf "%dh %dm", h, m }' /proc/uptime
+	local up
+	read -r up _ </proc/uptime
+	format_duration "${up%.*}"
 }
 
 read_cpu() {
@@ -100,6 +111,7 @@ zfs_lines=()
 docker_lines=()
 units_line=""
 disk_line=""
+nixos_line=""
 
 probe_ups() {
 	ups_line=""
@@ -201,6 +213,49 @@ probe_units() {
 	fi
 }
 
+# The running NixOS configuration: version, generation, since when it is
+# active and the commit of this repository it was built from. Reads everything
+# through /run/current-system, which a switch replaces while this script runs.
+probe_nixos() {
+	nixos_line=""
+	local current version link n gen=0 since btime rev="" rev_time=0 rev_part=""
+	current=$(readlink -f /run/current-system 2>/dev/null) || return 0
+	[[ -d "$current" ]] || return 0
+	version=$(cat "$current/nixos-version" 2>/dev/null || echo "?")
+
+	# Newest generation of the system profile that is the running system;
+	# nix creates its link when that configuration is first switched to
+	for link in /nix/var/nix/profiles/system-*-link; do
+		[[ "$(readlink -f "$link")" == "$current" ]] || continue
+		n=${link##*/system-}
+		n=${n%-link}
+		((n > gen)) && gen=$n
+	done
+	if ((gen > 0)); then
+		since=$(stat -c %Y "/nix/var/nix/profiles/system-${gen}-link")
+	else
+		# Not in the profile (nixos-rebuild test): time of the activation
+		since=$(stat -c %Y /run/current-system)
+	fi
+	# Activated with `boot`: active only since the reboot
+	btime=$(awk '/^btime/ { print $2 }' /proc/stat)
+	((since < btime)) && since=$btime
+
+	if [[ -r "$current/etc/nixos-configuration-revision" ]]; then
+		read -r rev rev_time <"$current/etc/nixos-configuration-revision" || true
+	fi
+	if [[ -n "$rev" && "$rev" != unknown ]]; then
+		rev_part="  Commit ${rev:0:7}"
+		[[ "$rev" == *-dirty ]] && rev_part+="${yellow}-dirty${reset}"
+		((rev_time > 0)) && rev_part+=" ${dim}vom $(date -d "@$rev_time" '+%d.%m.%Y %H:%M')${reset}"
+	fi
+
+	nixos_line="${bold}NixOS${reset} ${version}"
+	((gen > 0)) && nixos_line+="  Generation ${gen}"
+	nixos_line+="  aktiv seit $(date -d "@$since" '+%d.%m.%Y %H:%M') ${dim}(vor $(format_duration $(($(date +%s) - since))))${reset}${rev_part}"
+	return 0
+}
+
 coretemp=$(find_hwmon coretemp)
 read -r cpu_total_prev cpu_idle_prev < <(read_cpu)
 iface=""
@@ -220,6 +275,7 @@ while true; do
 		probe_zfs
 		probe_docker
 		probe_units
+		probe_nixos
 	fi
 	((iteration % smart_every == 0)) && probe_disks
 
@@ -295,7 +351,9 @@ while true; do
 		lines+=("" "${bold}Docker${reset} ${dim}(* läuft  ~ startet  ! unhealthy  - gestoppt)${reset}" "${docker_lines[@]}")
 	fi
 
-	lines+=("" "$units_line")
+	lines+=("")
+	[[ -n "$nixos_line" ]] && lines+=("$nixos_line")
+	lines+=("$units_line")
 	lines+=("${dim}Aktualisiert $(date +%T)${reset}")
 
 	# Redraw in place without clearing, so the screen does not flicker

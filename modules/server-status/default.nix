@@ -2,7 +2,8 @@
 #
 # Reserves tty1 for a status overview (status.sh) so a directly attached
 # display shows that the server runs and how it is doing: clock, system,
-# network, UPS, ZFS, disk temperatures, Docker stacks and failed units.
+# network, UPS, ZFS, disk temperatures, Docker stacks, failed units and the
+# running NixOS generation with the commit it was built from.
 # A normal login remains available on tty2. `server-status` shows the same
 # overview in any terminal (as root for disk temperatures).
 {

@@ -2,6 +2,7 @@
 # settings and the basic command-line tools.
 {
   imports = [
+    ../modules/configuration-revision.nix
     ../modules/home-manager-user.nix
     ../modules/keyboard.nix
     ../modules/locale-de.nix
