@@ -3,6 +3,7 @@
     # Bundles
     ../../bundles/archive-tools.nix
     ../../bundles/base.nix
+    ../../bundles/containers.nix
     ../../bundles/desktop-kde.nix
     ../../bundles/dev-tools.nix
     ../../bundles/disk-tools.nix
