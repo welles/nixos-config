@@ -15,9 +15,13 @@ services:
       VNC_PASSWORD: ""
       # Jellyfin to scan after filing a download (with FAB_JELLYFIN_API_KEY)
       FAB_JELLYFIN_URL: https://jellyfin.welles.app
+      # Jellyseerr (jellyfin stack), whose approved requests the manager's
+      # Requests page lists (with FAB_JELLYSEERR_API_KEY)
+      FAB_JELLYSEERR_URL: https://requests.jellyfin.welles.app
     # FAB_TMDB_TOKEN for the title search (the token of search-tmdb's
-    # tmdb-api-token); optional FAB_JELLYFIN_API_KEY (Jellyfin → Dashboard →
-    # API Keys) and MACHINE_ID
+    # tmdb-api-token) and FAB_JELLYSEERR_API_KEY (Jellyseerr → Settings →
+    # General); optional FAB_JELLYFIN_API_KEY (Jellyfin → Dashboard → API
+    # Keys) and MACHINE_ID
     env_file:
       - /run/secrets/streamfab
     healthcheck:
