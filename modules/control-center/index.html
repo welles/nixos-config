@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Steuerzentrale</title>
+<style>
+  :root {
+    --bg: #111418; --card: #1a1f26; --line: #2a313b; --text: #e3e7ec; --dim: #8b95a3;
+    --ok: #4cc38a; --warn: #e5b74a; --bad: #ef6a6a; --accent: #5b9dff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, sans-serif; }
+  header { display: flex; align-items: baseline; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  header h1 { margin: 0; font-size: 18px; }
+  header .dim { font-size: 12px; }
+  main { display: grid; gap: 16px; padding: 16px 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); align-items: start; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .title h2 { margin: 0; font-size: 16px; }
+  .badge { font-size: 11px; padding: 1px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--dim); }
+  .badge.ok { color: var(--ok); border-color: var(--ok); }
+  .badge.warn { color: var(--warn); border-color: var(--warn); }
+  .badge.bad { color: var(--bad); border-color: var(--bad); }
+  .dim { color: var(--dim); }
+  .grid { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; }
+  .grid > :nth-child(odd) { color: var(--dim); }
+  .notice { border-left: 3px solid var(--warn); padding: 6px 10px; background: rgba(229, 183, 74, .08); border-radius: 4px; }
+  .notice.bad { border-color: var(--bad); background: rgba(239, 106, 106, .08); }
+  .notice.ok { border-color: var(--ok); background: rgba(76, 195, 138, .08); }
+  .ok { color: var(--ok); } .warn { color: var(--warn); } .bad { color: var(--bad); }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { text-align: left; padding: 2px 8px 2px 0; font-weight: normal; }
+  th { color: var(--dim); }
+  details summary { cursor: pointer; color: var(--dim); }
+  .buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { background: #252c36; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:disabled { opacity: .4; cursor: default; }
+  button.danger { color: var(--bad); }
+  button .state { font-size: 11px; margin-left: 6px; }
+  .section h3 { margin: 0 0 4px; font-size: 13px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 6px; }
+  .tabs button { padding: 2px 10px; font-size: 12px; }
+  .tabs button.active { border-color: var(--accent); color: var(--accent); }
+  pre.log { margin: 0; background: #0b0d10; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; height: 340px; overflow: auto; font: 12px/1.4 ui-monospace, monospace; white-space: pre-wrap; word-break: break-word; }
+  pre.log .err { color: var(--bad); }
+  pre.log div:empty::before { content: " "; }
+  .error { color: var(--bad); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Steuerzentrale</h1>
+  <span class="dim" id="updated"></span>
+</header>
+<main id="targets"></main>
+<script>
+"use strict";
+
+const ACTION_LABELS = { diff: "Diff", switch: "Switch", boot: "Boot" };
+const ACTION_STATES = { running: ["läuft", "warn"], succeeded: ["ok", "ok"], failed: ["fehlgeschlagen", "bad"], never: ["", ""] };
+const VM_STATES = { running: ["läuft", "ok"], "shut off": ["aus", "warn"], paused: ["pausiert", "warn"], undefined: ["nicht definiert", "bad"] };
+const REPO = "https://github.com/welles/nixos-config/commit/";
+
+const cards = new Map();
+
+// --- helpers -------------------------------------------------------------
+
+function el(tag, attrs = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs)) {
+    if (key === "class") node.className = value;
+    else if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
+    else if (value !== undefined && value !== null && value !== false) node.setAttribute(key, value === true ? "" : value);
+  }
+  for (const child of children.flat()) {
+    if (child === null || child === undefined || child === false) continue;
+    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
+  }
+  return node;
+}
+
+function date(seconds) {
+  if (!seconds) return "–";
+  return new Date(seconds * 1000).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" });
+}
+
+function duration(seconds) {
+  seconds = Math.max(0, Math.floor(seconds));
+  const d = Math.floor(seconds / 86400), h = Math.floor(seconds % 86400 / 3600), m = Math.floor(seconds % 3600 / 60);
+  if (d) return `${d} T ${h} Std`;
+  if (h) return `${h} Std ${m} Min`;
+  return `${m} Min`;
+}
+
+function bytes(n) {
+  if (!n) return "–";
+  return (n / 1024 ** 3).toFixed(1) + " GiB";
+}
+
+async function api(path, options = {}) {
+  const response = await fetch(path, { credentials: "same-origin", ...options });
+  let body;
+  try { body = await response.json(); } catch { body = { ok: false, error: `HTTP ${response.status}` }; }
+  if (!response.ok && body.ok === undefined) body.ok = false;
+  return body;
+}
+
+// Colours of SGR escape sequences, everything else stripped
+const ANSI_COLOURS = { 31: "#ef6a6a", 32: "#4cc38a", 33: "#e5b74a", 34: "#5b9dff", 35: "#c68cf0", 36: "#4fc8d8", 90: "#8b95a3", 91: "#ff8a8a", 92: "#6fe0a6", 93: "#ffd36b", 94: "#82b4ff", 95: "#dcaaff", 96: "#7ee0ec" };
+function ansi(text) {
+  const out = document.createDocumentFragment();
+  let style = {};
+  const parts = text.split(/\x1b\[([0-9;]*)m/);
+  parts.forEach((part, i) => {
+    if (i % 2 === 1) {
+      for (const code of (part || "0").split(";").map(Number)) {
+        if (code === 0) style = {};
+        else if (code === 1) style.bold = true;
+        else if (code === 22) style.bold = false;
+        else if (code === 39) style.color = undefined;
+        else if (ANSI_COLOURS[code]) style.color = ANSI_COLOURS[code];
+      }
+      return;
+    }
+    part = part.replace(/\x1b\[[0-9;?]*[A-Za-z]|\x1b\][^\x07]*\x07|\r/g, "");
+    if (!part) return;
+    if (!style.color && !style.bold) { out.append(part); return; }
+    const span = el("span", {}, part);
+    if (style.color) span.style.color = style.color;
+    if (style.bold) span.style.fontWeight = "bold";
+    out.append(span);
+  });
+  return out;
+}
+
+// --- actions -------------------------------------------------------------
+
+const CONFIRM = {
+  switch: name => `Konfiguration auf ${name} jetzt aktivieren (nh os switch)?`,
+  boot: name => `Konfiguration auf ${name} als Boot-Standard setzen (nh os boot)? Sie wird erst nach einem Neustart aktiv.`,
+  reboot: name => `${name} jetzt neu starten?`,
+  poweroff: name => `${name} jetzt herunterfahren?\n\nDer Server lässt sich danach NICHT aus der Ferne wieder einschalten, auch diese Seite ist dann weg.`,
+  "vm-start": () => null,
+  "vm-shutdown": name => `VM ${name} herunterfahren?`,
+  "vm-reboot": name => `VM ${name} neu starten?`,
+  "vm-destroy": name => `VM ${name} HART ausschalten (wie Stecker ziehen)? Nur, wenn sie nicht mehr reagiert.`,
+};
+
+async function act(target, action) {
+  const card = cards.get(target.id);
+  const question = CONFIRM[action]?.(target.name);
+  if (question && !confirm(question)) return;
+  card.message.replaceChildren();
+  card.busy = true;
+  render(target);
+  const result = await api("/api/action", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Control-Center": "1" },
+    body: JSON.stringify({ target: target.id, action }),
+  });
+  card.busy = false;
+  if (!result.ok) card.message.replaceChildren(el("div", { class: "notice bad" }, result.error || "Fehlgeschlagen"));
+  if (ACTION_LABELS[action]) selectLog(target.id, action, true);
+  refresh();
+}
+
+// --- log -----------------------------------------------------------------
+
+function selectLog(id, action, reset = false) {
+  const card = cards.get(id);
+  if (card.log.action !== action || reset) {
+    card.log = { action, cursor: null, lines: [], invocationStart: null, loaded: false };
+    card.pre.replaceChildren();
+    card.recommendation.replaceChildren();
+  }
+  for (const [name, button] of Object.entries(card.tabs)) button.classList.toggle("active", name === action);
+  loadLog(id);
+}
+
+async function loadLog(id) {
+  const card = cards.get(id);
+  if (card.logLoading) return;
+  card.logLoading = true;
+  try {
+    const { action } = card.log;
+    let more = true;
+    while (more && card.log.action === action) {
+      const query = new URLSearchParams({ target: id, action });
+      if (card.log.cursor) query.set("cursor", card.log.cursor);
+      const result = await api(`/api/log?${query}`);
+      if (card.log.action !== action) return;
+      if (result.ok === false) {
+        card.pre.replaceChildren(el("span", { class: "err" }, result.error || "Log nicht lesbar"));
+        return;
+      }
+      // A new run started: show it from the start
+      const started = result.state?.started ?? null;
+      if (card.log.loaded && started !== card.log.invocationStart) {
+        card.log = { action, cursor: null, lines: [], invocationStart: started, loaded: false };
+        card.pre.replaceChildren();
+        card.recommendation.replaceChildren();
+        continue;
+      }
+      card.log.invocationStart = started;
+      card.log.loaded = true;
+      card.log.state = result.state;
+      appendLog(card, result.lines || []);
+      if (result.cursor) card.log.cursor = result.cursor;
+      more = result.more;
+    }
+    if (!card.pre.childNodes.length) card.pre.append(el("span", { class: "dim" }, "Noch kein Lauf."));
+  } finally {
+    card.logLoading = false;
+  }
+}
+
+function appendLog(card, lines) {
+  if (!lines.length) return;
+  if (card.pre.firstChild?.classList?.contains("dim")) card.pre.replaceChildren();
+  const atBottom = card.pre.scrollHeight - card.pre.scrollTop - card.pre.clientHeight < 40;
+  const fragment = document.createDocumentFragment();
+  for (const line of lines) {
+    const row = el("div", { class: line.priority <= 3 ? "err" : "" });
+    row.append(ansi(line.message));
+    fragment.append(row);
+    card.log.lines.push(line.message);
+  }
+  card.pre.append(fragment);
+  if (atBottom) card.pre.scrollTop = card.pre.scrollHeight;
+  // nixos-diff's recommendation: the lines from "=== Recommendation ===" on
+  const all = card.log.lines;
+  const start = all.findIndex(l => l.includes("=== Recommendation ==="));
+  const verdict = all.filter(l => l.startsWith("=>") || l.startsWith("No changes"));
+  if (card.log.action === "diff" && (start >= 0 || verdict.length)) {
+    const text = verdict.join("\n").replace(/\x1b\[[0-9;]*m/g, "");
+    const kind = /safe|No changes/.test(text) ? "ok" : /boot|reboot/.test(text) ? "" : "bad";
+    card.recommendation.replaceChildren(el("div", { class: `notice ${kind}`, style: "white-space: pre-wrap" }, text));
+  }
+}
+
+// --- rendering -----------------------------------------------------------
+
+function createCard(target) {
+  const card = {
+    root: el("section", { class: "card" }),
+    title: el("div", { class: "title" }),
+    message: el("div"),
+    info: el("div"),
+    buttons: el("div", { class: "buttons" }),
+    tabs: {},
+    recommendation: el("div"),
+    pre: el("pre", { class: "log" }),
+    log: { action: null },
+  };
+  const tabs = el("div", { class: "tabs" });
+  for (const [action, label] of Object.entries(ACTION_LABELS)) {
+    card.tabs[action] = el("button", { onclick: () => selectLog(target.id, action) }, label);
+    tabs.append(card.tabs[action]);
+  }
+  card.logSection = el("div", { class: "section" }, el("h3", {}, "Log"), tabs, card.recommendation, card.pre);
+  card.root.append(card.title, card.message, card.info, card.buttons, card.logSection);
+  document.getElementById("targets").append(card.root);
+  cards.set(target.id, card);
+  return card;
+}
+
+function grid(...items) {
+  return el("div", { class: "grid" }, items.map(item => el("span", {}, item)));
+}
+
+function section(title, ...content) {
+  return el("div", { class: "section" }, el("h3", {}, title), ...content);
+}
+
+function renderInfo(target) {
+  const s = target.status;
+  const parts = [];
+  if (target.error) parts.push(el("div", { class: "notice bad" }, target.error));
+  if (!s) return parts;
+
+  const n = s.nixos;
+  const revision = n.revision
+    ? el("span", {}, el("a", { href: REPO + n.revision.replace(/-dirty$/, ""), target: "_blank", style: "color: inherit" }, n.revision.slice(0, 7)),
+        n.revision.endsWith("-dirty") ? el("span", { class: "warn" }, "-dirty") : null,
+        n.revisionTime ? el("span", { class: "dim" }, ` vom ${date(n.revisionTime)}`) : null)
+    : "–";
+  parts.push(grid(
+    "NixOS", `${n.version ?? "?"}${n.generation ? `  ·  Generation ${n.generation}` : ""}`,
+    "Commit", revision,
+    "Aktiv seit", `${date(n.since)} (vor ${duration(s.time - n.since)})`,
+    "Laufzeit", duration(s.uptime),
+    "Last", s.load.map(x => x.toFixed(2)).join("  "),
+    "RAM", `${bytes(s.memory.total - s.memory.available)} von ${bytes(s.memory.total)} belegt`,
+  ));
+
+  if (n.rebootReasons.length) {
+    parts.push(el("div", { class: "notice" }, "Neustart ausstehend: ", n.rebootReasons.join(", ")));
+  }
+  if (s.failedUnits.length) {
+    parts.push(el("div", { class: "notice bad" }, "Fehlgeschlagene Units: ", s.failedUnits.join(", ")));
+  }
+  if (s.zfs?.length) {
+    parts.push(section("ZFS", el("table", {},
+      el("tr", {}, ["Pool", "Größe", "Belegt", "", "Zustand"].map(h => el("th", {}, h))),
+      s.zfs.map(p => el("tr", {},
+        el("td", {}, p.name), el("td", {}, p.size), el("td", {}, p.alloc), el("td", {}, p.cap),
+        el("td", { class: p.health === "ONLINE" ? "ok" : "bad" }, p.health, p.scan ? el("span", { class: "dim" }, ` · ${p.scan}`) : null))))));
+  }
+  if (s.ups) {
+    const online = (s.ups.status || "").includes("ONLINE");
+    parts.push(section("USV", grid(
+      "Status", el("span", { class: online ? "ok" : "bad" }, s.ups.status ?? "?"),
+      "Akku", `${s.ups.charge ?? "?"} %  ·  ${s.ups.timeLeft ?? "?"} Min`,
+      "Last", `${s.ups.load ?? "?"} %`)));
+  }
+  if (s.docker?.length) {
+    const running = s.docker.filter(c => c.state === "running");
+    const unhealthy = s.docker.filter(c => c.status.includes("unhealthy"));
+    const stopped = s.docker.filter(c => c.state !== "running");
+    const projects = new Map();
+    for (const c of s.docker) projects.set(c.project ?? "–", [...(projects.get(c.project ?? "–") ?? []), c]);
+    const open = cards.get(target.id).dockerOpen;
+    const details = el("details", { open },
+      el("summary", {},
+        el("span", { class: "ok" }, `${running.length} laufen`),
+        unhealthy.length ? el("span", { class: "bad" }, ` · ${unhealthy.length} unhealthy`) : null,
+        stopped.length ? el("span", { class: "warn" }, ` · ${stopped.length} gestoppt`) : null),
+      el("table", {}, [...projects].map(([project, containers]) => containers.map((c, i) => el("tr", {},
+        el("td", { class: "dim" }, i === 0 ? project : ""),
+        el("td", {}, c.name),
+        el("td", { class: c.status.includes("unhealthy") ? "bad" : c.state === "running" ? "ok" : "warn" }, c.status))))));
+    details.addEventListener("toggle", () => { cards.get(target.id).dockerOpen = details.open; });
+    parts.push(section("Docker", details));
+  }
+  return parts;
+}
+
+function renderButtons(target, card) {
+  const s = target.status;
+  const vmRunning = target.kind === "host" || target.vmState === "running";
+  const running = s ? Object.values(s.actions).some(a => a.status === "running") : false;
+  const disabled = card.busy || !s || running;
+  const buttons = [];
+  for (const [action, label] of Object.entries(ACTION_LABELS)) {
+    const a = s?.actions[action];
+    const [text, kind] = ACTION_STATES[a?.status] ?? ["", ""];
+    const when = a?.status === "running" ? a.started : a?.finished;
+    buttons.push(el("button", { disabled: disabled || !vmRunning, title: when ? date(when) : null, onclick: () => act(target, action) },
+      label, text ? el("span", { class: `state ${kind}` }, text) : null));
+  }
+  if (target.kind === "host") {
+    buttons.push(el("button", { class: "danger", disabled: disabled, onclick: () => act(target, "reboot") }, "Neustart"));
+    buttons.push(el("button", { class: "danger", disabled: disabled, onclick: () => act(target, "poweroff") }, "Herunterfahren"));
+  } else {
+    const off = target.vmState !== "running";
+    const vmBusy = card.busy || running;
+    buttons.push(el("button", { disabled: vmBusy || !off, onclick: () => act(target, "vm-start") }, "VM starten"));
+    buttons.push(el("button", { class: "danger", disabled: vmBusy || off, onclick: () => act(target, "vm-shutdown") }, "VM herunterfahren"));
+    buttons.push(el("button", { class: "danger", disabled: vmBusy || off, onclick: () => act(target, "vm-reboot") }, "VM neu starten"));
+    buttons.push(el("button", { class: "danger", disabled: card.busy || target.vmState === "shut off" || target.vmState === "undefined", onclick: () => act(target, "vm-destroy") }, "Hart ausschalten"));
+  }
+  return buttons;
+}
+
+function render(target) {
+  const card = cards.get(target.id) ?? createCard(target);
+  card.target = target;
+  const badges = [el("h2", {}, target.name), el("span", { class: "badge" }, target.kind === "host" ? "Server" : "VM")];
+  if (target.kind === "vm") {
+    const [text, kind] = VM_STATES[target.vmState] ?? [target.vmState, "warn"];
+    badges.push(el("span", { class: `badge ${kind}` }, text));
+  }
+  card.title.replaceChildren(...badges);
+  card.info.replaceChildren(...renderInfo(target));
+  card.buttons.replaceChildren(...renderButtons(target, card));
+  card.logSection.hidden = !target.status;
+
+  if (target.status) {
+    const actions = target.status.actions;
+    if (!card.log.action) {
+      // Show the running action, otherwise the one that ran last
+      const latest = Object.entries(actions).sort((a, b) =>
+        (b[1].status === "running") - (a[1].status === "running") || (b[1].started ?? 0) - (a[1].started ?? 0))[0];
+      selectLog(target.id, latest[1].started ? latest[0] : "diff");
+    } else if (actions[card.log.action]?.status === "running" || card.log.state?.status === "running") {
+      loadLog(target.id);
+    }
+  }
+}
+
+async function refresh() {
+  const result = await api("/api/state");
+  if (!result.targets) {
+    document.getElementById("updated").replaceChildren(el("span", { class: "error" }, result.error || "Status nicht abrufbar"));
+    return;
+  }
+  for (const target of result.targets) render(target);
+  document.getElementById("updated").textContent = `Stand ${new Date().toLocaleTimeString("de-DE")}`;
+}
+
+// Status every 5 s; the log of a running action every second
+refresh();
+setInterval(refresh, 5000);
+setInterval(() => {
+  for (const [id, card] of cards) {
+    if (card.log.state?.status === "running") loadLog(id);
+  }
+}, 1000);
+</script>
+</body>
+</html>

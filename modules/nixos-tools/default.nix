@@ -21,11 +21,9 @@ in {
     pkgs.nix-output-monitor
     pkgs.nh
     # Shows what a switch would change and recommends `switch` or `boot`.
-    (pkgs.writeShellApplication {
-      name = "nixos-diff";
-      runtimeInputs = [pkgs.nh pkgs.nix-output-monitor pkgs.jq pkgs.diffutils];
-      runtimeEnv.DEFAULT_FLAKE = "${flakeUri}#${hostname}";
-      text = builtins.readFile ./nixos-diff.sh;
+    (import ./nixos-diff.nix {
+      inherit pkgs;
+      flake = "${flakeUri}#${hostname}";
     })
     (nhWithSudo "nh-switch" "switch")
     (nhWithSudo "nh-boot" "boot")

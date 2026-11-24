@@ -6,13 +6,26 @@
 FLAKE="${1:-$DEFAULT_FLAKE}"
 
 # dry-activate needs sudo after the build; ask for the password up front and
-# keep the credentials fresh until the script exits.
-sudo -v
-while sleep 60; do sudo -n -v || exit; done 2>/dev/null &
-KEEPALIVE=$!
+# keep the credentials fresh until the script exits. As root (e.g. the unit
+# nixos-control-diff of modules/nixos-control), no sudo is needed.
+SUDO=()
+KEEPALIVE=""
+NH_ARGS=()
+if [ "$(id -u)" -eq 0 ]; then
+	# nh refuses to run as root unless told not to elevate
+	NH_ARGS+=(--elevation-strategy none)
+else
+	SUDO=(sudo)
+	sudo -v
+	while sleep 60; do sudo -n -v || exit; done 2>/dev/null &
+	KEEPALIVE=$!
+fi
+
+# nix-output-monitor only in a terminal; in the journal its redraws are noise.
+[ -t 1 ] || NH_ARGS+=(--no-nom)
 
 WORKDIR=$(mktemp -d)
-trap 'kill "$KEEPALIVE" 2>/dev/null; rm -rf "$WORKDIR"' EXIT
+trap '[ -n "$KEEPALIVE" ] && kill "$KEEPALIVE" 2>/dev/null; rm -rf "$WORKDIR"' EXIT
 RESULT="$WORKDIR/result"
 
 CURRENT=/run/current-system
@@ -20,7 +33,7 @@ BOOTED=/run/booted-system
 
 # nh shows the build progress (nix-output-monitor) and the package diff
 # against the running system.
-nh os build "$FLAKE" --out-link "$RESULT" --diff always --refresh
+nh os build "$FLAKE" --out-link "$RESULT" --diff always "${NH_ARGS[@]}" --refresh
 NEW=$(readlink -f "$RESULT")
 
 # Same store path of a link in two system generations?
@@ -41,7 +54,7 @@ fi
 echo ""
 echo "=== Service changes (dry-activate) ==="
 DRY_FAILED=0
-if ! DRY=$(sudo "$RESULT/bin/switch-to-configuration" dry-activate 2>&1); then
+if ! DRY=$("${SUDO[@]}" "$RESULT/bin/switch-to-configuration" dry-activate 2>&1); then
 	DRY_FAILED=1
 fi
 echo "$DRY"

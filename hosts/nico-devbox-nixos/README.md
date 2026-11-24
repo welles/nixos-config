@@ -72,7 +72,11 @@ other host in this flake.
    sign in to 1Password and enable its SSH agent.
 
 Updates afterwards like on every other host (`nixos-switch` inside the VM,
-or `nixos-rebuild switch --target-host` from elsewhere).
+or `nixos-rebuild switch --target-host` from elsewhere), or from the
+server's control center at `https://control.welles.app`
+(`modules/control-center`): diff, switch and boot run inside the VM through
+the QEMU guest agent (`modules/nixos-control`), and the VM can be started,
+shut down, rebooted or forced off there.
 
 ## Claude Remote Manager
 
