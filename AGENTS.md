@@ -226,6 +226,7 @@ argument that the host sets in `_module.args`. Common arguments:
 | `sshAuthorizedKeys`        | Public keys allowed to log in over SSH.                    |
 | `acmeEmail`                | Contact email for Caddy's ACME certificates.               |
 | `msmtpAccount`             | SMTP account (`host`, `user`, `from`) of the mail relay.   |
+| `controlCenterAccess`      | Cloudflare Access of the control center (`teamDomain`, `audience` or `null`). |
 | `nextcloudUrl`             | Nextcloud base URL the rclone mount uses.                  |
 | `homeAssistantUrl`         | Home Assistant base URL the API clients use.               |
 | `touchpads`                | Built-in touchpads (`name`, `vendorId`, `productId`).      |

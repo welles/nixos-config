@@ -84,6 +84,20 @@ locals {
       disable_chunked_encoding = null
       bypass_paths             = []
     }
+    # Control center of the home server (modules/control-center): update,
+    # reboot and power off the server and its VMs. The web server checks the
+    # Access JWT itself; put this application's audience into the server's
+    # controlCenterAccess (`./tofu.sh output access_audiences`).
+    control-center = {
+      hostname                 = "control.welles.app"
+      zone                     = "welles.app"
+      tunnel                   = "schokoladenelch"
+      service                  = "http://localhost:50250"
+      session_duration         = "24h"
+      policies                 = ["google_email"]
+      disable_chunked_encoding = null
+      bypass_paths             = []
+    }
   }
 
   # One entry per path of local.apps' bypass_paths, keyed "<app><path>"

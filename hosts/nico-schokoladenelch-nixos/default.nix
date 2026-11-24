@@ -33,6 +33,7 @@
     ../../modules/server-status
     ../../modules/apcupsd.nix
     ../../modules/caddy.nix
+    ../../modules/control-center
     ../../modules/cloudflared.nix
     ../../modules/fail2ban.nix
     ../../modules/msmtp.nix
@@ -76,6 +77,12 @@
     userDescription = "Schokoladenelch";
     userEmail = "nico@welles.email";
     acmeEmail = "admin@welles.email";
+    # Control center (modules/control-center): its Access application in
+    # cloudflare/apps.tf; audience from `./tofu.sh output access_audiences`
+    controlCenterAccess = {
+      teamDomain = "nicowelles.cloudflareaccess.com";
+      audience = null;
+    };
     msmtpAccount = {
       host = "smtp.ionos.de";
       user = "noreply@welles.email";
