@@ -75,6 +75,7 @@
     ../../modules/packages/solaar.nix
     ../../modules/packages/steam.nix
     ../../modules/packages/streamcontroller.nix
+    ../../modules/packages/voices-of-the-void.nix
 
     # Scripts
     ../../modules/scripts/search-tmdb
