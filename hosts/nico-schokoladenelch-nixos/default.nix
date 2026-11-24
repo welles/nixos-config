@@ -79,6 +79,7 @@
     acmeEmail = "admin@welles.email";
     # Control center (modules/control-center): its Access application in
     # cloudflare/apps.tf; audience from `./tofu.sh output access_audiences`
+    # (until it is set, the control center refuses every request)
     controlCenterAccess = {
       teamDomain = "nicowelles.cloudflareaccess.com";
       audience = null;

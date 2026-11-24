@@ -236,7 +236,12 @@ function appendLog(card, lines) {
   const verdict = all.filter(l => l.startsWith("=>") || l.startsWith("No changes"));
   if (card.log.action === "diff" && (start >= 0 || verdict.length)) {
     const text = verdict.join("\n").replace(/\x1b\[[0-9;]*m/g, "");
-    const kind = /safe|No changes/.test(text) ? "ok" : /boot|reboot/.test(text) ? "" : "bad";
+    // Red: unknown outcome; green: safe switch or nothing to do; yellow: anything
+    // else (boot and reboot, a pending reboot, switch with notes)
+    const arrows = verdict.filter(l => l.startsWith("=>")).join("\n");
+    const kind = /=> Unknown/.test(arrows) ? "bad"
+      : /nh-switch is safe/.test(arrows) || (!arrows && /^No changes/.test(text)) ? "ok"
+      : "";
     card.recommendation.replaceChildren(el("div", { class: `notice ${kind}`, style: "white-space: pre-wrap" }, text));
   }
 }

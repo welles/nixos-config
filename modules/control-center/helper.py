@@ -1,6 +1,6 @@
 """Privileged helper of the control center.
 
-Runs as root behind the socket /run/control-center/helper.sock (socket unit,
+Runs as root behind the socket /run/control-center-helper.sock (socket unit,
 only the group control-center may connect). The web server sends one JSON
 request per connection and gets one JSON response:
 

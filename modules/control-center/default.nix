@@ -10,10 +10,10 @@
 #     on 127.0.0.1:${port}, published by the Cloudflare Tunnel behind
 #     Cloudflare Access (cloudflare/apps.tf). It checks Access's JWT itself
 #     against `controlCenterAccess` (teamDomain; audience: the application's
-#     AUD tag, `./tofu.sh output access_audiences`, or null to accept every
-#     application of the team until it is known).
+#     AUD tag, `./tofu.sh output access_audiences`). While the audience is
+#     null, the web server refuses every request.
 #   - control-center-helper.service (helper.py): runs as root behind the
-#     socket /run/control-center/helper.sock, which only the web server may
+#     socket /run/control-center-helper.sock, which only the web server may
 #     use, and accepts only the fixed commands above: `nixos-control`
 #     (modules/nixos-control) on the server directly, in the VMs through the
 #     QEMU guest agent, and virsh for the VMs themselves. A VM therefore
@@ -27,7 +27,7 @@
   ...
 }: let
   port = 50250;
-  socket = "/run/control-center/helper.sock";
+  socket = "/run/control-center-helper.sock";
   vms = builtins.toJSON (lib.attrNames libvirtVms);
 
   helper = pkgs.writers.writePython3Bin "control-center-helper" {
@@ -60,7 +60,6 @@ in {
       SocketUser = "root";
       SocketGroup = "control-center";
       SocketMode = "0660";
-      DirectoryMode = "0750";
     };
   };
 

@@ -5,8 +5,10 @@ Tunnel publishes it behind Cloudflare Access. Runs unprivileged and passes
 every request on to the root helper (helper.py) through its socket.
 
 Every request must carry Access's JWT (Cf-Access-Jwt-Assertion) of a person
-(with an email; service tokens are refused), signed by the team's keys and,
-if CONTROL_CENTER_ACCESS_AUDIENCE is set, issued for this application.
+(with an email; service tokens are refused), signed by the team's keys and
+issued for this application (CONTROL_CENTER_ACCESS_AUDIENCE). Without an
+audience every request is refused, so the JWT of another application of the
+team can never be replayed here.
 Requests that change something must be POSTs with the header
 X-Control-Center, which a cross-site form cannot send.
 
@@ -55,7 +57,7 @@ def helper(request, timeout=60):
 
 
 def authenticated_email(token):
-    if not token:
+    if not token or AUDIENCE is None:
         return None
     try:
         key = jwks.get_signing_key_from_jwt(token)
@@ -65,7 +67,7 @@ def authenticated_email(token):
             algorithms=["RS256"],
             issuer=f"https://{TEAM_DOMAIN}",
             audience=AUDIENCE,
-            options={"verify_aud": AUDIENCE is not None, "require": ["exp", "iss"]},
+            options={"require": ["exp", "iss", "aud"]},
         )
     except jwt.PyJWTError as e:
         print(f"JWT refused: {e}", file=sys.stderr)
@@ -109,7 +111,8 @@ class Handler(BaseHTTPRequestHandler):
     def authorize(self):
         email = authenticated_email(self.headers.get("Cf-Access-Jwt-Assertion"))
         if email is None:
-            self.send(403, {"ok": False, "error": "Keine gültige Cloudflare-Access-Anmeldung"})
+            error = "Keine gültige Cloudflare-Access-Anmeldung" if AUDIENCE else "controlCenterAccess.audience ist nicht gesetzt: alle Anfragen werden abgelehnt"
+            self.send(403, {"ok": False, "error": error})
         return email
 
     def do_GET(self):
@@ -169,7 +172,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     if AUDIENCE is None:
-        print("CONTROL_CENTER_ACCESS_AUDIENCE not set: accepting Access JWTs of every application of the team", file=sys.stderr)
+        print("CONTROL_CENTER_ACCESS_AUDIENCE not set: refusing every request until the audience of the Access application is configured", file=sys.stderr)
     ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
 
 
