@@ -26,7 +26,7 @@ NIXOS_CONTROL = "/run/current-system/sw/bin/nixos-control"
 VMS = json.loads(os.environ.get("CONTROL_CENTER_VMS", "[]"))
 ACTIONS = ("diff", "switch", "boot")
 POWER = ("reboot", "poweroff")
-VM_ACTIONS = ("start", "shutdown", "reboot", "destroy")
+VM_ACTIONS = ("start", "resume", "shutdown", "reboot", "destroy")
 
 
 class Error(Exception):

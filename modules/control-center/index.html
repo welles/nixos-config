@@ -101,7 +101,12 @@ function bytes(n) {
 }
 
 async function api(path, options = {}) {
-  const response = await fetch(path, { credentials: "same-origin", ...options });
+  let response;
+  try {
+    response = await fetch(path, { credentials: "same-origin", ...options });
+  } catch (e) {
+    return { ok: false, error: `Server nicht erreichbar: ${e.message}` };
+  }
   let body;
   try { body = await response.json(); } catch { body = { ok: false, error: `HTTP ${response.status}` }; }
   if (!response.ok && body.ok === undefined) body.ok = false;
@@ -144,6 +149,7 @@ const CONFIRM = {
   reboot: name => `${name} jetzt neu starten?`,
   poweroff: name => `${name} jetzt herunterfahren?\n\nDer Server lässt sich danach NICHT aus der Ferne wieder einschalten, auch diese Seite ist dann weg.`,
   "vm-start": () => null,
+  "vm-resume": () => null,
   "vm-shutdown": name => `VM ${name} herunterfahren?`,
   "vm-reboot": name => `VM ${name} neu starten?`,
   "vm-destroy": name => `VM ${name} HART ausschalten (wie Stecker ziehen)? Nur, wenn sie nicht mehr reagiert.`,
@@ -180,41 +186,52 @@ function selectLog(id, action, reset = false) {
   loadLog(id);
 }
 
+// One load per card at a time; a request for another load while one runs
+// (tab switch, reset) is queued and runs right after it. Each load works on
+// the log object it started with and stops once the card shows another one.
 async function loadLog(id) {
   const card = cards.get(id);
-  if (card.logLoading) return;
+  if (card.logLoading) { card.logPending = true; return; }
   card.logLoading = true;
   try {
-    const { action } = card.log;
-    let more = true;
-    while (more && card.log.action === action) {
-      const query = new URLSearchParams({ target: id, action });
-      if (card.log.cursor) query.set("cursor", card.log.cursor);
-      const result = await api(`/api/log?${query}`);
-      if (card.log.action !== action) return;
-      if (result.ok === false) {
-        card.pre.replaceChildren(el("span", { class: "err" }, result.error || "Log nicht lesbar"));
-        return;
-      }
-      // A new run started: show it from the start
-      const started = result.state?.started ?? null;
-      if (card.log.loaded && started !== card.log.invocationStart) {
-        card.log = { action, cursor: null, lines: [], invocationStart: started, loaded: false };
-        card.pre.replaceChildren();
-        card.recommendation.replaceChildren();
-        continue;
-      }
-      card.log.invocationStart = started;
-      card.log.loaded = true;
-      card.log.state = result.state;
-      appendLog(card, result.lines || []);
-      if (result.cursor) card.log.cursor = result.cursor;
-      more = result.more;
-    }
-    if (!card.pre.childNodes.length) card.pre.append(el("span", { class: "dim" }, "Noch kein Lauf."));
+    do {
+      card.logPending = false;
+      await loadLogOnce(id, card);
+    } while (card.logPending);
   } finally {
     card.logLoading = false;
   }
+}
+
+async function loadLogOnce(id, card) {
+  let log = card.log;
+  const { action } = log;
+  let more = true;
+  while (more) {
+    const query = new URLSearchParams({ target: id, action });
+    if (log.cursor) query.set("cursor", log.cursor);
+    const result = await api(`/api/log?${query}`);
+    if (card.log !== log) return;
+    if (result.ok === false) {
+      card.pre.replaceChildren(el("span", { class: "err" }, result.error || "Log nicht lesbar"));
+      return;
+    }
+    // A new run started: show it from the start
+    const started = result.state?.started ?? null;
+    if (log.loaded && started !== log.invocationStart) {
+      log = card.log = { action, cursor: null, lines: [], invocationStart: started, loaded: false };
+      card.pre.replaceChildren();
+      card.recommendation.replaceChildren();
+      continue;
+    }
+    log.invocationStart = started;
+    log.loaded = true;
+    log.state = result.state;
+    appendLog(card, result.lines || []);
+    if (result.cursor) log.cursor = result.cursor;
+    more = result.more;
+  }
+  if (!card.pre.childNodes.length) card.pre.append(el("span", { class: "dim" }, "Noch kein Lauf."));
 }
 
 function appendLog(card, lines) {
@@ -360,11 +377,16 @@ function renderButtons(target, card) {
     buttons.push(el("button", { class: "danger", disabled: disabled, onclick: () => act(target, "reboot") }, "Neustart"));
     buttons.push(el("button", { class: "danger", disabled: disabled, onclick: () => act(target, "poweroff") }, "Herunterfahren"));
   } else {
-    const off = target.vmState !== "running";
+    const off = target.vmState === "shut off" || target.vmState === "undefined";
+    const on = target.vmState === "running";
     const vmBusy = card.busy || running;
-    buttons.push(el("button", { disabled: vmBusy || !off, onclick: () => act(target, "vm-start") }, "VM starten"));
-    buttons.push(el("button", { class: "danger", disabled: vmBusy || off, onclick: () => act(target, "vm-shutdown") }, "VM herunterfahren"));
-    buttons.push(el("button", { class: "danger", disabled: vmBusy || off, onclick: () => act(target, "vm-reboot") }, "VM neu starten"));
+    if (target.vmState === "paused") {
+      buttons.push(el("button", { disabled: vmBusy, onclick: () => act(target, "vm-resume") }, "VM fortsetzen"));
+    } else {
+      buttons.push(el("button", { disabled: vmBusy || !off, onclick: () => act(target, "vm-start") }, "VM starten"));
+    }
+    buttons.push(el("button", { class: "danger", disabled: vmBusy || !on, onclick: () => act(target, "vm-shutdown") }, "VM herunterfahren"));
+    buttons.push(el("button", { class: "danger", disabled: vmBusy || !on, onclick: () => act(target, "vm-reboot") }, "VM neu starten"));
     buttons.push(el("button", { class: "danger", disabled: card.busy || target.vmState === "shut off" || target.vmState === "undefined", onclick: () => act(target, "vm-destroy") }, "Hart ausschalten"));
   }
   return buttons;
