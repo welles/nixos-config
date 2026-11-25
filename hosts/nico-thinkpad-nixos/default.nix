@@ -45,6 +45,7 @@
     ../../modules/plasma-panel.nix
     ../../modules/plasma-power-ac.nix
     ../../modules/plasma-power-battery.nix
+    ../../modules/printer-brother-mfc-j5345dw
     ../../modules/printing.nix
     ../../modules/removable-media.nix
 
