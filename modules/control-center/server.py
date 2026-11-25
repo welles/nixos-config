@@ -17,7 +17,7 @@ X-Control-Center, which a cross-site form cannot send.
   GET  /api/log?target=&action=&cursor=  journal of an action's last run
   POST /api/action {target, action}      diff, switch, boot, reboot,
                                          poweroff, vm-start, vm-shutdown,
-                                         vm-reboot, vm-destroy
+                                         vm-resume, vm-reboot, vm-destroy
 """
 
 import json
@@ -39,7 +39,7 @@ AUDIENCE = os.environ.get("CONTROL_CENTER_ACCESS_AUDIENCE") or None
 
 TARGETS = ["host", *VMS]
 ACTIONS = ("diff", "switch", "boot", "reboot", "poweroff")
-VM_ACTIONS = ("vm-start", "vm-shutdown", "vm-reboot", "vm-destroy")
+VM_ACTIONS = ("vm-start", "vm-resume", "vm-shutdown", "vm-reboot", "vm-destroy")
 
 jwks = jwt.PyJWKClient(f"https://{TEAM_DOMAIN}/cdn-cgi/access/certs", cache_keys=True, lifespan=3600)
 pool = ThreadPoolExecutor(max_workers=8)
@@ -79,8 +79,8 @@ def state():
     def one(target):
         try:
             result = helper({"target": target, "cmd": "status"})
-        except OSError as e:
-            result = {"error": f"Helper nicht erreichbar: {e}"}
+        except (OSError, ValueError) as e:
+            result = {"error": f"Helper nicht erreichbar oder Antwort ungültig: {e}"}
         name = socket.gethostname() if target == "host" else target
         return {"id": target, "kind": "host" if target == "host" else "vm", "name": name, **result}
 
@@ -124,8 +124,8 @@ class Handler(BaseHTTPRequestHandler):
     def guarded(self, method):
         try:
             method()
-        except OSError as e:
-            self.send(502, {"ok": False, "error": f"Helper nicht erreichbar: {e}"})
+        except (OSError, ValueError) as e:
+            self.send(502, {"ok": False, "error": f"Helper nicht erreichbar oder Antwort ungültig: {e}"})
 
     def get(self):
         if self.authorize() is None:

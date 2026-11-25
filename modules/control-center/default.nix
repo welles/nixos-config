@@ -3,8 +3,8 @@
 # A web page to keep this server and its libvirt VMs (`libvirtVms`) up to
 # date and to restart them: status (NixOS generation and commit, pending
 # reboot, failed units, ZFS, UPS, Docker), nixos-diff, nh switch and nh boot
-# with their live log, reboot and power off of the server, start, shut down,
-# reboot and force off of the VMs.
+# with their live log, reboot and power off of the server, start, resume,
+# shut down, reboot and force off of the VMs.
 #
 #   - control-center.service (server.py, index.html): unprivileged web server
 #     on 127.0.0.1:${port}, published by the Cloudflare Tunnel behind
