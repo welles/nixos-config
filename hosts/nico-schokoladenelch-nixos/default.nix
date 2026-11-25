@@ -79,10 +79,9 @@
     acmeEmail = "admin@welles.email";
     # Control center (modules/control-center): its Access application in
     # cloudflare/apps.tf; audience from `./tofu.sh output access_audiences`
-    # (until it is set, the control center refuses every request)
     controlCenterAccess = {
       teamDomain = "nicowelles.cloudflareaccess.com";
-      audience = null;
+      audience = "570505a0e8fca6c84043fd9fbf144b211614a11436be393bc0ceabaa920c41f0";
     };
     msmtpAccount = {
       host = "smtp.ionos.de";
