@@ -33,7 +33,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 120s
-    image: homeassistant/home-assistant:2026.11.1
+    image: homeassistant/home-assistant:2026.11.2
     networks:
       home_assistant:
         ipv4_address: 10.10.19.10
