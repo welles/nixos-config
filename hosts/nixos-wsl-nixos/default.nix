@@ -48,6 +48,7 @@
     # Packages
     ../../modules/packages/awscli2.nix
     ../../modules/packages/bruno.nix
+    ../../modules/packages/chatgpt.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/headlamp.nix

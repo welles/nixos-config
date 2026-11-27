@@ -58,6 +58,7 @@
     ../../modules/packages/azure-cli.nix
     ../../modules/packages/bottles.nix
     ../../modules/packages/calibre.nix
+    ../../modules/packages/chatgpt.nix
     ../../modules/packages/cheat-engine.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/claude-desktop.nix

@@ -1,10 +1,4 @@
-{
-  lib,
-  pkgs,
-  user,
-  persistRoot,
-  ...
-}: let
+{pkgs, ...}: let
   # codex 0.167.0 links against system libraries the nixpkgs package does not
   # provide yet, so the build fails in zstd-sys. Fixed upstream in
   # NixOS/nixpkgs@16b463698a; drop this override once nixos-unstable has it.
@@ -19,9 +13,7 @@
       ];
   });
 in {
-  environment.systemPackages = [codex];
+  imports = [../codex-state.nix];
 
-  environment.persistence = lib.mkIf (persistRoot != null) {
-    ${persistRoot}.users.${user}.directories = [".codex"];
-  };
+  environment.systemPackages = [codex];
 }
