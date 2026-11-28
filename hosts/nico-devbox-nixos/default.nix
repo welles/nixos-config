@@ -45,7 +45,7 @@
     # diff, switch and boot from the server's control center (guest agent)
     ../../modules/nixos-control
     ../../modules/claude-desktop-accounts.nix
-    ../../modules/claude-desktop-autostart.nix
+    ../../modules/claude-desktop-accounts-autostart.nix
     ../../modules/home-assistant-api
     ../../modules/playwright-mcp.nix
     ../../modules/vscode-tunnel.nix
