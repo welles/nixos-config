@@ -229,6 +229,7 @@ argument that the host sets in `_module.args`. Common arguments:
 | `controlCenterAccess`      | Cloudflare Access of the control center (`teamDomain`, `audience` or `null`). |
 | `nextcloudUrl`             | Nextcloud base URL the rclone mount uses.                  |
 | `homeAssistantUrl`         | Home Assistant base URL the API clients use.               |
+| `claudeAccounts`           | Claude accounts side by side (`id`, `name`); the first uses the default dirs. |
 | `touchpads`                | Built-in touchpads (`name`, `vendorId`, `productId`).      |
 | `homeWireguardAddress`     | Tunnel addresses (`ipv4`, `ipv6`) of the home VPN.         |
 | `timetrackerDevRepo`       | Working copy the time tracker deploys from, or `null`.     |

@@ -62,6 +62,7 @@
     ../../modules/packages/cheat-engine.nix
     ../../modules/packages/claude-code.nix
     ../../modules/packages/claude-desktop.nix
+    ../../modules/claude-desktop-accounts.nix
     ../../modules/packages/codex.nix
     ../../modules/packages/fsearch.nix
     ../../modules/packages/gh.nix
@@ -88,6 +89,16 @@
   sops.defaultSopsFile = ./secrets.yaml;
   system.stateVersion = "26.05";
   _module.args = {
+    claudeAccounts = [
+      {
+        id = "privat";
+        name = "Privat";
+      }
+      {
+        id = "stamm-phoenix";
+        name = "Stamm Phoenix";
+      }
+    ];
     user = "nico";
     persistRoot = "/persist";
     sopsAgeKeyFile = "/persist/var/lib/sops-nix/key.txt";
