@@ -44,6 +44,7 @@
     # Services
     # diff, switch and boot from the server's control center (guest agent)
     ../../modules/nixos-control
+    ../../modules/claude-desktop-accounts.nix
     ../../modules/claude-desktop-autostart.nix
     ../../modules/home-assistant-api
     ../../modules/playwright-mcp.nix
@@ -94,6 +95,16 @@
     ];
     extraGroups = ["wheel"];
     homeAssistantUrl = "https://homeassistant.welles.app";
+    claudeAccounts = [
+      {
+        id = "privat";
+        name = "Privat";
+      }
+      {
+        id = "stamm-phoenix";
+        name = "Stamm Phoenix";
+      }
+    ];
     # The server gives this VM virgl (its libvirtVms.nico-devbox-nixos.virglRenderNode)
     xrdpGlamorExtraDrivers = ["virtio_gpu"];
     # The server's tank datasets (its libvirtVms.nico-devbox-nixos.virtiofsShares)
